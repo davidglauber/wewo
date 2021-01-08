@@ -1,0 +1,12 @@
+{
+  "name": "wewo",
+  "displayName": "wewo",
+  "expo": {
+    "name": "wewo",
+    "slug": "wewo",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
