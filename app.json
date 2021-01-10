@@ -7,6 +7,11 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "permissions":["com.android.vending.BILLING"],
+      "versionCode": 9,
+      "package": "com.zubito.wewo"
+    }
   }
 }

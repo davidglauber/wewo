@@ -1,21 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+/**
+ * Food Delivery - React Native Template
+ *
+ * @format
+ * @flow
+ */
 
-export default function App() {
+// import dependencies
+import 'react-native-gesture-handler';
+import React , {useState}from 'react';
+import { LogBox } from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {enableScreens} from 'react-native-screens';
+
+
+enableScreens();
+
+// TODO: Remove when fixed
+LogBox.ignoreLogs([
+  'VirtualizedLists should never be nested',
+  'Warning: componentWillReceiveProps has been renamed, and is not recommended',
+]);
+
+// import MainNavigatorA or MainNavigatorB to preview design differnces
+import MainNavigator from './src/navigation/MainNavigatorA';
+
+
+// APP
+function App() {
+  
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <MainNavigator/>
+    </SafeAreaProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+
+export default App;

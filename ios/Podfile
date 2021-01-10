@@ -21,4 +21,10 @@ target 'wewo' do
   #  post_install do |installer|
   #    flipper_post_install(installer)
   #  end
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+
+  pod 'RNIap', :path => '../node_modules/react-native-iap'
+
 end

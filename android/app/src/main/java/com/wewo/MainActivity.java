@@ -1,4 +1,4 @@
-package com.wewo;
+package com.zubito.wewo;
 
 import android.os.Bundle;
 

@@ -132,11 +132,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.wewo"
+        applicationId "com.zubito.wewo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 9
+        versionName "9.0"
     }
     splits {
         abi {
@@ -184,6 +184,9 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-svg')
+    implementation project(':react-native-safe-area-context')
+    compile project(':react-native-iap')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
