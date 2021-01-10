@@ -34,6 +34,9 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 import { ThemeContext } from '../../../ThemeContext';
 
+//MODULE IAP
+import {purchased} from '../../config/purchase';
+
 //consts
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -193,8 +196,9 @@ export default class TelaPrincipalAnuncio extends Component {
   };
 
 
-  verifyNumberOfPublises() {
+  async verifyNumberOfPublises() {
     let currentUserUID = firebase.auth().currentUser.uid;
+    let comprou = await purchased('wewo.gold.mensal');
 
     firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
       let anunciosDidMount = []
@@ -217,10 +221,22 @@ export default class TelaPrincipalAnuncio extends Component {
         this.props.navigation.navigate('Orders')
       }
 
-      if(anunciosDidMount.length >= 2) {
-        alert('A conta Free permite até 2 anúncios, consulte a tela de PLANOS para mais informações')
-      }
 
+      if(comprou == true) {
+        if(anunciosDidMount.length <= 5) {
+          this.props.navigation.navigate('Orders')
+        }
+      } 
+
+      if(comprou == false) {
+        if(anunciosDidMount.length >= 2) {
+          alert('A conta Free permite até 2 anúncios, consulte a tela de PLANOS para mais informações')
+        }
+
+        if(anunciosDidMount.length  <= 1) {
+          this.props.navigation.navigate('Orders')
+        }
+      }
       console.log('TAMANHO DA LISTA DE ANUNCIOS:> ' + anunciosDidMount)
     })
 

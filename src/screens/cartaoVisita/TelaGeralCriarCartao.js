@@ -34,6 +34,9 @@ import { SafeBackground, Title, AnuncioContainer, PlusContainer, PlusIcon, Descr
 
 import { ThemeContext } from '../../../ThemeContext';
 
+//MODULE IAP
+import {purchased} from '../../config/purchase';
+
 
 //consts
 const windowWidth = Dimensions.get('window').width;
@@ -237,8 +240,9 @@ export default class TelaGeralCriarCartao extends Component {
     navigation.navigate(screen);
   };
 
-  verifyNumberOfPublises() {
+  async verifyNumberOfPublises() {
     let currentUserUID = firebase.auth().currentUser.uid;
+    let comprou = await purchased('wewo.gold.mensal');
 
     firebase.firestore().collection(`usuarios/${currentUserUID}/cartoes`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
       let cartoesDidMount = []
@@ -255,15 +259,30 @@ export default class TelaGeralCriarCartao extends Component {
         })
       })
 
+
+
       if(cartoesDidMount.length  <= 1) {
         this.props.navigation.navigate('TelaCriarCartaoVisita')
       }
 
-      if(cartoesDidMount.length >= 2) {
-        alert('A conta Free permite até 2 cartões, consulte a tela de PLANOS para mais informações')
+
+      if(comprou == true) {
+        if(anunciosDidMount.length <= 5) {
+          this.props.navigation.navigate('TelaCriarCartaoVisita')
+        }
+      } 
+
+      if(comprou == false) {
+        if(cartoesDidMount.length >= 2) {
+          alert('A conta Free permite até 2 cartões, consulte a tela de PLANOS para mais informações')
+        }
+
+        if(cartoesDidMount.length  <= 1) {
+          this.props.navigation.navigate('TelaCriarCartaoVisita')
+        }
       }
 
-      console.log('TAMANHO DA LISTA DE ANUNCIOS:> ' + cartoesDidMount)
+      console.log('TAMANHO DA LISTA DE CARTOES:> ' + cartoesDidMount)
     })
 
   }
