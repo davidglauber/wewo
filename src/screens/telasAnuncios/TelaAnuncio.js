@@ -269,7 +269,8 @@ export default class TelaAnuncio extends Component {
           timeToOpen: doc.data().timeOpen,
           timeToClose: doc.data().timeClose,
           local: doc.data().localEstab,
-          workDays: doc.data().workDays
+          workDays: doc.data().workDays,
+          timeClose: doc.data().timeClose
         })
         dataAtual = doc.data().publishData
       })
@@ -607,7 +608,7 @@ export default class TelaAnuncio extends Component {
 
                   <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                       <IconResponsiveNOBACK name="clock" size={25}/>
-                      <TextTheme style={{fontSize:15, marginLeft: 15}}>Aberto durante {item.workDays} dias na semana</TextTheme>
+                      <TextTheme style={{fontSize:15, marginLeft: 15}}>Aberto por {item.workDays} dias na semana até {item.timeClose} hrs</TextTheme>
                   </View>
 
 

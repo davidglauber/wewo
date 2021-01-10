@@ -10,7 +10,7 @@
     ],
     "android": {
       "permissions":["com.android.vending.BILLING"],
-      "versionCode": 9,
+      "versionCode": 10,
       "package": "com.zubito.wewo"
     }
   }

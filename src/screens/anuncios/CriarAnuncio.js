@@ -51,6 +51,9 @@ import { ItemContainer, ViewTopForm, SafeBackgroundPublish, IconResponsive, Icon
 
 import { ThemeContext } from '../../../ThemeContext';
 
+//import IAP API 
+import {purchased} from '../../config/purchase';
+
 //RESPONSIVE FONT 
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -163,7 +166,8 @@ export default class CriarAnuncio extends Component {
       subcategoria:'',
       isPhotoLoaded: false,
       isPhotoLoaded2: false,
-      isPhotoLoaded3: false
+      isPhotoLoaded3: false,
+      usuarioComprou: false
     };
   }
 
@@ -181,6 +185,9 @@ export default class CriarAnuncio extends Component {
   async componentDidMount() {
     this.convertDate();
     let e = this;
+
+    let comprou = await purchased('wewo.gold.mensal');
+    this.setState({usuarioComprou: comprou});
 
     //getting categories
     await firebase.firestore().collection('categorias').get().then(function(querySnapshot) {
@@ -576,6 +583,8 @@ export default class CriarAnuncio extends Component {
     let imageIdStorageState3 = '';
 
 
+
+
       var getFileBlob = async function (url, cb) { 
           var xhr = new XMLHttpRequest();
           xhr.open("GET", url);
@@ -635,6 +644,7 @@ export default class CriarAnuncio extends Component {
                                         valueServiceEstab: e.state.precoEstab,
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -659,6 +669,7 @@ export default class CriarAnuncio extends Component {
                                         type: 'Estabelecimento',
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -708,6 +719,7 @@ export default class CriarAnuncio extends Component {
                                         type: 'Autonomo',
                                         UFAuto: e.state.UFAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -729,6 +741,7 @@ export default class CriarAnuncio extends Component {
                                         type: 'Autonomo',
                                         UFAuto: e.state.UFAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -819,6 +832,7 @@ export default class CriarAnuncio extends Component {
                                         valueServiceEstab: e.state.precoEstab,
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -841,6 +855,7 @@ export default class CriarAnuncio extends Component {
                                         valueServiceEstab: e.state.precoEstab,
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -888,6 +903,7 @@ export default class CriarAnuncio extends Component {
                                         valueServiceAuto: e.state.precoAuto,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -907,6 +923,7 @@ export default class CriarAnuncio extends Component {
                                         valueServiceAuto: e.state.precoAuto,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,

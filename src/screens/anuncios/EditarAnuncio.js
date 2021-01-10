@@ -56,6 +56,9 @@ import { ItemContainer, ViewTopForm, SafeBackgroundPublish, IconResponsive, Icon
 
 import { ThemeContext } from '../../../ThemeContext';
 
+//import IAP API 
+import {purchased} from '../../config/purchase';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -164,7 +167,8 @@ export default class EditarAnuncio extends Component {
       currentDate: new Date(),
       date: '',
       subcategorias:[],
-      subcategoria:''
+      subcategoria:'',
+      usuarioComprou: false
     };
   }
 
@@ -182,8 +186,12 @@ export default class EditarAnuncio extends Component {
 
   async componentDidMount() {
     this.convertDate();
-
     let e = this;
+
+    //verifica se o usuario comprou a assinatura mensal
+    let comprou = await purchased('wewo.gold.mensal');
+    this.setState({usuarioComprou: comprou});
+
     let routeType = this.props.route.params.type;
     let routeIdAnuncio = this.props.route.params.idAnuncio;
     let userUID = firebase.auth().currentUser.uid;
@@ -775,6 +783,7 @@ export default class EditarAnuncio extends Component {
                                         type: 'Estabelecimento',
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -798,6 +807,7 @@ export default class EditarAnuncio extends Component {
                                         type: 'Estabelecimento',
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -842,6 +852,7 @@ export default class EditarAnuncio extends Component {
                                         UFAuto: e.state.UFAuto,
                                         localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -863,6 +874,7 @@ export default class EditarAnuncio extends Component {
                                         UFAuto: e.state.UFAuto,
                                         localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -954,6 +966,7 @@ export default class EditarAnuncio extends Component {
                                         type: 'Estabelecimento',
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -977,6 +990,7 @@ export default class EditarAnuncio extends Component {
                                         type: 'Estabelecimento',
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1026,6 +1040,7 @@ export default class EditarAnuncio extends Component {
                                         UFAuto: e.state.UFAuto,
                                         localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -1047,6 +1062,7 @@ export default class EditarAnuncio extends Component {
                                         UFAuto: e.state.UFAuto,
                                         localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,

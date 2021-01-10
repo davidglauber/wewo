@@ -270,7 +270,7 @@ export default class TelaLogin extends Component {
       const { type, token } = await
         Facebook.logInWithReadPermissionsAsync(
             {
-                      permission: "public_profile"
+                      permission: ["public_profile", "email", "user_friends"] 
             } 
         );
 
