@@ -15,6 +15,7 @@ import {
   Image,
   View,
   Text,
+  TouchableOpacity
 } from 'react-native';
 
 // import components
@@ -29,6 +30,8 @@ import Colors from '../../theme/colors';
 import {purchased, fetchAvailableProducts,purchaseUpdateSubscription,requestPurchase} from '../../config/purchase';
 
 import { useRoute, useNavigation } from "@react-navigation/native";
+
+import { Subtitle2Publish, ChooseOption } from '../home/styles';
 //consts
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -121,7 +124,7 @@ const styles = StyleSheet.create({
 export default function PaymentMethodA() {
   const route = useRoute();
   const navigation = useNavigation();
-  const [products, setProducts] = useState([]);
+  const [plan, setPlan] = useState('mensal');
   
   const itemSubs = Platform.select({
     android: [
@@ -150,6 +153,17 @@ export default function PaymentMethodA() {
     purchaseUpdateSubscription(itemSubs);
   }, [])
 
+
+  useEffect(async () => {
+    let comprou = await purchased('wewo.gold.mensal')
+
+    if(comprou == true) {
+      alert('Você já possui o plano mensal')
+    } else {
+      alert('Você não possui o plano mensal')
+    }
+  }, [])
+
   function signPremium(idProp) {
     requestPurchase(idProp)
   }
@@ -159,12 +173,55 @@ export default function PaymentMethodA() {
 
 
     return (
-      <View style={{flex:1, backgroundColor:'#fff'}}>
-        <View style={{alignItems:'center', marginBottom: windowHeight/6}}>
-          <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
-          <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 9,99</Text>
-        </View>
-        
+      <View style={{flex:1, padding:15, backgroundColor:'#fff'}}>
+        {plan == 'mensal' ?
+          <View style={{flexDirection:'row'}}>
+              <ChooseOption/>
+              <TouchableOpacity>
+                  <Subtitle2Publish
+                    style={{fontWeight: 'bold'}}>Mensal</Subtitle2Publish>
+              </TouchableOpacity>
+          </View>
+        :
+          <View style={{flexDirection:'row'}}>
+              <TouchableOpacity onPress={() => setPlan('mensal')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
+                <TouchableOpacity onPress={() => setPlan( 'mensal')}>
+                    <Subtitle2Publish>Mensal</Subtitle2Publish>
+                </TouchableOpacity>
+          </View>                         
+        }
+
+        {plan == 'anual' ?
+          <View style={{flexDirection:'row'}}>
+              <ChooseOption/>
+              <TouchableOpacity>
+                  <Subtitle2Publish
+                    style={{fontWeight: 'bold'}}>Anual</Subtitle2Publish>
+              </TouchableOpacity>
+          </View>
+        :
+          <View style={{flexDirection:'row'}}>
+              <TouchableOpacity onPress={() => setPlan('anual')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
+                <TouchableOpacity onPress={() => setPlan('anual')}>
+                    <Subtitle2Publish>Anual</Subtitle2Publish>
+                </TouchableOpacity>
+          </View>                         
+        }
+
+
+        {plan == 'mensal' ?
+          <View style={{alignItems:'center', marginBottom: windowHeight/6}}>
+            <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
+            <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 9,99</Text>
+          </View>
+        :
+          <View style={{alignItems:'center', marginBottom: windowHeight/6}}>
+            <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
+            <Text style={{fontSize:20, fontWeight:'bold'}}>Anual: R$ 99,99</Text>
+          </View>
+        }
+
+
         <View style={{flex:1}}>
           <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
             <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
@@ -182,13 +239,22 @@ export default function PaymentMethodA() {
           </View>
         </View>
 
-        <View style={styles.buttonContainer}>
-          <Button
-            onPress={() => signPremium('wewo.gold.mensal')}
-            title="Assinar Premium"
-          />
-        </View>
 
+        {plan == 'mensal' ?
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={() => signPremium('wewo.gold.mensal')}
+              title="Assinar Premium"
+            />
+          </View>
+        :
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={() => signPremium('wewo_gold_anual')}
+              title="Assinar Premium"
+            />
+          </View>
+        }
       </View>
     );
 }
