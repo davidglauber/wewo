@@ -267,7 +267,7 @@ export default class TelaGeralCriarCartao extends Component {
 
 
       if(comprou == true) {
-        if(anunciosDidMount.length <= 5) {
+        if(cartoesDidMount.length <= 5) {
           this.props.navigation.navigate('TelaCriarCartaoVisita')
         }
       } 

@@ -53,6 +53,10 @@ import { ItemContainer, ViewTopForm, SafeBackgroundPublish, IconResponsive, Icon
 
 import { ThemeContext } from '../../../ThemeContext';
 
+
+//import IAP API 
+import {purchased} from '../../config/purchase';
+
 //RESPONSIVE FONT 
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -161,7 +165,8 @@ export default class EditarCartao extends Component {
       currentDate: new Date(),
       date: '',
       subcategorias:[],
-      subcategoria:''
+      subcategoria:'',
+      usuarioComprou: false
     };
   }
 
@@ -178,8 +183,13 @@ export default class EditarCartao extends Component {
 
   async componentDidMount() {
     this.convertDate();
-
     let e = this;
+
+    //verifica se o usuario comprou a assinatura mensal
+    let comprou = await purchased('wewo.gold.mensal');
+    this.setState({usuarioComprou: comprou});
+
+
     let userUID = firebase.auth().currentUser.uid;
     let routeType = this.props.route.params.type;
     let routeIdCartao = this.props.route.params.idCartao;
@@ -219,6 +229,7 @@ export default class EditarCartao extends Component {
             let type = ''
             let verificado = false
             let location = ''
+            let ufauto = ''
 
             querySnapshot.forEach(function(doc) {
                 idCartao = doc.data().id,
@@ -233,7 +244,8 @@ export default class EditarCartao extends Component {
                 imagem2 = doc.data().photoPublish2,
                 imagem3 = doc.data().photoPublish3,
                 type = doc.data().type,
-                verificado = false
+                verificado = false,
+                ufauto = doc.data().UFAuto
             })
 
             e.setState({idCartao: idCartao})
@@ -242,6 +254,7 @@ export default class EditarCartao extends Component {
             e.setState({subcategoria: subcategoria})
             e.setState({descricaoAuto: descricao})
             e.setState({nomeAuto: nome})
+            e.setState({UFAuto: ufauto})
             e.setState({phoneAuto: telefone})
             e.setState({image: imagem})
             e.setState({image2: imagem2})
@@ -271,6 +284,7 @@ export default class EditarCartao extends Component {
             let fechamento = ''
             let workDays = ''
             let type = ''
+            let ufestab = ''
 
             querySnapshot.forEach(function(doc) {
                 idCartao = doc.data().id,
@@ -284,6 +298,7 @@ export default class EditarCartao extends Component {
                 imagem2 = doc.data().photoPublish2,
                 imagem3 = doc.data().photoPublish3,
                 verificado = false,
+                ufestab = doc.data().UFEstab,
                 type = doc.data().type,
                 local = doc.data().localEstab,
                 abertura = doc.data().timeOpen,
@@ -301,6 +316,7 @@ export default class EditarCartao extends Component {
             e.setState({image2: imagem2})
             e.setState({image3: imagem3})
             e.setState({type: type})
+            e.setState({UFEstab: ufestab})
             e.setState({enderecoEstab: local})
             e.setState({horarioOpen: abertura})
             e.setState({horarioClose: fechamento})
@@ -743,6 +759,7 @@ export default class EditarCartao extends Component {
                                         type: 'Estabelecimento',
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -765,6 +782,7 @@ export default class EditarCartao extends Component {
                                         type: 'Estabelecimento',
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -808,6 +826,7 @@ export default class EditarCartao extends Component {
                                         UFAuto: e.state.UFAuto,
                                         localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -827,6 +846,7 @@ export default class EditarCartao extends Component {
                                         UFAuto: e.state.UFAuto,
                                         localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -909,6 +929,7 @@ export default class EditarCartao extends Component {
                                         type: 'Estabelecimento',
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -930,6 +951,7 @@ export default class EditarCartao extends Component {
                                         publishData: e.state.date,
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -974,6 +996,7 @@ export default class EditarCartao extends Component {
                                         UFAuto: e.state.UFAuto,
                                         localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -993,6 +1016,7 @@ export default class EditarCartao extends Component {
                                         UFAuto: e.state.UFAuto,
                                         localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,

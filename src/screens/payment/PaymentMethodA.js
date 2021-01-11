@@ -154,14 +154,17 @@ export default function PaymentMethodA() {
   }, [])
 
 
-  useEffect(async () => {
-    let comprou = await purchased('wewo.gold.mensal')
-
-    if(comprou == true) {
-      alert('Você já possui o plano mensal')
-    } else {
-      alert('Você não possui o plano mensal')
+  useEffect(() => {
+    async function isBought() {
+      let comprou = await purchased('wewo.gold.mensal')
+  
+      if(comprou == true) {
+        alert('Você já possui o plano mensal')
+      } else {
+        alert('Você não possui o plano mensal')
+      }
     }
+    isBought();
   }, [])
 
   function signPremium(idProp) {

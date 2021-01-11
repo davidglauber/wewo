@@ -57,6 +57,10 @@ import { ThemeContext } from '../../../ThemeContext';
 //RESPONSIVE FONT 
 import { RFValue } from 'react-native-responsive-fontsize';
 
+
+//import IAP API 
+import {purchased} from '../../config/purchase';
+
 // import colors
 import Colors from '../../theme/colors';
 
@@ -161,7 +165,8 @@ export default class TelaCriarCartaoVisita extends Component {
       currentDate: new Date(),
       date: '',
       subcategorias:[],
-      subcategoria:''
+      subcategoria:'',
+      usuarioComprou: false
     };
   }
 
@@ -179,6 +184,11 @@ export default class TelaCriarCartaoVisita extends Component {
   async componentDidMount() {
     this.convertDate();
     let e = this;
+
+
+    let comprou = await purchased('wewo.gold.mensal');
+    this.setState({usuarioComprou: comprou});
+
 
     //getting categories
     await firebase.firestore().collection('categorias').get().then(function(querySnapshot) {
@@ -606,6 +616,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         descriptionEstab: e.state.descricaoEstab,
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -627,6 +638,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         descriptionEstab: e.state.descricaoEstab,
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -672,6 +684,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         UFAuto: e.state.UFAuto,
                                         localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -691,6 +704,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         UFAuto: e.state.UFAuto,
                                         localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -774,6 +788,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         descriptionEstab: e.state.descricaoEstab,
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -796,6 +811,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -840,6 +856,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         UFAuto: e.state.UFAuto,
                                         localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -859,6 +876,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         UFAuto: e.state.UFAuto,
                                         localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,

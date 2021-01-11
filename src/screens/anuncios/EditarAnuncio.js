@@ -234,6 +234,7 @@ export default class EditarAnuncio extends Component {
             let type = ''
             let verificado = false
             let location = ''
+            let ufauto = ''
 
             querySnapshot.forEach(function(doc) {
                 idAnuncio = doc.data().id,
@@ -247,6 +248,7 @@ export default class EditarAnuncio extends Component {
                 telefone = doc.data().phoneNumberAuto,
                 valor = doc.data().valueServiceAuto,
                 type = doc.data().type,
+                ufauto = doc.data().UFAuto,
                 imagem = doc.data().photoPublish,
                 imagem2 = doc.data().photoPublish2,
                 imagem3 = doc.data().photoPublish3,
@@ -262,6 +264,7 @@ export default class EditarAnuncio extends Component {
             e.setState({precoAuto: valor})
             e.setState({nomeAuto: nome})
             e.setState({type: type})
+            e.setState({UFAuto: ufauto})
             e.setState({phoneAuto: telefone})
             e.setState({image: imagem})
             e.setState({image2: imagem2})
@@ -291,6 +294,7 @@ export default class EditarAnuncio extends Component {
             let fechamento = ''
             let workDays = ''
             let type = ''
+            let ufestab = ''
 
             querySnapshot.forEach(function(doc) {
                 idAnuncio = doc.data().id,
@@ -305,6 +309,7 @@ export default class EditarAnuncio extends Component {
                 imagem2 = doc.data().photoPublish2,
                 imagem3 = doc.data().photoPublish3,
                 verificado = false,
+                ufestab = doc.data().UFEstab,
                 type = doc.data().type,
                 local = doc.data().localEstab,
                 abertura = doc.data().timeOpen,
@@ -323,6 +328,7 @@ export default class EditarAnuncio extends Component {
             e.setState({image2: imagem2})
             e.setState({image3: imagem3})
             e.setState({type: type})
+            e.setState({UFEstab: ufestab})
             e.setState({enderecoEstab: local})
             e.setState({horarioOpen: abertura})
             e.setState({horarioClose: fechamento})
