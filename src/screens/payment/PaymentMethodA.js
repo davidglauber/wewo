@@ -218,19 +218,19 @@ export default function PaymentMethodA() {
 
 
         {plan == 'mensal' ?
-          <View style={{alignItems:'center', marginBottom: windowHeight/6}}>
+          <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
             <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
             <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 9,99</Text>
           </View>
         :
-          <View style={{alignItems:'center', marginBottom: windowHeight/6}}>
+          <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
             <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
             <Text style={{fontSize:20, fontWeight:'bold'}}>Anual: R$ 99,99</Text>
           </View>
         }
 
 
-        <ScrollView showsVerticalScrollIndicator={false} style={{flex:1}}>
+        <ScrollView>
           <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
             <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
             <Text style={{marginLeft:10}}>5 Anúncios e 5 Cartões Simultâneos</Text>

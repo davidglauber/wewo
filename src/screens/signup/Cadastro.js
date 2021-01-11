@@ -15,6 +15,7 @@ import {
   Button,
   Platform,
   KeyboardAvoidingView,
+  ScrollView,
   Text,
   TouchableWithoutFeedback,
   View,
@@ -329,7 +330,7 @@ export default class Cadastro extends Component {
 
     
     return (
-      <View style={{flex:1, backgroundColor:'white'}}>
+      <ScrollView style={{flex:1, backgroundColor:'white'}}>
         <StatusBar
           backgroundColor='#fff'
           barStyle="dark-content"
@@ -487,7 +488,7 @@ export default class Cadastro extends Component {
             </View>
           </KeyboardAwareScrollView>
         </SafeAreaView>
-      </View>
+      </ScrollView>
     );
   }
 }
