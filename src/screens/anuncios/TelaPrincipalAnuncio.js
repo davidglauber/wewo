@@ -198,7 +198,7 @@ export default class TelaPrincipalAnuncio extends Component {
 
   async verifyNumberOfPublises() {
     let currentUserUID = firebase.auth().currentUser.uid;
-    let comprou = await purchased('wewo.gold.mensal');
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual');
 
     firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
       let anunciosDidMount = []

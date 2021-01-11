@@ -142,30 +142,7 @@ export default class TelaLogin extends Component {
 
 
   async componentDidMount() {
-    let getEmail = '';
-
-    await AsyncStorage.getItem("emailUserSaved").then((value) => {
-      getEmail = value
-    });
-
-    let e = this;
-
-    firebase.firestore().collection('usuarios').where("email", "==", getEmail).onSnapshot(documentSnapshot => {
-      let compatibleEmails = [];
-        documentSnapshot.forEach(function(doc) {
-          compatibleEmails.push({
-            email: doc.data().email
-          })
-        })
-
-        if(compatibleEmails.length == 0) {
-          alert('Você não está cadastrado! Por favor faça o cadastro e depois o login!')
-
-          e.props.navigation.navigate("SignUp")
-        }
-    });
-
-
+    alert('Caso você não tenha se cadastrado ainda no aplicativo vá para tela de login, caso sim, continue o login')
   }
   
   emailChange = text => {

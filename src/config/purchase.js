@@ -1,13 +1,18 @@
 import RNIap, {purchaseUpdatedListener} from 'react-native-iap';
 
-export const purchased = async (productId) => {
+export const purchased = async (productId1, productId2) => {
     let isPurchased = false;
 
     try {
         const purchases = await RNIap.getAvailablePurchases();
 
         purchases.forEach((purchase) =>{
-            if(purchase.productId === productId){
+            if(purchase.productId === productId1){
+                isPurchased = true;
+                return;
+            } 
+
+            if(purchase.productId === productId2){
                 isPurchased = true;
                 return;
             } 
@@ -22,6 +27,7 @@ export const purchased = async (productId) => {
 export const requestPurchase = async (productId) => {
     try {
         await RNIap.requestSubscription(productId)
+        alert('Parabéns, você assinou o WeWo! Aproveite!')
     } catch (error) {
         console.log('Erro ao recuperar dados da assinatura, por favor, tente novamente: ' + error)
     }

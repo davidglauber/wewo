@@ -189,7 +189,7 @@ export default class EditarAnuncio extends Component {
     let e = this;
 
     //verifica se o usuario comprou a assinatura mensal
-    let comprou = await purchased('wewo.gold.mensal');
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual');
     this.setState({usuarioComprou: comprou});
 
     let routeType = this.props.route.params.type;

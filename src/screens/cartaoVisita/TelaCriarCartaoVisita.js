@@ -186,7 +186,7 @@ export default class TelaCriarCartaoVisita extends Component {
     let e = this;
 
 
-    let comprou = await purchased('wewo.gold.mensal');
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual');
     this.setState({usuarioComprou: comprou});
 
 

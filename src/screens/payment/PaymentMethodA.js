@@ -13,7 +13,9 @@ import {
   StyleSheet,
   Dimensions,
   Image,
+  ScrollView,
   View,
+  Linking,
   Text,
   TouchableOpacity
 } from 'react-native';
@@ -125,6 +127,7 @@ export default function PaymentMethodA() {
   const route = useRoute();
   const navigation = useNavigation();
   const [plan, setPlan] = useState('mensal');
+  const [verifySub, setVerifySub] = useState(false);
   
   const itemSubs = Platform.select({
     android: [
@@ -156,12 +159,14 @@ export default function PaymentMethodA() {
 
   useEffect(() => {
     async function isBought() {
-      let comprou = await purchased('wewo.gold.mensal')
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
   
       if(comprou == true) {
-        alert('Você já possui o plano mensal')
+        setVerifySub(true)
+        alert('Você já possui um plano')
       } else {
-        alert('Você não possui o plano mensal')
+        setVerifySub(false)
+        alert('Você não possui um plano')
       }
     }
     isBought();
@@ -225,7 +230,7 @@ export default function PaymentMethodA() {
         }
 
 
-        <View style={{flex:1}}>
+        <ScrollView showsVerticalScrollIndicator={false} style={{flex:1}}>
           <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
             <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
             <Text style={{marginLeft:10}}>5 Anúncios e 5 Cartões Simultâneos</Text>
@@ -240,17 +245,19 @@ export default function PaymentMethodA() {
             <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
             <Text style={{marginLeft:10}}>Sem Anúncios no App WeWo</Text>
           </View>
-        </View>
+        </ScrollView>
 
 
-        {plan == 'mensal' ?
+        {plan == 'mensal' && verifySub == false &&
           <View style={styles.buttonContainer}>
-            <Button
+            <Button 
               onPress={() => signPremium('wewo.gold.mensal')}
               title="Assinar Premium"
             />
           </View>
-        :
+        }
+
+        {plan == 'anual' && verifySub == false &&
           <View style={styles.buttonContainer}>
             <Button
               onPress={() => signPremium('wewo_gold_anual')}
@@ -258,6 +265,25 @@ export default function PaymentMethodA() {
             />
           </View>
         }
+
+        {plan == 'mensal' && verifySub == true &&
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={() => Linking.openURL('https://play.google.com/store/account/subscriptions?package=com.zubito.wewo&sku=wewo.gold.mensal')}
+              title="Cancelar Plano Mensal"
+            />
+          </View>
+        }
+
+        {plan == 'anual' && verifySub == true &&
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={() => Linking.openURL('https://play.google.com/store/account/subscriptions?package=com.zubito.wewo&sku=wewo_gold_anual')}
+              title="Cancelar Plano Anual"
+            />
+          </View>
+        }
+
       </View>
     );
 }
