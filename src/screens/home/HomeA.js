@@ -55,6 +55,8 @@ export default class HomeA extends Component {
       emailUserFunction:'',
       activesPublishesAuto: [],
       activesPublishesEstab: [],
+      premiumPublishesAuto: [],
+      premiumPublishesEstab: [],
       categories: [],
       isFetched: false,
       isFetchedPublish: false,
@@ -106,8 +108,63 @@ async componentDidMount() {
     })
 
 
+    //obter anuncios PREMIUM ativos autonomo 
+    await firebase.firestore().collection('anuncios').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("premiumUser", "==", true).onSnapshot(documentSnapshot => {
+      let premiumanunciosAtivosAuto = [];
+      documentSnapshot.forEach(function(doc) {
+        premiumanunciosAtivosAuto.push({
+          idUser: doc.data().idUser,
+          nome: doc.data().nome,
+          idAnuncio: doc.data().idAnuncio,
+          photo: doc.data().photoPublish,
+          title: doc.data().titleAuto,
+          description: doc.data().descriptionAuto,
+          type: doc.data().type,
+          phone: doc.data().phoneNumberAuto,
+          verified: doc.data().verifiedPublish,
+          value: doc.data().valueServiceAuto
+        })
+      })
+
+
+      e.setState({premiumPublishesAuto: premiumanunciosAtivosAuto})
+      this.setModalVisible(false)
+
+      this.sleep(1000).then(() => { 
+      e.setState({isFetchedPublish: true})
+      })
+    })
+
+
+    //obter anuncios PREMIUM ativos estabelecimento
+    await firebase.firestore().collection('anuncios').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("premiumUser", "==", true).onSnapshot(documentSnapshot => {
+      let premiumanunciosAtivosEstab = [];
+      documentSnapshot.forEach(function(doc) {
+        premiumanunciosAtivosEstab.push({
+          idUser: doc.data().idUser,
+          idAnuncio: doc.data().idAnuncio,
+          photo: doc.data().photoPublish,
+          title: doc.data().titleEstab,
+          description: doc.data().descriptionEstab,
+          phone: doc.data().phoneNumberEstab,
+          type: doc.data().type,
+          verified: doc.data().verifiedPublish,
+          value: doc.data().valueServiceEstab
+        })
+      })
+
+
+      e.setState({premiumPublishesEstab: premiumanunciosAtivosEstab})
+      this.setModalVisible(false)
+
+      this.sleep(1000).then(() => { 
+        e.setState({isFetchedPublish: true})
+      })
+    })
+
+
     //obter anuncios ativos autonomo 
-    await firebase.firestore().collection('anuncios').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('anuncios').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("premiumUser", "==", false).onSnapshot(documentSnapshot => {
       let anunciosAtivosAuto = [];
       documentSnapshot.forEach(function(doc) {
         anunciosAtivosAuto.push({
@@ -135,7 +192,7 @@ async componentDidMount() {
 
 
     //obter anuncios ativos estabelecimento
-    await firebase.firestore().collection('anuncios').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('anuncios').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("premiumUser", "==", false).onSnapshot(documentSnapshot => {
       let anunciosAtivosEstab = [];
       documentSnapshot.forEach(function(doc) {
         anunciosAtivosEstab.push({
@@ -225,7 +282,7 @@ async componentDidMount() {
   }
 
   render() {
-   const { status, emailUserFunction, isFetchedButton, isFetchedPublish, categories, activesPublishesAuto, activesPublishesEstab, isFetched } = this.state
+   const { status, emailUserFunction, isFetchedButton, isFetchedPublish, premiumPublishesAuto, premiumPublishesEstab, categories, activesPublishesAuto, activesPublishesEstab, isFetched } = this.state
    
     return (
       <SafeBackground>
@@ -293,6 +350,93 @@ async componentDidMount() {
             <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
               <Heading>Anúncios</Heading>
             </View>
+
+            {/*ANUNCIOS DE USUARIOS PREMIUM AUTONOMO*/}
+            <FlatList 
+                keyExtractor={() => this.makeid(17)}
+                data={premiumPublishesAuto}
+                renderItem={({item}) =>
+                
+                
+                <View style={{flex:1, alignItems: 'center'}}>
+                      <View>
+                          <AnuncioContainer>
+                              <View style={{flexDirection:'row'}}>
+                                  <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                  
+                                  <View style={{flexDirection:'column'}}>
+                                      <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                      {this.cutDescription(item.description)}
+                                  </View>
+                              </View>  
+
+                              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                  <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                                      <TextDetails>Ver Detalhes</TextDetails>
+                                  </TouchableDetails>
+
+                                  <View style={{marginTop: 24}}>
+                                      <ValueField>{item.value}</ValueField>
+                                  </View>
+
+                                  <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
+                                      <IconResponsive  name="user-tie" size={19}/>
+                                      <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
+                                  </View>
+                              </View> 
+
+                          </AnuncioContainer>
+                      </View>
+
+                  </View>
+                
+              }
+              >
+              </FlatList>
+
+              {/*ANUNCIOS DE USUARIOS PREMIUM ESTABELECIMENTOS*/}
+              <FlatList 
+                keyExtractor={() => this.makeid(17)}
+                data={premiumPublishesEstab}
+                renderItem={({item}) =>
+                
+                <View style={{flex:1, alignItems: 'center'}}>
+                    <View>
+                        <AnuncioContainer>
+                            <View style={{flexDirection:'row'}}>
+                                <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                
+                                <View style={{flexDirection:'column'}}>
+                                    <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                    {this.cutDescription(item.description)}
+                                </View>
+                            </View>  
+
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                                    <TextDetails>Ver Detalhes</TextDetails>
+                                </TouchableDetails>
+
+
+                                <View style={{marginTop: 24}}>
+                                      <ValueField>{item.value}</ValueField>
+                                </View>
+
+                                <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
+                                    <IconResponsive  name="briefcase" size={19}/>
+                                    <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
+                                </View>
+                            </View> 
+
+                        </AnuncioContainer>
+                    </View>
+                </View>
+                
+              }
+              >
+              </FlatList>
+
+
 
               <FlatList 
                 keyExtractor={() => this.makeid(17)}
