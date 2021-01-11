@@ -107,6 +107,8 @@ export default class CartaoCategory2 extends Component {
       favorite: false,
       cartoesEstab: [],
       cartoesAuto: [],
+      premiumCardAuto: [],
+      premiumCardEstab: [],
       categories: [],
       isFetchedPublish: false,
       switchSwipeState: true,
@@ -150,7 +152,62 @@ export default class CartaoCategory2 extends Component {
     let e = this;
     let titleNavCategory = this.props.route.params.titleOfCategory;
 
-    await firebase.firestore().collection('cartoes').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("categoryAuto", "==", titleNavCategory).onSnapshot(documentSnapshot => {
+
+    //obter cartoes PREMIUM ativos autonomo
+    await firebase.firestore().collection('cartoes').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("categoryAuto", "==", titleNavCategory).where("premiumUser", "==", true).onSnapshot(documentSnapshot => {
+      let premiumcartoesAutoDidMount = []
+      documentSnapshot.forEach(function(doc) {
+        premiumcartoesAutoDidMount.push({
+          idUser: doc.data().idUser,
+          nome: doc.data().nome,
+          idCartao: doc.data().idCartao,
+          photo: doc.data().photoPublish,
+          description: doc.data().descriptionAuto,
+          type: doc.data().type,
+          categoria: doc.data().categoryAuto,
+          phone: doc.data().phoneNumberAuto,
+          verified: doc.data().verifiedPublish
+        })
+      })
+      e.setState({premiumCardAuto: premiumcartoesAutoDidMount})
+      this.setModalVisible(false)
+
+      this.sleep(1000).then(() => { 
+        e.setState({isFetchedPublish: true})
+      })
+    })
+
+    
+    //obter cartoes PREMIUM ativos estabelecimento
+    await firebase.firestore().collection('cartoes').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("categoryEstab", "==", titleNavCategory).where("premiumUser", "==", true).onSnapshot(documentSnapshot => {
+      let premiumcartoesEstabDidMount = []
+      documentSnapshot.forEach(function(doc) {
+        premiumcartoesEstabDidMount.push({
+          idUser: doc.data().idUser,
+          idCartao: doc.data().idCartao,
+          photo: doc.data().photoPublish,
+          local: doc.data().localEstab,
+          title: doc.data().titleEstab,
+          description: doc.data().descriptionEstab,
+          phone: doc.data().phoneNumberEstab,
+          timeOpen: doc.data().timeOpen,
+          timeClose: doc.data().timeClose,
+          type: doc.data().type,
+          verified: doc.data().verifiedPublish,
+          categoria: doc.data().categoryEstab,
+          workDays: doc.data().workDays
+        })
+      })
+      e.setState({premiumCardEstab: premiumcartoesEstabDidMount})
+      this.setModalVisible(false)
+
+      this.sleep(1000).then(() => { 
+        e.setState({isFetchedPublish: true})
+      })
+    })
+
+
+    await firebase.firestore().collection('cartoes').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("categoryAuto", "==", titleNavCategory).where("premiumUser", "==", false).onSnapshot(documentSnapshot => {
       let cartoesAutoDidMount = []
       documentSnapshot.forEach(function(doc) {
         cartoesAutoDidMount.push({
@@ -173,7 +230,7 @@ export default class CartaoCategory2 extends Component {
       })
     })
 
-    await firebase.firestore().collection('cartoes').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("categoryEstab", "==", titleNavCategory).onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('cartoes').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("categoryEstab", "==", titleNavCategory).where("premiumUser", "==", false).onSnapshot(documentSnapshot => {
       let cartoesEstabDidMount = []
       documentSnapshot.forEach(function(doc) {
         cartoesEstabDidMount.push({
@@ -308,7 +365,7 @@ export default class CartaoCategory2 extends Component {
 
 
   render() {
-    const {cartoesAuto, cartoesEstab, products, isOpen, categories, isFetchedPublish, switchSwipeState} = this.state;
+    const {cartoesAuto, cartoesEstab, premiumCardAuto, premiumCardEstab, products, isOpen, categories, isFetchedPublish, switchSwipeState} = this.state;
 
     return (
       <SafeBackground>
@@ -352,7 +409,7 @@ export default class CartaoCategory2 extends Component {
                 ></FlatList>
             </ScrollView>
 
-            {cartoesAuto.length == 0 && cartoesEstab.length == 0 &&
+            {cartoesAuto.length == 0 && cartoesEstab.length == 0 && premiumCardAuto.length == 0 && premiumCardEstab.length == 0 &&
               <View style={{flex:1, justifyContent:'center', alignItems:'center', padding:50}}>
                 <Image style={{width:200, height:200}} source={require("../../assets/img/notfoundnoback.gif")} />
                 <Text style={{fontWeight:'bold'}}>Nenhum Cartão Foi Encontrado</Text>
@@ -360,6 +417,94 @@ export default class CartaoCategory2 extends Component {
             }
             
             <View>
+            <FlatList
+                data={premiumCardAuto}
+                keyExtractor={() => this.makeid(17)}
+                renderItem={({item}) => 
+                  <Swipeable
+                    renderRightActions={this.RightAction}
+                    onSwipeableRightOpen={() => this.AddToFav(item.idCartao, item)}
+                    enabled={isOpen}
+                  > 
+
+                    <AnuncioContainer>
+                          <View style={{flexDirection:'row'}}>
+                              <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                              
+                              <View style={{flexDirection:'column'}}>
+                                <Title style={{fontSize: this.responsibleFont()}}>{item.nome}</Title>
+
+                                {this.cutDescription(item.description)}
+
+                              </View>
+                          </View>  
+
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                              <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                                  <TextDetails>Ver Detalhes</TextDetails>
+                              </TouchableDetails>
+
+                              <View style={{flexDirection:'row', marginTop:15}}>
+                                  <ValueField style={{paddingTop:10, fontSize:12}}>{item.categoria}</ValueField>
+                                  <IconResponsive style={{marginLeft:15, marginTop:10}} name="clone" size={19}/>
+                              </View>
+
+                              <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
+                                  <IconResponsive  name="user-tie" size={19}/>
+                                  <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
+                              </View>
+                          </View> 
+
+                    </AnuncioContainer>
+                  </Swipeable>
+                }
+                contentContainerStyle={styles.productList}
+              />
+
+              <FlatList
+                  data={premiumCardEstab}
+                  keyExtractor={() => this.makeid(17)}
+                  renderItem={({item}) => 
+                  <Swipeable
+                    renderRightActions={this.RightAction}
+                    onSwipeableRightOpen={() => this.AddToFav(item.idCartao, item)}
+                  > 
+
+                    <AnuncioContainer>
+                              <View style={{flexDirection:'row'}}>
+                                  <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                  
+                                  <View style={{flexDirection:'column', }}>
+                                    <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+
+                                    {this.cutDescription(item.description)}
+
+                                  </View>
+                              </View>  
+
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                  <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                                      <TextDetails>Ver Detalhes</TextDetails>
+                                  </TouchableDetails>
+
+                                  <View style={{flexDirection:'row', marginTop:15}}>
+                                      <ValueField style={{paddingTop:10, fontSize:12}}>{item.categoria}</ValueField>
+                                      <IconResponsive style={{marginLeft:15, marginTop:10}} name="clone" size={19}/>
+                                  </View>
+
+                                  <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
+                                      <IconResponsive  name="briefcase" size={19}/>
+                                      <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
+                                </View>
+                              </View> 
+
+                    </AnuncioContainer>
+                  </Swipeable>
+                }
+                contentContainerStyle={styles.productList}
+              />
+
+
               <FlatList
                 data={cartoesAuto}
                 keyExtractor={() => this.makeid(17)}
