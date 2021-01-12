@@ -27,4 +27,6 @@ target 'wewo' do
 
   pod 'RNIap', :path => '../node_modules/react-native-iap'
 
+  pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
+
 end

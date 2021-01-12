@@ -20,6 +20,7 @@ import org.unimodules.adapters.react.ReactAdapterPackage;
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 import org.unimodules.core.interfaces.Package;
+import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import org.unimodules.core.interfaces.SingletonModule;
 import expo.modules.constants.ConstantsPackage;
 import expo.modules.permissions.PermissionsPackage;
@@ -48,6 +49,7 @@ public class MainApplication extends Application implements ReactApplication {
       new RNIapPackage();
       new SafeAreaContextPackage();
       new SvgPackage();
+      new RNGoogleSigninPackage();
       
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));

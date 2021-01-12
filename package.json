@@ -27,6 +27,7 @@
     "react-dom": "16.13.1",
     "react-native": "~0.63.4",
     "react-native-gesture-handler": "^1.9.0",
+    "react-native-google-signin": "^2.1.1",
     "react-native-iap": "^5.2.3",
     "react-native-indicators": "^0.17.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
