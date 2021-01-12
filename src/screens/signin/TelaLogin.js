@@ -33,7 +33,7 @@ import firebase from '../../config/firebase';
 
 
 //import Google API
-//import * as Google from 'expo-google-app-auth';
+import {GoogleSignin, statusCodes} from 'react-native-google-signin';
 
 //import Facebook API
 import * as Facebook from 'expo-facebook';
@@ -137,12 +137,22 @@ const styles = StyleSheet.create({
 export default class TelaLogin extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      userInfo: [],
+      loggedIn: false
+    };
   }
 
 
 
   async componentDidMount() {
     alert('Caso você não tenha se cadastrado ainda no aplicativo vá para tela de login, caso sim, continue o login')
+    
+    GoogleSignin.configure({
+      scopes: ['email', 'profile'],
+      webClientId: '419527216736-39o1vcm2lh5c1nkf6qdvb74dnlshvemu.apps.googleusercontent.com',
+    });
   }
   
   emailChange = text => {
@@ -201,28 +211,14 @@ export default class TelaLogin extends Component {
     );
   }
 
-  /*
-  async signInWithGoogle() {
-    let e = this;
-
-    try {
-      const {accessToken, idToken, type} = await Google.logInAsync({
-        androidClientId: '739877707204-kgh0qk400a0gjk6bad9evgak7ooeoi7f.apps.googleusercontent.com',
-        androidStandaloneAppClientId: '739877707204-7s37emv4f00qbqo7brdo2of0cb6ld8pf.apps.googleusercontent.com',
-        webClientId: '739877707204-g6egqrbsrdu1i5kplap8i5b993kisoh6.apps.googleusercontent.com',
-        iosClientId: '739877707204-6sduc8aq9ggi6d411lhtfi62rne5gvtc.apps.googleusercontent.com',
-        iosStandaloneAppClientId: '739877707204-qu6p135qctdnqj3ceq3oum5ohjdillhr.apps.googleusercontent.com',
-        scopes: ['profile', 'email'],
-      });
   
-      if (type === 'success') {
-        var credential =   
-        await firebase
-          .auth
-          .GoogleAuthProvider
-          .credential(idToken, accessToken);
+  async signInWithGoogle() {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const {accessToken, idToken} = await GoogleSignin.signIn();
+      this.setState({loggedIn: true});
 
-
+        var credential = await firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
 
         await firebase.auth().signInWithCredential(credential).then(() =>{
             this.props.navigation.navigate('HomeNavigator')
@@ -230,15 +226,25 @@ export default class TelaLogin extends Component {
         }).catch((err) => {
           console.log('erro: ' + err)
         })
+      
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        alert('Usuário cancelou o login');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        alert('Login em progresso...');
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        alert('Google Play Serviços não disponível');
+        // play services not available or outdated
       } else {
-        return { cancelled: true };
+        // some other error happened
+        alert('Algum outro erro ocorreu: ' + error)
       }
-    } catch (e) {
-      return console.log('ERRO NO GOOGLE: '  + e)
     }
   }
 
-  */
+  
   async signInWithFacebook() {
     let e = this;
     
@@ -295,7 +301,7 @@ export default class TelaLogin extends Component {
 
         <View style={{flexDirection:'row', justifyContent:'space-between', marginTop: 100}}>
             
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => this.signInWithGoogle()}>
               <FontAwesome5 name="google" size={35} style={{marginRight:25}} color="#DAA520"/>
           </TouchableOpacity>
 

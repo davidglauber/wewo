@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "419527216736",
+    "firebase_url": "https://wework-test-5280e.firebaseio.com",
+    "project_id": "wework-test-5280e",
+    "storage_bucket": "wework-test-5280e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:419527216736:android:e5b703cf15457ba9933d05",
+        "android_client_info": {
+          "package_name": "com.zubito.wewo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "419527216736-lfu0fmum19jnsgeu6f088uu1s46ll569.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zubito.wewo",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "419527216736-nu4tf58a2f8rafungmkuk2osc0jk4iu1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zubito.wewo",
+            "certificate_hash": "dc5a6173c13c2f7b400867ca125697cc66b45c12"
+          }
+        },
+        {
+          "client_id": "739877707204-ttjeace2rhqtfjbr8fc7ver9vl8s9keo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQAEVBM7Nv0JGQVOHJejzx0vlmywA_l48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "419527216736-39o1vcm2lh5c1nkf6qdvb74dnlshvemu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "419527216736-f5iav0gc872eiinnqmueu0jf89ovn903.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ios.wework"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
