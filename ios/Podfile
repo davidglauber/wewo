@@ -29,4 +29,6 @@ target 'wewo' do
 
   pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
 
+  pod 'react-native-admob', :path => '../node_modules/react-native-admob'
+
 end

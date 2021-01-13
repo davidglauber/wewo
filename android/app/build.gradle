@@ -194,6 +194,7 @@ dependencies {
     implementation project(':react-native-svg')
     implementation project(':react-native-safe-area-context')
     compile project(':react-native-iap')
+    implementation project(':@react-native-firebase_app')
     implementation project(':react-native-google-signin')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
