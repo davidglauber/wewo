@@ -51,7 +51,10 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 
 //import ADS
-//import { AdMobBanner} from 'expo-ads-admob';
+import { AdMobBanner} from 'expo-ads-admob';
+
+//import IAP API 
+import {purchased} from '../../config/purchase';
 
 // CartA Styles
 const styles = StyleSheet.create({
@@ -113,6 +116,7 @@ export default class CartaoCategory extends Component {
       switchSwipeState: true,
       isOpen: true,
       modalVisible: true,
+      purchased: false
     };
   }
 
@@ -125,6 +129,13 @@ export default class CartaoCategory extends Component {
 
   async componentDidMount() {
     let e = this;
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
+
+    if(comprou == true) {
+      this.setState({purchased: true})
+    } else {
+      this.setState({purchased: false})
+    }
 
     let titleNavCategory = this.props.route.params.titleOfCategory;
     
@@ -525,14 +536,17 @@ export default class CartaoCategory extends Component {
                 contentContainerStyle={styles.productList}
               />
 
-            {/*<AdMobBanner
-              style={{marginLeft: 20}}
-              bannerSize="leaderboard"
-              adUnitID="ca-app-pub-1397640114399871/3366763355"
-              setTestDeviceIDAsync
-              servePersonalizedAds
-              onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-            /> */}
+                { this.state.purchased == false ?
+                  <AdMobBanner
+                    style={{marginLeft: 20}}
+                    bannerSize="leaderboard"
+                    adUnitID="ca-app-pub-1397640114399871/3366763355"
+                    servePersonalizedAds
+                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
+                  /> 
+                  :
+                  null
+                } 
             </View>
 
             <View>
@@ -578,14 +592,17 @@ export default class CartaoCategory extends Component {
                 contentContainerStyle={styles.productList}
               />
             
-            {/*<AdMobBanner
-              style={{marginLeft: 20}}
-              bannerSize="leaderboard"
-              adUnitID="ca-app-pub-1397640114399871/3366763355"
-              setTestDeviceIDAsync
-              servePersonalizedAds
-              onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-            /> */}
+            { this.state.purchased == false ?
+                  <AdMobBanner
+                    style={{marginLeft: 20}}
+                    bannerSize="leaderboard"
+                    adUnitID="ca-app-pub-1397640114399871/3366763355"
+                    servePersonalizedAds
+                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
+                  /> 
+                  :
+                  null
+            }
             </View>
 
           </ScrollView>

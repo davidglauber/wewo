@@ -52,7 +52,10 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 
 //import ADS
-//import { AdMobBanner} from 'expo-ads-admob';
+import { AdMobBanner} from 'expo-ads-admob';
+
+//import IAP API 
+import {purchased} from '../../config/purchase';
 
 // CartA Styles
 const styles = StyleSheet.create({
@@ -114,6 +117,7 @@ export default class CartaoCategory2 extends Component {
       switchSwipeState: true,
       isOpen: true,
       modalVisible: true,
+      purchased: false,
       products: [
         {
           id: 'product1',
@@ -151,7 +155,13 @@ export default class CartaoCategory2 extends Component {
   async componentDidMount() {
     let e = this;
     let titleNavCategory = this.props.route.params.titleOfCategory;
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
 
+    if(comprou == true) {
+      this.setState({purchased: true})
+    } else {
+      this.setState({purchased: false})
+    }
 
     //obter cartoes PREMIUM ativos autonomo
     await firebase.firestore().collection('cartoes').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("categoryAuto", "==", titleNavCategory).where("premiumUser", "==", true).onSnapshot(documentSnapshot => {
@@ -548,14 +558,17 @@ export default class CartaoCategory2 extends Component {
                 contentContainerStyle={styles.productList}
               />
 
-            {/*<AdMobBanner
-              style={{marginLeft: 20}}
-              bannerSize="leaderboard"
-              adUnitID="ca-app-pub-1397640114399871/3366763355"
-              setTestDeviceIDAsync
-              servePersonalizedAds
-              onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-            /> */}
+                { this.state.purchased == false ?
+                  <AdMobBanner
+                    style={{marginLeft: 20}}
+                    bannerSize="leaderboard"
+                    adUnitID="ca-app-pub-1397640114399871/3366763355"
+                    servePersonalizedAds
+                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
+                  /> 
+                  :
+                  null
+                }
             </View>
 
             <View>
@@ -601,14 +614,17 @@ export default class CartaoCategory2 extends Component {
                 contentContainerStyle={styles.productList}
               />
             
-            {/*<AdMobBanner
-              style={{marginLeft: 20}}
-              bannerSize="leaderboard"
-              adUnitID="ca-app-pub-1397640114399871/3366763355"
-              setTestDeviceIDAsync
-              servePersonalizedAds
-              onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-            /> */}
+            { this.state.purchased == false ?
+                  <AdMobBanner
+                    style={{marginLeft: 20}}
+                    bannerSize="leaderboard"
+                    adUnitID="ca-app-pub-1397640114399871/3366763355"
+                    servePersonalizedAds
+                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
+                  /> 
+                  :
+                  null
+            }
             </View>
 
           </ScrollView>

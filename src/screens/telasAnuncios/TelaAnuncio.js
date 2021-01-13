@@ -51,8 +51,11 @@ import { SafeAnuncioView, ValueFieldPrincipal, TouchableResponsive, IconResponsi
 import { ThemeContext } from '../../../ThemeContext';
 
 
+//import IAP API 
+import {purchased} from '../../config/purchase';
+
 //import ADS
-//import { AdMobBanner} from 'expo-ads-admob';
+import { AdMobBanner} from 'expo-ads-admob';
 
 
 // ProductA Config
@@ -194,6 +197,7 @@ export default class TelaAnuncio extends Component {
       anuncioAuto:[],
       anuncioEstab:[],
       modalVisible: true,
+      purchased: false,
       product: {
         images: [
           require('../../assets/img/confeiteira.jpeg'),
@@ -208,6 +212,14 @@ export default class TelaAnuncio extends Component {
 
   async componentDidMount() {
     let e = this;
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
+
+    if(comprou == true) {
+      this.setState({purchased: true})
+    } else {
+      this.setState({purchased: false})
+    }
+
     let idDoAnuncio = this.props.route.params.idDoAnuncio;
     let currentUserUID = this.props.route.params.idUserCartao;
 
@@ -500,14 +512,17 @@ export default class TelaAnuncio extends Component {
                   }
 
 
-                  {/*<AdMobBanner
-                    style={{marginLeft: 20, marginBottom:20}}
-                    bannerSize="leaderboard"
-                    adUnitID="ca-app-pub-1397640114399871/3366763355"
-                    setTestDeviceIDAsync
-                    servePersonalizedAds
-                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                  /> */}
+              { this.state.purchased == false ?
+                <AdMobBanner
+                  style={{marginLeft: 20}}
+                  bannerSize="leaderboard"
+                  adUnitID="ca-app-pub-1397640114399871/3366763355"
+                  servePersonalizedAds
+                  onDidFailToReceiveAdWithError={(err) => console.log(err)} 
+                /> 
+                :
+                null
+              }
                 </View>
             }
           />
@@ -656,14 +671,17 @@ export default class TelaAnuncio extends Component {
 
 
 
-                  {/*<AdMobBanner
-                    style={{marginLeft: 20, marginBottom:20}}
+                { this.state.purchased == false ?
+                  <AdMobBanner
+                    style={{marginLeft: 20}}
                     bannerSize="leaderboard"
                     adUnitID="ca-app-pub-1397640114399871/3366763355"
-                    setTestDeviceIDAsync
                     servePersonalizedAds
                     onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                  /> */}
+                  /> 
+                  :
+                  null
+                }
                 </View>
 
             }

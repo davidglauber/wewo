@@ -33,7 +33,10 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 
 //import ADS
-//import { AdMobBanner } from 'expo-ads-admob';
+import { AdMobBanner } from 'expo-ads-admob';
+
+//import IAP API 
+import {purchased} from '../../config/purchase';
 
 
 
@@ -63,7 +66,8 @@ export default class HomeCategory extends Component {
       isFetchedPublish: false,
       isFetchedButton: false,
       modalVisible: true,
-      value:0
+      value:0,
+      purchased: false
     };
   }
 
@@ -86,6 +90,13 @@ export default class HomeCategory extends Component {
 async componentDidMount() {
    let e = this;
    let titleNavCategory = this.props.route.params.titleOfCategory;
+   let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
+
+    if(comprou == true) {
+      this.setState({purchased: true})
+    } else {
+      this.setState({purchased: false})
+    }
 
     //obter anuncios PREMIUM ativos autonomo
     await firebase.firestore().collection('anuncios').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("categoryAuto", "==", titleNavCategory).where("premiumUser", "==", true).onSnapshot(documentSnapshot => {
@@ -449,14 +460,17 @@ async componentDidMount() {
               >
               </FlatList>
 
-              {/*<AdMobBanner
-                style={{marginLeft: 20}}
-                bannerSize="leaderboard"
-                adUnitID="ca-app-pub-1397640114399871/3366763355"
-                setTestDeviceIDAsync
-                servePersonalizedAds
-                onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-              /> */}
+              { this.state.purchased == false ?
+                  <AdMobBanner
+                    style={{marginLeft: 20}}
+                    bannerSize="leaderboard"
+                    adUnitID="ca-app-pub-1397640114399871/3366763355"
+                    servePersonalizedAds
+                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
+                  /> 
+                  :
+                  null
+              }
 
               <FlatList 
                 keyExtractor={() => this.makeid(17)}
@@ -498,14 +512,17 @@ async componentDidMount() {
               >
               </FlatList>
 
-              {/*<AdMobBanner
-                style={{marginLeft: 20}}
-                bannerSize="leaderboard"
-                adUnitID="ca-app-pub-1397640114399871/3366763355"
-                setTestDeviceIDAsync
-                servePersonalizedAds
-                onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-              /> */}
+              { this.state.purchased == false ?
+                  <AdMobBanner
+                    style={{marginLeft: 20}}
+                    bannerSize="leaderboard"
+                    adUnitID="ca-app-pub-1397640114399871/3366763355"
+                    servePersonalizedAds
+                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
+                  /> 
+                  :
+                  null
+              }
           </ScrollView>
         </View>
       </SafeBackground>

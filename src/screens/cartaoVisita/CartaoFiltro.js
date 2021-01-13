@@ -59,8 +59,12 @@ import { SafeBackground, IconResponsive, AnuncioContainer, IconResponsiveNOBACK,
 import { ThemeContext } from '../../../ThemeContext';
 
 
+//import IAP API 
+import {purchased} from '../../config/purchase';
+
 //import ADS
-//import { AdMobBanner} from 'expo-ads-admob';
+import { AdMobBanner } from 'expo-ads-admob';
+
 
 // CartA Config
 const EMPTY_STATE_ICON = 'cart-remove';
@@ -121,6 +125,7 @@ export default class CartaoFiltro extends Component {
       isFetchedPublish: false,
       isOpen: true,
       modalVisible: true,
+      purchased: false,
       products: [
         {
           id: 'product1',
@@ -156,6 +161,13 @@ export default class CartaoFiltro extends Component {
 
   async componentDidMount() {
     let e = this;
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
+
+    if(comprou == true) {
+      this.setState({purchased: true})
+    } else {
+      this.setState({purchased: false})
+    }
     let arrayOfSelectedCategories = this.props.route.params.categoriasFiltradas;
     let arrayOfSelectedStates = this.props.route.params.estadosFiltrados;
     let sumLengthArrays = arrayOfSelectedStates.length + arrayOfSelectedCategories.length;
@@ -613,14 +625,17 @@ export default class CartaoFiltro extends Component {
                 contentContainerStyle={styles.productList}
               />
 
-            {/*<AdMobBanner
-              style={{marginLeft: 20}}
-              bannerSize="leaderboard"
-              adUnitID="ca-app-pub-1397640114399871/3366763355"
-              setTestDeviceIDAsync
-              servePersonalizedAds
-              onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-            /> */}
+                { this.state.purchased == false ?
+                  <AdMobBanner
+                    style={{marginLeft: 20}}
+                    bannerSize="leaderboard"
+                    adUnitID="ca-app-pub-1397640114399871/3366763355"
+                    servePersonalizedAds
+                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
+                  /> 
+                  :
+                  null
+                }
             </View>
 
             <View>
@@ -665,14 +680,17 @@ export default class CartaoFiltro extends Component {
                 contentContainerStyle={styles.productList}
               />
 
-            {/*<AdMobBanner
-              style={{marginLeft: 20}}
-              bannerSize="leaderboard"
-              adUnitID="ca-app-pub-1397640114399871/3366763355"
-              setTestDeviceIDAsync
-              servePersonalizedAds
-              onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-            /> */}
+                { this.state.purchased == false ?
+                  <AdMobBanner
+                    style={{marginLeft: 20}}
+                    bannerSize="leaderboard"
+                    adUnitID="ca-app-pub-1397640114399871/3366763355"
+                    servePersonalizedAds
+                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
+                  /> 
+                  :
+                  null
+                }
             </View>
 
           </ScrollView>
