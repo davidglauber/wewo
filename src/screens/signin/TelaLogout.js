@@ -11,7 +11,7 @@ import {
   Keyboard,
   SafeAreaView,
   ScrollView,
-  Image,
+  Dimensions,
   StatusBar,
   StyleSheet,
   View,
@@ -20,12 +20,19 @@ import Color from 'color';
 
 import firebase from '../../config/firebase';
 
+import LottieView from 'lottie-react-native';
+
 import {Paragraph} from '../../components/text/CustomText';
 
+import logoutAni from '../../../assets/logoutWEWO.json';
 
 // import colors
 import Colors from '../../theme/colors';
 
+
+//consts
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 // ForgotPasswordA Styles
 const styles = StyleSheet.create({
@@ -36,7 +43,7 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingTop: 64,
+    paddingTop: windowHeight/4,
     paddingHorizontal: 24,
   },
   instructionContainer: {
@@ -83,6 +90,7 @@ export default class TelaLogout extends Component {
         await firebase.auth().signOut()
         e.props.navigation.navigate('HomeNavigator')
     }, 2000);
+
   };
 
 
@@ -104,7 +112,7 @@ export default class TelaLogout extends Component {
         <ScrollView contentContainerStyle={styles.contentContainerStyle}>
           <View style={styles.instructionContainer}>
             <View>
-              <Image source={require('../../assets/img/loading.gif')} style={{width:200, height:400}}/>
+              <LottieView source={logoutAni} style={{width:200, height:200}} autoPlay loop />
             </View>
             <Paragraph style={styles.instruction}>
              Volte em Breve!  Saindo...

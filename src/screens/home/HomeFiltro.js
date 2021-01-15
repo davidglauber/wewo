@@ -43,6 +43,7 @@ import { PulseIndicator } from 'react-native-indicators';
 //import icons
 import { FontAwesome5 } from '@expo/vector-icons';
 
+import LottieView from 'lottie-react-native';
 
 //import IAP API 
 import {purchased} from '../../config/purchase';
@@ -567,7 +568,7 @@ async componentDidMount() {
 
             {activesPublishesAuto.length == 0 && activesPublishesEstab.length == 0 &&
               <View style={{flex:1, justifyContent:'center', alignItems:'center', padding:50}}>
-                <Image style={{width:200, height:200}} source={require("../../assets/img/notfoundnoback.gif")} />
+                <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
                 <Text style={{fontWeight:'bold'}}>Nenhum Anúncio Foi Encontrado</Text>
               </View>
             }

@@ -58,6 +58,7 @@ import { SafeBackground, IconResponsive, AnuncioContainer, IconResponsiveNOBACK,
 
 import { ThemeContext } from '../../../ThemeContext';
 
+import LottieView from 'lottie-react-native';
 
 //import IAP API 
 import {purchased} from '../../config/purchase';
@@ -576,7 +577,7 @@ export default class CartaoFiltro extends Component {
 
         {cartoesAuto.length == 0 && cartoesEstab.length == 0 &&
           <View style={{flex:1, justifyContent:'center', alignItems:'center', padding:50}}>
-            <Image style={{width:200, height:200}} source={require("../../assets/img/notfoundnoback.gif")} />
+            <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
             <Text style={{fontWeight:'bold'}}>Nenhum Cartão Foi Encontrado</Text>
           </View>
         }

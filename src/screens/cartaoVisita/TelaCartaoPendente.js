@@ -24,6 +24,7 @@ import Colors from '../../theme/colors';
 
 import firebase from '../../config/firebase'; 
 
+import LottieView from 'lottie-react-native';
 
 //import icons
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -243,7 +244,7 @@ export default class TelaCartaoPendente extends Component {
                   {cartoesEstab.length == 0 && cartoesAuto.length == 0 &&
                     <View style={{flex:1, alignItems:'center', paddingTop:5}}>
                       <View>
-                        <Image style={{width:200, height:200, marginLeft:30}} source={require("../../assets/img/notfoundnoback.gif")} />
+                        <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
                         <Text style={{fontWeight:'bold', color:'white'}}>Nenhum Cartão Pendente Foi Encontrado</Text>
                       </View>
                     </View>

@@ -31,6 +31,7 @@ import { ThemeContext } from '../../../ThemeContext';
 //RESPONSIVE FONT 
 import { RFValue } from 'react-native-responsive-fontsize';
 
+import LottieView from 'lottie-react-native';
 
 //import ADS
 import { AdMobBanner } from 'expo-ads-admob';
@@ -322,7 +323,7 @@ async componentDidMount() {
 
             {activesPublishesAuto.length == 0 && activesPublishesEstab.length == 0 && premiumPublishesAuto.length == 0 && premiumPublishesEstab.length == 0 &&
               <View style={{flex:1, justifyContent:'center', alignItems:'center', padding:50}}>
-                <Image style={{width:200, height:200}} source={require("../../assets/img/notfoundnoback.gif")} />
+                <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
                 <Text style={{fontWeight:'bold'}}>Nenhum Anúncio Foi Encontrado</Text>
               </View>
             }

@@ -49,6 +49,7 @@ import {SafeBackground, IconResponsive, TouchCategory, TextDetails, Description,
 import { ThemeContext } from '../../../ThemeContext';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
+import LottieView from 'lottie-react-native';
 
 //import ADS
 import { AdMobBanner} from 'expo-ads-admob';
@@ -398,7 +399,7 @@ export default class CartaoCategory extends Component {
 
             {cartoesAuto.length == 0 && cartoesEstab.length == 0 && premiumCardAuto.length == 0 && premiumCardEstab.length == 0 &&
               <View style={{flex:1, justifyContent:'center', alignItems:'center', padding:50}}>
-                <Image style={{width:200, height:200}} source={require("../../assets/img/notfoundnoback.gif")} />
+                <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
                 <Text style={{fontWeight:'bold'}}>Nenhum Cartão Foi Encontrado</Text>
               </View>
             }

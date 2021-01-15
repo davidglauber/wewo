@@ -20,8 +20,8 @@ import {MaterialCommunityIcons as Icon} from '@expo/vector-icons';
 import Swiper from 'react-native-swiper';
 
 
-//import firebase
-import firebase from '../../config/firebase';
+
+import LottieView from 'lottie-react-native';
 
 // import components
 import {Heading5, Paragraph} from '../../components/text/CustomText';
@@ -29,6 +29,10 @@ import TouchableItem from '../../components/TouchableItem';
 
 // import colors
 import Colors from '../../theme/colors';
+import rapaz from '../../../assets/rapazWEWO.json';
+import money from '../../../assets/moneyWEWO.json';
+import rapazECachorro from '../../../assets/rapazcachorroWEWO.json';
+import mulher from '../../../assets/mulherWEWO.json';
 
 // OnboardingA Config
 const isRTL = I18nManager.isRTL;
@@ -39,30 +43,29 @@ const slide1Img = require('../../assets/img/welcomeanimation.gif');
 const slide2Img = require('../../assets/img/welcomeanimation2.gif');
 const slide3Img = require('../../assets/img/welcomeanimation3.gif');
 const slide4Img = require('../../assets/img/welcomeanimation4.gif');
-
 const slides = [
   {
     id: 'slide1',
-    lottie: slide1Img,
+    lottie: rapaz,
     title: 'Seja bem-vindo(a) ao WeWo!',
     description:
       'Esperamos que você tenha a melhor experiência possível com o nosso aplicativo!',
   },
   {
     id: 'slide2',
-    lottie: slide2Img,
+    lottie: money,
     title: 'Anuncie o seu serviço de forma Gratuita',
     description: 'Na WeWo você pode anunciar o seu serviço de forma totalmente gratuita, dando visibilidade a milhões de pessoas',
   },
   {
     id: 'slide3',
-    lottie: slide3Img,
+    lottie: rapazECachorro,
     title: 'Quer publicar um serviço?',
     description: 'Para cadastrar um serviço no aplicativo você deve registrar-se',
   },
   {
     id: 'slide4',
-    lottie: slide4Img,
+    lottie: mulher,
     title: 'Nosso suporte possui uma disponibilidade de 24h',
     description: 'Caso tenha algum problema ou dúvida, contate o nosso suporte pelo aplicativo',
   },
@@ -217,7 +220,7 @@ export default class OnboardingA extends Component {
             showsPagination={false}>
             {slides.map((item) => (
               <View key={item.id} style={styles.slide}>
-                <Image source={item.lottie} style={{width: 232, height: 192}}/> 
+                <LottieView source={item.lottie} style={{width: 232, height: 192}} autoPlay loop />
                 <Heading5 style={styles.title}>{item.title}</Heading5>
                 <View style={styles.descriptionContainer}>
                   <Paragraph style={styles.descriptionText}>

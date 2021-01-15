@@ -25,12 +25,11 @@ import { RFValue } from 'react-native-responsive-fontsize';
 // import colors
 import Colors from '../../theme/colors';
 
+import LottieView from 'lottie-react-native';
 
 import { PulseIndicator } from 'react-native-indicators';
 
-
 import { SafeBackground, Title, AnuncioContainer, PlusContainer, PlusIcon, Description, TouchableDetails, ValueField, TextDetails, IconResponsive, Heading } from '../home/styles';
-
 
 import { ThemeContext } from '../../../ThemeContext';
 
@@ -292,7 +291,7 @@ export default class TelaGeralCriarCartao extends Component {
         return( 
           <View style={{flex:1, alignItems:'center', paddingTop: 80}}>
             <View>
-              <Image style={{width:200, height:200, marginLeft:20}} source={require("../../assets/img/notfoundnoback.gif")} />
+              <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
               <Text style={{fontWeight:'bold', color:'white'}}>Nenhum Cartão Ativo Foi Encontrado</Text>
             </View>
           </View>

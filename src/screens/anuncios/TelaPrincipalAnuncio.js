@@ -28,6 +28,7 @@ import { PulseIndicator } from 'react-native-indicators';
 
 import { SafeBackground, Title, AnuncioContainer, PlusContainer, PlusIcon, Description, IconResponsiveNOBACK, TouchableDetails, TextDetails, IconResponsive, Heading } from '../home/styles';
 
+import LottieView from 'lottie-react-native';
 
 //RESPONSIVE FONT 
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -344,7 +345,7 @@ export default class TelaPrincipalAnuncio extends Component {
                 {anunciosEstab.length == 0 && anunciosAuto.length == 0 &&
                     <View style={{flex:1, alignItems:'center', paddingTop: 75}}>
                         <View>
-                          <Image style={{width:200, height:200, marginLeft:20}} source={require("../../assets/img/notfoundnoback.gif")} />
+                          <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
                           <Text style={{fontWeight:'bold'}}>Nenhum Anúncio Ativo Foi Encontrado</Text>
                         </View>
                     </View>

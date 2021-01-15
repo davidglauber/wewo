@@ -135,8 +135,8 @@ android {
         applicationId "com.zubito.wewo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 10
-        versionName "10.0"
+        versionCode 19
+        versionName "2.3"
     }
     splits {
         abi {
@@ -170,6 +170,8 @@ android {
             signingConfig signingConfigs.debug
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
@@ -195,6 +197,7 @@ dependencies {
     implementation project(':react-native-safe-area-context')
     compile project(':react-native-iap')
     implementation project(':react-native-google-signin')
+    implementation project(':lottie-react-native')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules

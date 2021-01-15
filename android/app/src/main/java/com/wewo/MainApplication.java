@@ -9,6 +9,7 @@ import com.facebook.react.ReactApplication;
 import com.dooboolab.RNIap.RNIapPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import com.horcrux.svg.SvgPackage;
+import com.airbnb.android.react.lottie.LottiePackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -50,6 +51,7 @@ public class MainApplication extends Application implements ReactApplication {
       new SafeAreaContextPackage();
       new SvgPackage();
       new RNGoogleSigninPackage();
+      new LottiePackage();
       
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
