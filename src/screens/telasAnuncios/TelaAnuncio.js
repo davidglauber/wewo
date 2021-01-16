@@ -311,7 +311,7 @@ export default class TelaAnuncio extends Component {
         const result = await Share.share({
           title: 'WeWo - Onde Todos se Encontram',
           message:
-            'Veja esse anúncio incrível que achei no WeWo!  (WeWo - Onde Todos se Encontram)',
+            'Veja esse cartão de visita incrível que achei no WeWo!  (WeWo - Onde Todos se Encontram)    https://play.google.com/store/apps/details?id=com.zubito.wewo',
         });
         if (result.action === Share.sharedAction) {
           if (result.activityType) {
