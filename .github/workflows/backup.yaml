@@ -6,7 +6,7 @@ on:
 
 env:
   PROJECT_ID: wework-test-5280e
-  BUCKET: gs://backupwewo
+  BUCKET: gs://backupwewoteam
   
 jobs:
   backup:
