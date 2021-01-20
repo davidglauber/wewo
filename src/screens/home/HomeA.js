@@ -325,7 +325,7 @@ async componentDidMount() {
                 {status == true ? 
                   <View>
                       <TouchableOpacity onPress={this.navigateTo('Settings')} style={{borderRadius:5, justifyContent:'center', width:216, height:27}}>
-                          <TextBoldGolden>Olá, {emailUserFunction}</TextBoldGolden>
+                          <TextBoldGolden>Acessar Meu Perfil</TextBoldGolden>
                       </TouchableOpacity>
                     </View>
                     :

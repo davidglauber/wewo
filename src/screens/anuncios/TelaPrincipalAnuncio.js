@@ -218,7 +218,7 @@ export default class TelaPrincipalAnuncio extends Component {
       })
       
 
-      if(anunciosDidMount.length  <= 1) {
+      if(anunciosDidMount.length  < 1) {
         this.props.navigation.navigate('Orders')
       }
 
@@ -230,11 +230,11 @@ export default class TelaPrincipalAnuncio extends Component {
       } 
 
       if(comprou == false) {
-        if(anunciosDidMount.length >= 2) {
-          alert('A conta Free permite até 2 anúncios, consulte a tela de PLANOS para mais informações')
+        if(anunciosDidMount.length >= 1) {
+          alert('A conta Free permite até 1 anúncio, consulte a tela de PLANOS para mais informações')
         }
 
-        if(anunciosDidMount.length  <= 1) {
+        if(anunciosDidMount.length  < 1) {
           this.props.navigation.navigate('Orders')
         }
       }

@@ -260,7 +260,7 @@ export default class TelaGeralCriarCartao extends Component {
 
 
 
-      if(cartoesDidMount.length  <= 1) {
+      if(cartoesDidMount.length  < 1) {
         this.props.navigation.navigate('TelaCriarCartaoVisita')
       }
 
@@ -272,11 +272,11 @@ export default class TelaGeralCriarCartao extends Component {
       } 
 
       if(comprou == false) {
-        if(cartoesDidMount.length >= 2) {
-          alert('A conta Free permite até 2 cartões, consulte a tela de PLANOS para mais informações')
+        if(cartoesDidMount.length >= 1) {
+          alert('A conta Free permite até 1 cartão, consulte a tela de PLANOS para mais informações')
         }
 
-        if(cartoesDidMount.length  <= 1) {
+        if(cartoesDidMount.length  < 1) {
           this.props.navigation.navigate('TelaCriarCartaoVisita')
         }
       }
