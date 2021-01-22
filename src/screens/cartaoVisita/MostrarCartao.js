@@ -73,6 +73,8 @@ import {purchased} from '../../config/purchase';
 //import ADS
 import { AdMobBanner} from 'expo-ads-admob';
 
+import { Video } from 'expo-av';
+
 // ProductA Styles
 const styles = StyleSheet.create({
   screenContainer: {
@@ -251,6 +253,7 @@ export default class MostrarCartao extends Component {
           idAnuncio: doc.data().idAnuncio,
           publishData: e.state.date,
           nome: doc.data().nome,
+          video: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           photo2: doc.data().photoPublish2,
           photo3: doc.data().photoPublish3,
@@ -281,6 +284,7 @@ export default class MostrarCartao extends Component {
           value: doc.data().valueServiceEstab,
           idAnuncio: doc.data().idAnuncio,
           publishData: e.state.date,
+          video: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           photo2: doc.data().photoPublish2,
           photo3: doc.data().photoPublish3,
@@ -423,10 +427,23 @@ export default class MostrarCartao extends Component {
                     activeDotStyle={styles.activeDot}
                     dotStyle={styles.dot}
                     index={isRTL ? images.length - 1 : 0}>
-                        <Image
+                        {item.video == null ?
+                          <Image
                           source={{uri: item.photo}}
                           style={styles.slideImg}
-                        />
+                          />
+                          :
+                          <Video 
+                            source={{ uri: item.video }}
+                            rate={1.0}
+                            volume={1.0}
+                            isMuted={false}
+                            resizeMode="cover"
+                            shouldPlay
+                            isLooping
+                            style={styles.slideImg}
+                          />
+                        }
 
                         <Image
                           source={{uri: item.photo2}}
@@ -576,10 +593,23 @@ export default class MostrarCartao extends Component {
                     activeDotStyle={styles.activeDot}
                     dotStyle={styles.dot}
                     index={isRTL ? images.length - 1 : 0}>
-                      <Image
-                        source={{uri: item.photo}}
-                        style={styles.slideImg}
-                      />
+                      {item.video == null ?
+                          <Image
+                          source={{uri: item.photo}}
+                          style={styles.slideImg}
+                          />
+                          :
+                          <Video 
+                            source={{ uri: item.video }}
+                            rate={1.0}
+                            volume={1.0}
+                            isMuted={false}
+                            resizeMode="cover"
+                            shouldPlay
+                            isLooping
+                            style={styles.slideImg}
+                          />
+                      }
 
                       <Image
                         source={{uri: item.photo2}}

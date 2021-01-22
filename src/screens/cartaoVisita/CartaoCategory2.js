@@ -58,6 +58,8 @@ import { AdMobBanner} from 'expo-ads-admob';
 //import IAP API 
 import {purchased} from '../../config/purchase';
 
+import { Video } from 'expo-av';
+
 // CartA Styles
 const styles = StyleSheet.create({
   flex1: {
@@ -172,6 +174,7 @@ export default class CartaoCategory2 extends Component {
           idUser: doc.data().idUser,
           nome: doc.data().nome,
           idCartao: doc.data().idCartao,
+          video: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           description: doc.data().descriptionAuto,
           type: doc.data().type,
@@ -196,6 +199,7 @@ export default class CartaoCategory2 extends Component {
         premiumcartoesEstabDidMount.push({
           idUser: doc.data().idUser,
           idCartao: doc.data().idCartao,
+          video: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           local: doc.data().localEstab,
           title: doc.data().titleEstab,
@@ -225,6 +229,7 @@ export default class CartaoCategory2 extends Component {
           idUser: doc.data().idUser,
           nome: doc.data().nome,
           idCartao: doc.data().idCartao,
+          video: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           description: doc.data().descriptionAuto,
           type: doc.data().type,
@@ -247,6 +252,7 @@ export default class CartaoCategory2 extends Component {
         cartoesEstabDidMount.push({
           idUser: doc.data().idUser,
           idCartao: doc.data().idCartao,
+          video: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           local: doc.data().localEstab,
           title: doc.data().titleEstab,
@@ -440,8 +446,20 @@ export default class CartaoCategory2 extends Component {
 
                     <AnuncioContainer>
                           <View style={{flexDirection:'row'}}>
-                              <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                              
+                              {item.video == null ?
+                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    :
+                                    <Video 
+                                      source={{ uri: item.video }}
+                                      rate={1.0}
+                                      volume={0}
+                                      isMuted={false}
+                                      resizeMode="cover"
+                                      shouldPlay
+                                      isLooping
+                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                    />
+                                  }
                               <View style={{flexDirection:'column'}}>
                                 <Title style={{fontSize: this.responsibleFont()}}>{item.nome}</Title>
 
@@ -483,8 +501,20 @@ export default class CartaoCategory2 extends Component {
 
                     <AnuncioContainer>
                               <View style={{flexDirection:'row'}}>
-                                  <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                  
+                                  {item.video == null ?
+                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    :
+                                    <Video 
+                                      source={{ uri: item.video }}
+                                      rate={1.0}
+                                      volume={0}
+                                      isMuted={false}
+                                      resizeMode="cover"
+                                      shouldPlay
+                                      isLooping
+                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                    />
+                                  }
                                   <View style={{flexDirection:'column', }}>
                                     <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
 
@@ -528,8 +558,20 @@ export default class CartaoCategory2 extends Component {
 
                     <AnuncioContainer>
                           <View style={{flexDirection:'row'}}>
-                              <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                              
+                              {item.video == null ?
+                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    :
+                                    <Video 
+                                      source={{ uri: item.video }}
+                                      rate={1.0}
+                                      volume={0}
+                                      isMuted={false}
+                                      resizeMode="cover"
+                                      shouldPlay
+                                      isLooping
+                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                    />
+                                  }
                               <View style={{flexDirection:'column'}}>
                                 <Title style={{fontSize: this.responsibleFont()}}>{item.nome}</Title>
 
@@ -584,8 +626,20 @@ export default class CartaoCategory2 extends Component {
 
                     <AnuncioContainer>
                               <View style={{flexDirection:'row'}}>
-                                  <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                  
+                                  {item.video == null ?
+                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    :
+                                    <Video 
+                                      source={{ uri: item.video }}
+                                      rate={1.0}
+                                      volume={0}
+                                      isMuted={false}
+                                      resizeMode="cover"
+                                      shouldPlay
+                                      isLooping
+                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                    />
+                                  }
                                   <View style={{flexDirection:'column', }}>
                                     <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
 
@@ -615,17 +669,6 @@ export default class CartaoCategory2 extends Component {
                 contentContainerStyle={styles.productList}
               />
             
-            { this.state.purchased == false ?
-                  <AdMobBanner
-                    style={{marginLeft: 20}}
-                    bannerSize="leaderboard"
-                    adUnitID="ca-app-pub-1397640114399871/3366763355"
-                    servePersonalizedAds
-                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                  /> 
-                  :
-                  null
-            }
             </View>
 
           </ScrollView>

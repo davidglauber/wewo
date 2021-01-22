@@ -36,6 +36,7 @@ import { ThemeContext } from '../../../ThemeContext';
 //MODULE IAP
 import {purchased} from '../../config/purchase';
 
+import { Video } from 'expo-av';
 
 //consts
 const windowWidth = Dimensions.get('window').width;
@@ -130,6 +131,7 @@ export default class TelaGeralCriarCartao extends Component {
           idUser: doc.data().idUser,
           nome: doc.data().nome,
           idCartao: doc.data().idCartao,
+          video: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           description: doc.data().descriptionAuto,
           type: doc.data().type,
@@ -151,6 +153,7 @@ export default class TelaGeralCriarCartao extends Component {
         cartoesEstabDidMount.push({
           idUser: doc.data().idUser,
           idCartao: doc.data().idCartao,
+          video: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           local: doc.data().localEstab,
           title: doc.data().titleEstab,
@@ -221,11 +224,12 @@ export default class TelaGeralCriarCartao extends Component {
     })
   }
 
+
   deletePublish(itemToBeDeleted) {
     let userUID = firebase.auth().currentUser.uid;
     Alert.alert(
       'Atenção!!!',
-      'Você tem certeza que quer deletar este anúncio?',
+      'Você tem certeza que quer deletar este cartão?',
       [
         {text: 'Não', onPress: () => {}},
         {text: 'Sim', onPress: () => this.deletePublishOfMainRoute(itemToBeDeleted)}
@@ -362,8 +366,20 @@ export default class TelaGeralCriarCartao extends Component {
                         renderItem={({item}) => 
                             <AnuncioContainer style={{height: 190}}>
                               <View style={{flexDirection:'row'}}>
-                                  <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                  
+                                  {item.video == null ?
+                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    :
+                                    <Video 
+                                      source={{ uri: item.video }}
+                                      rate={1.0}
+                                      volume={0}
+                                      isMuted={false}
+                                      resizeMode="cover"
+                                      shouldPlay
+                                      isLooping
+                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                    />
+                                  }
                                   <View style={{flexDirection:'column'}}>
                                     <Title style={{fontSize: this.responsibleFont()}}>{item.nome}</Title>
 
@@ -410,8 +426,20 @@ export default class TelaGeralCriarCartao extends Component {
                         renderItem={({item}) => 
                             <AnuncioContainer style={{height: 190}}>
                               <View style={{flexDirection:'row'}}>
-                                  <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                  
+                                  {item.video == null ?
+                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    :
+                                    <Video 
+                                      source={{ uri: item.video }}
+                                      rate={1.0}
+                                      volume={0}
+                                      isMuted={false}
+                                      resizeMode="cover"
+                                      shouldPlay
+                                      isLooping
+                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                    />
+                                  }
                                   <View style={{flexDirection:'column', }}>
                                     <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
 
