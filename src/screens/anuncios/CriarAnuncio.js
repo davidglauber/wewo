@@ -1451,7 +1451,7 @@ export default class CriarAnuncio extends Component {
                           </View> 
                           :
                           <View>
-                            <TouchableOpacity onPress={() => this.openModalizePhotos()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                            <TouchableOpacity onPress={() => this.setVideoAndPhotoOrJustPhoto()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
                                 <Image style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}} source={{uri: this.state.image}}/>
                             </TouchableOpacity>
                           </View>
@@ -1952,7 +1952,7 @@ export default class CriarAnuncio extends Component {
            <Modalize
             ref={this.state.modalizeVideoAndPhoto}
             snapPoint={500}
-          >
+            >
             <View style={{flex:1,alignItems:'center'}}>
                 <Text style={{fontWeight: 'bold', padding:15}}>Escolha 1 Vídeo e 2 Fotos</Text>  
 

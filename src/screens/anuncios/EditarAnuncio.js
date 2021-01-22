@@ -9,6 +9,7 @@
 import React, {Component, Fragment} from 'react';
 import {
   SafeAreaView,
+  Alert,
   StatusBar,
   StyleSheet,
   ScrollView,
@@ -154,11 +155,13 @@ export default class EditarAnuncio extends Component {
       modalizeRefAbertura: React.createRef(null),
       modalizeRefFechamento: React.createRef(null),
       modalizePhotos: React.createRef(null),
+      modalizeVideoAndPhoto: React.createRef(null),
       modalizeLocationEstab: React.createRef(null),
       modalizeLocationAuto: React.createRef(null),
       image:null,
       image2:null,
       image3:null,
+      video:null,
       imageName:'',
       animated: true,
       modalVisible: false,
@@ -230,6 +233,7 @@ export default class EditarAnuncio extends Component {
             let imagem = ''
             let imagem2 = ''
             let imagem3 = ''
+            let video = ''
             let titulo = ''
             let type = ''
             let verificado = false
@@ -252,6 +256,7 @@ export default class EditarAnuncio extends Component {
                 imagem = doc.data().photoPublish,
                 imagem2 = doc.data().photoPublish2,
                 imagem3 = doc.data().photoPublish3,
+                video = doc.data().videoPublish,
                 verificado = false
             })
 
@@ -269,6 +274,7 @@ export default class EditarAnuncio extends Component {
             e.setState({image: imagem})
             e.setState({image2: imagem2})
             e.setState({image3: imagem3})
+            e.setState({video: video})
         })
 
     }
@@ -287,6 +293,7 @@ export default class EditarAnuncio extends Component {
             let imagem = ''
             let imagem2 = ''
             let imagem3 = ''
+            let video = ''
             let titulo = ''
             let verificado = false
             let local = ''
@@ -308,6 +315,7 @@ export default class EditarAnuncio extends Component {
                 imagem = doc.data().photoPublish,
                 imagem2 = doc.data().photoPublish2,
                 imagem3 = doc.data().photoPublish3,
+                video = doc.data().videoPublish,
                 verificado = false,
                 ufestab = doc.data().UFEstab,
                 type = doc.data().type,
@@ -327,6 +335,7 @@ export default class EditarAnuncio extends Component {
             e.setState({image: imagem})
             e.setState({image2: imagem2})
             e.setState({image3: imagem3})
+            e.setState({video: video})
             e.setState({type: type})
             e.setState({UFEstab: ufestab})
             e.setState({enderecoEstab: local})
@@ -511,6 +520,12 @@ export default class EditarAnuncio extends Component {
   }
 
 
+  openModalizePhotosAndVideos() {
+    const modalizeVideoAndPhoto = this.state.modalizeVideoAndPhoto;
+
+    modalizeVideoAndPhoto.current?.open()
+  }
+
   openModalizeLocationEstab() {
     const modalizeLocationEstab = this.state.modalizeLocationEstab;
 
@@ -675,6 +690,51 @@ export default class EditarAnuncio extends Component {
 
 
 
+  async getVideo() {
+    if (Constants.platform.ios) {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status !== 'granted') {
+        alert('Desculpa, nós precisamos do acesso a permissão da câmera');
+      }
+    }
+
+    
+    try {
+      alert('Escolha um vídeo de até 15 segundos')
+
+      this.sleep(2000).then(async () => { 
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+
+        if (!result.cancelled) {
+          this.setState({ video: result.uri })
+          console.log(result);
+        }
+      })
+
+
+    } catch (E) {
+      console.log(E);
+    }
+
+  }
+
+
+
+  setVideoAndPhotoOrJustPhoto() {
+    Alert.alert("Atenção", "O seu anúncio contém vídeo?", [
+      {
+          text: "Não",
+          onPress: () => this.openModalizePhotos(),
+          style: "cancel"
+      },
+      { text: "Sim", onPress: () => this.openModalizePhotosAndVideos() }
+    ]);
+  }
 
 
   setModalVisible = (visible) => {
@@ -748,9 +808,176 @@ export default class EditarAnuncio extends Component {
       }
       
       if(typePublish === 'Autonomo') { 
-        if(this.state.image !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.enderecoAuto !== '' && this.state.nomeAuto !== '' && this.state.phoneAuto !== '') {
+        if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.enderecoAuto !== '' && this.state.nomeAuto !== '' && this.state.phoneAuto !== '') {
         this.setModalVisible(true)
 
+        if(this.state.video !== null){
+          getFileBlob(this.state.video, async blob => {
+            await firebase.storage().ref(`${storageUrl}/images/${imageId}`).put(blob).then((snapshot) => {
+                imageIdStorageState = imageId
+                isPhotoLoaded = true
+                console.log('O video foi salvo no Storage!');
+                console.log('Valor image state: ' + imageIdStorageState);
+
+
+
+                getFileBlob(this.state.image2, async blob => {
+                  await firebase.storage().ref(`${storageUrl}/images/${imageId2}`).put(blob).then((snapshot) => {
+                      imageIdStorageState2 = imageId2
+                      isPhotoLoaded2 = true
+                      console.log('A imagem foi salva no Storage!');
+                      console.log('Valor image state2: ' + imageIdStorageState2);
+                      
+
+
+
+                      getFileBlob(this.state.image3, async blob => {
+                        await firebase.storage().ref(`${storageUrl}/images/${imageId3}`).put(blob).then((snapshot) => {
+                            imageIdStorageState3 = imageId3
+              
+                            if(type == 'Estabelecimento'){
+                              if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                                  firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
+                                    firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
+                                      firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
+                                        firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
+                                          titleEstab: e.state.tituloEstab,
+                                          idAnuncio: routeIdAnuncio,
+                                          idUser: userUID,
+                                          descriptionEstab: e.state.descricaoEstab,
+                                          valueServiceEstab: e.state.precoEstab,
+                                          publishData: e.state.date,
+                                          type: 'Estabelecimento',
+                                          UFEstab: e.state.UFEstab,
+                                          verifiedPublish: true,
+                                          premiumUser: e.state.usuarioComprou,
+                                          phoneNumberEstab: e.state.phoneEstab,
+                                          localEstab: e.state.enderecoEstab,
+                                          categoryEstab: e.state.categoria,
+                                          subcategoryEstab: e.state.subcategoria,
+                                          videoPublish: urlImage,
+                                          photoPublish2: urlImage2,
+                                          photoPublish3: urlImage3,
+                                          workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                          timeOpen: e.state.horarioOpen,
+                                          timeClose: e.state.horarioClose
+                                        })
+                            
+                                        //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
+                                        firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
+                                          titleEstab: e.state.tituloEstab,
+                                          idAnuncio: routeIdAnuncio,
+                                          idUser: userUID,
+                                          descriptionEstab: e.state.descricaoEstab,
+                                          valueServiceEstab: e.state.precoEstab,
+                                          publishData: e.state.date,
+                                          type: 'Estabelecimento',
+                                          UFEstab: e.state.UFEstab,
+                                          verifiedPublish: true,
+                                          premiumUser: e.state.usuarioComprou,
+                                          phoneNumberEstab: e.state.phoneEstab,
+                                          localEstab: e.state.enderecoEstab,
+                                          categoryEstab: e.state.categoria,
+                                          subcategoryEstab: e.state.subcategoria,
+                                          videoPublish: urlImage,
+                                          photoPublish2: urlImage2,
+                                          photoPublish3: urlImage3,
+                                          workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                          timeOpen: e.state.horarioOpen,
+                                          timeClose: e.state.horarioClose
+                                        })
+                                      })
+                                    })
+                        
+                                })
+                        
+                                  this.setModalVisible(true)
+                        
+                                this.sleep(5000).then(() => { 
+                                  this.props.navigation.navigate('TelaPrincipalAnuncio')
+                                })
+                        
+                              } else {
+                                alert('Todos os campos devem ser preenchidos!')
+                              }
+                            }
+                        
+                            if(type == 'Autonomo') {
+                              if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.enderecoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
+                                  firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
+                                    firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {    
+                                      firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {    
+                                        firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
+                                          titleAuto: e.state.tituloAuto,
+                                          idAnuncio: routeIdAnuncio,
+                                          idUser: userUID,
+                                          nome: e.state.nomeAuto,
+                                          publishData: e.state.date,
+                                          descriptionAuto: e.state.descricaoAuto,
+                                          valueServiceAuto: e.state.precoAuto,
+                                          type: 'Autonomo',
+                                          UFAuto: e.state.UFAuto,
+                                          localAuto: e.state.enderecoAuto,
+                                          verifiedPublish: true,
+                                          premiumUser: e.state.usuarioComprou,
+                                          phoneNumberAuto: e.state.phoneAuto,
+                                          categoryAuto: e.state.categoria,
+                                          subcategoryAuto: e.state.subcategoria,
+                                          videoPublish: urlImage,
+                                          photoPublish2: urlImage2,
+                                          photoPublish3: urlImage3,
+                                        })
+                            
+                                        //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
+                                        firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
+                                          titleAuto: e.state.tituloAuto,
+                                          idAnuncio: routeIdAnuncio,
+                                          idUser: userUID,
+                                          nome: e.state.nomeAuto,
+                                          publishData: e.state.date,
+                                          descriptionAuto: e.state.descricaoAuto,
+                                          valueServiceAuto: e.state.precoAuto,
+                                          type: 'Autonomo',
+                                          UFAuto: e.state.UFAuto,
+                                          localAuto: e.state.enderecoAuto,
+                                          verifiedPublish: true,
+                                          premiumUser: e.state.usuarioComprou,
+                                          phoneNumberAuto: e.state.phoneAuto,
+                                          categoryAuto: e.state.categoria,
+                                          subcategoryAuto: e.state.subcategoria,
+                                          videoPublish: urlImage,
+                                          photoPublish2: urlImage2,
+                                          photoPublish3: urlImage3,
+                                        })
+                                      })
+                                    })
+                                  }).catch(function(error) {
+                                    console.log('ocorreu um erro ao carregar a imagem: ' + error.message)
+                                  })
+                        
+                                    this.setModalVisible(true)
+                        
+                                  this.sleep(5000).then(() => { 
+                                    this.props.navigation.navigate('TelaPrincipalAnuncio')
+                                  })
+                              } else {
+                                alert('Todos os campos devem ser preenchidos!')
+                              }
+                              
+                            }
+              
+              
+                            console.log('A imagem foi salva no Storage!');
+                            console.log('Valor image state3: ' + imageIdStorageState3);
+                            
+                        })
+                      })
+                  })
+                })
+            })
+          })
+
+      } else {
         getFileBlob(this.state.image, async blob => {
           await firebase.storage().ref(`${storageUrl}/images/${imageId}`).put(blob).then((snapshot) => {
               imageIdStorageState = imageId
@@ -915,6 +1142,7 @@ export default class EditarAnuncio extends Component {
               })
           })
         })
+      }
 
           
       } else {
@@ -923,9 +1151,188 @@ export default class EditarAnuncio extends Component {
     }
 
     if(typePublish === 'Estabelecimento') {
-      if(this.state.image !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.enderecoEstab !== '' && this.state.phoneEstab !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.enderecoEstab !== '' && this.state.phoneEstab !== '') {
         
         this.setModalVisible(true)
+
+        if(this.state.video !== null){
+        getFileBlob(this.state.video, async blob => {
+          await firebase.storage().ref(`${storageUrl}/images/${imageId}`).put(blob).then((snapshot) => {
+              imageIdStorageState = imageId
+              e.setState({isPhotoLoaded: true})
+              console.log('O vídeo foi salvo no Storage!');
+              console.log('Valor image state: ' + imageIdStorageState);
+              
+
+              getFileBlob(this.state.image2, async blob => {
+                await firebase.storage().ref(`${storageUrl}/images/${imageId2}`).put(blob).then((snapshot) => {
+                    imageIdStorageState2 = imageId2
+                    e.setState({isPhotoLoaded2: true})
+                    console.log('A imagem foi salva no Storage!');
+                    console.log('Valor image state2: ' + imageIdStorageState2);
+                    
+
+
+
+
+
+
+
+
+                    getFileBlob(this.state.image3, async blob => {
+                      await firebase.storage().ref(`${storageUrl}/images/${imageId3}`).put(blob).then((snapshot) => {
+                          imageIdStorageState3 = imageId3
+                          console.log('A imagem foi salva no Storage!');
+                          console.log('Valor image state3: ' + imageIdStorageState3);
+                          
+            
+            
+                          if(type == 'Estabelecimento'){
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                                firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
+                                  firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
+                                    firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
+                                      firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
+                                        titleEstab: e.state.tituloEstab,
+                                        idAnuncio: routeIdAnuncio,
+                                        idUser: userUID,
+                                        publishData: e.state.date,
+                                        descriptionEstab: e.state.descricaoEstab,
+                                        valueServiceEstab: e.state.precoEstab,
+                                        type: 'Estabelecimento',
+                                        UFEstab: e.state.UFEstab,
+                                        verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
+                                        phoneNumberEstab: e.state.phoneEstab,
+                                        localEstab: e.state.enderecoEstab,
+                                        categoryEstab: e.state.categoria,
+                                        subcategoryEstab: e.state.subcategoria,
+                                        videoPublish: urlImage,
+                                        photoPublish2: urlImage2,
+                                        photoPublish3: urlImage3,
+                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        timeOpen: e.state.horarioOpen,
+                                        timeClose: e.state.horarioClose
+                                      })
+                          
+                                      //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
+                                      firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
+                                        titleEstab: e.state.tituloEstab,
+                                        idAnuncio: routeIdAnuncio,
+                                        idUser: userUID,
+                                        publishData: e.state.date,
+                                        descriptionEstab: e.state.descricaoEstab,
+                                        valueServiceEstab: e.state.precoEstab,
+                                        type: 'Estabelecimento',
+                                        UFEstab: e.state.UFEstab,
+                                        verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
+                                        phoneNumberEstab: e.state.phoneEstab,
+                                        localEstab: e.state.enderecoEstab,
+                                        categoryEstab: e.state.categoria,
+                                        subcategoryEstab: e.state.subcategoria,
+                                        videoPublish: urlImage,
+                                        photoPublish2: urlImage2,
+                                        photoPublish3: urlImage3,
+                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        timeOpen: e.state.horarioOpen,
+                                        timeClose: e.state.horarioClose
+                                      })
+            
+                                    })
+            
+                                }).catch(function(error) {
+                                  console.log('ocorreu um erro ao carregar a imagem: ' + error.message)
+                                })
+                      
+                              })
+                      
+                                this.setModalVisible(true)
+                      
+                              this.sleep(5000).then(() => { 
+                                this.props.navigation.navigate('TelaPrincipalAnuncio')
+                              })
+                      
+                            } else {
+                              alert('Todos os campos devem ser preenchidos!')
+                            }
+                          }
+                      
+                      
+                          if(type == 'Autonomo') {
+                            if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.phoneAuto !== '' && this.state.enderecoAuto !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
+                                firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
+                                  firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
+                                    firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
+                                      firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
+                                        titleAuto: e.state.tituloAuto,
+                                        idAnuncio: routeIdAnuncio,
+                                        idUser: userUID,
+                                        publishData: e.state.date,
+                                        nome: e.state.nomeAuto,
+                                        descriptionAuto: e.state.descricaoAuto,
+                                        valueServiceAuto: e.state.precoAuto,
+                                        type: 'Autonomo',
+                                        UFAuto: e.state.UFAuto,
+                                        localAuto: e.state.enderecoAuto,
+                                        verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
+                                        phoneNumberAuto: e.state.phoneAuto,
+                                        categoryAuto: e.state.categoria,
+                                        subcategoryAuto: e.state.subcategoria,
+                                        videoPublish: urlImage,
+                                        photoPublish2: urlImage2,
+                                        photoPublish3: urlImage3,
+                                      })
+                          
+                                      //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
+                                      firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
+                                        titleAuto: e.state.tituloAuto,
+                                        idAnuncio: routeIdAnuncio,
+                                        idUser: userUID,
+                                        publishData: e.state.date,
+                                        nome: e.state.nomeAuto,
+                                        descriptionAuto: e.state.descricaoAuto,
+                                        valueServiceAuto: e.state.precoAuto,
+                                        type: 'Autonomo',
+                                        UFAuto: e.state.UFAuto,
+                                        localAuto: e.state.enderecoAuto,
+                                        verifiedPublish: true,
+                                        premiumUser: e.state.usuarioComprou,
+                                        phoneNumberAuto: e.state.phoneAuto,
+                                        categoryAuto: e.state.categoria,
+                                        subcategoryAuto: e.state.subcategoria,
+                                        videoPublish: urlImage,
+                                        photoPublish2: urlImage2,
+                                        photoPublish3: urlImage3,
+                                      })
+                                    })
+                                }).catch(function(error) {
+                                  console.log('ocorreu um erro ao carregar a imagem: ' + error.message)
+                                })
+                              })
+                      
+                                  this.setModalVisible(true)
+                      
+                                this.sleep(5000).then(() => { 
+                                  this.props.navigation.navigate('TelaPrincipalAnuncio')
+                                })
+                            } else {
+                              alert('Todos os campos devem ser preenchidos!')
+                            }
+                            
+            
+                          } 
+            
+                      })
+                    })
+            
+                })
+              })
+          })
+        })
+
+      } else {
         getFileBlob(this.state.image, async blob => {
           await firebase.storage().ref(`${storageUrl}/images/${imageId}`).put(blob).then((snapshot) => {
               imageIdStorageState = imageId
@@ -1101,7 +1508,7 @@ export default class EditarAnuncio extends Component {
               })
           })
         })
-
+      }
 
       } else {
         alert('Por favor, verifique se TODOS os campos estão preenchidos (incluindo 3 imagens)')
@@ -1197,13 +1604,13 @@ export default class EditarAnuncio extends Component {
 
                         {this.state.image == null ?
                           <View>
-                            <TouchableOpacity onPress={() => this.openModalizePhotos()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                            <TouchableOpacity onPress={() => this.setVideoAndPhotoOrJustPhoto()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
                                 <FontAwesome5 name="camera-retro" size={24} color={'#9A9A9A'}/>
                             </TouchableOpacity>
                           </View> 
                           :
                           <View>
-                            <TouchableOpacity onPress={() => this.openModalizePhotos()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                            <TouchableOpacity onPress={() => this.setVideoAndPhotoOrJustPhoto()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
                                 <Image style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}} source={{uri: this.state.image}}/>
                             </TouchableOpacity>
                           </View>
@@ -1642,9 +2049,10 @@ export default class EditarAnuncio extends Component {
             ref={this.state.modalizePhotos}
             snapPoint={500}
           >
-            <View style={{flex:1,alignItems:'center', flexDirection:'row'}}>
+            <View style={{flex:1,alignItems:'center'}}>
                 <Text style={{fontWeight: 'bold', padding:15}}>Escolha 3 Fotos</Text>  
-
+              
+              <View style={{flexDirection:'row'}}>
                 {this.state.image == null ?
                   <View>
                     <TouchableOpacity onPress={() => this.imagePickerGetPhoto()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:60, height:60, borderRadius:20, marginTop:7}}>
@@ -1688,6 +2096,68 @@ export default class EditarAnuncio extends Component {
                     </TouchableOpacity>
                   </View>
                 }
+              </View>
+
+            </View>
+          </Modalize>
+
+
+
+
+          {/*Modalize do video e fotos*/}
+          <Modalize
+            ref={this.state.modalizeVideoAndPhoto}
+            snapPoint={500}
+            >
+            <View style={{flex:1,alignItems:'center'}}>
+                <Text style={{fontWeight: 'bold', padding:15}}>Escolha 1 Vídeo e 2 Fotos</Text>  
+
+              <View style={{flexDirection:'row'}}>
+                {this.state.video == null ?
+                  <View>
+                    <TouchableOpacity onPress={() => this.getVideo()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:60, height:60, borderRadius:20, marginTop:7}}>
+                        <FontAwesome5 name="video" size={24} color={'#9A9A9A'}/>
+                    </TouchableOpacity>
+                  </View> 
+                  :
+                  <View>
+                    <TouchableOpacity onPress={() => this.getVideo()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:60, height:60, borderRadius:20, marginTop:7}}>
+                        <FontAwesome5 name="video" size={24} color={'#DAA520'}/>
+                    </TouchableOpacity>
+                  </View>
+                }
+
+
+                {this.state.image2 == null ?
+                  <View>
+                    <TouchableOpacity onPress={() => this.imagePickerGetPhoto2()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:60, height:60, borderRadius:20, marginTop:7, marginLeft:15}}>
+                        <FontAwesome5 name="camera-retro" size={24} color={'#9A9A9A'}/>
+                    </TouchableOpacity>
+                  </View> 
+                  :
+                  <View>
+                    <TouchableOpacity onPress={() => this.imagePickerGetPhoto2()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:60, height:60, borderRadius:20, marginTop:7, marginLeft:15}}>
+                        <Image style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:60, height:60, borderRadius:20}} source={{uri: this.state.image2}}/>
+                    </TouchableOpacity>
+                  </View>
+                }
+
+
+                {this.state.image3 == null ?
+                  <View>
+                    <TouchableOpacity onPress={() => this.imagePickerGetPhoto3()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:60, height:60, borderRadius:20, marginTop:7, marginLeft:15}}>
+                        <FontAwesome5 name="camera-retro" size={24} color={'#9A9A9A'}/>
+                    </TouchableOpacity>
+                  </View> 
+                  :
+                  <View>
+                    <TouchableOpacity onPress={() => this.imagePickerGetPhoto3()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:60, height:60, borderRadius:20, marginTop:7, marginLeft:15}}>
+                        <Image style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:60, height:60, borderRadius:20}} source={{uri: this.state.image3}}/>
+                    </TouchableOpacity>
+                  </View>
+                }
+
+              </View>
 
             </View>
           </Modalize>
