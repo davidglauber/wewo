@@ -38,6 +38,8 @@ import { ThemeContext } from '../../../ThemeContext';
 //MODULE IAP
 import {purchased} from '../../config/purchase';
 
+import { Video } from 'expo-av';
+
 //consts
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -133,6 +135,7 @@ export default class TelaPrincipalAnuncio extends Component {
           idUser: doc.data().idUser,
           nome: doc.data().nome,
           idAnuncio: doc.data().idAnuncio,
+          video: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           title: doc.data().titleAuto,
           description: doc.data().descriptionAuto,
@@ -154,8 +157,9 @@ export default class TelaPrincipalAnuncio extends Component {
       documentSnapshot.forEach(function(doc) {
         anunciosEstabDidMount.push({
           idUser: doc.data().idUser,
-          idAnuncio: doc.data().idAnuncio,
           photo: doc.data().photoPublish,
+          video: doc.data().videoPublish,
+          idAnuncio: doc.data().idAnuncio,
           title: doc.data().titleEstab,
           description: doc.data().descriptionEstab,
           phone: doc.data().phoneNumberEstab,
@@ -361,7 +365,20 @@ export default class TelaPrincipalAnuncio extends Component {
                         renderItem={({item}) => 
                             <AnuncioContainer>
                               <View style={{flexDirection:'row'}}>
-                                  <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                  {item.video == null ?
+                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    :
+                                    <Video 
+                                      source={{ uri: item.video }}
+                                      rate={1.0}
+                                      volume={0}
+                                      isMuted={false}
+                                      resizeMode="cover"
+                                      shouldPlay
+                                      isLooping
+                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                    />
+                                  }
                                   
                                   <View style={{flexDirection:'column'}}>
                                     <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
@@ -402,7 +419,20 @@ export default class TelaPrincipalAnuncio extends Component {
                         renderItem={({item}) => 
                             <AnuncioContainer>
                                 <View style={{flexDirection:'row'}}>
-                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                  {item.video == null ?
+                                      <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                      :
+                                      <Video 
+                                        source={{ uri: item.video }}
+                                        rate={1.0}
+                                        volume={0}
+                                        isMuted={false}
+                                        resizeMode="cover"
+                                        shouldPlay
+                                        isLooping
+                                        style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                      />
+                                    }
                                     
                                     <View style={{flexDirection:'column'}}>
                                         <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>

@@ -39,6 +39,7 @@ import { AdMobBanner } from 'expo-ads-admob';
 //import IAP API 
 import {purchased} from '../../config/purchase';
 
+import { Video } from 'expo-av';
 
 //consts
 const windowWidth = Dimensions.get('window').width;
@@ -105,6 +106,7 @@ async componentDidMount() {
         nome: doc.data().nome,
         idAnuncio: doc.data().idAnuncio,
         photo: doc.data().photoPublish,
+        video: doc.data().videoPublish,
         title: doc.data().titleAuto,
         description: doc.data().descriptionAuto,
         type: doc.data().type,
@@ -132,6 +134,7 @@ async componentDidMount() {
         idUser: doc.data().idUser,
         idAnuncio: doc.data().idAnuncio,
         photo: doc.data().photoPublish,
+        video: doc.data().videoPublish,
         title: doc.data().titleEstab,
         description: doc.data().descriptionEstab,
         phone: doc.data().phoneNumberEstab,
@@ -160,6 +163,7 @@ async componentDidMount() {
           nome: doc.data().nome,
           idAnuncio: doc.data().idAnuncio,
           photo: doc.data().photoPublish,
+          video: doc.data().videoPublish,
           title: doc.data().titleAuto,
           description: doc.data().descriptionAuto,
           type: doc.data().type,
@@ -187,6 +191,7 @@ async componentDidMount() {
           idUser: doc.data().idUser,
           idAnuncio: doc.data().idAnuncio,
           photo: doc.data().photoPublish,
+          video: doc.data().videoPublish,
           title: doc.data().titleEstab,
           description: doc.data().descriptionEstab,
           phone: doc.data().phoneNumberEstab,
@@ -339,8 +344,20 @@ async componentDidMount() {
                       <View>
                           <AnuncioContainer>
                               <View style={{flexDirection:'row'}}>
-                                  <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                  
+                                  {item.video == null ?
+                                      <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                      :
+                                      <Video 
+                                        source={{ uri: item.video }}
+                                        rate={1.0}
+                                        volume={0}
+                                        isMuted={false}
+                                        resizeMode="cover"
+                                        shouldPlay
+                                        isLooping
+                                        style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                      />
+                                    }
                                   <View style={{flexDirection:'column'}}>
                                       <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
                                       {this.cutDescription(item.description)}
@@ -384,8 +401,20 @@ async componentDidMount() {
                     <View>
                         <AnuncioContainer>
                             <View style={{flexDirection:'row'}}>
-                                <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                
+                                {item.video == null ?
+                                      <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                      :
+                                      <Video 
+                                        source={{ uri: item.video }}
+                                        rate={1.0}
+                                        volume={0}
+                                        isMuted={false}
+                                        resizeMode="cover"
+                                        shouldPlay
+                                        isLooping
+                                        style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                      />
+                                    }
                                 <View style={{flexDirection:'column'}}>
                                     <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
                                     {this.cutDescription(item.description)}
@@ -427,8 +456,20 @@ async componentDidMount() {
                       <View>
                           <AnuncioContainer>
                               <View style={{flexDirection:'row'}}>
-                                  <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                  
+                                  {item.video == null ?
+                                      <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                      :
+                                      <Video 
+                                        source={{ uri: item.video }}
+                                        rate={1.0}
+                                        volume={0}
+                                        isMuted={false}
+                                        resizeMode="cover"
+                                        shouldPlay
+                                        isLooping
+                                        style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                      />
+                                    }
                                   <View style={{flexDirection:'column'}}>
                                       <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
                                       {this.cutDescription(item.description)}
@@ -479,8 +520,20 @@ async componentDidMount() {
                     <View>
                         <AnuncioContainer>
                             <View style={{flexDirection:'row'}}>
-                                <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                
+                                {item.video == null ?
+                                      <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                      :
+                                      <Video 
+                                        source={{ uri: item.video }}
+                                        rate={1.0}
+                                        volume={0}
+                                        isMuted={false}
+                                        resizeMode="cover"
+                                        shouldPlay
+                                        isLooping
+                                        style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                      />
+                                    }
                                 <View style={{flexDirection:'column'}}>
                                     <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
                                     {this.cutDescription(item.description)}

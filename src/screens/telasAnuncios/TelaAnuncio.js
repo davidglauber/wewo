@@ -57,6 +57,8 @@ import {purchased} from '../../config/purchase';
 //import ADS
 import { AdMobBanner} from 'expo-ads-admob';
 
+import { Video } from 'expo-av';
+
 
 // ProductA Config
 const isRTL = I18nManager.isRTL;
@@ -237,6 +239,7 @@ export default class TelaAnuncio extends Component {
           value: doc.data().valueServiceAuto,
           idAnuncio: doc.data().idAnuncio,
           nome: doc.data().nome,
+          video: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           photo2: doc.data().photoPublish2,
           photo3: doc.data().photoPublish3,
@@ -268,6 +271,7 @@ export default class TelaAnuncio extends Component {
           value: doc.data().valueServiceEstab,
           publishData: e.state.date,
           idAnuncio: doc.data().idAnuncio,
+          video: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           photo2: doc.data().photoPublish2,
           photo3: doc.data().photoPublish3,
@@ -401,10 +405,24 @@ export default class TelaAnuncio extends Component {
                     activeDotStyle={styles.activeDot}
                     dotStyle={styles.dot}
                     index={isRTL ? images.length - 1 : 0}>
-                      <Image
+                      {item.video == null ?
+                        <Image
                         source={{uri: item.photo}}
                         style={styles.slideImg}
-                      />
+                        />
+                        :
+                        <Video 
+                          source={{ uri: item.video }}
+                          rate={1.0}
+                          volume={1.0}
+                          isMuted={false}
+                          resizeMode="cover"
+                          shouldPlay
+                          isLooping
+                          style={styles.slideImg}
+                        />
+                      }
+                      
 
                       <Image
                         source={{uri: item.photo2}}
@@ -560,10 +578,23 @@ export default class TelaAnuncio extends Component {
                     activeDotStyle={styles.activeDot}
                     dotStyle={styles.dot}
                     index={isRTL ? images.length - 1 : 0}>
-                      <Image
+                      {item.video == null ?
+                        <Image
                         source={{uri: item.photo}}
                         style={styles.slideImg}
-                      />
+                        />
+                        :
+                        <Video 
+                          source={{ uri: item.video }}
+                          rate={1.0}
+                          volume={1.0}
+                          isMuted={false}
+                          resizeMode="cover"
+                          shouldPlay
+                          isLooping
+                          style={styles.slideImg}
+                        />
+                      }
 
                       <Image
                         source={{uri: item.photo2}}
