@@ -171,7 +171,7 @@ export default class CartaoVisita extends Component {
           idUser: doc.data().idUser,
           nome: doc.data().nome,
           idCartao: doc.data().idCartao,
-          video: doc.data().videoPublish,
+          videoPublish: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           description: doc.data().descriptionAuto,
           type: doc.data().type,
@@ -195,7 +195,7 @@ export default class CartaoVisita extends Component {
         premiumcartoesEstabDidMount.push({
           idUser: doc.data().idUser,
           idCartao: doc.data().idCartao,
-          video: doc.data().videoPublish,
+          videoPublish: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           local: doc.data().localEstab,
           title: doc.data().titleEstab,
@@ -225,7 +225,7 @@ export default class CartaoVisita extends Component {
           idUser: doc.data().idUser,
           nome: doc.data().nome,
           idCartao: doc.data().idCartao,
-          video: doc.data().videoPublish,
+          videoPublish: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           description: doc.data().descriptionAuto,
           type: doc.data().type,
@@ -248,7 +248,7 @@ export default class CartaoVisita extends Component {
         cartoesEstabDidMount.push({
           idUser: doc.data().idUser,
           idCartao: doc.data().idCartao,
-          video: doc.data().videoPublish,
+          videoPublish: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           local: doc.data().localEstab,
           title: doc.data().titleEstab,
@@ -444,11 +444,11 @@ export default class CartaoVisita extends Component {
 
                     <AnuncioContainer>
                           <View style={{flexDirection:'row'}}>
-                              {item.video == null ?
+                              {item.videoPublish == null ?
                                     <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
                                     :
                                     <Video 
-                                      source={{ uri: item.video }}
+                                      source={{ uri: item.videoPublish }}
                                       rate={1.0}
                                       volume={0}
                                       isMuted={false}
@@ -501,11 +501,11 @@ export default class CartaoVisita extends Component {
 
                     <AnuncioContainer>
                               <View style={{flexDirection:'row'}}>
-                                  {item.video == null ?
+                                  {item.videoPublish == null ?
                                     <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
                                     :
                                     <Video 
-                                      source={{ uri: item.video }}
+                                      source={{ uri: item.videoPublish }}
                                       rate={1.0}
                                       volume={0}
                                       isMuted={false}
@@ -559,11 +559,11 @@ export default class CartaoVisita extends Component {
 
                     <AnuncioContainer>
                           <View style={{flexDirection:'row'}}>
-                              {item.video == null ?
+                              {item.videoPublish == null ?
                                     <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
                                     :
                                     <Video 
-                                      source={{ uri: item.video }}
+                                      source={{ uri: item.videoPublish }}
                                       rate={1.0}
                                       volume={0}
                                       isMuted={false}
@@ -627,11 +627,11 @@ export default class CartaoVisita extends Component {
 
                     <AnuncioContainer>
                               <View style={{flexDirection:'row'}}>
-                                  {item.video == null ?
+                                  {item.videoPublish == null ?
                                     <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
                                     :
                                     <Video 
-                                      source={{ uri: item.video }}
+                                      source={{ uri: item.videoPublish }}
                                       rate={1.0}
                                       volume={0}
                                       isMuted={false}

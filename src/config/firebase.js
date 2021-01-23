@@ -15,6 +15,6 @@ const firebaseConfig = {
 };
 
     firebase.initializeApp(firebaseConfig);
-    firebase.firestore().settings({ experimentalForceLongPolling: true });
+    firebase.firestore().settings({ experimentalForceLongPolling: true, ignoreUndefinedProperties: true });
     
 export default firebase;

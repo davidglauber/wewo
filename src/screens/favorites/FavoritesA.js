@@ -44,6 +44,8 @@ import {SafeBackground, IconResponsive,TextDetails, Description, IconResponsiveN
 import { ThemeContext } from '../../../ThemeContext';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
+import { Video } from 'expo-av';
+
 // CartA Styles
 const styles = StyleSheet.create({
   flex1: {
@@ -143,6 +145,7 @@ export default class FavoritesA extends Component {
           idUser: doc.data().idUser,
           nome: doc.data().nome,
           idCartao: doc.data().idCartao,
+          video: doc.data().videoPublish,
           photo: doc.data().photo,
           description: doc.data().description,
           type: doc.data().type,
@@ -163,6 +166,7 @@ export default class FavoritesA extends Component {
         cartoesEstabDidMount.push({
           idUser: doc.data().idUser,
           idCartao: doc.data().idCartao,
+          video: doc.data().videoPublish,
           photo: doc.data().photo,
           local: doc.data().localEstab,
           title: doc.data().title,
@@ -278,8 +282,20 @@ export default class FavoritesA extends Component {
 
                     <AnuncioContainer>
                           <View style={{flexDirection:'row'}}>
-                              <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                              
+                              {item.video == null ?
+                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    :
+                                    <Video 
+                                      source={{ uri: item.video }}
+                                      rate={1.0}
+                                      volume={0}
+                                      isMuted={false}
+                                      resizeMode="cover"
+                                      shouldPlay
+                                      isLooping
+                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                    />
+                                  }
                               <View style={{flexDirection:'column'}}>
                                 <Title>{item.nome}</Title>
 
@@ -323,8 +339,20 @@ export default class FavoritesA extends Component {
 
                     <AnuncioContainer>
                               <View style={{flexDirection:'row'}}>
-                                  <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                  
+                                  {item.video == null ?
+                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    :
+                                    <Video 
+                                      source={{ uri: item.video }}
+                                      rate={1.0}
+                                      volume={0}
+                                      isMuted={false}
+                                      resizeMode="cover"
+                                      shouldPlay
+                                      isLooping
+                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                    />
+                                  }
                                   <View style={{flexDirection:'column', }}>
                                     <Title>{item.title}</Title>
 

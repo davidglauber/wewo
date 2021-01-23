@@ -21,8 +21,6 @@ import Onboarding from '../screens/onboarding/OnboardingA';
 import CheckUserScreen from '../screens/onboarding/CheckUserScreen';
 
 
-// import Welcome screen
-import Welcome from '../screens/welcome/WelcomeA';
 
 // import SignUp screen
 import SignUp from '../screens/signup/Cadastro';

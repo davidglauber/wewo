@@ -20,6 +20,7 @@ import Favorites from '../screens/favorites/FavoritesA';
 // import Cart screen
 import Cart from '../screens/cartaoVisita/CartaoVisita';
 
+import SearchA from '../screens/search/SearchA';
 
 // import colors
 import Colors from '../theme/colors';
@@ -91,6 +92,18 @@ console.log('Dark do HOMEEE: ' + dark)
         }}
       />
       <Tab.Screen name="Favorites" component={Favorites} />
+      <Tab.Screen
+        name="Buscar"
+        component={SearchA}
+        options={{
+          tabBarIcon: props => (
+            <FontAwesome5
+              name={`search${props.focused ? '' : ''}`}
+              {...props}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
