@@ -123,6 +123,9 @@ export default class SearchA extends Component {
       type:'Autonomo',
       textSearch: '',
       activesPublishesEstab:[],
+      activesPublishesAuto: [],
+      cartoesEstab: [],
+      cartoesAuto: [],
       modalVisible: false,
       categories: [
         {
@@ -193,8 +196,9 @@ export default class SearchA extends Component {
     let e = this;
     this.setModalVisible(true)
 
+
     if(this.state.type == 'Estabelecimento') {
-      await firebase.firestore().collection('anuncios').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("titleEstab", "==", titlePublish).onSnapshot(documentSnapshot => {
+      await firebase.firestore().collection('anuncios').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("titleEstabArray", "array-contains", titlePublish).onSnapshot(documentSnapshot => {
         let anunciosAtivosEstab = [];
         documentSnapshot.forEach(function(doc) {
           anunciosAtivosEstab.push({
@@ -216,6 +220,78 @@ export default class SearchA extends Component {
         this.setModalVisible(false)
       })
 
+      await firebase.firestore().collection('cartoes').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("titleEstabArray", "array-contains", titlePublish).onSnapshot(documentSnapshot => {
+        let cartoesEstabDidMount = []
+        documentSnapshot.forEach(function(doc) {
+          cartoesEstabDidMount.push({
+            idUser: doc.data().idUser,
+            idCartao: doc.data().idCartao,
+            videoPublish: doc.data().videoPublish,
+            photo: doc.data().photoPublish,
+            local: doc.data().localEstab,
+            title: doc.data().titleEstab,
+            description: doc.data().descriptionEstab,
+            phone: doc.data().phoneNumberEstab,
+            timeOpen: doc.data().timeOpen,
+            timeClose: doc.data().timeClose,
+            type: doc.data().type,
+            verified: doc.data().verifiedPublish,
+            categoria: doc.data().categoryEstab,
+            workDays: doc.data().workDays
+          })
+        })
+        e.setState({cartoesEstab: cartoesEstabDidMount})
+        this.setModalVisible(false)
+  
+      })
+
+    } else {
+      await firebase.firestore().collection('anuncios').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("titleAutoArray", "array-contains", titlePublish).onSnapshot(documentSnapshot => {
+        let anunciosAtivosAuto = [];
+        documentSnapshot.forEach(function(doc) {
+          anunciosAtivosAuto.push({
+            idUser: doc.data().idUser,
+            nome: doc.data().nome,
+            idAnuncio: doc.data().idAnuncio,
+            photo: doc.data().photoPublish,
+            video: doc.data().videoPublish,
+            title: doc.data().titleAuto,
+            description: doc.data().descriptionAuto,
+            type: doc.data().type,
+            phone: doc.data().phoneNumberAuto,
+            verified: doc.data().verifiedPublish,
+            value: doc.data().valueServiceAuto
+          })
+        })
+  
+  
+        e.setState({activesPublishesAuto: anunciosAtivosAuto})
+        this.setModalVisible(false)
+  
+      })
+
+
+
+      await firebase.firestore().collection('cartoes').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("titleAutoArray", "array-contains", titlePublish).onSnapshot(documentSnapshot => {
+        let cartoesAutoDidMount = []
+        documentSnapshot.forEach(function(doc) {
+          cartoesAutoDidMount.push({
+            idUser: doc.data().idUser,
+            nome: doc.data().nome,
+            idCartao: doc.data().idCartao,
+            videoPublish: doc.data().videoPublish,
+            photo: doc.data().photoPublish,
+            description: doc.data().descriptionAuto,
+            type: doc.data().type,
+            categoria: doc.data().categoryAuto,
+            phone: doc.data().phoneNumberAuto,
+            verified: doc.data().verifiedPublish
+          })
+        })
+        e.setState({cartoesAuto: cartoesAutoDidMount})
+        this.setModalVisible(false)
+  
+      })
     }
 
   }
@@ -362,7 +438,115 @@ export default class SearchA extends Component {
         </FlatList>
         }
 
-          <Text>Nenhum resultado encontrado!</Text>
+
+            {this.state.activesPublishesAuto.length !== 0 &&
+              <FlatList 
+                keyExtractor={() => this.makeid(17)}
+                data={this.state.activesPublishesAuto}
+                renderItem={({item}) =>
+                
+                
+                <View style={{flex:1, alignItems: 'center'}}>
+                      <View>
+                          <AnuncioContainer>
+                              <View style={{flexDirection:'row'}}>
+                                  {item.video == null ?
+                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    :
+                                    <Video 
+                                      source={{ uri: item.video }}
+                                      rate={1.0}
+                                      volume={0}
+                                      isMuted={false}
+                                      resizeMode="cover"
+                                      shouldPlay
+                                      isLooping
+                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                    />
+                                  }
+                                  <View style={{flexDirection:'column'}}>
+                                      <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                      {this.cutDescription(item.description)}
+                                  </View>
+                              </View>  
+
+                              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                  <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                                      <TextDetails>Ver Detalhes</TextDetails>
+                                  </TouchableDetails>
+
+                                  <View style={{marginTop: 24}}>
+                                      <ValueField>{item.value}</ValueField>
+                                  </View>
+
+                                  <View style={{marginTop: 24, marginRight: 30}}>
+                                      <IconResponsive  name="user-tie" size={19}/>
+                                  </View>
+                              </View> 
+
+                          </AnuncioContainer>
+                      </View>
+
+                  </View>
+                
+              }
+              >
+              </FlatList>
+            }
+
+              {this.state.cartoesAuto.length !== 0 &&
+              <FlatList
+                data={this.state.cartoesAuto}
+                keyExtractor={() => this.makeid(17)}
+                renderItem={({item}) => 
+
+                    <AnuncioContainer>
+                          <View style={{flexDirection:'row'}}>
+                              {item.videoPublish == null ?
+                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    :
+                                    <Video 
+                                      source={{ uri: item.videoPublish }}
+                                      rate={1.0}
+                                      volume={0}
+                                      isMuted={false}
+                                      resizeMode="cover"
+                                      shouldPlay
+                                      isLooping
+                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                    />
+                                  }
+                              <View style={{flexDirection:'column'}}>
+                                <Title style={{fontSize: this.responsibleFont()}}>{item.nome}</Title>
+
+                                {this.cutDescription(item.description)}
+
+                              </View>
+                          </View>  
+
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                              <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                                  <TextDetails>Ver Detalhes</TextDetails>
+                              </TouchableDetails>
+
+                              <View style={{flexDirection:'row', marginTop:15}}>
+                                  <ValueField style={{paddingTop:10, fontSize:12}}>{item.categoria}</ValueField>
+                                  <IconResponsive style={{marginLeft:15, marginTop:10}} name="clone" size={19}/>
+                              </View>
+
+                              <View style={{marginTop: 24, marginRight: 30}}>
+                                  <IconResponsive  name="user-tie" size={19}/>
+                              </View>
+                          </View> 
+
+                    </AnuncioContainer>
+                }
+              />
+              }
+
+          {this.state.activesPublishesAuto.length == 0 && this.state.activesPublishesEstab.length == 0 && this.state.cartoesAuto.length == 0 && this.state.cartoesEstab.length == 0 &&
+            <Text>Nenhum resultado encontrado!</Text>
+          }
         </View>
       </SafeBackground>
     );

@@ -170,7 +170,9 @@ export default class CriarAnuncio extends Component {
       isPhotoLoaded: false,
       isPhotoLoaded2: false,
       isPhotoLoaded3: false,
-      usuarioComprou: false
+      usuarioComprou: false,
+      arrayWordsAuto: [],
+      arrayWordsEstab: []
     };
   }
 
@@ -284,12 +286,20 @@ export default class CriarAnuncio extends Component {
 
   onChangeTituloAuto(text) {
     this.setState({tituloAuto: text})
+
+    this.state.arrayWordsAuto.push(text)
+
     console.log('title auto'  + this.state.tituloAuto)
+    console.log('array de palavras: '  + this.state.arrayWordsAuto)
   }
 
   onChangeTituloEstab(text) {
     this.setState({tituloEstab: text})
+    
+    this.state.arrayWordsEstab.push(text)
+
     console.log('title estab'  + this.state.tituloEstab)
+    console.log('array de palavras: '  + this.state.arrayWordsEstab)
   }
 
   onChangeDescricaoAuto(text) {
@@ -623,6 +633,8 @@ export default class CriarAnuncio extends Component {
     let domingo = this.state.domingo;
     let e = this;
 
+    
+
     let publishId = e.makeid(17);
     let getSameIdToDocument = '';
         getSameIdToDocument = publishId;
@@ -637,7 +649,7 @@ export default class CriarAnuncio extends Component {
     let imageIdStorageState2 = '';
     let imageIdStorageState3 = '';
 
-
+    
 
 
       var getFileBlob = async function (url, cb) { 
@@ -694,6 +706,7 @@ export default class CriarAnuncio extends Component {
                                       firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                         firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(getSameIdToDocument).set({
                                           titleEstab: e.state.tituloEstab,
+                                          titleEstabArray: e.state.arrayWordsEstab,
                                           idAnuncio: getSameIdToDocument,
                                           idUser: userUID,
                                           publishData: e.state.date,
@@ -718,6 +731,7 @@ export default class CriarAnuncio extends Component {
                                         //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                         firebase.firestore().collection('anuncios').doc(getSameIdToDocument).set({
                                           titleEstab: e.state.tituloEstab,
+                                          titleEstabArray: e.state.arrayWordsEstab,
                                           idAnuncio: getSameIdToDocument,
                                           idUser: userUID,
                                           publishData: e.state.date,
@@ -766,6 +780,7 @@ export default class CriarAnuncio extends Component {
                                       firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                         firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(getSameIdToDocument).set({
                                           titleAuto: e.state.tituloAuto,
+                                          titleAutoArray: e.state.arrayWordsAuto,
                                           idAnuncio: getSameIdToDocument,
                                           idUser: userUID,
                                           publishData: e.state.date,
@@ -788,6 +803,7 @@ export default class CriarAnuncio extends Component {
                                         //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                         firebase.firestore().collection('anuncios').doc(getSameIdToDocument).set({
                                           titleAuto: e.state.tituloAuto,
+                                          titleAutoArray: e.state.arrayWordsAuto,
                                           idAnuncio: getSameIdToDocument,
                                           idUser: userUID,
                                           publishData: e.state.date,
@@ -872,6 +888,7 @@ export default class CriarAnuncio extends Component {
                                       firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                         firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(getSameIdToDocument).set({
                                           titleEstab: e.state.tituloEstab,
+                                          titleEstab: e.state.arrayWordsEstab,
                                           idAnuncio: getSameIdToDocument,
                                           idUser: userUID,
                                           publishData: e.state.date,
@@ -896,6 +913,7 @@ export default class CriarAnuncio extends Component {
                                         //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                         firebase.firestore().collection('anuncios').doc(getSameIdToDocument).set({
                                           titleEstab: e.state.tituloEstab,
+                                          titleEstab: e.state.arrayWordsEstab,
                                           idAnuncio: getSameIdToDocument,
                                           idUser: userUID,
                                           publishData: e.state.date,
@@ -944,6 +962,7 @@ export default class CriarAnuncio extends Component {
                                       firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                         firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(getSameIdToDocument).set({
                                           titleAuto: e.state.tituloAuto,
+                                          titleAutoArray: e.state.arrayWordsAuto,
                                           idAnuncio: getSameIdToDocument,
                                           idUser: userUID,
                                           publishData: e.state.date,
@@ -966,6 +985,7 @@ export default class CriarAnuncio extends Component {
                                         //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                         firebase.firestore().collection('anuncios').doc(getSameIdToDocument).set({
                                           titleAuto: e.state.tituloAuto,
+                                          titleAutoArray: e.state.arrayWordsAuto,
                                           idAnuncio: getSameIdToDocument,
                                           idUser: userUID,
                                           publishData: e.state.date,
@@ -1062,6 +1082,7 @@ export default class CriarAnuncio extends Component {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                       firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(getSameIdToDocument).set({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: arrayWordsEstab,
                                         idAnuncio: getSameIdToDocument,
                                         idUser: userUID,
                                         publishData: e.state.date,
@@ -1085,6 +1106,7 @@ export default class CriarAnuncio extends Component {
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                       firebase.firestore().collection('anuncios').doc(getSameIdToDocument).set({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: arrayWordsEstab,
                                         idAnuncio: getSameIdToDocument,
                                         idUser: userUID,
                                         publishData: e.state.date,
@@ -1132,6 +1154,7 @@ export default class CriarAnuncio extends Component {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                       firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(getSameIdToDocument).set({
                                         titleAuto: e.state.tituloAuto,
+                                        titleAutoArray: arrayWordsAuto,
                                         idAnuncio: getSameIdToDocument,
                                         idUser: userUID,
                                         publishData: e.state.date,
@@ -1152,6 +1175,7 @@ export default class CriarAnuncio extends Component {
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                       firebase.firestore().collection('anuncios').doc(getSameIdToDocument).set({
                                         titleAuto: e.state.tituloAuto,
+                                        titleAutoArray: arrayWordsAuto,
                                         idAnuncio: getSameIdToDocument,
                                         idUser: userUID,
                                         publishData: e.state.date,
@@ -1233,6 +1257,7 @@ export default class CriarAnuncio extends Component {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                       firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(getSameIdToDocument).set({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: arrayWordsEstab,
                                         idAnuncio: getSameIdToDocument,
                                         idUser: userUID,
                                         publishData: e.state.date,
@@ -1256,6 +1281,7 @@ export default class CriarAnuncio extends Component {
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                       firebase.firestore().collection('anuncios').doc(getSameIdToDocument).set({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: arrayWordsEstab,
                                         idAnuncio: getSameIdToDocument,
                                         idUser: userUID,
                                         publishData: e.state.date,
@@ -1303,6 +1329,7 @@ export default class CriarAnuncio extends Component {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                       firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(getSameIdToDocument).set({
                                         titleAuto: e.state.tituloAuto,
+                                        titleAutoArray: arrayWordsAuto,
                                         idAnuncio: getSameIdToDocument,
                                         idUser: userUID,
                                         publishData: e.state.date,
@@ -1323,6 +1350,7 @@ export default class CriarAnuncio extends Component {
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                       firebase.firestore().collection('anuncios').doc(getSameIdToDocument).set({
                                         titleAuto: e.state.tituloAuto,
+                                        titleAutoArray: arrayWordsAuto,
                                         idAnuncio: getSameIdToDocument,
                                         idUser: userUID,
                                         publishData: e.state.date,
