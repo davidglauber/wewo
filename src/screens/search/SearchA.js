@@ -37,6 +37,8 @@ import {SafeBackground, IconResponsive, TouchableFilter, Description, AnuncioCon
 // import colors
 import Colors from '../../theme/colors';
 
+import { Video } from 'expo-av';
+
 // SearchA Config
 const isRTL = I18nManager.isRTL;
 
@@ -196,7 +198,6 @@ export default class SearchA extends Component {
     let e = this;
     this.setModalVisible(true)
 
-
     if(this.state.type == 'Estabelecimento') {
       await firebase.firestore().collection('anuncios').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("titleEstabArray", "array-contains", titlePublish).onSnapshot(documentSnapshot => {
         let anunciosAtivosEstab = [];
@@ -300,6 +301,15 @@ export default class SearchA extends Component {
 
   onChangeTextoSearch(text){
     this.setState({textSearch: text})
+
+    if(text == ''){
+      this.setState({activesPublishesEstab: []})
+      this.setState({cartoesEstab: []})
+      this.setState({activesPublishesAuto: []})
+      this.setState({cartoesAuto: []})
+    } else {
+      return null;
+    }
     console.log('texto pesquisa'  + this.state.textSearch)
   }
 
