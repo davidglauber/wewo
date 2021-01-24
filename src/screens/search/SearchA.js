@@ -208,6 +208,7 @@ export default class SearchA extends Component {
             photo: doc.data().photoPublish,
             video: doc.data().videoPublish,
             title: doc.data().titleEstab,
+            premiumUser: doc.data().premiumUser,
             description: doc.data().descriptionEstab,
             phone: doc.data().phoneNumberEstab,
             type: doc.data().type,
@@ -235,6 +236,7 @@ export default class SearchA extends Component {
             phone: doc.data().phoneNumberEstab,
             timeOpen: doc.data().timeOpen,
             timeClose: doc.data().timeClose,
+            premiumUser: doc.data().premiumUser,
             type: doc.data().type,
             verified: doc.data().verifiedPublish,
             categoria: doc.data().categoryEstab,
@@ -257,6 +259,7 @@ export default class SearchA extends Component {
             photo: doc.data().photoPublish,
             video: doc.data().videoPublish,
             title: doc.data().titleAuto,
+            premiumUser: doc.data().premiumUser,
             description: doc.data().descriptionAuto,
             type: doc.data().type,
             phone: doc.data().phoneNumberAuto,
@@ -281,6 +284,7 @@ export default class SearchA extends Component {
             nome: doc.data().nome,
             idCartao: doc.data().idCartao,
             videoPublish: doc.data().videoPublish,
+            premiumUser: doc.data().premiumUser,
             photo: doc.data().photoPublish,
             description: doc.data().descriptionAuto,
             type: doc.data().type,
@@ -434,9 +438,17 @@ export default class SearchA extends Component {
                                 <ValueField>{item.value}</ValueField>
                           </View>
 
-                          <View style={{marginTop: 24, marginRight: 30}}>
+
+                          <View style={{marginTop: 24, marginLeft: 30}}>
                               <IconResponsive  name="briefcase" size={19}/>
                           </View>
+                          
+                          {item.premiumUser == true &&
+                            <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
+                                <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
+                            </View>
+                          }
+
                       </View> 
 
                   </AnuncioContainer>
@@ -489,9 +501,16 @@ export default class SearchA extends Component {
                                       <ValueField>{item.value}</ValueField>
                                   </View>
 
-                                  <View style={{marginTop: 24, marginRight: 30}}>
+                                  <View style={{marginTop: 24, marginLeft: 30}}>
                                       <IconResponsive  name="user-tie" size={19}/>
                                   </View>
+
+                                  {item.premiumUser == true &&
+                                    <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
+                                        <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
+                                    </View>
+                                  }
+                                  
                               </View> 
 
                           </AnuncioContainer>
@@ -544,9 +563,69 @@ export default class SearchA extends Component {
                                   <IconResponsive style={{marginLeft:15, marginTop:10}} name="clone" size={19}/>
                               </View>
 
-                              <View style={{marginTop: 24, marginRight: 30}}>
-                                  <IconResponsive  name="user-tie" size={19}/>
+                                <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
+                                  {item.premiumUser == true &&
+                                      <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
+                                  }
+                                  <View style={{marginLeft:10}}>
+                                    <IconResponsive  name="user-tie" size={19}/> 
+                                  </View>
+                                </View>
+                          </View> 
+
+                    </AnuncioContainer>
+                }
+              />
+              }
+
+            {this.state.cartoesEstab.length !== 0 &&
+              <FlatList
+                data={this.state.cartoesEstab}
+                keyExtractor={() => this.makeid(17)}
+                renderItem={({item}) => 
+
+                    <AnuncioContainer>
+                          <View style={{flexDirection:'row'}}>
+                              {item.videoPublish == null ?
+                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    :
+                                    <Video 
+                                      source={{ uri: item.videoPublish }}
+                                      rate={1.0}
+                                      volume={0}
+                                      isMuted={false}
+                                      resizeMode="cover"
+                                      shouldPlay
+                                      isLooping
+                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                    />
+                                  }
+                              <View style={{flexDirection:'column'}}>
+                                <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+
+                                {this.cutDescription(item.description)}
+
                               </View>
+                          </View>  
+
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                              <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                                  <TextDetails>Ver Detalhes</TextDetails>
+                              </TouchableDetails>
+
+                              <View style={{flexDirection:'row', marginTop:15}}>
+                                  <ValueField style={{paddingTop:10, fontSize:12}}>{item.categoria}</ValueField>
+                                  <IconResponsive style={{marginLeft:15, marginTop:10}} name="clone" size={19}/>
+                              </View>
+
+                                <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
+                                  {item.premiumUser == true &&
+                                      <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
+                                  }
+                                  <View style={{marginLeft:10}}>
+                                    <IconResponsive  name="user-tie" size={19}/> 
+                                  </View>
+                                </View>
                           </View> 
 
                     </AnuncioContainer>
