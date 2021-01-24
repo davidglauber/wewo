@@ -139,6 +139,8 @@ export default class EditarAnuncio extends Component {
       cepAuto: '',
       enderecoCepEstab: [],
       enderecoCepAuto: [],
+      arrayWordsAuto: [],
+      arrayWordsEstab: [],
       UFEstab: '',
       UFAuto:'',
       segunda:false,
@@ -239,10 +241,12 @@ export default class EditarAnuncio extends Component {
             let verificado = false
             let location = ''
             let ufauto = ''
+            let arrayAuto = []
 
             querySnapshot.forEach(function(doc) {
                 idAnuncio = doc.data().id,
                 titulo = doc.data().titleAuto,
+                arrayAuto = doc.data().titleAutoArray,
                 categoria = doc.data().categoryAuto,
                 subcategoria = doc.data().subcategoryAuto,
                 descricao = doc.data().descriptionAuto,
@@ -262,6 +266,7 @@ export default class EditarAnuncio extends Component {
 
             e.setState({idAnuncio: idAnuncio})
             e.setState({tituloAuto: titulo})
+            e.setState({arrayWordsAuto: arrayAuto})
             e.setState({enderecoAuto: location})
             e.setState({descricaoAuto: descricao})
             e.setState({categoria: categoria})
@@ -275,6 +280,8 @@ export default class EditarAnuncio extends Component {
             e.setState({image2: imagem2})
             e.setState({image3: imagem3})
             e.setState({video: video})
+
+            console.log("ARRAY DE NOME PESQUISA: " + arrayAuto)
         })
 
     }
@@ -302,10 +309,12 @@ export default class EditarAnuncio extends Component {
             let workDays = ''
             let type = ''
             let ufestab = ''
+            let arrayEstab = []
 
             querySnapshot.forEach(function(doc) {
                 idAnuncio = doc.data().id,
                 titulo = doc.data().titleEstab,
+                arrayEstab = doc.data().titleEstabArray
                 categoria = doc.data().categoryEstab,
                 subcategoria = doc.data().subcategoryEstab,
                 descricao = doc.data().descriptionEstab,
@@ -327,6 +336,7 @@ export default class EditarAnuncio extends Component {
 
             e.setState({idAnuncio: idAnuncio})
             e.setState({tituloEstab: titulo})
+            e.setState({arrayWordsEstab: arrayEstab})
             e.setState({descricaoEstab: descricao})
             e.setState({categoria: categoria})
             e.setState({subcategoria: subcategoria})
@@ -342,6 +352,8 @@ export default class EditarAnuncio extends Component {
             e.setState({horarioOpen: abertura})
             e.setState({horarioClose: fechamento})
             e.setState({workDays: workDays})
+
+            console.log("ARRAY DE NOME PESQUISA: " + arrayEstab)
         })
 
     }
@@ -429,12 +441,28 @@ export default class EditarAnuncio extends Component {
 
   onChangeTituloAuto(text) {
     this.setState({tituloAuto: text})
+
+    //se o campo estiver vazio ele limpa a lista
+    if(text == '') {
+      this.setState({arrayWordsAuto: []})
+    }
+
+    this.state.arrayWordsAuto.push(text)
     console.log('title auto'  + this.state.tituloAuto)
+    console.log('array de palavras: '  + this.state.arrayWordsAuto)
   }
 
   onChangeTituloEstab(text) {
     this.setState({tituloEstab: text})
+
+    //se o campo estiver vazio ele limpa a lista
+    if(text == '') {
+      this.setState({arrayWordsEstab: []})
+    }
+
+    this.state.arrayWordsEstab.push(text)
     console.log('title estab'  + this.state.tituloEstab)
+    console.log('array de palavras: '  + this.state.arrayWordsEstab)
   }
 
   onChangeDescricaoAuto(text) {
@@ -842,6 +870,7 @@ export default class EditarAnuncio extends Component {
                                       firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
                                         firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
                                           titleEstab: e.state.tituloEstab,
+                                          titleEstabArray: e.state.arrayWordsEstab,
                                           idAnuncio: routeIdAnuncio,
                                           idUser: userUID,
                                           descriptionEstab: e.state.descricaoEstab,
@@ -866,6 +895,7 @@ export default class EditarAnuncio extends Component {
                                         //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                         firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
                                           titleEstab: e.state.tituloEstab,
+                                          titleEstabArray: e.state.arrayWordsEstab,
                                           idAnuncio: routeIdAnuncio,
                                           idUser: userUID,
                                           descriptionEstab: e.state.descricaoEstab,
@@ -909,6 +939,7 @@ export default class EditarAnuncio extends Component {
                                       firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {    
                                         firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
                                           titleAuto: e.state.tituloAuto,
+                                          titleAutoArray: e.state.arrayWordsAuto,
                                           idAnuncio: routeIdAnuncio,
                                           idUser: userUID,
                                           nome: e.state.nomeAuto,
@@ -931,6 +962,7 @@ export default class EditarAnuncio extends Component {
                                         //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                         firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
                                           titleAuto: e.state.tituloAuto,
+                                          titleAutoArray: e.state.arrayWordsAuto,
                                           idAnuncio: routeIdAnuncio,
                                           idUser: userUID,
                                           nome: e.state.nomeAuto,
@@ -1008,6 +1040,7 @@ export default class EditarAnuncio extends Component {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
                                       firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idAnuncio: routeIdAnuncio,
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
@@ -1032,6 +1065,7 @@ export default class EditarAnuncio extends Component {
                                       //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                       firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idAnuncio: routeIdAnuncio,
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
@@ -1075,6 +1109,7 @@ export default class EditarAnuncio extends Component {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {    
                                       firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
                                         titleAuto: e.state.tituloAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         idAnuncio: routeIdAnuncio,
                                         idUser: userUID,
                                         nome: e.state.nomeAuto,
@@ -1097,6 +1132,7 @@ export default class EditarAnuncio extends Component {
                                       //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                       firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
                                         titleAuto: e.state.tituloAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         idAnuncio: routeIdAnuncio,
                                         idUser: userUID,
                                         nome: e.state.nomeAuto,

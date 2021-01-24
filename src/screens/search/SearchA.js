@@ -439,15 +439,14 @@ export default class SearchA extends Component {
                           </View>
 
 
-                          <View style={{marginTop: 24, marginLeft: 30}}>
-                              <IconResponsive  name="briefcase" size={19}/>
-                          </View>
-                          
-                          {item.premiumUser == true &&
-                            <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
+                          <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
+                            {item.premiumUser == true &&
                                 <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
+                            }
+                            <View style={{marginLeft:10}}>
+                              <IconResponsive  name="briefcase" size={19}/> 
                             </View>
-                          }
+                          </View>
 
                       </View> 
 
@@ -501,15 +500,15 @@ export default class SearchA extends Component {
                                       <ValueField>{item.value}</ValueField>
                                   </View>
 
-                                  <View style={{marginTop: 24, marginLeft: 30}}>
-                                      <IconResponsive  name="user-tie" size={19}/>
-                                  </View>
 
+                                <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
                                   {item.premiumUser == true &&
-                                    <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
-                                        <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
-                                    </View>
+                                      <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
                                   }
+                                  <View style={{marginLeft:10}}>
+                                    <IconResponsive  name="user-tie" size={19}/> 
+                                  </View>
+                                </View>
                                   
                               </View> 
 
