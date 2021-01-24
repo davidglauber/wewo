@@ -167,7 +167,9 @@ export default class TelaCriarCartaoVisita extends Component {
       date: '',
       subcategorias:[],
       subcategoria:'',
-      usuarioComprou: false
+      usuarioComprou: false,
+      arrayWordsAuto: [],
+      arrayWordsEstab: []
     };
   }
 
@@ -275,7 +277,10 @@ export default class TelaCriarCartaoVisita extends Component {
 
   onChangeTituloEstab(text) {
     this.setState({tituloEstab: text})
+
+    this.state.arrayWordsEstab.push(text)
     console.log('title estab'  + this.state.tituloEstab)
+    console.log('array de palavras: '  + this.state.arrayWordsEstab)
   }
 
   onChangeDescricaoAuto(text) {
@@ -290,7 +295,10 @@ export default class TelaCriarCartaoVisita extends Component {
 
   onChangeNomeAuto(text) {
     this.setState({nomeAuto: text})
+
+    this.state.arrayWordsAuto.push(text)
     console.log('nome auto'  + this.state.nomeAuto)
+    console.log('array de palavras: '  + this.state.arrayWordsAuto)
   }
 
   onChangeEnderecoEstab(text) {
@@ -668,6 +676,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                       firebase.firestore().collection('usuarios').doc(userUID).collection('cartoes').doc(getSameIdToDocument).set({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idCartao: getSameIdToDocument,
                                         publishData: e.state.date,
                                         idUser: userUID,
@@ -690,6 +699,7 @@ export default class TelaCriarCartaoVisita extends Component {
                           
                                       firebase.firestore().collection('cartoes').doc(getSameIdToDocument).set({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idCartao: getSameIdToDocument,
                                         publishData: e.state.date,
                                         idUser: userUID,
@@ -737,6 +747,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         nome: e.state.nomeAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
                                         UFAuto: e.state.UFAuto,
@@ -757,6 +768,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         nome: e.state.nomeAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
                                         UFAuto: e.state.UFAuto,
@@ -830,6 +842,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                       firebase.firestore().collection('usuarios').doc(userUID).collection('cartoes').doc(getSameIdToDocument).set({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idCartao: getSameIdToDocument,
                                         publishData: e.state.date,
                                         idUser: userUID,
@@ -852,6 +865,7 @@ export default class TelaCriarCartaoVisita extends Component {
                           
                                       firebase.firestore().collection('cartoes').doc(getSameIdToDocument).set({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idCartao: getSameIdToDocument,
                                         publishData: e.state.date,
                                         idUser: userUID,
@@ -899,6 +913,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         nome: e.state.nomeAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
                                         UFAuto: e.state.UFAuto,
@@ -919,6 +934,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         nome: e.state.nomeAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
                                         UFAuto: e.state.UFAuto,
@@ -1005,6 +1021,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                       firebase.firestore().collection('usuarios').doc(userUID).collection('cartoes').doc(getSameIdToDocument).set({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idCartao: getSameIdToDocument,
                                         publishData: e.state.date,
                                         idUser: userUID,
@@ -1027,6 +1044,7 @@ export default class TelaCriarCartaoVisita extends Component {
                           
                                       firebase.firestore().collection('cartoes').doc(getSameIdToDocument).set({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idCartao: getSameIdToDocument,
                                         publishData: e.state.date,
                                         idUser: userUID,
@@ -1074,6 +1092,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         nome: e.state.nomeAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
                                         UFAuto: e.state.UFAuto,
@@ -1094,6 +1113,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         nome: e.state.nomeAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
                                         UFAuto: e.state.UFAuto,
@@ -1167,6 +1187,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                       firebase.firestore().collection('usuarios').doc(userUID).collection('cartoes').doc(getSameIdToDocument).set({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idCartao: getSameIdToDocument,
                                         publishData: e.state.date,
                                         idUser: userUID,
@@ -1189,6 +1210,7 @@ export default class TelaCriarCartaoVisita extends Component {
                           
                                       firebase.firestore().collection('cartoes').doc(getSameIdToDocument).set({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idCartao: getSameIdToDocument,
                                         publishData: e.state.date,
                                         idUser: userUID,
@@ -1236,6 +1258,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         nome: e.state.nomeAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
                                         UFAuto: e.state.UFAuto,
@@ -1256,6 +1279,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         nome: e.state.nomeAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
                                         UFAuto: e.state.UFAuto,

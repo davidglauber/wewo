@@ -32,7 +32,9 @@ import { RFValue } from 'react-native-responsive-fontsize';
 // import components
 import TouchableItem from '../../components/TouchableItem';
 
-import {SafeBackground, IconResponsive, TouchableFilter, Description, AnuncioContainer, TouchableFilterUnselected, Heading, TextFilter, Title, ValueField, TouchableDetails, TextDetails} from '../home/styles';
+import {SafeBackground, IconResponsive, TouchableFilter, Description, AnuncioContainer, TouchableFilterUnselected, Heading, TextFilter, Title, ValueField, TouchableDetails, TextDetails, TextSearch} from '../home/styles';
+
+import { ThemeContext } from '../../../ThemeContext';
 
 // import colors
 import Colors from '../../theme/colors';
@@ -119,6 +121,8 @@ const styles = StyleSheet.create({
 
 // SearchA
 export default class SearchA extends Component {
+  static contextType = ThemeContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -339,8 +343,8 @@ export default class SearchA extends Component {
     return (
       <SafeBackground>
         <StatusBar
-          backgroundColor={Colors.statusBarColor}
-          barStyle="dark-content"
+          backgroundColor={this.context.dark ? '#121212' : 'white'}
+          barStyle={this.context.dark ? 'white-content' : 'dark-content'}
         />
 
         <View style={styles.titleContainer}>
@@ -374,13 +378,13 @@ export default class SearchA extends Component {
         </View>
 
         <View style={styles.inputContainer}>
-          <TextInput
+          <TextSearch
             placeholder="Digite o título do cartão ou anúncio..."
+            placeholderTextColor={this.context.dark ? '#DAA520' : '#3E3C3F'}
             returnKeyType="search"
             maxLength={50}
             value={this.state.textSearch}
             onChangeText={text => this.onChangeTextoSearch(text)}
-            style={styles.textInput}
           />
           <View style={styles.searchButtonContainer}>
             <TouchableItem

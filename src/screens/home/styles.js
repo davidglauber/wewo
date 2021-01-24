@@ -3,6 +3,8 @@ import styled from 'styled-components/native';
 //import icons
 import { FontAwesome5 } from '@expo/vector-icons';
 
+import { TextInput } from 'react-native';
+
 // import components
 import {Heading6, Heading5, Subtitle1, Subtitle2} from '../../components/text/CustomText';
 import { Ionicons as Ionicon } from '@expo/vector-icons';
@@ -23,6 +25,17 @@ export const SafeBackground = styled.SafeAreaView`
 
 export const TouchCategory = styled.TouchableOpacity`
     backgroundColor: ${props => props.theme.backgroundColor}
+`
+export const TextSearch = styled.TextInput`
+    border-width: 1px;
+    border-radius: 4px;
+    border-color: ${props => props.theme.color};
+    background-color: ${props => props.theme.backgroundColor};
+    color: ${props => props.theme.inversePallete};
+    padding-left: 8px;
+    padding-right: 51px;
+    height: 46px;
+    font-size: 16px;
 `
 
 export const HeadingAbout = styled(Heading6)`

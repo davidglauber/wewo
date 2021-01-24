@@ -314,7 +314,7 @@ export default class EditarAnuncio extends Component {
             querySnapshot.forEach(function(doc) {
                 idAnuncio = doc.data().id,
                 titulo = doc.data().titleEstab,
-                arrayEstab = doc.data().titleEstabArray
+                arrayEstab = doc.data().titleEstabArray,
                 categoria = doc.data().categoryEstab,
                 subcategoria = doc.data().subcategoryEstab,
                 descricao = doc.data().descriptionEstab,
@@ -1230,6 +1230,7 @@ export default class EditarAnuncio extends Component {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                       firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idAnuncio: routeIdAnuncio,
                                         idUser: userUID,
                                         publishData: e.state.date,
@@ -1254,6 +1255,7 @@ export default class EditarAnuncio extends Component {
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                       firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idAnuncio: routeIdAnuncio,
                                         idUser: userUID,
                                         publishData: e.state.date,
@@ -1306,6 +1308,7 @@ export default class EditarAnuncio extends Component {
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         nome: e.state.nomeAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
                                         type: 'Autonomo',
@@ -1328,6 +1331,7 @@ export default class EditarAnuncio extends Component {
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         nome: e.state.nomeAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
                                         type: 'Autonomo',
@@ -1407,6 +1411,7 @@ export default class EditarAnuncio extends Component {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
                                       firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idAnuncio: routeIdAnuncio,
                                         idUser: userUID,
                                         publishData: e.state.date,
@@ -1431,6 +1436,7 @@ export default class EditarAnuncio extends Component {
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
                                       firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
                                         titleEstab: e.state.tituloEstab,
+                                        titleEstabArray: e.state.arrayWordsEstab,
                                         idAnuncio: routeIdAnuncio,
                                         idUser: userUID,
                                         publishData: e.state.date,
@@ -1483,6 +1489,7 @@ export default class EditarAnuncio extends Component {
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         nome: e.state.nomeAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
                                         type: 'Autonomo',
@@ -1505,6 +1512,7 @@ export default class EditarAnuncio extends Component {
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         nome: e.state.nomeAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
                                         type: 'Autonomo',
