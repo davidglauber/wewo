@@ -203,6 +203,7 @@ export default class TelaAnuncio extends Component {
       anuncioEstab:[],
       modalVisible: true,
       purchased: false,
+      usersThatVotedFirebase: [],
       product: {
         images: [
           require('../../assets/img/confeiteira.jpeg'),
@@ -227,6 +228,7 @@ export default class TelaAnuncio extends Component {
 
     let idDoAnuncio = this.props.route.params.idDoAnuncio;
     let currentUserUID = this.props.route.params.idUserCartao;
+    let userWhoGiveTheStar = await firebase.auth().currentUser.uid;
 
     console.log('ID DO ANUNCIO: ' + idDoAnuncio)
     console.log('Numero de telefone: ' + this.state.phoneNavigator)
@@ -300,6 +302,22 @@ export default class TelaAnuncio extends Component {
       e.setState({isFetched: true})
     })
 
+
+   //verifica se o usuário já votou, se sim, não pode votar de novo
+    await firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('rating').where("idUserThatGiveStar", "==", userWhoGiveTheStar).onSnapshot(documentSnapshot => {
+      let usersThatVoted = []
+      documentSnapshot.forEach(function(doc) {
+        usersThatVoted.push({
+          idAnuncio: doc.data().idAnuncio,
+          idUserThatGiveStar: doc.data().idUserThatGiveStar,
+          starRating: doc.data().starRating,
+        })
+      })
+      console.log('LISTA DOS ANUNCIOS COMAPTIVEIS ESTRELA: ' + usersThatVoted)
+      e.setState({usersThatVotedFirebase: usersThatVoted})
+    })
+
+
     console.log('ARRAY ANUNCIO anuncioEstab: ' + this.state.anuncioEstab)
     console.log('ARRAY ANUNCIO autonomo: ' + this.state.anuncioAuto)
   }
@@ -364,35 +382,23 @@ export default class TelaAnuncio extends Component {
     })
   }
 
+
+
+
   async finishRating(idDoAnuncio, numberOfStar) {
     let userWhoGiveTheStar = await firebase.auth().currentUser.uid;
-    let usersThatVotedFirebase = []
-    
-    //verifica se o usuário já votou, se sim, não pode votar de novo
-    await firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('rating').get().then(function(querySnapshot){
-      let usersThatVoted = []
-      querySnapshot.forEach(function(doc) {
-        usersThatVoted.push({
-          idAnuncio: doc.data().idAnuncio,
-          idUserThatGiveStar: doc.data().idUserThatGiveStar,
-          starRating: doc.data().starRating
-        })
-      })
-      usersThatVotedFirebase.push(usersThatVoted)
-    })
-    
 
-    if(usersThatVotedFirebase.length == 0) {
+    if(this.state.usersThatVotedFirebase.length == 0) {
       //salva o usuario que votou e qual a qtd de estrelas que ele deu
-      await firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('rating').doc(idDoAnuncio).set({
+      firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('rating').doc(userWhoGiveTheStar).set({
         idAnuncio: this.props.route.params.idDoAnuncio,
         idUserThatGiveStar: userWhoGiveTheStar,
-        starRating: numberOfStar
+        starRating: numberOfStar,
       })
 
       alert('O serviço foi avaliado!')
     } else {
-      alert('Você não pode votar mais de uma vez!')
+      alert('O serviço já foi avaliado! Você não pode avaliar mais de uma vez!')
     }
   }
 
@@ -549,6 +555,8 @@ export default class TelaAnuncio extends Component {
                       size={30}
                       onFinishRating={(number) => this.finishRating(item.idAnuncio, number)}
                     />
+
+                    <TextDescription2>Nota Média: {item.mediaAvaliacao}</TextDescription2>
                   </View>
 
 
@@ -733,8 +741,10 @@ export default class TelaAnuncio extends Component {
                       reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
                       defaultRating={3}
                       size={30}
-                      onFinishRating={() => this.finishRating(item.idAnuncio)}
+                      onFinishRating={(number) => this.finishRating(item.idAnuncio, number)}
                     />
+
+                    <TextDescription2>Nota Média: {item.mediaAvaliacao}</TextDescription2>
                   </View>
 
                 <View style={{flex: 1, flexDirection:'row',  justifyContent:'center', marginBottom:1, bottom:40}}>
