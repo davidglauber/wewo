@@ -364,8 +364,36 @@ export default class TelaAnuncio extends Component {
     })
   }
 
-  finishRating() {
-    alert('O serviço foi avaliado!')
+  async finishRating(idDoAnuncio, numberOfStar) {
+    let userWhoGiveTheStar = await firebase.auth().currentUser.uid;
+    let usersThatVotedFirebase = []
+    
+    //verifica se o usuário já votou, se sim, não pode votar de novo
+    await firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('rating').get().then(function(querySnapshot){
+      let usersThatVoted = []
+      querySnapshot.forEach(function(doc) {
+        usersThatVoted.push({
+          idAnuncio: doc.data().idAnuncio,
+          idUserThatGiveStar: doc.data().idUserThatGiveStar,
+          starRating: doc.data().starRating
+        })
+      })
+      usersThatVotedFirebase.push(usersThatVoted)
+    })
+    
+
+    if(usersThatVotedFirebase.length == 0) {
+      //salva o usuario que votou e qual a qtd de estrelas que ele deu
+      await firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('rating').doc(idDoAnuncio).set({
+        idAnuncio: this.props.route.params.idDoAnuncio,
+        idUserThatGiveStar: userWhoGiveTheStar,
+        starRating: numberOfStar
+      })
+
+      alert('O serviço foi avaliado!')
+    } else {
+      alert('Você não pode votar mais de uma vez!')
+    }
   }
 
   render() {
@@ -519,7 +547,7 @@ export default class TelaAnuncio extends Component {
                       reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
                       defaultRating={3}
                       size={30}
-                      onFinishRating={() => this.finishRating()}
+                      onFinishRating={(number) => this.finishRating(item.idAnuncio, number)}
                     />
                   </View>
 
@@ -692,7 +720,7 @@ export default class TelaAnuncio extends Component {
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.phone}</TextTheme>
                   </View>
 
-                  <View style={{paddingHorizontal: 16, marginTop:20, marginBottom:100, flexDirection:'row', alignItems: 'center'}}>
+                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                         <IconResponsiveNOBACK name="list-alt" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
                   </View>
@@ -705,7 +733,7 @@ export default class TelaAnuncio extends Component {
                       reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
                       defaultRating={3}
                       size={30}
-                      onFinishRating={() => this.finishRating()}
+                      onFinishRating={() => this.finishRating(item.idAnuncio)}
                     />
                   </View>
 
