@@ -36,6 +36,9 @@ import IconMain from '../../components/icon/IconMain';
 
 import TouchableItem from '../../components/TouchableItem';
 
+//importa estrela de voatação
+import { Rating, AirbnbRating } from 'react-native-ratings';
+
 // import colors
 import Colors from '../../theme/colors';
 
@@ -361,6 +364,10 @@ export default class TelaAnuncio extends Component {
     })
   }
 
+  finishRating() {
+    alert('O serviço foi avaliado!')
+  }
+
   render() {
     const {product, anuncioAuto, anuncioEstab, isFetched} = this.state;
     const {
@@ -498,10 +505,25 @@ export default class TelaAnuncio extends Component {
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.local}</TextTheme>
                   </View>
 
-                  <View style={{paddingHorizontal: 16, marginTop:20, marginBottom:100, flexDirection:'row', alignItems: 'center'}}>
+                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                         <IconResponsiveNOBACK name="list-alt" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
                   </View>
+
+
+
+                  <View style={{flexDirection:'column', alignItems:'center', marginBottom:100, marginTop:50}}>
+                    <TextDescription2>Avaliações</TextDescription2>
+                    <AirbnbRating
+                      count={5}
+                      reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
+                      defaultRating={3}
+                      size={30}
+                      onFinishRating={() => this.finishRating()}
+                    />
+                  </View>
+
+
           
 
                   <View style={{flex: 1, flexDirection:'row', justifyContent:'center', marginBottom:1, bottom:40}}>
@@ -673,6 +695,18 @@ export default class TelaAnuncio extends Component {
                   <View style={{paddingHorizontal: 16, marginTop:20, marginBottom:100, flexDirection:'row', alignItems: 'center'}}>
                         <IconResponsiveNOBACK name="list-alt" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
+                  </View>
+
+
+                  <View style={{flexDirection:'column', alignItems:'center', marginBottom:100, marginTop:50}}>
+                    <TextDescription2>Avaliações</TextDescription2>
+                    <AirbnbRating
+                      count={5}
+                      reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
+                      defaultRating={3}
+                      size={30}
+                      onFinishRating={() => this.finishRating()}
+                    />
                   </View>
 
                 <View style={{flex: 1, flexDirection:'row',  justifyContent:'center', marginBottom:1, bottom:40}}>
