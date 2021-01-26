@@ -204,6 +204,8 @@ export default class TelaAnuncio extends Component {
       modalVisible: true,
       purchased: false,
       usersThatVotedFirebase: [],
+      mediaAvaliacao: [],
+      notaMedia: 0,
       product: {
         images: [
           require('../../assets/img/confeiteira.jpeg'),
@@ -229,6 +231,7 @@ export default class TelaAnuncio extends Component {
     let idDoAnuncio = this.props.route.params.idDoAnuncio;
     let currentUserUID = this.props.route.params.idUserCartao;
     let userWhoGiveTheStar = await firebase.auth().currentUser.uid;
+    let arraySumStars = [];
 
     console.log('ID DO ANUNCIO: ' + idDoAnuncio)
     console.log('Numero de telefone: ' + this.state.phoneNavigator)
@@ -314,8 +317,38 @@ export default class TelaAnuncio extends Component {
         })
       })
       console.log('LISTA DOS ANUNCIOS COMAPTIVEIS ESTRELA: ' + usersThatVoted)
+
       e.setState({usersThatVotedFirebase: usersThatVoted})
     })
+
+
+
+    function myFunc(total, num) {
+      return total + num;
+    }
+
+    await firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('rating').onSnapshot(documentSnapshot => {
+      let usersThatVoted = []
+      documentSnapshot.forEach(function(doc) {
+        usersThatVoted.push({
+          idAnuncio: doc.data().idAnuncio,
+          idUserThatGiveStar: doc.data().idUserThatGiveStar,
+          starRating: doc.data().starRating,
+        })
+      })
+      console.log('LISTA DOS ANUNCIOS COMAPTIVEIS ESTRELA: ' + usersThatVoted)
+
+      //salvar os valores de estrelas em uma lista separada
+      usersThatVoted.map((l) => (
+       arraySumStars.push(l.starRating)
+      ))
+      
+      let medium = arraySumStars.reduce(myFunc) / arraySumStars.length
+      e.setState({notaMedia: medium})
+
+      console.log('MEDIA AVALIAÇÃO: ' + e.state.notaMedia)
+    })
+
 
 
     console.log('ARRAY ANUNCIO anuncioEstab: ' + this.state.anuncioEstab)
@@ -556,7 +589,7 @@ export default class TelaAnuncio extends Component {
                       onFinishRating={(number) => this.finishRating(item.idAnuncio, number)}
                     />
 
-                    <TextDescription2>Nota Média: {item.mediaAvaliacao}</TextDescription2>
+                    <TextDescription2>Nota Média: {this.state.notaMedia}</TextDescription2>
                   </View>
 
 
@@ -744,7 +777,7 @@ export default class TelaAnuncio extends Component {
                       onFinishRating={(number) => this.finishRating(item.idAnuncio, number)}
                     />
 
-                    <TextDescription2>Nota Média: {item.mediaAvaliacao}</TextDescription2>
+                    <TextDescription2>Nota Média: {this.state.notaMedia}</TextDescription2>
                   </View>
 
                 <View style={{flex: 1, flexDirection:'row',  justifyContent:'center', marginBottom:1, bottom:40}}>
