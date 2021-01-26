@@ -230,7 +230,7 @@ export default class TelaAnuncio extends Component {
 
     let idDoAnuncio = this.props.route.params.idDoAnuncio;
     let currentUserUID = this.props.route.params.idUserCartao;
-    let userWhoGiveTheStar = await firebase.auth().currentUser.uid;
+    let currentUser = firebase.auth().currentUser;
     let arraySumStars = [];
 
     console.log('ID DO ANUNCIO: ' + idDoAnuncio)
@@ -306,20 +306,24 @@ export default class TelaAnuncio extends Component {
     })
 
 
-   //verifica se o usuário já votou, se sim, não pode votar de novo
-    await firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('rating').where("idUserThatGiveStar", "==", userWhoGiveTheStar).onSnapshot(documentSnapshot => {
-      let usersThatVoted = []
-      documentSnapshot.forEach(function(doc) {
-        usersThatVoted.push({
-          idAnuncio: doc.data().idAnuncio,
-          idUserThatGiveStar: doc.data().idUserThatGiveStar,
-          starRating: doc.data().starRating,
-        })
-      })
-      console.log('LISTA DOS ANUNCIOS COMAPTIVEIS ESTRELA: ' + usersThatVoted)
-
-      e.setState({usersThatVotedFirebase: usersThatVoted})
-    })
+    if(currentUser == null) {
+        e.setState({usersThatVotedFirebase: []})
+    } else {
+      //verifica se o usuário já votou, se sim, não pode votar de novo
+       firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('rating').where("idUserThatGiveStar", "==", currentUser.uid).onSnapshot(documentSnapshot => {
+         let usersThatVoted = []
+         documentSnapshot.forEach(function(doc) {
+           usersThatVoted.push({
+             idAnuncio: doc.data().idAnuncio,
+             idUserThatGiveStar: doc.data().idUserThatGiveStar,
+             starRating: doc.data().starRating,
+           })
+         })
+         console.log('LISTA DOS ANUNCIOS COMAPTIVEIS ESTRELA: ' + usersThatVoted)
+   
+         e.setState({usersThatVotedFirebase: usersThatVoted})
+       })
+    }
 
 
 
@@ -328,18 +332,18 @@ export default class TelaAnuncio extends Component {
     }
 
     await firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('rating').onSnapshot(documentSnapshot => {
-      let usersThatVoted = []
+      let usersThatVoted2 = []
       documentSnapshot.forEach(function(doc) {
-        usersThatVoted.push({
+        usersThatVoted2.push({
           idAnuncio: doc.data().idAnuncio,
           idUserThatGiveStar: doc.data().idUserThatGiveStar,
           starRating: doc.data().starRating,
         })
       })
-      console.log('LISTA DOS ANUNCIOS COMAPTIVEIS ESTRELA: ' + usersThatVoted)
+      console.log('LISTA DOS ANUNCIOS COMAPTIVEIS ESTRELA: ' + usersThatVoted2)
 
       //salvar os valores de estrelas em uma lista separada
-      usersThatVoted.map((l) => (
+      usersThatVoted2.map((l) => (
        arraySumStars.push(l.starRating)
       ))
       
@@ -425,19 +429,23 @@ export default class TelaAnuncio extends Component {
 
 
   async finishRating(idDoAnuncio, numberOfStar) {
-    let userWhoGiveTheStar = await firebase.auth().currentUser.uid;
+    let currentUser = firebase.auth().currentUser;
 
-    if(this.state.usersThatVotedFirebase.length == 0) {
-      //salva o usuario que votou e qual a qtd de estrelas que ele deu
-      firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('rating').doc(userWhoGiveTheStar).set({
-        idAnuncio: this.props.route.params.idDoAnuncio,
-        idUserThatGiveStar: userWhoGiveTheStar,
-        starRating: numberOfStar,
-      })
-
-      alert('O serviço foi avaliado!')
+    if(currentUser !== null) {
+      if(this.state.usersThatVotedFirebase.length == 0) {
+        //salva o usuario que votou e qual a qtd de estrelas que ele deu
+        firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('rating').doc(currentUser.uid).set({
+          idAnuncio: this.props.route.params.idDoAnuncio,
+          idUserThatGiveStar: currentUser.uid,
+          starRating: numberOfStar,
+        })
+  
+        alert('O serviço foi avaliado!')
+      } else {
+        alert('O serviço já foi avaliado! Você não pode avaliar mais de uma vez!')
+      }
     } else {
-      alert('O serviço já foi avaliado! Você não pode avaliar mais de uma vez!')
+      alert('Você só pode avaliar depois de fazer o login!')
     }
   }
 
