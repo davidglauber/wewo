@@ -347,12 +347,18 @@ export default class TelaAnuncio extends Component {
       e.setState({notaMedia: medium})
 
       console.log('MEDIA AVALIAÇÃO: ' + e.state.notaMedia)
+      //atualiza a media do anuncio
+      firebase.firestore().collection('anuncios').doc(idDoAnuncio).update({
+        media: medium
+      })
     })
 
 
 
     console.log('ARRAY ANUNCIO anuncioEstab: ' + this.state.anuncioEstab)
     console.log('ARRAY ANUNCIO autonomo: ' + this.state.anuncioAuto)
+
+
   }
 
   goBack = () => {
