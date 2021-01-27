@@ -100,7 +100,7 @@ async componentDidMount() {
     }
 
     //obter anuncios PREMIUM ativos autonomo
-    await firebase.firestore().collection('anuncios').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("categoryAuto", "==", titleNavCategory).where("premiumUser", "==", true).onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('anuncios').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("categoryAuto", "==", titleNavCategory).where("premiumUser", "==", true).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
       let premiumanunciosAtivosAuto = [];
       documentSnapshot.forEach(function(doc) {
         premiumanunciosAtivosAuto.push({
@@ -129,7 +129,7 @@ async componentDidMount() {
 
 
     //obter anuncios PREMIUM ativos estabelecimento
-    await firebase.firestore().collection('anuncios').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("categoryEstab", "==", titleNavCategory).where("premiumUser", "==", true).onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('anuncios').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("categoryEstab", "==", titleNavCategory).where("premiumUser", "==", true).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
       let premiumanunciosAtivosEstab = [];
       documentSnapshot.forEach(function(doc) {
         premiumanunciosAtivosEstab.push({
@@ -157,7 +157,7 @@ async componentDidMount() {
 
 
     //obter anuncios ativos autonomo 
-    await firebase.firestore().collection('anuncios').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("categoryAuto", "==", titleNavCategory).where("premiumUser", "==", false).onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('anuncios').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("categoryAuto", "==", titleNavCategory).where("premiumUser", "==", false).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
       let anunciosAtivosAuto = [];
       documentSnapshot.forEach(function(doc) {
         anunciosAtivosAuto.push({
@@ -186,7 +186,7 @@ async componentDidMount() {
 
 
     //obter anuncios ativos estabelecimento
-    await firebase.firestore().collection('anuncios').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("categoryEstab", "==", titleNavCategory).where("premiumUser", "==", false).onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('anuncios').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("categoryEstab", "==", titleNavCategory).where("premiumUser", "==", false).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
       let anunciosAtivosEstab = [];
       documentSnapshot.forEach(function(doc) {
         anunciosAtivosEstab.push({

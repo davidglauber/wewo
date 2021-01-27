@@ -45,9 +45,9 @@ import Colors from '../../theme/colors';
 //import firebase
 import firebase from '../../config/firebase';
 
-//import icons
-import { FontAwesome5 } from '@expo/vector-icons';
-import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+
+//importa estrela de voatação
+import { Rating, AirbnbRating } from 'react-native-ratings';
 
 // ProductA Config
 const isRTL = I18nManager.isRTL;
@@ -204,6 +204,9 @@ export default class MostrarCartao extends Component {
       cartaoAuto:[],
       cartaoEstab:[],
       purchased: false,
+      usersThatVotedFirebase: [],
+      mediaAvaliacao: [],
+      notaMedia: 0,
       product: {
         images: [
           require('../../assets/img/confeiteira.jpeg'),
@@ -239,6 +242,8 @@ export default class MostrarCartao extends Component {
 
     let idCartao = this.props.route.params.idDoCartao;
     let currentUserUID = this.props.route.params.idUserCartao;
+    let currentUser = firebase.auth().currentUser;
+    let arraySumStars = [];
 
     console.log('ID DO ANUNCIO: ' + idCartao)
     console.log('ROUTE ID USER: ' + currentUserUID)
@@ -250,7 +255,7 @@ export default class MostrarCartao extends Component {
       querySnapshot.forEach(function(doc) {
         cartaoAutoDidMount.push({
           idUser: doc.data().idUser,
-          idAnuncio: doc.data().idAnuncio,
+          idCartao: doc.data().idCartao,
           publishData: e.state.date,
           nome: doc.data().nome,
           video: doc.data().videoPublish,
@@ -282,7 +287,7 @@ export default class MostrarCartao extends Component {
         cartaoEstabDidMount.push({
           idUser: doc.data().idUser,
           value: doc.data().valueServiceEstab,
-          idAnuncio: doc.data().idAnuncio,
+          idCartao: doc.data().idCartao,
           publishData: e.state.date,
           video: doc.data().videoPublish,
           photo: doc.data().photoPublish,
@@ -309,6 +314,60 @@ export default class MostrarCartao extends Component {
       e.setModalVisible(false)
       e.setState({isFetched: true})
     })
+
+
+
+
+  if(currentUser == null) {
+      e.setState({usersThatVotedFirebase: []})
+  } else {
+    //verifica se o usuário já votou, se sim, não pode votar de novo
+     firebase.firestore().collection('cartoes').doc(idCartao).collection('rating').where("idUserThatGiveStar", "==", currentUser.uid).onSnapshot(documentSnapshot => {
+       let usersThatVoted = []
+       documentSnapshot.forEach(function(doc) {
+         usersThatVoted.push({
+           idCartao: doc.data().idCartao,
+           idUserThatGiveStar: doc.data().idUserThatGiveStar,
+           starRating: doc.data().starRating,
+         })
+       })
+       console.log('LISTA DOS CARTOES COMAPTIVEIS ESTRELA: ' + usersThatVoted)
+ 
+       e.setState({usersThatVotedFirebase: usersThatVoted})
+     })
+  }
+
+
+
+  function myFunc(total, num) {
+    return total + num;
+  }
+
+  await firebase.firestore().collection('cartoes').doc(idCartao).collection('rating').onSnapshot(documentSnapshot => {
+    let usersThatVoted2 = []
+    documentSnapshot.forEach(function(doc) {
+      usersThatVoted2.push({
+        idCartao: doc.data().idCartao,
+        idUserThatGiveStar: doc.data().idUserThatGiveStar,
+        starRating: doc.data().starRating,
+      })
+    })
+    console.log('LISTA DOS CARTOES COMAPTIVEIS ESTRELA: ' + usersThatVoted2)
+
+    //salvar os valores de estrelas em uma lista separada
+    usersThatVoted2.map((l) => (
+     arraySumStars.push(l.starRating)
+    ))
+    
+    let medium = arraySumStars.reduce(myFunc) / arraySumStars.length
+    e.setState({notaMedia: medium})
+
+    console.log('MEDIA AVALIAÇÃO: ' + e.state.notaMedia)
+    //atualiza a media do anuncio
+    firebase.firestore().collection('cartoes').doc(idCartao).update({
+      media: medium
+    })
+  })
 
     console.log('ARRAY ANUNCIO cartaoEstab: ' + this.state.cartaoEstab)
     console.log('ARRAY ANUNCIO autonomo: ' + this.state.cartaoAuto)
@@ -382,6 +441,29 @@ export default class MostrarCartao extends Component {
       }
     })
   }
+
+
+  async finishRating(idCartao, numberOfStar) {
+    let currentUser = firebase.auth().currentUser;
+
+    if(currentUser !== null) {
+      if(this.state.usersThatVotedFirebase.length == 0) {
+        //salva o usuario que votou e qual a qtd de estrelas que ele deu
+        firebase.firestore().collection('cartoes').doc(idCartao).collection('rating').doc(currentUser.uid).set({
+          idCartao: this.props.route.params.idCartao,
+          idUserThatGiveStar: currentUser.uid,
+          starRating: numberOfStar,
+        })
+  
+        alert('O serviço foi avaliado!')
+      } else {
+        alert('O serviço já foi avaliado! Você não pode avaliar mais de uma vez!')
+      }
+    } else {
+      alert('Você só pode avaliar depois de fazer o login!')
+    }
+  }
+
 
   render() {
     const {product, favorite, cartaoAuto, cartaoEstab, isFetched} = this.state;
@@ -512,11 +594,24 @@ export default class MostrarCartao extends Component {
                       <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.local}</TextTheme>
                   </View>
 
-                  <View style={{paddingHorizontal: 16, marginTop:20, marginBottom:100, flexDirection:'row', alignItems: 'center'}}>
+                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                         <IconResponsiveNOBACK name="list-alt" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
                   </View>
 
+
+                  <View style={{flexDirection:'column', alignItems:'center', marginBottom:100, marginTop:50}}>
+                    <TextDescription2>Avaliações</TextDescription2>
+                    <AirbnbRating
+                      count={5}
+                      reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
+                      defaultRating={3}
+                      size={30}
+                      onFinishRating={(number) => this.finishRating(item.idCartao, number)}
+                    />
+
+                    <TextDescription2>Nota Média: {this.state.notaMedia}</TextDescription2>
+                  </View>
 
 
                   <View style={{flex: 1, flexDirection:'row', justifyContent:'center', marginBottom:1, bottom:40}}>
@@ -684,12 +779,23 @@ export default class MostrarCartao extends Component {
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.phone}</TextTheme>
                   </View>
 
-                  <View style={{paddingHorizontal: 16, marginTop:20, marginBottom:100, flexDirection:'row', alignItems: 'center'}}>
+                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                         <IconResponsiveNOBACK name="list-alt" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
                   </View>
           
+                  <View style={{flexDirection:'column', alignItems:'center', marginBottom:100, marginTop:50}}>
+                    <TextDescription2>Avaliações</TextDescription2>
+                    <AirbnbRating
+                      count={5}
+                      reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
+                      defaultRating={3}
+                      size={30}
+                      onFinishRating={(number) => this.finishRating(item.idCartao, number)}
+                    />
 
+                    <TextDescription2>Nota Média: {this.state.notaMedia}</TextDescription2>
+                  </View>
 
 
                   <View style={{flex: 1, flexDirection:'row', justifyContent:'center', marginBottom:1, bottom:40}}>

@@ -164,7 +164,7 @@ export default class CartaoVisita extends Component {
       this.setState({purchased: false})
     }
     //obter cartoes PREMIUM ativos autonomo 
-    await firebase.firestore().collection('cartoes').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("premiumUser", "==", true).onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('cartoes').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("premiumUser", "==", true).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
       let premiumcartoesAutoDidMount = []
       documentSnapshot.forEach(function(doc) {
         premiumcartoesAutoDidMount.push({
@@ -189,7 +189,7 @@ export default class CartaoVisita extends Component {
     })
 
     //obter cartoes PREMIUM ativos estabelecimento 
-    await firebase.firestore().collection('cartoes').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("premiumUser", "==", true).onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('cartoes').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("premiumUser", "==", true).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
       let premiumcartoesEstabDidMount = []
       documentSnapshot.forEach(function(doc) {
         premiumcartoesEstabDidMount.push({
@@ -218,7 +218,7 @@ export default class CartaoVisita extends Component {
     })
 
 
-    await firebase.firestore().collection('cartoes').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("premiumUser", "==", false).onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('cartoes').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("premiumUser", "==", false).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
       let cartoesAutoDidMount = []
       documentSnapshot.forEach(function(doc) {
         cartoesAutoDidMount.push({
@@ -242,7 +242,7 @@ export default class CartaoVisita extends Component {
       })
     })
 
-    await firebase.firestore().collection('cartoes').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("premiumUser", "==", false).onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('cartoes').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("premiumUser", "==", false).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
       let cartoesEstabDidMount = []
       documentSnapshot.forEach(function(doc) {
         cartoesEstabDidMount.push({
