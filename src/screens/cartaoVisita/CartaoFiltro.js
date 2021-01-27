@@ -192,7 +192,7 @@ export default class CartaoFiltro extends Component {
 
         if(typeRoute == 'Autonomo') {
           if(arrayOfSelectedStates.length <= 0 && arrayOfSelectedCategories.length > 0) {
-          firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("categoryAuto", "in", arrayOfSelectedCategories).onSnapshot(documentSnapshot => {
+          firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("categoryAuto", "in", arrayOfSelectedCategories).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
               let cartoesAutoDidMount = [];
               documentSnapshot.forEach(function(doc) {
                 cartoesAutoDidMount.push({
@@ -224,7 +224,7 @@ export default class CartaoFiltro extends Component {
 
 
           if(arrayOfSelectedStates.length > 0 && arrayOfSelectedCategories.length <= 0) {
-            firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFAuto", "in", arrayOfSelectedStates).onSnapshot(documentSnapshot => {
+            firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFAuto", "in", arrayOfSelectedStates).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
                 let cartoesAutoDidMount = [];
                 documentSnapshot.forEach(function(doc) {
                   cartoesAutoDidMount.push({
@@ -257,7 +257,7 @@ export default class CartaoFiltro extends Component {
 
 
             if(arrayOfSelectedStates.length > 0 && arrayOfSelectedCategories.length > 0) {
-              firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("categoryAuto", "in", arrayOfSelectedCategories).onSnapshot(documentSnapshot => {
+              firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("categoryAuto", "in", arrayOfSelectedCategories).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
                   let cartoesAutoDidMount = [];
                   documentSnapshot.forEach(function(doc) {
                     cartoesAutoDidMount.push({
@@ -284,7 +284,7 @@ export default class CartaoFiltro extends Component {
     
 
 
-                firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFAuto", "in", arrayOfSelectedStates).onSnapshot(documentSnapshot => {
+                firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFAuto", "in", arrayOfSelectedStates).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
                   let cartoesAutoDidMount = [];
                   documentSnapshot.forEach(function(doc) {
                     cartoesAutoDidMount.push({
@@ -314,7 +314,7 @@ export default class CartaoFiltro extends Component {
         
         if(typeRoute == 'Estabelecimento') {
           if(arrayOfSelectedStates.length <= 0 && arrayOfSelectedCategories.length > 0) {
-          await firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("categoryEstab", "in", arrayOfSelectedCategories).onSnapshot(documentSnapshot => {
+          await firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("categoryEstab", "in", arrayOfSelectedCategories).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
             let cartoesEstabDidMount = [];
             documentSnapshot.forEach(function(doc) {
                 cartoesEstabDidMount.push({
@@ -351,7 +351,7 @@ export default class CartaoFiltro extends Component {
 
 
         if(arrayOfSelectedStates.length > 0 && arrayOfSelectedCategories.length <= 0) {
-          await firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFEstab", "in", arrayOfSelectedStates).onSnapshot(documentSnapshot => {
+          await firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFEstab", "in", arrayOfSelectedStates).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
             let cartoesEstabDidMount = [];
             documentSnapshot.forEach(function(doc) {
                 cartoesEstabDidMount.push({
@@ -390,7 +390,7 @@ export default class CartaoFiltro extends Component {
 
 
         if(arrayOfSelectedStates.length > 0 && arrayOfSelectedCategories.length > 0) {
-          await firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("categoryEstab", "in", arrayOfSelectedCategories).onSnapshot(documentSnapshot => {
+          await firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("categoryEstab", "in", arrayOfSelectedCategories).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
             let cartoesEstabDidMount = [];
             documentSnapshot.forEach(function(doc) {
                 cartoesEstabDidMount.push({
@@ -422,7 +422,7 @@ export default class CartaoFiltro extends Component {
 
 
 
-        await firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFEstab", "in", arrayOfSelectedStates).onSnapshot(documentSnapshot => {
+        await firebase.firestore().collection('cartoes').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFEstab", "in", arrayOfSelectedStates).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
           let cartoesEstabDidMount = [];
           documentSnapshot.forEach(function(doc) {
               cartoesEstabDidMount.push({
