@@ -388,11 +388,15 @@ export default class TelaAnuncio extends Component {
     })
     
 
-    //pega a imagem e nome da pessoa logada
-    await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
-          e.setState({fotoUser: documentSnapshot.data().photoProfile}),
-          e.setState({nomeUser: documentSnapshot.data().nome})
-    })
+    if(currentUser == null) {
+      e.setState({usersThatVotedFirebase: []})
+    } else {
+      //pega a imagem e nome da pessoa logada
+      await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
+            e.setState({fotoUser: documentSnapshot.data().photoProfile}),
+            e.setState({nomeUser: documentSnapshot.data().nome})
+      })
+    }
 
 
 }
@@ -515,6 +519,7 @@ export default class TelaAnuncio extends Component {
     const {
       images,
     } = product;
+    const usuarioEstado = firebase.auth().currentUser;
 
     return (
       <SafeAnuncioView>
@@ -730,21 +735,29 @@ export default class TelaAnuncio extends Component {
             <View style={{alignItems:'center', marginTop:40}}>
             <Heading6 style={{fontWeight:'bold', marginLeft: 10}}>Comentários</Heading6>
                 <View style={{marginTop:7,maxWidth: windowWidth - 60}}>
-                      <TextInput
-                        multiline
-                        placeholder="Deixe o seu comentário..."
-                        numberOfLines={3}
-                        style={{borderWidth:3, borderColor: '#DAA520', borderRadius:20, padding:10}}
-                        maxLength={255}
-                        onChangeText={(text) => this.setState({text})}
-                        value={this.state.text}
-                      />
-                      <SignUpBottom onPress={() => this.registerComment(this.state.text)} style={{marginTop:20, marginLeft:windowWidth/2}}>
-                        <Text style={{fontWeight:'bold', color:'#fff'}}>Enviar</Text>
-                      </SignUpBottom>
+                     {usuarioEstado == null &&
+                        <View style={{marginTop:20}}></View>
+                      }
 
-                      <View style={{marginTop:50}}></View>
 
+                      {usuarioEstado !== null &&
+                        <View>
+                          <TextInput
+                            multiline
+                            placeholder="Deixe o seu comentário..."
+                            numberOfLines={3}
+                            style={{borderWidth:3, borderColor: '#DAA520', borderRadius:20, padding:10}}
+                            maxLength={255}
+                            onChangeText={(text) => this.setState({text})}
+                            value={this.state.text}
+                          />
+                          <SignUpBottom onPress={() => this.registerComment(this.state.text)} style={{marginTop:20, marginLeft:windowWidth/2}}>
+                            <Text style={{fontWeight:'bold', color:'#fff'}}>Enviar</Text>
+                          </SignUpBottom>
+
+                          <View style={{marginTop:50}}></View>
+                        </View>
+                      }
                       <FlatList
                         keyExtractor={() => this.makeid(17)}
                         data={this.state.usersThatCommented}
@@ -893,6 +906,9 @@ export default class TelaAnuncio extends Component {
                     />
 
                     <TextDescription2>Nota Média: {this.state.notaMedia}</TextDescription2>
+                    <TouchableOpacity onPress={() => this.openModalize()}>
+                      <TextDescription2 style={{fontSize:20, fontWeight:'bold', marginTop:15}}>Ver Comentários</TextDescription2>
+                    </TouchableOpacity>
                   </View>
 
                 <View style={{flex: 1, flexDirection:'row',  justifyContent:'center', marginBottom:1, bottom:40}}>
