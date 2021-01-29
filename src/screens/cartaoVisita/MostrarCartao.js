@@ -13,8 +13,10 @@ import {
   Platform,
   SafeAreaView,
   ScrollView,
+  TextInput,
   StatusBar,
   Share,
+  TouchableOpacity,
   Modal,
   Dimensions,
   FlatList,
@@ -62,10 +64,13 @@ const imgHolder = require('../../assets/img/confeiteira.jpeg');
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-import { SafeAnuncioView, ValueFieldPrincipal, IconResponsiveNOBACK,  TouchableResponsive, ButtonIconContainer, CallAndMessageContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
+import { SafeAnuncioView, SignUpBottom, IconResponsiveNOBACK,  TouchableResponsive, ButtonIconContainer, CallAndMessageContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
 
+import { Modalize } from 'react-native-modalize';
 
 import { ThemeContext } from '../../../ThemeContext';
+
+import {Heading6} from '../../components/text/CustomText';
 
 //import IAP API 
 import {purchased} from '../../config/purchase';
@@ -204,9 +209,14 @@ export default class MostrarCartao extends Component {
       cartaoAuto:[],
       cartaoEstab:[],
       purchased: false,
+      modalizeRef: React.createRef(null),
       usersThatVotedFirebase: [],
       mediaAvaliacao: [],
       notaMedia: 0,
+      fotoUser: '',
+      nomeUser:'',
+      text:'',
+      usersThatCommented: [],
       product: {
         images: [
           require('../../assets/img/confeiteira.jpeg'),
@@ -369,8 +379,42 @@ export default class MostrarCartao extends Component {
     })
   })
 
+
+  //pega os usuarios que comentaram
+  firebase.firestore().collection('cartoes').doc(idCartao).collection('comments').onSnapshot(documentSnapshot => {
+    let comentarios = []
+    documentSnapshot.forEach(function(doc) {
+      comentarios.push({
+        idCartao: doc.data().idCartao,
+        idUserThatComment: doc.data().idUserThatComment,
+        comment: doc.data().comment,
+        nomeUser: doc.data().nomeUser,
+        photoUser: doc.data().photoUser
+      })
+    })
+    console.log('LISTA DOS CARTOES COMAPTIVEIS ESTRELA COMMENTS: ' + comentarios)
+
+    e.setState({usersThatCommented: comentarios})
+  })
+  
+
+  if(currentUser == null) {
+    e.setState({usersThatVotedFirebase: []})
+  } else {
+    //pega a imagem e nome da pessoa logada
+    await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
+          e.setState({fotoUser: documentSnapshot.data().photoProfile}),
+          e.setState({nomeUser: documentSnapshot.data().nome})
+    })
+  }
+
     console.log('ARRAY ANUNCIO cartaoEstab: ' + this.state.cartaoEstab)
     console.log('ARRAY ANUNCIO autonomo: ' + this.state.cartaoAuto)
+  }
+
+  openModalize() {
+    const modalizeRef = this.state.modalizeRef;
+    modalizeRef.current?.open()
   }
 
   goBack = () => {
@@ -465,11 +509,33 @@ export default class MostrarCartao extends Component {
   }
 
 
+  async registerComment(text) {
+    let currentUser = firebase.auth().currentUser;
+    let idCartao = this.props.route.params.idDoCartao;
+    let e = this;
+
+    try {
+      await firebase.firestore().collection('cartoes').doc(idCartao).collection('comments').doc(currentUser.uid).set({
+        idCartao: this.props.route.params.idCartao,
+        photoUser: e.state.fotoUser,
+        nomeUser: e.state.nomeUser,
+        idUserThatComment: currentUser.uid,
+        comment: text,
+      })
+      alert('Comentário salvo com sucesso!')
+      e.setState({text: ''})
+    } catch (error) {
+      alert('Ops, ocorreu um erro ao salvar seu comentário :/')
+    }
+  }
+
+
   render() {
     const {product, favorite, cartaoAuto, cartaoEstab, isFetched} = this.state;
     const {
       images,
     } = product;
+    const usuarioEstado = firebase.auth().currentUser;
 
     return (
       <SafeAnuncioView>
@@ -611,6 +677,9 @@ export default class MostrarCartao extends Component {
                     />
 
                     <TextDescription2>Nota Média: {this.state.notaMedia}</TextDescription2>
+                    <TouchableOpacity onPress={() => this.openModalize()}>
+                      <TextDescription2 style={{fontSize:20, fontWeight:'bold', marginTop:15}}>Ver Comentários</TextDescription2>
+                    </TouchableOpacity>
                   </View>
 
 
@@ -664,7 +733,53 @@ export default class MostrarCartao extends Component {
 
 
 
+          {/*Modalize dos comentários*/}
+          <Modalize
+            ref={this.state.modalizeRef}
+            snapPoint={500}
+          >
+            <View style={{alignItems:'center', marginTop:40}}>
+            <Heading6 style={{fontWeight:'bold', marginLeft: 10}}>Comentários</Heading6>
+                <View style={{marginTop:7,maxWidth: windowWidth - 60}}>
+                     {usuarioEstado == null &&
+                        <View style={{marginTop:20}}></View>
+                      }
 
+
+                      {usuarioEstado !== null &&
+                        <View>
+                          <TextInput
+                            multiline
+                            placeholder="Deixe o seu comentário..."
+                            numberOfLines={3}
+                            style={{borderWidth:3, borderColor: '#DAA520', borderRadius:20, padding:10}}
+                            maxLength={255}
+                            onChangeText={(text) => this.setState({text})}
+                            value={this.state.text}
+                          />
+                          <SignUpBottom onPress={() => this.registerComment(this.state.text)} style={{marginTop:20, marginLeft:windowWidth/2}}>
+                            <Text style={{fontWeight:'bold', color:'#fff'}}>Enviar</Text>
+                          </SignUpBottom>
+
+                          <View style={{marginTop:50}}></View>
+                        </View>
+                      }
+                      <FlatList
+                        keyExtractor={() => this.makeid(17)}
+                        data={this.state.usersThatCommented}
+                        renderItem={({item}) => 
+                          <View style={{flex:1, marginTop: 20}}>
+                            <View style={{flexDirection:'row', alignItems:'center'}}>
+                              <Image source={{uri: item.photoUser}} style={{width:37, height:37, borderRadius:30}}/>
+                              <Text style={{fontWeight:'bold', marginLeft:10}}>{item.nomeUser}</Text>
+                            </View>
+                            <Text>{item.comment}</Text>
+                          </View>
+                        }
+                      />
+                </View>
+            </View>
+          </Modalize>
 
 
 
@@ -795,6 +910,9 @@ export default class MostrarCartao extends Component {
                     />
 
                     <TextDescription2>Nota Média: {this.state.notaMedia}</TextDescription2>
+                    <TouchableOpacity onPress={() => this.openModalize()}>
+                      <TextDescription2 style={{fontSize:20, fontWeight:'bold', marginTop:15}}>Ver Comentários</TextDescription2>
+                    </TouchableOpacity>
                   </View>
 
 
