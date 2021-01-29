@@ -210,7 +210,10 @@ export default class TelaAnuncio extends Component {
       mediaAvaliacao: [],
       modalizeRef: React.createRef(null),
       notaMedia: 0,
+      fotoUser: '',
+      nomeUser:'',
       text:'',
+      usersThatCommented: [],
       product: {
         images: [
           require('../../assets/img/confeiteira.jpeg'),
@@ -367,8 +370,32 @@ export default class TelaAnuncio extends Component {
     console.log('ARRAY ANUNCIO anuncioEstab: ' + this.state.anuncioEstab)
     console.log('ARRAY ANUNCIO autonomo: ' + this.state.anuncioAuto)
 
+    //pega os usuarios que comentaram
+    firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('comments').onSnapshot(documentSnapshot => {
+      let comentarios = []
+      documentSnapshot.forEach(function(doc) {
+        comentarios.push({
+          idAnuncio: doc.data().idAnuncio,
+          idUserThatComment: doc.data().idUserThatComment,
+          comment: doc.data().comment,
+          nomeUser: doc.data().nomeUser,
+          photoUser: doc.data().photoUser
+        })
+      })
+      console.log('LISTA DOS ANUNCIOS COMAPTIVEIS ESTRELA COMMENTS: ' + comentarios)
 
-  }
+      e.setState({usersThatCommented: comentarios})
+    })
+    
+
+    //pega a imagem e nome da pessoa logada
+    await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
+          e.setState({fotoUser: documentSnapshot.data().photoProfile}),
+          e.setState({nomeUser: documentSnapshot.data().nome})
+    })
+
+
+}
 
 
   openModalize() {
@@ -459,6 +486,27 @@ export default class TelaAnuncio extends Component {
       }
     } else {
       alert('Você só pode avaliar depois de fazer o login!')
+    }
+  }
+
+
+  async registerComment(text) {
+    let currentUser = firebase.auth().currentUser;
+    let idDoAnuncio = this.props.route.params.idDoAnuncio;
+    let e = this;
+
+    try {
+      await firebase.firestore().collection('anuncios').doc(idDoAnuncio).collection('comments').doc(currentUser.uid).set({
+        idAnuncio: this.props.route.params.idDoAnuncio,
+        photoUser: e.state.fotoUser,
+        nomeUser: e.state.nomeUser,
+        idUserThatComment: currentUser.uid,
+        comment: text,
+      })
+      alert('Comentário salvo com sucesso!')
+      e.setState({text: ''})
+    } catch (error) {
+      alert('Ops, ocorreu um erro ao salvar seu comentário :/')
     }
   }
 
@@ -681,7 +729,7 @@ export default class TelaAnuncio extends Component {
           >
             <View style={{alignItems:'center', marginTop:40}}>
             <Heading6 style={{fontWeight:'bold', marginLeft: 10}}>Comentários</Heading6>
-                <View style={{marginTop:7}}>
+                <View style={{marginTop:7,maxWidth: windowWidth - 60}}>
                       <TextInput
                         multiline
                         placeholder="Deixe o seu comentário..."
@@ -691,9 +739,25 @@ export default class TelaAnuncio extends Component {
                         onChangeText={(text) => this.setState({text})}
                         value={this.state.text}
                       />
-                      <SignUpBottom style={{marginTop:20, marginLeft:windowWidth/2}}>
+                      <SignUpBottom onPress={() => this.registerComment(this.state.text)} style={{marginTop:20, marginLeft:windowWidth/2}}>
                         <Text style={{fontWeight:'bold', color:'#fff'}}>Enviar</Text>
                       </SignUpBottom>
+
+                      <View style={{marginTop:50}}></View>
+
+                      <FlatList
+                        keyExtractor={() => this.makeid(17)}
+                        data={this.state.usersThatCommented}
+                        renderItem={({item}) => 
+                          <View style={{flex:1, marginTop: 20}}>
+                            <View style={{flexDirection:'row', alignItems:'center'}}>
+                              <Image source={{uri: item.photoUser}} style={{width:37, height:37, borderRadius:30}}/>
+                              <Text style={{fontWeight:'bold', marginLeft:10}}>{item.nomeUser}</Text>
+                            </View>
+                            <Text>{item.comment}</Text>
+                          </View>
+                        }
+                      />
                 </View>
             </View>
           </Modalize>
