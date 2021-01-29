@@ -14,9 +14,11 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
+  TextInput,
   Modal,
   Dimensions,
   FlatList,
+  TouchableOpacity,
   StyleSheet,
   Share,
   Text,
@@ -47,12 +49,13 @@ import firebase from '../../config/firebase';
 
 //import icons
 import { FontAwesome5 } from '@expo/vector-icons';
-import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
-import { SafeAnuncioView, ValueFieldPrincipal, TouchableResponsive, IconResponsiveNOBACK, ButtonIconContainer, CallAndMessageContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
+import { SafeAnuncioView, ValueFieldPrincipal, TouchableResponsive, SignUpBottom, IconResponsiveNOBACK, ButtonIconContainer, CallAndMessageContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
 
+import {Heading6} from '../../components/text/CustomText';
 
 import { ThemeContext } from '../../../ThemeContext';
 
+import { Modalize } from 'react-native-modalize';
 
 //import IAP API 
 import {purchased} from '../../config/purchase';
@@ -205,7 +208,9 @@ export default class TelaAnuncio extends Component {
       purchased: false,
       usersThatVotedFirebase: [],
       mediaAvaliacao: [],
+      modalizeRef: React.createRef(null),
       notaMedia: 0,
+      text:'',
       product: {
         images: [
           require('../../assets/img/confeiteira.jpeg'),
@@ -364,6 +369,14 @@ export default class TelaAnuncio extends Component {
 
 
   }
+
+
+  openModalize() {
+    const modalizeRef = this.state.modalizeRef;
+
+    modalizeRef.current?.open()
+  }
+
 
   goBack = () => {
     const {navigation} = this.props;
@@ -604,10 +617,12 @@ export default class TelaAnuncio extends Component {
                     />
 
                     <TextDescription2>Nota Média: {this.state.notaMedia}</TextDescription2>
+                    <TouchableOpacity onPress={() => this.openModalize()}>
+                      <TextDescription2 style={{fontSize:20, fontWeight:'bold', marginTop:15}}>Ver Comentários</TextDescription2>
+                    </TouchableOpacity>
                   </View>
 
 
-          
 
                   <View style={{flex: 1, flexDirection:'row', justifyContent:'center', marginBottom:1, bottom:40}}>
                   <CallAndMessageContainer>
@@ -659,7 +674,29 @@ export default class TelaAnuncio extends Component {
 
 
 
-
+          {/*Modalize dos comentários*/}
+          <Modalize
+            ref={this.state.modalizeRef}
+            snapPoint={500}
+          >
+            <View style={{alignItems:'center', marginTop:40}}>
+            <Heading6 style={{fontWeight:'bold', marginLeft: 10}}>Comentários</Heading6>
+                <View style={{marginTop:7}}>
+                      <TextInput
+                        multiline
+                        placeholder="Deixe o seu comentário..."
+                        numberOfLines={3}
+                        style={{borderWidth:3, borderColor: '#DAA520', borderRadius:20, padding:10}}
+                        maxLength={255}
+                        onChangeText={(text) => this.setState({text})}
+                        value={this.state.text}
+                      />
+                      <SignUpBottom style={{marginTop:20, marginLeft:windowWidth/2}}>
+                        <Text style={{fontWeight:'bold', color:'#fff'}}>Enviar</Text>
+                      </SignUpBottom>
+                </View>
+            </View>
+          </Modalize>
 
 
 
