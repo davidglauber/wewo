@@ -354,15 +354,20 @@ export default class TelaAnuncio extends Component {
       usersThatVoted2.map((l) => (
        arraySumStars.push(l.starRating)
       ))
-      
-      let medium = arraySumStars.reduce(myFunc) / arraySumStars.length
-      e.setState({notaMedia: medium})
 
-      console.log('MEDIA AVALIAÇÃO: ' + e.state.notaMedia)
-      //atualiza a media do anuncio
-      firebase.firestore().collection('anuncios').doc(idDoAnuncio).update({
-        media: medium
-      })
+      if(usersThatVoted2.length == 0) {
+        e.setState({media: 0})
+      } else {
+        let medium = arraySumStars.reduce(myFunc) / arraySumStars.length
+        e.setState({notaMedia: medium})
+        console.log('MEDIA AVALIAÇÃO: ' + e.state.notaMedia)
+        //atualiza a media do anuncio
+        firebase.firestore().collection('anuncios').doc(idDoAnuncio).update({
+          media: medium
+        })
+      }
+      
+
     })
 
 

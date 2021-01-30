@@ -369,14 +369,17 @@ export default class MostrarCartao extends Component {
      arraySumStars.push(l.starRating)
     ))
     
-    let medium = arraySumStars.reduce(myFunc) / arraySumStars.length
-    e.setState({notaMedia: medium})
-
-    console.log('MEDIA AVALIAÇÃO: ' + e.state.notaMedia)
-    //atualiza a media do anuncio
-    firebase.firestore().collection('cartoes').doc(idCartao).update({
-      media: medium
-    })
+    if(usersThatVoted2.length == 0) {
+      e.setState({media: 0})
+    } else {
+      let medium = arraySumStars.reduce(myFunc) / arraySumStars.length
+      e.setState({notaMedia: medium})
+      console.log('MEDIA AVALIAÇÃO: ' + e.state.notaMedia)
+      //atualiza a media do anuncio
+      firebase.firestore().collection('anuncios').doc(idCartao).update({
+        media: medium
+      })
+    }
   })
 
 
