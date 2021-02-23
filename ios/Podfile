@@ -21,16 +21,11 @@ target 'wewo' do
   #  post_install do |installer|
   #    flipper_post_install(installer)
   #  end
-  pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
-  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
-  pod 'RNIap', :path => '../node_modules/react-native-iap'
 
-  pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
 
-  pod 'react-native-admob', :path => '../node_modules/react-native-admob'
+  pod 'RNInputMask', :path => '../node_modules/react-native-text-input-mask/ios/InputMask'
 
-  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
 end
