@@ -33,9 +33,6 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 import LottieView from 'lottie-react-native';
 
-//import ADS
-import { AdMobBanner } from 'expo-ads-admob';
-
 //import IAP API 
 import {purchased} from '../../config/purchase';
 
@@ -501,17 +498,6 @@ async componentDidMount() {
               >
               </FlatList>
 
-              { this.state.purchased == false ?
-                  <AdMobBanner
-                    style={{marginLeft: 20}}
-                    bannerSize="leaderboard"
-                    adUnitID="ca-app-pub-1397640114399871/3366763355"
-                    servePersonalizedAds
-                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                  /> 
-                  :
-                  null
-              }
 
               <FlatList 
                 keyExtractor={() => this.makeid(17)}
@@ -564,18 +550,6 @@ async componentDidMount() {
               }
               >
               </FlatList>
-
-              { this.state.purchased == false ?
-                  <AdMobBanner
-                    style={{marginLeft: 20}}
-                    bannerSize="leaderboard"
-                    adUnitID="ca-app-pub-1397640114399871/3366763355"
-                    servePersonalizedAds
-                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                  /> 
-                  :
-                  null
-              }
           </ScrollView>
         </View>
       </SafeBackground>

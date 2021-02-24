@@ -51,9 +51,6 @@ import { ThemeContext } from '../../../ThemeContext';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 
-//import ADS
-import { AdMobBanner} from 'expo-ads-admob';
-
 //import IAP API 
 import {purchased} from '../../config/purchase';
 
@@ -602,17 +599,6 @@ export default class CartaoVisita extends Component {
                 contentContainerStyle={styles.productList}
               />
 
-                { this.state.purchased == false ?
-                  <AdMobBanner
-                    style={{marginLeft: 20}}
-                    bannerSize="leaderboard"
-                    adUnitID="ca-app-pub-1397640114399871/3366763355"
-                    servePersonalizedAds
-                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                  /> 
-                  :
-                  null
-                }
             </View>
 
             <View>

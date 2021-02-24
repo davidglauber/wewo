@@ -63,9 +63,6 @@ import LottieView from 'lottie-react-native';
 //import IAP API 
 import {purchased} from '../../config/purchase';
 
-//import ADS
-import { AdMobBanner } from 'expo-ads-admob';
-
 
 import { Video } from 'expo-av';
 
@@ -648,17 +645,7 @@ export default class CartaoFiltro extends Component {
                 contentContainerStyle={styles.productList}
               />
 
-                { this.state.purchased == false ?
-                  <AdMobBanner
-                    style={{marginLeft: 20}}
-                    bannerSize="leaderboard"
-                    adUnitID="ca-app-pub-1397640114399871/3366763355"
-                    servePersonalizedAds
-                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                  /> 
-                  :
-                  null
-                }
+              
             </View>
 
             <View>
@@ -715,17 +702,6 @@ export default class CartaoFiltro extends Component {
                 contentContainerStyle={styles.productList}
               />
 
-                { this.state.purchased == false ?
-                  <AdMobBanner
-                    style={{marginLeft: 20}}
-                    bannerSize="leaderboard"
-                    adUnitID="ca-app-pub-1397640114399871/3366763355"
-                    servePersonalizedAds
-                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                  /> 
-                  :
-                  null
-                }
             </View>
 
           </ScrollView>
