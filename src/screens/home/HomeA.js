@@ -28,7 +28,6 @@ import { PulseIndicator } from 'react-native-indicators';
 
 import { ThemeContext } from '../../../ThemeContext';
 
-
 //RESPONSIVE FONT 
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -330,15 +329,17 @@ async componentDidMount() {
               
                 {status == true ? 
                   <View>
-                      <TouchableOpacity onPress={this.navigateTo('Settings')} style={{borderRadius:5, justifyContent:'center', width:216, height:27}}>
-                          <TextBoldGolden>Acessar Meu Perfil</TextBoldGolden>
+                      <TouchableOpacity onPress={this.navigateTo('Settings')}>
+                        <IconResponsiveNOBACK  name="user" size={19}/>
                       </TouchableOpacity>
                     </View>
                     :
-                      <SignUpBottom onPress={this.navigateTo('SignUp')}>
-                          <TextBold>Criar Conta</TextBold>
-                      </SignUpBottom>
+                      <TouchableOpacity onPress={this.navigateTo('SignUp')}>
+                          <IconResponsiveNOBACK  name="user-plus" size={19}/>
+                      </TouchableOpacity>
                 }
+
+                <Image source={require("../../../assets/icon.png")} style={{height:54, width:54, justifyContent:'center'}}/>
                     
                 <TouchableOpacity onPress={this.navigateTo('Filtro')} style={{width:20, height:20}}>
                     <IconResponsiveNOBACK  name="sort-alpha-up" size={19}/>
