@@ -49,7 +49,7 @@ import firebase from '../../config/firebase';
 
 //import icons
 import { FontAwesome5 } from '@expo/vector-icons';
-import { SafeAnuncioView, ValueFieldPrincipal, TouchableResponsive, SignUpBottom, IconResponsiveNOBACK, ButtonIconContainer, CallAndMessageContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
+import { SafeAnuncioView, ValueFieldPrincipal, ViewComment, ReviewView, TouchableResponsive, SignUpBottom, IconResponsiveNOBACK, ButtonIconContainer, CallAndMessageContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
 
 import {Heading6} from '../../components/text/CustomText';
 
@@ -664,33 +664,35 @@ export default class TelaAnuncio extends Component {
 
 
 
-                  <View style={{flexDirection:'column', alignItems:'center', marginBottom:100, marginTop:50}}>
+                  <ViewComment>
                     <TextDescription2>Avaliações</TextDescription2>
-                    <AirbnbRating
-                      count={5}
-                      reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
-                      defaultRating={3}
-                      size={30}
-                      onFinishRating={(number) => this.finishRating(item.idAnuncio, number)}
-                    />
+                    
+                      <ReviewView>
+                        <AirbnbRating
+                          count={5}
+                          reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
+                          defaultRating={3}
+                          size={30}
+                          onFinishRating={(number) => this.finishRating(item.idAnuncio, number)}
+                          />
 
-                    <TextDescription2>Nota Média: {this.state.notaMedia}</TextDescription2>
+                        <TextDescription2>Nota Média: {this.state.notaMedia}</TextDescription2>
+                      </ReviewView>
+
                     <TouchableOpacity onPress={() => this.openModalize()}>
                       <TextDescription2 style={{fontSize:20, fontWeight:'bold', marginTop:15}}>Ver Comentários</TextDescription2>
                     </TouchableOpacity>
-                  </View>
+                  </ViewComment>
 
 
 
                   <View style={{flex: 1, flexDirection:'row', justifyContent:'center', marginBottom:1, bottom:40}}>
                   <CallAndMessageContainer>
                       <TouchableResponsive onPress={() => this.openPhoneApp(this.state.phoneNavigator)}>
-                          <TextDescription2 style={{fontWeight:'bold', marginRight:30, marginTop:7}}>Telefonar</TextDescription2>
-                          <IconResponsiveNOBACK name="mobile" size={20}/>
+                          <IconResponsiveNOBACK name="phone" size={20}/>
                       </TouchableResponsive>   
 
-                      <TouchableResponsive>
-                          <TextDescription2 onPress={() => this.openWhatsApp(this.state.phoneNavigator)} style={{fontWeight:'bold', marginRight:30, marginTop:7}}>Conversar</TextDescription2>
+                      <TouchableResponsive onPress={() => this.openWhatsApp(this.state.phoneNavigator)}>
                           <IconResponsiveNOBACK name="comment" size={20}/>
                       </TouchableResponsive>            
                   </CallAndMessageContainer>

@@ -219,24 +219,42 @@ export const AnuncioContainer = styled.View`
     height: 170px; 
     margin-bottom:5px; 
     margin-top: 10px; 
-    border-radius: 10px; 
+    border-radius: 30px; 
     background-color: ${props => props.theme.backgroundColor};
 `
 
 export const CallAndMessageContainer = styled.View`
     flex-direction: row;
     justify-content: space-between; 
-    width: 329px; 
+    width: 129px; 
     height:80px; 
     padding:20px;  
     background: ${props => props.theme.containerCall}; 
     border-radius:20px
 `
+
+export const ReviewView = styled.View`
+    padding:30px;  
+    background: ${props => props.theme.containerCall}; 
+    border-radius:30px
+`
+
+export const ViewComment = styled.View`
+    background:${props => props.theme.inverseContainerCall};
+    padding:10px; 
+    border-radius: 30px; 
+    margin:20px; 
+    flex-direction: column; 
+    align-items: center; 
+    margin-bottom:100px;
+    margin-top:50px
+`
+
 export const TouchableResponsive = styled.TouchableOpacity`
     flex-direction: row;
     padding:10px; 
     align-items: center; 
-    width: 140px; 
+    width: 40px; 
     height: 40px; 
     border-radius: 20px; 
     background: ${props => props.theme.inverseContainerCall}
