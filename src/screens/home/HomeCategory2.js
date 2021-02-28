@@ -364,7 +364,7 @@ async componentDidMount() {
 
                               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                   <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
-                                      <TextDetails>Ver Detalhes</TextDetails>
+                                      <TextDetails>+ detalhes</TextDetails>
                                   </TouchableDetails>
 
                                   <View style={{marginTop: 24}}>
@@ -421,7 +421,7 @@ async componentDidMount() {
 
                             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                 <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                    <TextDetails>Ver Detalhes</TextDetails>
+                                    <TextDetails>+ detalhes</TextDetails>
                                 </TouchableDetails>
 
 
@@ -476,7 +476,7 @@ async componentDidMount() {
 
                               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                   <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
-                                      <TextDetails>Ver Detalhes</TextDetails>
+                                      <TextDetails>+ detalhes</TextDetails>
                                   </TouchableDetails>
 
                                   <View style={{marginTop: 24}}>
@@ -528,7 +528,7 @@ async componentDidMount() {
 
                             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                 <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                    <TextDetails>Ver Detalhes</TextDetails>
+                                    <TextDetails>+ detalhes</TextDetails>
                                 </TouchableDetails>
 
 

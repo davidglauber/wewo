@@ -394,7 +394,7 @@ export default class TelaGeralCriarCartao extends Component {
 
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                   <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
-                                      <TextDetails>Ver Detalhes</TextDetails>
+                                      <TextDetails>+ detalhes</TextDetails>
                                   </TouchableDetails>
 
                                   <TouchableOpacity onPress={() => this.props.navigation.navigate('EditarCartao', {idCartao: item.idCartao, type: item.type})} style={{marginTop: 24, marginRight: 10}}>
@@ -454,7 +454,7 @@ export default class TelaGeralCriarCartao extends Component {
 
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                   <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                      <TextDetails>Ver Detalhes</TextDetails>
+                                      <TextDetails>+ detalhes</TextDetails>
                                   </TouchableDetails>
 
                                   <TouchableOpacity onPress={() => this.props.navigation.navigate('EditarCartao', {idCartao: item.idCartao, type: item.type})} style={{marginTop: 24, marginRight: 10}}>

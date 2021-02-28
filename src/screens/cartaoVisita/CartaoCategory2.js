@@ -466,7 +466,7 @@ export default class CartaoCategory2 extends Component {
 
                             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                               <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                  <TextDetails>Ver Detalhes</TextDetails>
+                                  <TextDetails>+ detalhes</TextDetails>
                               </TouchableDetails>
 
                               <View style={{flexDirection:'row', marginTop:15}}>
@@ -521,7 +521,7 @@ export default class CartaoCategory2 extends Component {
 
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                   <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                      <TextDetails>Ver Detalhes</TextDetails>
+                                      <TextDetails>+ detalhes</TextDetails>
                                   </TouchableDetails>
 
                                   <View style={{flexDirection:'row', marginTop:15}}>
@@ -578,7 +578,7 @@ export default class CartaoCategory2 extends Component {
 
                             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                               <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                  <TextDetails>Ver Detalhes</TextDetails>
+                                  <TextDetails>+ detalhes</TextDetails>
                               </TouchableDetails>
 
                               <View style={{flexDirection:'row', marginTop:15}}>
@@ -636,7 +636,7 @@ export default class CartaoCategory2 extends Component {
 
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                   <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                      <TextDetails>Ver Detalhes</TextDetails>
+                                      <TextDetails>+ detalhes</TextDetails>
                                   </TouchableDetails>
 
                                   <View style={{flexDirection:'row', marginTop:15}}>

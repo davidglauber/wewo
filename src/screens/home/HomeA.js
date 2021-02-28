@@ -87,19 +87,6 @@ export default class HomeA extends Component {
 
 
 async componentDidMount() {
-  if(Platform.OS === "android") {
-    await AdMobInterstitial.setAdUnitID('ca-app-pub-1397640114399871/9421571551');
-    await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true});
-    await AdMobInterstitial.showAdAsync();
-  }
-
-  if(Platform.OS === "ios") {
-    await AdMobInterstitial.setAdUnitID('ca-app-pub-1397640114399871/9226130438');
-    await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true});
-    await AdMobInterstitial.showAdAsync();
-  }
-
-
   let e = this;
   let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
 
@@ -265,6 +252,17 @@ async componentDidMount() {
       })
     })
 
+    if(Platform.OS === "android") {
+      await AdMobInterstitial.setAdUnitID('ca-app-pub-1397640114399871/9421571551');
+      await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true});
+      await AdMobInterstitial.showAdAsync();
+    }
+  
+    if(Platform.OS === "ios") {
+      await AdMobInterstitial.setAdUnitID('ca-app-pub-1397640114399871/9226130438');
+      await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true});
+      await AdMobInterstitial.showAdAsync();
+    }
   }
 
 
@@ -414,7 +412,7 @@ async componentDidMount() {
 
                               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                   <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
-                                      <TextDetails>Ver Detalhes</TextDetails>
+                                      <TextDetails>+ detalhes</TextDetails>
                                   </TouchableDetails>
 
                                   <View style={{marginTop: 24}}>
@@ -468,7 +466,7 @@ async componentDidMount() {
 
                             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                 <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                    <TextDetails>Ver Detalhes</TextDetails>
+                                    <TextDetails>+ detalhes</TextDetails>
                                 </TouchableDetails>
 
 
@@ -524,7 +522,7 @@ async componentDidMount() {
 
                               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                   <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
-                                      <TextDetails>Ver Detalhes</TextDetails>
+                                      <TextDetails>+ detalhes</TextDetails>
                                   </TouchableDetails>
 
                                   <View style={{marginTop: 24}}>
@@ -576,7 +574,7 @@ async componentDidMount() {
 
                             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                 <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                    <TextDetails>Ver Detalhes</TextDetails>
+                                    <TextDetails>+ detalhes</TextDetails>
                                 </TouchableDetails>
 
 

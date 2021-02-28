@@ -389,7 +389,7 @@ export default class TelaPrincipalAnuncio extends Component {
 
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                   <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
-                                      <TextDetails>Ver Detalhes</TextDetails>
+                                      <TextDetails>+ detalhes</TextDetails>
                                   </TouchableDetails>
 
                                   <TouchableOpacity onPress={() => this.props.navigation.navigate('EditarAnuncio', {idAnuncio: item.idAnuncio, type: item.type})} style={{marginTop: 24, marginRight: 10}}>
@@ -443,7 +443,7 @@ export default class TelaPrincipalAnuncio extends Component {
 
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                     <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                        <TextDetails>Ver Detalhes</TextDetails>
+                                        <TextDetails>+ detalhes</TextDetails>
                                     </TouchableDetails>
 
                                     <TouchableOpacity onPress={() => this.props.navigation.navigate('EditarAnuncio', {idAnuncio: item.idAnuncio, type: item.type})} style={{marginTop: 24, marginRight: 10}}>

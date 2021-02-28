@@ -400,7 +400,10 @@ export default class CartaoVisita extends Component {
           backgroundColor={this.context.dark ? '#121212' : 'white'}
           barStyle={this.context.dark ? "white-content" : "dark-content"}
         />
-
+          
+        <View style={{alignItems:'center', padding:7}}>
+          <Image source={require("../../../assets/iconnoback.png")} style={{height:54, width:54}}/>
+        </View>  
         <View style={styles.titleContainer}>
           <Heading>Cartões de Visita</Heading>
           {products.length > 0 && (
@@ -465,7 +468,7 @@ export default class CartaoVisita extends Component {
 
                             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                               <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                  <TextDetails>Ver Detalhes</TextDetails>
+                                  <TextDetails>+ detalhes</TextDetails>
                               </TouchableDetails>
 
                               <View style={{flexDirection:'row', marginTop:15}}>
@@ -522,7 +525,7 @@ export default class CartaoVisita extends Component {
 
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                   <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                      <TextDetails>Ver Detalhes</TextDetails>
+                                      <TextDetails>+ detalhes</TextDetails>
                                   </TouchableDetails>
 
                                   <View style={{flexDirection:'row', marginTop:15}}>
@@ -580,7 +583,7 @@ export default class CartaoVisita extends Component {
 
                             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                               <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                  <TextDetails>Ver Detalhes</TextDetails>
+                                  <TextDetails>+ detalhes</TextDetails>
                               </TouchableDetails>
 
                               <View style={{flexDirection:'row', marginTop:15}}>
@@ -637,7 +640,7 @@ export default class CartaoVisita extends Component {
 
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                   <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                      <TextDetails>Ver Detalhes</TextDetails>
+                                      <TextDetails>+ detalhes</TextDetails>
                                   </TouchableDetails>
 
                                   <View style={{flexDirection:'row', marginTop:15}}>

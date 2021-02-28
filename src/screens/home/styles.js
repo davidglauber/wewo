@@ -299,13 +299,16 @@ export const TouchableDetails = styled.TouchableOpacity`
     background-color: ${props => props.theme.colorContainerDetails}; 
     width:100px; 
     height:20px; 
-    border-radius: 5px;
+    border-radius: 30px;
     margin-top: 24px;
+    align-items: center;
     margin-left: 31px
 `
 
 export const TextDetails = styled.Text`
-    color: ${props => props.theme.background}
+    color: ${props => props.theme.background};
+    font-weight: bold;
+    paddingRight: 11px
 `
 
 export const TextTheme = styled.Text`
