@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   content: {
-    flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -196,7 +195,7 @@ export default class AboutUsA extends Component {
 
         <View style={styles.content}>
           <View style={styles.swiperContainer}>
-            <Swiper
+           {/* <Swiper
               loop={false}
               index={isRTL ? 2 : 0} // number of slides - 1
               paginationStyle={styles.paginationStyle}
@@ -294,7 +293,7 @@ export default class AboutUsA extends Component {
                   </View>
                 </GradientContainer>
               </ImageBackground>
-            </Swiper>
+            </Swiper>*/}
           </View>
 
           <View style={styles.center}>

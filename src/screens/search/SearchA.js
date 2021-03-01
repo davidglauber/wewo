@@ -347,6 +347,10 @@ export default class SearchA extends Component {
           barStyle={this.context.dark ? 'white-content' : 'dark-content'}
         />
 
+        <View style={{alignItems:'center', paddingTop:16}}>
+          <Image source={require("../../../assets/iconnoback.png")} style={{height:54, width:54, justifyContent:'center'}}/>
+        </View>
+
         <View style={styles.titleContainer}>
           <Heading style={styles.titleText}>Pesquisar</Heading>
         </View>

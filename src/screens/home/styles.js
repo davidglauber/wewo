@@ -229,24 +229,25 @@ export const CallAndMessageContainer = styled.View`
     width: 129px; 
     height:80px; 
     padding:20px;  
-    background: ${props => props.theme.containerCall}; 
-    border-radius:20px
+    background: ${props => props.theme.background}; 
+    border-radius:50px
 `
 
 export const ReviewView = styled.View`
     padding:30px;  
-    background: ${props => props.theme.containerCall}; 
-    border-radius:30px
+    background: ${props => props.theme.inverseContainerCall}; 
+    border-radius:100px;
+    align-items: center
 `
 
 export const ViewComment = styled.View`
-    background:${props => props.theme.inverseContainerCall};
+    background:${props => props.theme.background};
     padding:10px; 
     border-radius: 30px; 
-    margin:20px; 
+    margin:10px; 
     flex-direction: column; 
     align-items: center; 
-    margin-bottom:100px;
+    margin-bottom:10px;
     margin-top:50px
 `
 

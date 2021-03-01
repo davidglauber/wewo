@@ -665,38 +665,33 @@ export default class TelaAnuncio extends Component {
 
 
                   <ViewComment>
-                    <TextDescription2>Avaliações</TextDescription2>
-                    
                       <ReviewView>
                         <AirbnbRating
                           count={5}
                           reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
-                          defaultRating={3}
-                          size={30}
+                          defaultRating={this.state.notaMedia}
+                          size={15}
                           onFinishRating={(number) => this.finishRating(item.idAnuncio, number)}
                           />
 
-                        <TextDescription2>Nota Média: {this.state.notaMedia}</TextDescription2>
+                        <TextDescription2>Média: {this.state.notaMedia}</TextDescription2>
+
+                        <CallAndMessageContainer>
+                          <TouchableResponsive onPress={() => this.openPhoneApp(this.state.phoneNavigator)}>
+                              <IconResponsiveNOBACK name="phone" size={20}/>
+                          </TouchableResponsive> 
+                          
+                          <TouchableResponsive onPress={() => this.openWhatsApp(this.state.phoneNavigator)}>
+                              <IconResponsiveNOBACK name="comment" size={20}/>
+                          </TouchableResponsive>            
+                        </CallAndMessageContainer>
+                        
+                        <TouchableOpacity style={{marginTop:7}} onPress={() => this.openModalize()}>
+                          <IconResponsiveNOBACK style={{marginTop:15}} name="comments" size={17}/>
+                        </TouchableOpacity>
                       </ReviewView>
-
-                    <TouchableOpacity onPress={() => this.openModalize()}>
-                      <TextDescription2 style={{fontSize:20, fontWeight:'bold', marginTop:15}}>Ver Comentários</TextDescription2>
-                    </TouchableOpacity>
+                      
                   </ViewComment>
-
-
-
-                  <View style={{flex: 1, flexDirection:'row', justifyContent:'center', marginBottom:1, bottom:40}}>
-                  <CallAndMessageContainer>
-                      <TouchableResponsive onPress={() => this.openPhoneApp(this.state.phoneNavigator)}>
-                          <IconResponsiveNOBACK name="phone" size={20}/>
-                      </TouchableResponsive>   
-
-                      <TouchableResponsive onPress={() => this.openWhatsApp(this.state.phoneNavigator)}>
-                          <IconResponsiveNOBACK name="comment" size={20}/>
-                      </TouchableResponsive>            
-                  </CallAndMessageContainer>
-                  </View>
 
 
                   {this.state.dateAuto == '' ? 
@@ -902,35 +897,34 @@ export default class TelaAnuncio extends Component {
                   </View>
 
 
-                  <View style={{flexDirection:'column', alignItems:'center', marginBottom:100, marginTop:50}}>
-                    <TextDescription2>Avaliações</TextDescription2>
-                    <AirbnbRating
-                      count={5}
-                      reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
-                      defaultRating={3}
-                      size={30}
-                      onFinishRating={(number) => this.finishRating(item.idAnuncio, number)}
-                    />
+                  <ViewComment>
+                      <ReviewView>
+                        <AirbnbRating
+                          count={5}
+                          reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
+                          defaultRating={this.state.notaMedia}
+                          size={15}
+                          onFinishRating={(number) => this.finishRating(item.idAnuncio, number)}
+                          />
 
-                    <TextDescription2>Nota Média: {this.state.notaMedia}</TextDescription2>
-                    <TouchableOpacity onPress={() => this.openModalize()}>
-                      <TextDescription2 style={{fontSize:20, fontWeight:'bold', marginTop:15}}>Ver Comentários</TextDescription2>
-                    </TouchableOpacity>
-                  </View>
+                        <TextDescription2>Média: {this.state.notaMedia}</TextDescription2>
 
-                <View style={{flex: 1, flexDirection:'row',  justifyContent:'center', marginBottom:1, bottom:40}}>
-                <CallAndMessageContainer>
-                    <TouchableResponsive onPress={() => this.openPhoneApp(this.state.phoneNavigator)}>
-                        <TextDescription2 style={{fontWeight:'bold', marginRight:30, marginTop:7}}>Telefonar</TextDescription2>
-                        <IconResponsiveNOBACK name="mobile" size={20}/>
-                    </TouchableResponsive>   
-
-                    <TouchableResponsive>
-                        <TextDescription2 onPress={() => this.openWhatsApp(this.state.phoneNavigator)} style={{fontWeight:'bold', marginRight:30, marginTop:7}}>Conversar</TextDescription2>
-                        <IconResponsiveNOBACK name="comment-alt" size={20}/>
-                    </TouchableResponsive>            
-                </CallAndMessageContainer>
-                </View>
+                        <CallAndMessageContainer>
+                          <TouchableResponsive onPress={() => this.openPhoneApp(this.state.phoneNavigator)}>
+                              <IconResponsiveNOBACK name="phone" size={20}/>
+                          </TouchableResponsive> 
+                          
+                          <TouchableResponsive onPress={() => this.openWhatsApp(this.state.phoneNavigator)}>
+                              <IconResponsiveNOBACK name="comment" size={20}/>
+                          </TouchableResponsive>            
+                        </CallAndMessageContainer>
+                        
+                        <TouchableOpacity style={{marginTop:7}} onPress={() => this.openModalize()}>
+                          <IconResponsiveNOBACK style={{marginTop:15}} name="comments" size={17}/>
+                        </TouchableOpacity>
+                      </ReviewView>
+                      
+                  </ViewComment>
 
 
                   {this.state.dateAuto == '' ? 

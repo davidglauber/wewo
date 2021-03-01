@@ -401,9 +401,10 @@ export default class CartaoVisita extends Component {
           barStyle={this.context.dark ? "white-content" : "dark-content"}
         />
           
-        <View style={{alignItems:'center', padding:7}}>
-          <Image source={require("../../../assets/iconnoback.png")} style={{height:54, width:54}}/>
-        </View>  
+        <View style={{alignItems:'center', paddingTop:16}}>
+          <Image source={require("../../../assets/iconnoback.png")} style={{height:54, width:54, justifyContent:'center'}}/>
+        </View>
+        
         <View style={styles.titleContainer}>
           <Heading>Cartões de Visita</Heading>
           {products.length > 0 && (

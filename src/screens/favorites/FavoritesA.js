@@ -258,6 +258,10 @@ export default class FavoritesA extends Component {
         />
         
 
+        <View style={{alignItems:'center', paddingTop:16}}>
+          <Image source={require("../../../assets/iconnoback.png")} style={{height:54, width:54, justifyContent:'center'}}/>
+        </View>
+
         <View style={styles.titleContainer}>
           <Heading>Favoritos</Heading>
         </View>
