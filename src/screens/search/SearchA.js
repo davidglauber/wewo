@@ -402,7 +402,7 @@ export default class SearchA extends Component {
               <View style={styles.searchButton}>
                 <IconResponsive
                   name="search"
-                  size={20}
+                  size={18}
                 />
               </View>
             </TouchableItem>
