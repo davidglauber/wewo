@@ -259,7 +259,11 @@ export default class FavoritesA extends Component {
         
 
         <View style={{alignItems:'center', paddingTop:16}}>
-          <Image source={require("../../../assets/iconnoback.png")} style={{height:54, width:54, justifyContent:'center'}}/>
+          {this.context.dark ? 
+            <Image source={require("../../../assets/nobacklogo.png")} style={{height:54, width:54, justifyContent:'center'}}/>
+            :
+            <Image source={require("../../../assets/nobackblack.png")} style={{height:54, width:54, justifyContent:'center'}}/>
+          }      
         </View>
 
         <View style={styles.titleContainer}>

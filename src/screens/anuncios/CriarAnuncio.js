@@ -1863,9 +1863,10 @@ export default class CriarAnuncio extends Component {
           <Modalize
             ref={this.state.modalizeRef}
             snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
           >
             <View style={{alignItems:'flex-start', marginTop:40}}>
-            <Heading6 style={{fontWeight:'bold', marginLeft: 10}}>Selecione a Categoria Desejada</Heading6>
+            <Heading6 style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, color:'#fff'} : {fontWeight:'bold', marginLeft: 10, color:'#000'}}>Selecione a Categoria Desejada</Heading6>
               {categorias.map(l => (
                 <View>
                   <TouchableOpacity key={this.makeid(10)} onPress={() => this.getCategory(l.id, l.title)}>
@@ -1882,9 +1883,10 @@ export default class CriarAnuncio extends Component {
           <Modalize
             ref={this.state.modalizeRefSub}
             snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
           >
             <View style={{alignItems:'flex-start', marginTop:40}}>
-            <Heading6 style={{fontWeight:'bold', marginLeft: 10}}>Selecione a SubCategoria Desejada</Heading6>
+            <Heading6 style={ this.context.dark ? {fontWeight:'bold', marginLeft: 10,color:'#fff'}: {fontWeight:'bold', marginLeft: 10,color:'#000'}}>Selecione a SubCategoria Desejada</Heading6>
               {this.state.subcategorias.map(l => (
                 <View>
                   <TouchableOpacity key={this.makeid(10)} onPress={() => this.getSubCategory(l.title)}>
@@ -2056,9 +2058,10 @@ export default class CriarAnuncio extends Component {
             <Modalize
             ref={this.state.modalizeLocationEstab}
             snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
             >
             <View style={{flex:1,alignItems:'center', flexDirection:'row'}}>
-                <Text style={{fontWeight: 'bold', padding:15}}>Insira seu CEP</Text>  
+                <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff'} : {fontWeight: 'bold', padding:15,color:'#000'}}>Insira seu CEP</Text>  
 
                   <View style={{marginRight:20}}>
                     <InputForm
@@ -2078,12 +2081,12 @@ export default class CriarAnuncio extends Component {
             </View>
 
             <View>
-              <Text style={{fontWeight: 'bold', padding:15, marginTop: 10}}>Estado: {this.state.enderecoCepEstab.uf}</Text>
-              <Text style={{fontWeight: 'bold', paddingLeft:15, marginTop: 10}}>Cidade: {this.state.enderecoCepEstab.localidade}</Text>
-              <Text style={{fontWeight: 'bold', paddingLeft:15, marginTop: 10}}>Logradouro: {this.state.enderecoCepEstab.logradouro}</Text>
+              <Text style={this.context.dark ?{fontWeight: 'bold', padding:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', padding:15, marginTop: 10, color:'#000'}}>Estado: {this.state.enderecoCepEstab.uf}</Text>
+              <Text style={this.context.dark ?{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#000'}}>Cidade: {this.state.enderecoCepEstab.localidade}</Text>
+              <Text style={this.context.dark ?{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#000'}}>Logradouro: {this.state.enderecoCepEstab.logradouro}</Text>
                 
 
-              <Text style={{fontWeight: 'bold', padding:15, fontSize:20, marginTop:50}}>Por favor, verifique se as informações conferem, caso sim, confirme e termine o cadastro</Text>
+              <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#fff'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000'}}>Por favor, verifique se as informações conferem, caso sim, confirme e termine o cadastro</Text>
               
               <View style={{alignItems: 'center', justifyContent:'center'}}>
                 <TouchableOpacity
@@ -2103,9 +2106,10 @@ export default class CriarAnuncio extends Component {
           <Modalize
             ref={this.state.modalizeLocationAuto}
             snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
             >
             <View style={{flex:1,alignItems:'center', flexDirection:'row'}}>
-                <Text style={{fontWeight: 'bold', padding:15}}>Insira seu CEP</Text>  
+                <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff'} : {fontWeight: 'bold', padding:15,color:'#000'}}>Insira seu CEP</Text>  
 
                   <View style={{marginRight:20}}>
                     <InputForm
@@ -2125,12 +2129,12 @@ export default class CriarAnuncio extends Component {
             </View>
 
             <View>
-              <Text style={{fontWeight: 'bold', padding:15, marginTop: 10}}>Estado: {this.state.enderecoCepAuto.uf}</Text>
-              <Text style={{fontWeight: 'bold', paddingLeft:15, marginTop: 10}}>Cidade: {this.state.enderecoCepAuto.localidade}</Text>
-              <Text style={{fontWeight: 'bold', paddingLeft:15, marginTop: 10}}>Logradouro: {this.state.enderecoCepAuto.logradouro}</Text>
+              <Text style={this.context.dark ?{fontWeight: 'bold', padding:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', padding:15, marginTop: 10, color:'#000'}}>Estado: {this.state.enderecoCepAuto.uf}</Text>
+              <Text style={this.context.dark ?{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#000'}}>Cidade: {this.state.enderecoCepAuto.localidade}</Text>
+              <Text style={this.context.dark ?{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#000'}}>Logradouro: {this.state.enderecoCepAuto.logradouro}</Text>
                 
 
-              <Text style={{fontWeight: 'bold', padding:15, fontSize:20, marginTop:50}}>Por favor, verifique se as informações conferem, caso sim, confirme e termine o cadastro</Text>
+              <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#fff'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000'}}>Por favor, verifique se as informações conferem, caso sim, confirme e termine o cadastro</Text>
               
               <View style={{alignItems: 'center', justifyContent:'center'}}>
                 <TouchableOpacity
@@ -2182,9 +2186,10 @@ export default class CriarAnuncio extends Component {
           <Modalize
             ref={this.state.modalizeRefAbertura}
             snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
           >
             <View style={{alignItems:'flex-start', marginTop:40}}>
-            <Heading6 style={{fontWeight:'bold', marginLeft: 10}}>Selecione o Horário de Abertura</Heading6>
+            <Heading6 style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, color:'#fff'} : {fontWeight:'bold', marginLeft: 10, color:'#000'}}>Selecione o Horário de Abertura</Heading6>
                 <View>
 
                   <TouchableOpacity onPress={() => this.getHorarioOpen('1:00')}>
@@ -2293,9 +2298,10 @@ export default class CriarAnuncio extends Component {
            <Modalize
             ref={this.state.modalizeRefFechamento}
             snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
           >
             <View style={{alignItems:'flex-start', marginTop:40}}>
-            <Heading6 style={{fontWeight:'bold', marginLeft: 10}}>Selecione o Horário de Fechamento</Heading6>
+            <Heading6 style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, color:'#fff'} : {fontWeight:'bold', marginLeft: 10, color:'#000'}}>Selecione o Horário de Fechamento</Heading6>
                 <View>
 
                   <TouchableOpacity onPress={() => this.getHorarioClose('1:00')}>

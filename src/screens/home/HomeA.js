@@ -350,8 +350,12 @@ async componentDidMount() {
                       </TouchableOpacity>
                 }
 
-                <Image source={require("../../../assets/iconnoback.png")} style={{height:54, width:54, justifyContent:'center'}}/>
-                    
+
+              {this.context.dark ? 
+                <Image source={require("../../../assets/nobacklogo.png")} style={{height:54, width:54, justifyContent:'center'}}/>
+                :
+                <Image source={require("../../../assets/nobackblack.png")} style={{height:54, width:54, justifyContent:'center'}}/>
+              }      
                 <TouchableOpacity onPress={this.navigateTo('Filtro')} style={{width:20, height:20}}>
                     <IconResponsiveNOBACK  name="sort-alpha-up" size={19}/>
                 </TouchableOpacity>

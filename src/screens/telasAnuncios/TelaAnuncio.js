@@ -733,9 +733,10 @@ export default class TelaAnuncio extends Component {
           <Modalize
             ref={this.state.modalizeRef}
             snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
           >
             <View style={{alignItems:'center', marginTop:40}}>
-            <Heading6 style={{fontWeight:'bold', marginLeft: 10}}>Comentários</Heading6>
+            <Heading6 style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, color:'#fff'} : {fontWeight:'bold', marginLeft: 10, color:'#000'}}>Comentários</Heading6>
                 <View style={{marginTop:7,maxWidth: windowWidth - 60}}>
                      {usuarioEstado == null &&
                         <View style={{marginTop:20}}></View>
@@ -748,6 +749,7 @@ export default class TelaAnuncio extends Component {
                             multiline
                             placeholder="Deixe o seu comentário..."
                             numberOfLines={3}
+                            placeholderTextColor={this.context.dark ? "#fff" : "#000"}
                             style={{borderWidth:3, borderColor: '#DAA520', borderRadius:20, padding:10}}
                             maxLength={255}
                             onChangeText={(text) => this.setState({text})}
@@ -767,9 +769,9 @@ export default class TelaAnuncio extends Component {
                           <View style={{flex:1, marginTop: 20}}>
                             <View style={{flexDirection:'row', alignItems:'center'}}>
                               <Image source={{uri: item.photoUser}} style={{width:37, height:37, borderRadius:30}}/>
-                              <Text style={{fontWeight:'bold', marginLeft:10}}>{item.nomeUser}</Text>
+                              <Text style={this.context.dark ? {fontWeight:'bold', marginLeft:10, color:'#fff'} : {fontWeight:'bold', marginLeft:10, color:'#000'}}>{item.nomeUser}</Text>
                             </View>
-                            <Text>{item.comment}</Text>
+                            <Text style={this.context.dark ? {color:'#fff'} : {color:'#000'}}>{item.comment}</Text>
                           </View>
                         }
                       />
