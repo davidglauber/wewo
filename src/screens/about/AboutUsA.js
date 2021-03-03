@@ -178,7 +178,7 @@ export default class AboutUsA extends Component {
   };
 
   openInstagram = () => {
-    Linking.openURL('https://www.instagram.com/wewooficial/')
+    Linking.openURL('https://www.instagram.com/wewobrasil/')
   }
 
   openLinkedIn = () => {
