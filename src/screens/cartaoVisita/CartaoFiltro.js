@@ -599,7 +599,7 @@ export default class CartaoFiltro extends Component {
                     enabled={isOpen}
                   > 
 
-                    <AnuncioContainer>
+                    <AnuncioContainer onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
                           <View style={{flexDirection:'row'}}>
                               {item.video == null ?
                                     <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
@@ -656,7 +656,7 @@ export default class CartaoFiltro extends Component {
                     renderRightActions={this.RightAction}
                     onSwipeableRightOpen={() => this.AddToFav(item.idCartao, item)}
                   > 
-                    <AnuncioContainer>
+                    <AnuncioContainer onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
                               <View style={{flexDirection:'row'}}>
                                   {item.video == null ?
                                     <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>

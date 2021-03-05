@@ -338,7 +338,7 @@ async componentDidMount() {
                 
                 <View style={{flex:1, alignItems: 'center'}}>
                       <View>
-                          <AnuncioContainer>
+                          <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                   {item.video == null ?
                                       <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
@@ -395,7 +395,7 @@ async componentDidMount() {
                 
                 <View style={{flex:1, alignItems: 'center'}}>
                     <View>
-                        <AnuncioContainer>
+                        <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
                             <View style={{flexDirection:'row'}}>
                                 {item.video == null ?
                                       <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
@@ -452,7 +452,7 @@ async componentDidMount() {
                 
                 <View style={{flex:1, alignItems: 'center'}}>
                       <View>
-                          <AnuncioContainer>
+                          <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                   {item.video == null ?
                                       <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
@@ -505,7 +505,7 @@ async componentDidMount() {
                 
                 <View style={{flex:1, alignItems: 'center'}}>
                     <View>
-                        <AnuncioContainer>
+                        <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
                             <View style={{flexDirection:'row'}}>
                                 {item.video == null ?
                                       <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>

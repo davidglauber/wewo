@@ -141,7 +141,7 @@ const Stack = createStackNavigator();
 
 // MainNavigatorA
 function MainNavigatorA() {
-  const [dark, setDark] = useState(false)
+  const [dark, setDark] = useState(true)
 
   return (
 <ThemeProvider theme={dark ? themes.dark: themes.light}>

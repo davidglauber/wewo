@@ -363,7 +363,7 @@ export default class TelaGeralCriarCartao extends Component {
                         keyExtractor={() => this.makeid(17)}
                         data={cartoesAuto}
                         renderItem={({item}) => 
-                            <AnuncioContainer style={{height: 190}}>
+                            <AnuncioContainer style={{height: 190}} onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                   {item.video == null ?
                                     <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
@@ -423,7 +423,7 @@ export default class TelaGeralCriarCartao extends Component {
                         keyExtractor={() => this.makeid(17)}
                         data={cartoesEstab}
                         renderItem={({item}) => 
-                            <AnuncioContainer style={{height: 190}}>
+                            <AnuncioContainer style={{height: 190}} onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
                               <View style={{flexDirection:'row'}}>
                                   {item.video == null ?
                                     <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>

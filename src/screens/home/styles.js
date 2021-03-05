@@ -214,7 +214,7 @@ export const SafeAnuncioView = styled.SafeAreaView`
 `
 
 
-export const AnuncioContainer = styled.View`
+export const AnuncioContainer = styled.TouchableOpacity`
     width: 336px;
     height: 170px; 
     margin-bottom:5px; 
