@@ -30,6 +30,8 @@ import { SafeBackground, Title, AnuncioContainer, PlusContainer, PlusIcon, Descr
 
 import LottieView from 'lottie-react-native';
 
+import loading from '../../../assets/loading.json';
+
 //RESPONSIVE FONT 
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -323,10 +325,7 @@ export default class TelaPrincipalAnuncio extends Component {
               }}
             >
             <View style={{flex:1, alignItems:'center', paddingLeft: windowWidth / 2, paddingTop: windowHeight / 2, width: 100}}>
-              <View style={{alignItems:'center', borderWidth:2, borderColor:'black', backgroundColor:'white', height:100, width: 200, backgroundColor:'white', borderRadius:15}}>
-                <Text style={{fontWeight:'bold', marginTop:10, color:'#9A9A9A'}}>Carregando...</Text>
-                <PulseIndicator color='#DAA520'/>
-              </View>
+                <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
             </View>
           </Modal>
           

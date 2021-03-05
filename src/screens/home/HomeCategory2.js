@@ -33,6 +33,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 import LottieView from 'lottie-react-native';
 
+import loading from '../../../assets/loading.json';
+
 
 //import IAP API 
 import {purchased} from '../../config/purchase';
@@ -291,10 +293,7 @@ async componentDidMount() {
             }}
           >
           <View style={{flex:1, alignItems:'center', paddingLeft: windowWidth / 2, paddingTop: windowHeight / 2, width: 100}}>
-            <View style={{alignItems:'center', borderWidth:2, borderColor:'black', backgroundColor:'white', height:100, width: 200, backgroundColor:'white', borderRadius:15}}>
-              <Text style={{fontWeight:'bold', marginTop:10, color:'#9A9A9A'}}>Carregando...</Text>
-              <PulseIndicator color='#DAA520'/>
-            </View>
+              <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
           </View>
         </Modal>
 

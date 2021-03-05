@@ -406,7 +406,8 @@ export const HeadingSetting = styled(Heading6)`
 export const NameUserSetting = styled(Subtitle1)`
     font-weight: 500;
     text-align: left;
-    color: ${props => props.theme.color}
+    color: ${props => props.theme.color};
+    font-weight: bold
 `
 
 export const Sub1Filter = styled(Subtitle1)`
@@ -422,7 +423,8 @@ export const EmailUserSetting = styled(Subtitle1)`
 export const SetTextUserSetting = styled(Subtitle1)`
     padding-vertical: 2px;
     font-size: 14px;
-    color: ${props => props.theme.inversePallete}
+    color: ${props => props.theme.inversePallete};
+    font-weight: bold
 `
 export const SectionHeaderTextSetting = styled(Subtitle1)`
     padding-vertical: 2px;

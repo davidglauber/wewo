@@ -32,7 +32,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 // import components
 import TouchableItem from '../../components/TouchableItem';
 
-import {SafeBackground, IconResponsive, TouchableFilter, Description, AnuncioContainer, TouchableFilterUnselected, Heading, TextFilter, Title, ValueField, TouchableDetails, TextDetails, TextSearch} from '../home/styles';
+import {SafeBackground, IconResponsive, IconResponsiveNOBACK, TouchableFilter, Description, AnuncioContainer, TouchableFilterUnselected, Heading, TextFilter, Title, ValueField, TouchableDetails, TextDetails, TextSearch} from '../home/styles';
 
 import { ThemeContext } from '../../../ThemeContext';
 
@@ -40,6 +40,7 @@ import { ThemeContext } from '../../../ThemeContext';
 import Colors from '../../theme/colors';
 
 import { Video } from 'expo-av';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 // SearchA Config
 const isRTL = I18nManager.isRTL;
@@ -84,7 +85,6 @@ const styles = StyleSheet.create({
     top: 4,
     right: 4,
     borderRadius: 4,
-    backgroundColor: '#DAA520',
     overflow: 'hidden',
   },
   searchButton: {
@@ -355,35 +355,45 @@ export default class SearchA extends Component {
           }      
         </View>
 
-        <View style={styles.titleContainer}>
-          <Heading style={styles.titleText}>Pesquisar</Heading>
-        </View>
 
-        <View style={{flexDirection:'row'}}>
-                  { this.state.type == 'Estabelecimento' &&
-                    <View style={{flexDirection:'row'}}>
-                      <TouchableFilterUnselected onPress={() => this.setState({type: 'Autonomo'})}>
-                        <TextFilter style={{color:'black'}}>Autônomo</TextFilter>
-                      </TouchableFilterUnselected>
+        { this.state.type == 'Estabelecimento' &&
+          <View style={{flexDirection:'row', justifyContent:'center'}}>
+            <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Autonomo'})}>
+              <IconResponsiveNOBACK
+                style={{color:'#3E3C3F'}}
+                name="user-tie"
+                size={24}
+              />
+            </TouchableOpacity>
 
-                      <TouchableFilter>
-                        <TextFilter>Estabelecimento</TextFilter>
-                      </TouchableFilter>
-                    </View>
-                  }
+            <TouchableOpacity style={{padding:15}}>
+              <IconResponsiveNOBACK
+                name="briefcase"
+                size={24}
+              />
+            </TouchableOpacity>
+          </View>
+        }
 
-                  { this.state.type == 'Autonomo' &&
-                    <View style={{flexDirection:'row'}}>
-                      <TouchableFilter>
-                        <TextFilter>Autônomo</TextFilter> 
-                      </TouchableFilter>
+        { this.state.type == 'Autonomo' &&
+          <View style={{flexDirection:'row', justifyContent:'center'}}>
+            <TouchableOpacity style={{padding:15}}>
+              <IconResponsiveNOBACK
+                name="user-tie"
+                size={24}
+              /> 
+            </TouchableOpacity>
 
-                      <TouchableFilterUnselected onPress={() => this.setState({type: 'Estabelecimento'})}>
-                        <TextFilter style={{color:'black'}}>Estabelecimento</TextFilter>
-                      </TouchableFilterUnselected>
-                    </View>
-                  }
-        </View>
+            <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Estabelecimento'})}>
+              <IconResponsiveNOBACK
+                style={{color:'#3E3C3F'}}
+                name="briefcase"
+                size={24}
+              />
+            </TouchableOpacity>
+
+          </View>
+        }
 
         <View style={styles.inputContainer}>
           <TextSearch
@@ -407,6 +417,11 @@ export default class SearchA extends Component {
               </View>
             </TouchableItem>
           </View>
+        </View>
+
+
+        <View style={styles.titleContainer}>
+          <Heading style={styles.titleText}>Resultados:</Heading>
         </View>
 
         <View style={styles.container}>
@@ -442,7 +457,7 @@ export default class SearchA extends Component {
 
                       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                           <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                              <TextDetails>Ver Detalhes</TextDetails>
+                              <TextDetails>+ detalhes</TextDetails>
                           </TouchableDetails>
 
 
@@ -456,7 +471,7 @@ export default class SearchA extends Component {
                                 <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
                             }
                             <View style={{marginLeft:10}}>
-                              <IconResponsive  name="briefcase" size={19}/> 
+                              <IconResponsive name="briefcase" size={19}/> 
                             </View>
                           </View>
 

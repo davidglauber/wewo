@@ -16,7 +16,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import Color from 'color';
 
 import firebase from '../../config/firebase';
 
@@ -31,7 +30,6 @@ import Colors from '../../theme/colors';
 
 
 //consts
-const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 // ForgotPasswordA Styles

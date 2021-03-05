@@ -40,7 +40,9 @@ import Colors from '../../theme/colors';
 import firebase from '../../config/firebase';
 
 
-import { PulseIndicator } from 'react-native-indicators';
+import LottieView from 'lottie-react-native';
+
+import loading from '../../../assets/loading.json';
 
 // SettingsB Config
 const isRTL = I18nManager.isRTL;
@@ -184,14 +186,6 @@ const Setting = ({onPress, icon, setting, type}: SettingProps) => (
         </SetTextUserSetting>
       </View>
 
-      {type !== 'logout' && (
-        <View style={isRTL && {transform: [{scaleX: -1}]}}>
-          <Icon
-            name="ios-arrow-forward"
-            size={16}
-          />
-        </View>
-      )}
     </View>
   </TouchableItem>
 );
@@ -289,10 +283,7 @@ export default function Configuracoes() {
             }}
           >
           <View style={{flex:1, alignItems:'center', paddingLeft: windowWidth / 2, paddingTop: windowHeight / 2, width: 100}}>
-            <View style={{alignItems:'center', borderWidth:2, borderColor:'black', backgroundColor:'white', height:100, width: 200, backgroundColor:'white', borderRadius:15}}>
-              <Text style={{fontWeight:'bold', marginTop:10, color:'#9A9A9A'}}>Carregando...</Text>
-              <PulseIndicator color='#DAA520'/>
-            </View>
+              <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
           </View>
         </Modal>
 
@@ -331,12 +322,11 @@ export default function Configuracoes() {
                     <EmailUserSetting style={styles.email}>
                       {dataNascimento}
                     </EmailUserSetting>
+
                 </View>
               </View>
             </View>
           </TouchableItem>
-
-          <Divider />
 
 
           <SectionHeader title="Planos" />
