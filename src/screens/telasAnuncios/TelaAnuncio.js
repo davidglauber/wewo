@@ -222,6 +222,7 @@ export default class TelaAnuncio extends Component {
       notaMedia: 0,
       fotoUser: '',
       nomeUser:'',
+      textPortfolio: '',
       text:'',
       usersThatCommented: [],
       product: {
@@ -409,7 +410,8 @@ export default class TelaAnuncio extends Component {
       //pega a imagem e nome da pessoa logada
       await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
             e.setState({fotoUser: documentSnapshot.data().photoProfile}),
-            e.setState({nomeUser: documentSnapshot.data().nome})
+            e.setState({nomeUser: documentSnapshot.data().nome}),
+            e.setState({textPortfolio: documentSnapshot.data().textPortfolio})
       })
     }
 
@@ -861,7 +863,7 @@ export default class TelaAnuncio extends Component {
               <Image source={{uri: this.state.fotoUser}} style={{width:60, height:60, borderRadius:50}}/>
               
               <Text style={this.context.dark ? {color:'#fff', padding:10, fontWeight:'bold', fontSize:20} : {color:'#000', padding:10, fontWeight:'bold', fontSize:20}}>{this.state.nomeUser}</Text>
-              <Text style={this.context.dark ? {color:'#fff', paddingLeft:40, paddingRight:40} : {color:'#000', paddingLeft:40, paddingRight:40}}>StudioPC é uma empresa 100% e-commerce que está no mercado para fazer a diferença, mais precisamente no segmento de máquinas de alta performance para gamers e no setor corporativo com workstations.</Text>
+              <Text style={this.context.dark ? {color:'#fff', paddingLeft:40, paddingRight:40} : {color:'#000', paddingLeft:40, paddingRight:40}}>{this.state.textPortfolio}</Text>
               
               <Heading6 style={this.context.dark ? {fontWeight:'bold', marginTop: 50, color:'#FFD700'} : {fontWeight:'bold', marginTop:50, color:'#000'}}>Mais detalhes</Heading6>
               
@@ -884,7 +886,7 @@ export default class TelaAnuncio extends Component {
               <FlatList keyExtractor={() => this.makeid(17)} data={this.state.cartoesEstab} horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20,flexGrow: 1, justifyContent: 'center'}} 
                 renderItem={({item}) => 
                   <View>
-                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, justifyContent:'center'}}>
+                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, justifyContent:'center', paddingBottom:30}}>
                       <FontAwesome5 style={{marginTop:7, marginBottom:7}} name="briefcase" size={20}/>
                       <Image source={{uri: item.photo}} style={{width:100, height:50, borderRadius:30}}/>
                       <Text style={{fontWeight:'bold'}}>{item.title}</Text>

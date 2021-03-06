@@ -345,7 +345,7 @@ export default function Configuracoes() {
           <Setting
             onPress={() => navigation.navigate('TelaGeralCriarCartao')}
             icon={VISIT_CARD}
-            setting="Meu Portfólio"
+            setting="Meus Portfólios"
           />
 
           <SectionHeader title="Sobre" />

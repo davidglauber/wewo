@@ -6,6 +6,7 @@ import {
   Modal,
   Dimensions,
   Alert,
+  TextInput,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -25,6 +26,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 // import colors
 import Colors from '../../theme/colors';
 
+import { Modalize } from 'react-native-modalize';
+
 import LottieView from 'lottie-react-native';
 
 import loading from '../../../assets/loading.json';
@@ -34,6 +37,8 @@ import { PulseIndicator } from 'react-native-indicators';
 import { SafeBackground, Title, AnuncioContainer, PlusContainer, PlusIcon, Description, TouchableDetails, ValueField, TextDetails, IconResponsive, Heading } from '../home/styles';
 
 import { ThemeContext } from '../../../ThemeContext';
+
+import { FontAwesome5 } from '@expo/vector-icons';
 
 //MODULE IAP
 import {purchased} from '../../config/purchase';
@@ -110,8 +115,16 @@ export default class TelaGeralCriarCartao extends Component {
     this.state = {
       cartoesEstab: [],
       cartoesAuto: [],
+      email:'',
+      nome:'',
+      dataNascimento:'',
+      foto:'',
+      text:'',
+      premium: false,
+      telefone:'',
       isFetchedPublish: false,
-      modalVisible: true
+      modalVisible: true,
+      modalizeRef: React.createRef(null)
     };
   }
 
@@ -177,6 +190,15 @@ export default class TelaGeralCriarCartao extends Component {
       })
     })
 
+    await firebase.firestore().collection('usuarios').doc(currentUserUID).onSnapshot(documentSnapshot => {
+      e.setState({email: documentSnapshot.data().email})
+      e.setState({nome: documentSnapshot.data().nome})
+      e.setState({dataNascimento: documentSnapshot.data().dataNascimento})
+      e.setState({foto: documentSnapshot.data().photoProfile})
+      e.setState({premium: documentSnapshot.data().premium})
+      e.setState({telefone: documentSnapshot.data().telefone})
+    })
+
   }
 
 
@@ -190,6 +212,9 @@ export default class TelaGeralCriarCartao extends Component {
     return result;
  }
 
+ onChangeText(text) {
+  this.setState({text: text})
+}
 
  cutDescription(text) {
     if(text.length > 40) {
@@ -240,6 +265,32 @@ export default class TelaGeralCriarCartao extends Component {
   }
 
 
+
+  openModalize() {
+    const modalizeRef = this.state.modalizeRef;
+
+    modalizeRef.current?.open()
+  }
+
+
+  async closeDescription(){
+    let e = this;
+    let currentUserUID = firebase.auth().currentUser.uid;
+    await firebase.firestore().collection('usuarios').doc(currentUserUID).set({
+      email: e.state.email,
+      dataNascimento: e.state.dataNascimento,
+      photoProfile: e.state.foto,
+      premium: e.state.premium,
+      telefone: e.state.telefone,
+      nome: e.state.nome,
+      textPortfolio: e.state.text
+    })
+    
+    const modalizeRef = this.state.modalizeRef;
+    modalizeRef.current?.close()
+  }
+
+
   navigateTo = screen => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
@@ -279,7 +330,7 @@ export default class TelaGeralCriarCartao extends Component {
 
       if(comprou == false) {
         if(cartoesDidMount.length >= 1) {
-          alert('A conta Free permite até 1 cartão, consulte a tela de PLANOS para mais informações')
+          alert('A conta free permite até 1 Portfólio, consulte a tela de PLANOS para mais informações')
         }
 
         if(cartoesDidMount.length  < 1) {
@@ -343,10 +394,13 @@ export default class TelaGeralCriarCartao extends Component {
           <ScrollView>
             <View style={styles.categoriesContainer}>
               <View style={styles.titleContainer}>
-                    <Heading style={{marginLeft: 30, marginRight: 34}}>Cartões Ativos</Heading>
+                    <Heading style={{marginLeft: 30, marginRight: 34}}>Portfólios Ativos</Heading>
 
                 <PlusContainer onPress={() => this.verifyNumberOfPublises()}>
                         <PlusIcon  name="plus" size={19}/>
+                </PlusContainer>
+                <PlusContainer onPress={() => this.openModalize()}>
+                        <PlusIcon  name="bullhorn" size={19}/>
                 </PlusContainer>
 
               </View>
@@ -475,6 +529,37 @@ export default class TelaGeralCriarCartao extends Component {
                     </View>
                 </View>
 
+          {/*Modalize do resumo de portfólio*/}
+          <Modalize
+            ref={this.state.modalizeRef}
+            snapPoint={500}
+            onClose={() => this.closeDescription()}
+          >
+            <View>
+                  <ScrollView>
+                      <TextInput
+                        autoFocus={true}
+                        multiline={true}
+                        value={this.state.text}
+                        onChangeText={text => this.onChangeText(text)}
+                        underlineColorAndroid="transparent"
+                        style={{padding: 20}}
+                        placeholder="Dê a melhor descrição sobre você"
+                      />
+
+                      <View style={{alignItems:'center'}}>
+                        <TouchableOpacity
+                          onPress={() => this.closeDescription()}
+                          style={{borderRadius:30, alignItems:'center', justifyContent:'center', backgroundColor:'#DAA520', height: 40, width: 40, marginBottom:40}}
+                        >
+                          <FontAwesome5 name="check-circle" size={24} color={'white'}/>
+                        </TouchableOpacity>
+                      </View>
+
+                  </ScrollView>
+                  
+            </View>
+          </Modalize>
           </ScrollView>
         </View>
       </SafeBackground>

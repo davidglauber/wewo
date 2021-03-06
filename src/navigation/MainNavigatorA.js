@@ -365,7 +365,7 @@ function MainNavigatorA() {
           name="EditarCartao"
           component={EditarCartao}
           options={{
-            title: 'Editar Cartão',
+            title: 'Editar Portfólio',
             headerStyle: { backgroundColor: dark ? '#121212' : 'white' },
             headerTitleStyle: { color: dark ? '#FFD700' : 'black' },
           }}
@@ -500,7 +500,7 @@ function MainNavigatorA() {
           name="TelaCriarCartaoVisita"
           component={TelaCriarCartaoVisita}
           options={{
-            title: 'Criar Cartão de Visita',
+            title: 'Criar Portfólio',
             headerStyle: { backgroundColor: dark ? '#121212' : 'white' },
             headerTitleStyle: { color: dark ? '#FFD700' : 'black' },
           }}
