@@ -49,7 +49,7 @@ import firebase from '../../config/firebase';
 
 //import icons
 import { FontAwesome5 } from '@expo/vector-icons';
-import { SafeAnuncioView, ValueFieldPrincipal, ViewComment, ReviewView, TouchableResponsive, SignUpBottom, IconResponsiveNOBACK, ButtonIconContainer, CallAndMessageContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
+import { SafeAnuncioView, ValueFieldPrincipal, ViewComment, ReviewView, TextDetails, TouchableResponsive, SignUpBottom, IconResponsiveNOBACK, ButtonIconContainer, CallAndMessageContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
 
 import {Heading6} from '../../components/text/CustomText';
 
@@ -64,6 +64,7 @@ import loading from '../../../assets/loading.json';
 
 //import IAP API 
 import {purchased} from '../../config/purchase';
+
 
 //import ADS
 import { AdMobBanner} from 'expo-ads-admob';
@@ -214,6 +215,7 @@ export default class TelaAnuncio extends Component {
       usersThatVotedFirebase: [],
       mediaAvaliacao: [],
       modalizeRef: React.createRef(null),
+      modalizeRefPortfolio: React.createRef(null),
       notaMedia: 0,
       fotoUser: '',
       nomeUser:'',
@@ -416,6 +418,12 @@ export default class TelaAnuncio extends Component {
     const modalizeRef = this.state.modalizeRef;
 
     modalizeRef.current?.open()
+  }
+
+  openModalizePortfolio() {
+    const modalizeRefPortfolio = this.state.modalizeRefPortfolio;
+
+    modalizeRefPortfolio.current?.open()
   }
 
 
@@ -643,10 +651,11 @@ export default class TelaAnuncio extends Component {
 
 
 
-                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
+                  <TouchableOpacity onPress={() => this.openModalizePortfolio()} style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                       <IconResponsiveNOBACK name="user-tie" size={25}/>
-                      <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.nome}</TextTheme>
-                  </View>
+                      <TextTheme style={{fontSize:15, marginLeft: 15, marginRight: windowWidth/3}}>{item.nome}</TextTheme>
+                      <IconResponsiveNOBACK name="pushed" size={25}/>
+                  </TouchableOpacity>
 
 
                   <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
@@ -778,6 +787,61 @@ export default class TelaAnuncio extends Component {
                         }
                       />
                 </View>
+            </View>
+          </Modalize>
+
+
+
+          {/*Modalize do Portfolio*/}
+          <Modalize
+            ref={this.state.modalizeRefPortfolio}
+            snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+          >
+            <View style={{alignItems:'center', marginTop:40}}>
+              <Heading6 style={this.context.dark ? {fontWeight:'bold', color:'#fff'} : {fontWeight:'bold', color:'#000'}}>Portfólio</Heading6>
+              
+              <Image source={{uri: this.state.fotoUser}} style={{width:60, height:60, borderRadius:50}}/>
+              
+              <Text style={this.context.dark ? {color:'#fff', padding:10, fontWeight:'bold', fontSize:20} : {color:'#000', padding:10, fontWeight:'bold', fontSize:20}}>{this.state.nomeUser}</Text>
+              <Text style={this.context.dark ? {color:'#fff', paddingLeft:40, paddingRight:40} : {color:'#000', paddingLeft:40, paddingRight:40}}>StudioPC é uma empresa 100% e-commerce que está no mercado para fazer a diferença, mais precisamente no segmento de máquinas de alta performance para gamers e no setor corporativo com workstations.</Text>
+              
+              <Heading6 style={this.context.dark ? {fontWeight:'bold', marginTop: 50, color:'#FFD700'} : {fontWeight:'bold', marginTop:50, color:'#000'}}>Mais detalhes</Heading6>
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}  style={{marginTop:20}}>
+                    
+                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, marginRight:40}}>
+                      <Image source={{uri: this.state.fotoUser}} style={{width:100, height:50, borderRadius:30}}/>
+                      <Text style={{fontWeight:'bold'}}>Cuidador de Animais</Text>
+                      <TouchableOpacity>
+                        <FontAwesome5 style={{marginTop:55}} name="chevron-circle-up" size={30}/>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, marginRight:40}}>
+                      <Image source={{uri: this.state.fotoUser}} style={{width:100, height:50, borderRadius:30}}/>
+                      <Text style={{fontWeight:'bold'}}>Cuidador de Animais</Text>
+                      <TouchableOpacity>
+                        <FontAwesome5 style={{marginTop:55}} name="chevron-circle-up" size={30}/>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, marginRight:40}}>
+                      <Image source={{uri: this.state.fotoUser}} style={{width:100, height:50, borderRadius:30}}/>
+                      <Text style={{fontWeight:'bold'}}>Cuidador de Animais</Text>
+                      <TouchableOpacity>
+                        <FontAwesome5 style={{marginTop:55}} name="chevron-circle-up" size={30}/>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20}}>
+                      <Image source={{uri: this.state.fotoUser}} style={{width:100, height:50, borderRadius:30}}/>
+                      <Text style={{fontWeight:'bold'}}>Cuidador de Animais</Text>
+                      <TouchableOpacity>
+                        <FontAwesome5 style={{marginTop:55}} name="chevron-circle-up" size={30}/>
+                      </TouchableOpacity>
+                    </View>
+
+              </ScrollView>
             </View>
           </Modalize>
 
