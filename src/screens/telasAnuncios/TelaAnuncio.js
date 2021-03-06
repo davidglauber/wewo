@@ -79,6 +79,7 @@ const MINUS_ICON = IOS ? 'ios-remove' : 'md-remove';
 const PLUS_ICON = IOS ? 'ios-add' : 'md-add';
 const CLOSE_ICON = IOS ? 'ios-close' : 'md-close';
 const SHARE_ICON = IOS ? 'ios-share' : 'md-share';
+const PORTFOLIO_ICON = IOS ? 'md-bookmarks' : 'md-bookmarks';
 const imgHolder = require('../../assets/img/confeiteira.jpeg');
 
 //consts
@@ -210,6 +211,8 @@ export default class TelaAnuncio extends Component {
       horario: '',
       anuncioAuto:[],
       anuncioEstab:[],
+      cartoesAuto: [],
+      cartoesEstab: [],
       modalVisible: true,
       purchased: false,
       usersThatVotedFirebase: [],
@@ -409,6 +412,49 @@ export default class TelaAnuncio extends Component {
             e.setState({nomeUser: documentSnapshot.data().nome})
       })
     }
+
+    await firebase.firestore().collection(`usuarios/${currentUserUID}/cartoes`).where("type", "==", "Autonomo").where("verifiedPublish", "==", true).onSnapshot(documentSnapshot => {
+      let cartoesAutoDidMount = []
+      documentSnapshot.forEach(function(doc) {
+        cartoesAutoDidMount.push({
+          idUser: doc.data().idUser,
+          nome: doc.data().nome,
+          idCartao: doc.data().idCartao,
+          video: doc.data().videoPublish,
+          photo: doc.data().photoPublish2,
+          description: doc.data().descriptionAuto,
+          type: doc.data().type,
+          categoria: doc.data().categoryAuto,
+          phone: doc.data().phoneNumberAuto,
+        })
+      })
+      e.setState({cartoesAuto: cartoesAutoDidMount})
+
+    })
+
+    await firebase.firestore().collection(`usuarios/${currentUserUID}/cartoes`).where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).onSnapshot(documentSnapshot => {
+      let cartoesEstabDidMount = []
+      documentSnapshot.forEach(function(doc) {
+        cartoesEstabDidMount.push({
+          idUser: doc.data().idUser,
+          idCartao: doc.data().idCartao,
+          video: doc.data().videoPublish,
+          photo: doc.data().photoPublish2,
+          local: doc.data().localEstab,
+          title: doc.data().titleEstab,
+          description: doc.data().descriptionEstab,
+          phone: doc.data().phoneNumberEstab,
+          timeOpen: doc.data().timeOpen,
+          timeClose: doc.data().timeClose,
+          type: doc.data().type,
+          verified: doc.data().verifiedPublish,
+          categoria: doc.data().categoryEstab,
+          workDays: doc.data().workDays
+        })
+      })
+      e.setState({cartoesEstab: cartoesEstabDidMount})
+
+    })
 
 
 }
@@ -628,6 +674,18 @@ export default class TelaAnuncio extends Component {
                     </TouchableItem>
                   </ButtonIconContainer>
 
+                  <ButtonIconContainer style={{marginTop:100, borderRadius:10}}>
+                    <TouchableItem onPress={() => this.openModalizePortfolio()} borderless>
+                      <View style={styles.buttonIconContainer}>
+                        <IconMain
+                          name={PORTFOLIO_ICON}
+                          size={22}
+                          color={Colors.secondaryText}
+                        />
+                      </View>
+                    </TouchableItem>
+                  </ButtonIconContainer>
+
                 </View>
 
                   <View style={styles.descriptionContainer}>
@@ -654,7 +712,6 @@ export default class TelaAnuncio extends Component {
                   <TouchableOpacity onPress={() => this.openModalizePortfolio()} style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                       <IconResponsiveNOBACK name="user-tie" size={25}/>
                       <TextTheme style={{fontSize:15, marginLeft: 15, marginRight: windowWidth/3}}>{item.nome}</TextTheme>
-                      <IconResponsiveNOBACK name="pushed" size={25}/>
                   </TouchableOpacity>
 
 
@@ -807,41 +864,39 @@ export default class TelaAnuncio extends Component {
               <Text style={this.context.dark ? {color:'#fff', paddingLeft:40, paddingRight:40} : {color:'#000', paddingLeft:40, paddingRight:40}}>StudioPC é uma empresa 100% e-commerce que está no mercado para fazer a diferença, mais precisamente no segmento de máquinas de alta performance para gamers e no setor corporativo com workstations.</Text>
               
               <Heading6 style={this.context.dark ? {fontWeight:'bold', marginTop: 50, color:'#FFD700'} : {fontWeight:'bold', marginTop:50, color:'#000'}}>Mais detalhes</Heading6>
-              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}  style={{marginTop:20}}>
+              
+              
+              <FlatList keyExtractor={() => this.makeid(17)} data={this.state.cartoesAuto} horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20,flexGrow: 1, justifyContent: 'center'}} 
+                renderItem={({item}) => 
+                  <View>
+                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, justifyContent:'center'}}>
+                      <FontAwesome5 style={{marginTop:7, marginBottom:7}} name="user-tie" size={20}/>
+                      <Image source={{uri: item.photo}} style={{width:100, height:50, borderRadius:30}}/>
+                      <Text style={{fontWeight:'bold'}}>{item.nome}</Text>
+                      <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                        <FontAwesome5 style={{marginTop:35}} name="chevron-circle-up" size={30}/>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+              }
+              />
+
+              <FlatList keyExtractor={() => this.makeid(17)} data={this.state.cartoesEstab} horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20,flexGrow: 1, justifyContent: 'center'}} 
+                renderItem={({item}) => 
+                  <View>
+                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, justifyContent:'center'}}>
+                      <FontAwesome5 style={{marginTop:7, marginBottom:7}} name="briefcase" size={20}/>
+                      <Image source={{uri: item.photo}} style={{width:100, height:50, borderRadius:30}}/>
+                      <Text style={{fontWeight:'bold'}}>{item.title}</Text>
+                      <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                        <FontAwesome5 style={{marginTop:35}} name="chevron-circle-up" size={30}/>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+              }
+              />
                     
-                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, marginRight:40}}>
-                      <Image source={{uri: this.state.fotoUser}} style={{width:100, height:50, borderRadius:30}}/>
-                      <Text style={{fontWeight:'bold'}}>Cuidador de Animais</Text>
-                      <TouchableOpacity>
-                        <FontAwesome5 style={{marginTop:55}} name="chevron-circle-up" size={30}/>
-                      </TouchableOpacity>
-                    </View>
 
-                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, marginRight:40}}>
-                      <Image source={{uri: this.state.fotoUser}} style={{width:100, height:50, borderRadius:30}}/>
-                      <Text style={{fontWeight:'bold'}}>Cuidador de Animais</Text>
-                      <TouchableOpacity>
-                        <FontAwesome5 style={{marginTop:55}} name="chevron-circle-up" size={30}/>
-                      </TouchableOpacity>
-                    </View>
-
-                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, marginRight:40}}>
-                      <Image source={{uri: this.state.fotoUser}} style={{width:100, height:50, borderRadius:30}}/>
-                      <Text style={{fontWeight:'bold'}}>Cuidador de Animais</Text>
-                      <TouchableOpacity>
-                        <FontAwesome5 style={{marginTop:55}} name="chevron-circle-up" size={30}/>
-                      </TouchableOpacity>
-                    </View>
-
-                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20}}>
-                      <Image source={{uri: this.state.fotoUser}} style={{width:100, height:50, borderRadius:30}}/>
-                      <Text style={{fontWeight:'bold'}}>Cuidador de Animais</Text>
-                      <TouchableOpacity>
-                        <FontAwesome5 style={{marginTop:55}} name="chevron-circle-up" size={30}/>
-                      </TouchableOpacity>
-                    </View>
-
-              </ScrollView>
             </View>
           </Modalize>
 
@@ -920,6 +975,18 @@ export default class TelaAnuncio extends Component {
                     </TouchableItem>
                   </ButtonIconContainer>
 
+                  <ButtonIconContainer style={{marginTop:100, borderRadius:10}}>
+                    <TouchableItem onPress={() => this.openModalizePortfolio()} borderless>
+                      <View style={styles.buttonIconContainer}>
+                        <IconMain
+                          name={PORTFOLIO_ICON}
+                          size={22}
+                          color={Colors.secondaryText}
+                        />
+                      </View>
+                    </TouchableItem>
+                  </ButtonIconContainer>
+
                 </View>
 
                   <View style={styles.descriptionContainer}>
@@ -959,10 +1026,10 @@ export default class TelaAnuncio extends Component {
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.phone}</TextTheme>
                   </View>
 
-                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
+                  <TouchableOpacity onPress={() => this.openModalizePortfolio()} style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                         <IconResponsiveNOBACK name="list-alt" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
-                  </View>
+                  </TouchableOpacity>
 
 
                   <ViewComment>
