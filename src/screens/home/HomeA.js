@@ -256,7 +256,7 @@ async componentDidMount() {
       })
     })
 
-    if(Platform.OS === "android") {
+   /* if(Platform.OS === "android") {
       await AdMobInterstitial.setAdUnitID('ca-app-pub-1397640114399871/9421571551');
       await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true});
       await AdMobInterstitial.showAdAsync();
@@ -266,7 +266,7 @@ async componentDidMount() {
       await AdMobInterstitial.setAdUnitID('ca-app-pub-1397640114399871/9226130438');
       await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true});
       await AdMobInterstitial.showAdAsync();
-    }
+    } */
   }
 
 
@@ -337,29 +337,13 @@ async componentDidMount() {
 
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{paddingBottom: 16}}>
-              <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
+              <View style={{flexDirection: 'row',  justifyContent: 'center',  alignItems: 'center', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
               
-                {status == true ? 
-                  <View>
-                      <TouchableOpacity onPress={this.navigateTo('Settings')}>
-                        <IconResponsiveNOBACK  name="user" size={19}/>
-                      </TouchableOpacity>
-                    </View>
-                    :
-                      <TouchableOpacity onPress={this.navigateTo('SignUp')}>
-                          <IconResponsiveNOBACK  name="user-plus" size={19}/>
-                      </TouchableOpacity>
-                }
-
-
               {this.context.dark ? 
                 <Image source={require("../../../assets/nobacklogo.png")} style={{height:54, width:54, justifyContent:'center'}}/>
                 :
                 <Image source={require("../../../assets/nobackblack.png")} style={{height:54, width:54, justifyContent:'center'}}/>
               }      
-                <TouchableOpacity onPress={this.navigateTo('Filtro')} style={{width:20, height:20}}>
-                    <IconResponsiveNOBACK  name="sort-alpha-up" size={19}/>
-                </TouchableOpacity>
               </View>
 
             
@@ -381,6 +365,9 @@ async componentDidMount() {
 
             <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
               <Heading>Anúncios</Heading>
+              <TouchableOpacity onPress={this.navigateTo('Filtro')} style={{width:20, height:20}}>
+                  <IconResponsiveNOBACK  name="sort-alpha-up" size={19}/>
+              </TouchableOpacity>
             </View>
 
             {/*ANUNCIOS DE USUARIOS PREMIUM AUTONOMO*/}

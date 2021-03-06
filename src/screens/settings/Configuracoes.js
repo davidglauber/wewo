@@ -294,7 +294,7 @@ export default function Configuracoes() {
 
         <ScrollView contentContainerStyle={styles.contentContainerStyle}>
           <View style={styles.titleContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('HomeNavigator')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                     <IconResponsiveNOBACK style={{marginRight: 24}} name="arrow-left" size={20}/>
                 </TouchableOpacity>
             <HeadingSetting>Configurações</HeadingSetting>

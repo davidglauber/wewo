@@ -6,7 +6,7 @@
  */
 
 // import dependencies
-import React ,{useContext} from 'react';
+import React ,{useContext, useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {MaterialCommunityIcons as Icon} from '@expo/vector-icons';
 
@@ -22,17 +22,24 @@ import Cart from '../screens/cartaoVisita/CartaoVisita';
 
 import SearchA from '../screens/search/SearchA';
 
+import Settings from '../screens/settings/Configuracoes';
+
+import SignUp from '../screens/signup/Cadastro';
+
 // import colors
 import Colors from '../theme/colors';
 
 //import ICON
 import { FontAwesome5 } from '@expo/vector-icons';
 
+import firebase from '../config/firebase';
+
 import { ThemeContext } from '../../ThemeContext';
 
 import white from '../theme/light';
 import black from '../theme/dark';
 import dark from '../theme/dark';
+import { call } from 'react-native-reanimated';
 
 // HomeNavigator Config
 
@@ -45,9 +52,26 @@ type Props = {
 // create bottom tab navigator
 const Tab = createBottomTabNavigator();
 
+
+
 // HomeNavigator
 function HomeNavigator() {
-  const {dark, setDark} = useContext(ThemeContext)
+  const {dark, setDark} = useContext(ThemeContext);
+  const [status, setStatus] = useState(null);
+  
+  useEffect(() => {
+    async function callFirebase() {
+      await firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          setStatus(true)
+        } else {
+          setStatus(false)
+        }
+      })
+    }
+
+    callFirebase();
+  },[])
 
 console.log('Dark do HOMEEE: ' + dark)
   return (
@@ -62,6 +86,7 @@ console.log('Dark do HOMEEE: ' + dark)
             iconName = `home${focused ? '' : '-outline'}`;
           } else if (route.name === 'Favorites') {
             iconName = `star${focused ? '' : '-outline'}`;
+            size = 30
           }
 
           // You can return any component that you like here!
@@ -79,6 +104,7 @@ console.log('Dark do HOMEEE: ' + dark)
         },
       }}>
       <Tab.Screen name="Home" component={Home} />
+      {/*
       <Tab.Screen
         name="Cart"
         component={Cart}
@@ -90,8 +116,9 @@ console.log('Dark do HOMEEE: ' + dark)
             />
           ),
         }}
-      />
-      <Tab.Screen name="Favorites" component={Favorites} />
+      /> */}
+
+   
       <Tab.Screen
         name="Buscar"
         component={SearchA}
@@ -104,6 +131,35 @@ console.log('Dark do HOMEEE: ' + dark)
           ),
         }}
       />
+
+    <Tab.Screen name="Favorites" component={Favorites}/>
+
+    {status == true ? 
+      <Tab.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          tabBarIcon: props => (
+            <FontAwesome5
+              name={`user${props.focused ? '' : ''}`}
+              {...props}
+            />
+          ),
+        }}
+      /> : 
+      <Tab.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{
+          tabBarIcon: props => (
+            <FontAwesome5
+              name={`user-plus${props.focused ? '' : ''}`}
+              {...props}
+            />
+          ),
+        }}
+      />
+    }
     </Tab.Navigator>
   );
 }
