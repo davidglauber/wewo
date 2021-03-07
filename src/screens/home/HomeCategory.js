@@ -8,6 +8,7 @@ import {
   Image,
   Modal,
   Text,
+  Platform,
   View,
   TouchableOpacity,
   Dimensions,
@@ -90,13 +91,16 @@ export default class HomeCategory extends Component {
 async componentDidMount() {
    let e = this;
    let titleNavCategory = this.props.route.params.titleOfCategory;
-   let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
-
+   
+   if(Platform.OS === "android") {
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
+  
     if(comprou == true) {
       this.setState({purchased: true})
     } else {
       this.setState({purchased: false})
     }
+  }
 
     //obter anuncios PREMIUM ativos autonomo
     await firebase.firestore().collection('anuncios').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("categoryAuto", "==", titleNavCategory).where("premiumUser", "==", true).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
@@ -281,7 +285,7 @@ async componentDidMount() {
 
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
-          barStyle={this.context.dark ? 'white-content' : 'dark-content'}
+          barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
         
         <View style={{flex: 1}}>

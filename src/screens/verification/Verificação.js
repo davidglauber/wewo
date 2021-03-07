@@ -119,8 +119,7 @@ export default class Verificação extends Component {
   componentDidMount() {
     GoogleSignin.configure({
       scopes: ['email', 'profile'],
-      webClientId: '419527216736-39o1vcm2lh5c1nkf6qdvb74dnlshvemu.apps.googleusercontent.com',
-    });
+      webClientId: '419527216736-39o1vcm2lh5c1nkf6qdvb74dnlshvemu.apps.googleusercontent.com'});
 
     let getNome = this.props.route.params.nome;
     let getEmail = this.props.route.params.email;

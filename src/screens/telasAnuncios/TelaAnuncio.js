@@ -239,12 +239,15 @@ export default class TelaAnuncio extends Component {
 
   async componentDidMount() {
     let e = this;
-    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
-
-    if(comprou == true) {
-      this.setState({purchased: true})
-    } else {
-      this.setState({purchased: false})
+    
+    if(Platform.OS === "android") {
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
+    
+      if(comprou == true) {
+        this.setState({purchased: true})
+      } else {
+        this.setState({purchased: false})
+      }
     }
 
     let idDoAnuncio = this.props.route.params.idDoAnuncio;
@@ -610,7 +613,7 @@ export default class TelaAnuncio extends Component {
 
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
-          barStyle={this.context.dark ? "white-content" : "dark-content"}
+          barStyle={this.context.dark ? "light-content" : "dark-content"}
         />
 
         <ScrollView>

@@ -15,6 +15,7 @@ import {
   StyleSheet,
   TextInput,
   Text,
+  ScrollView,
   View,
 } from 'react-native';
 import Color from 'color';
@@ -150,7 +151,7 @@ export default function TelaLoginSMS () {
           firebaseConfig={firebaseConfig}
         />
 
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
           <View style={styles.instructionContainer}>
             <Heading5 style={styles.heading}>Digite o seu Número para Logar</Heading5>
             <Paragraph style={styles.instruction}>
@@ -194,7 +195,7 @@ export default function TelaLoginSMS () {
           </View>
           </View>
 
-          <View style={{marginBottom: 44}}>
+          <View style={{marginBottom: 234}}>
             <View style={{marginBottom:20}}>
               <View style={styles.codeContainer}>
                   <View style={styles.digitContainer}>
@@ -235,7 +236,7 @@ export default function TelaLoginSMS () {
             />
 
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }

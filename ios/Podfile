@@ -27,8 +27,10 @@ target 'wewo' do
 
   pod 'RNInputMask', :path => '../node_modules/react-native-text-input-mask/ios/InputMask'
 
+  pod 'Firebase/Core'
   pod 'Firebase/Auth'
-  
+  pod 'Firebase/Analytics'
   pod 'Firebase/Firestore'
+  pod 'Firebase/Storage'
 
 end

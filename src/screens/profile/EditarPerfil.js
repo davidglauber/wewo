@@ -235,7 +235,6 @@ export default class EditarPerfil extends Component {
     }
 
 
-    this.setModalVisible(true)
 
     this.sleep(6000).then(() => { 
       this.props.navigation.navigate('Settings')
@@ -296,7 +295,7 @@ export default class EditarPerfil extends Component {
       <SafeBackground>
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
-          barStyle={this.context.dark ? "white-content" : "dark-content"}
+          barStyle={this.context.dark ? "light-content" : "dark-content"}
         />
 
         <KeyboardAwareScrollView enableOnAndroid>

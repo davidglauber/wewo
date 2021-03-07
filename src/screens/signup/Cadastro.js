@@ -443,7 +443,7 @@ export default class Cadastro extends Component {
                       value={this.state.date}
                       mode={this.state.mode}
                       is24Hour={true}
-                      display="calendar"
+                      display="compact"
                       onChange={this.onChange}
                       style={{width: 320, backgroundColor: "white"}}
                   />

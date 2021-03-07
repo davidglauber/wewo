@@ -147,13 +147,17 @@ export default class HomeFiltro extends Component {
 
 async componentDidMount() {
   console.reportErrorsAsExceptions = false;
-    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
 
+  if(Platform.OS === "android") {
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
+  
     if(comprou == true) {
       this.setState({purchased: true})
     } else {
       this.setState({purchased: false})
     }
+  }
+  
     let arrayOfSelectedCategories = this.props.route.params.categoriasFiltradas;
     let arrayOfSelectedStates = this.props.route.params.estadosFiltrados;
     let sumLengthArrays = arrayOfSelectedStates.length + arrayOfSelectedCategories.length;
@@ -526,7 +530,7 @@ async componentDidMount() {
       <SafeBackground>
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
-          barStyle={this.context.dark ? "white-content" : "dark-content"}
+          barStyle={this.context.dark ? "light-content" : "dark-content"}
         />
 
         <View style={styles.container}>

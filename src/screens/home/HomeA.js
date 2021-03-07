@@ -92,12 +92,15 @@ export default class HomeA extends Component {
 
 async componentDidMount() {
   let e = this;
-  let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
 
-  if(comprou == true) {
-    this.setState({purchased: true})
-  } else {
-    this.setState({purchased: false})
+  if(Platform.OS === "android") {
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
+  
+    if(comprou == true) {
+      this.setState({purchased: true})
+    } else {
+      this.setState({purchased: false})
+    }
   }
 
     await firebase.auth().onAuthStateChanged((user) => {
@@ -318,7 +321,7 @@ async componentDidMount() {
 
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
-          barStyle={this.context.dark ? 'white-content' : 'dark-content'}
+          barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
         
         <View style={{flex: 1}}>

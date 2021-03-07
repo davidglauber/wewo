@@ -289,7 +289,7 @@ export default function Configuracoes() {
 
         <StatusBar
           backgroundColor={dark ? '#121212' : 'white'}
-          barStyle={dark ? "white-content" : "dark-content"}
+          barStyle={dark ? "light-content" : "dark-content"}
         />
 
         <ScrollView contentContainerStyle={styles.contentContainerStyle}>

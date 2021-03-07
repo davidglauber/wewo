@@ -400,7 +400,7 @@ export default class CartaoCategory2 extends Component {
 
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
-          barStyle={this.context.dark ? "white-content" : "dark-content"}
+          barStyle={this.context.dark ? "light-content" : "dark-content"}
         />
 
 

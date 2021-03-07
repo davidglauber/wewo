@@ -15,6 +15,7 @@ import {
   AsyncStorage,
   StyleSheet,
   Text,
+  ScrollView,
   View,
 } from 'react-native';
 import Color from 'color';
@@ -159,7 +160,7 @@ export default function SMSVerificacao () {
         ref={recaptchaVerifier}
         firebaseConfig={firebaseConfig}
       />
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
           <View style={styles.instructionContainer}>
             <Heading5 style={styles.heading}>Aguarde...</Heading5>
             <Paragraph style={styles.instruction}>
@@ -237,7 +238,7 @@ export default function SMSVerificacao () {
           </View>
 
 
-        </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
