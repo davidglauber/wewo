@@ -406,9 +406,14 @@ export default class TelaAnuncio extends Component {
 
     if(currentUser == null) {
       e.setState({usersThatVotedFirebase: []})
+      await firebase.firestore().collection('usuarios').doc(currentUserUID).onSnapshot(documentSnapshot => {
+        e.setState({fotoUser: documentSnapshot.data().photoProfile}),
+        e.setState({nomeUser: documentSnapshot.data().nome}),
+        e.setState({textPortfolio: documentSnapshot.data().textPortfolio})
+      })
     } else {
       //pega a imagem e nome da pessoa logada
-      await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
+      await firebase.firestore().collection('usuarios').doc(currentUserUID).onSnapshot(documentSnapshot => {
             e.setState({fotoUser: documentSnapshot.data().photoProfile}),
             e.setState({nomeUser: documentSnapshot.data().nome}),
             e.setState({textPortfolio: documentSnapshot.data().textPortfolio})
@@ -870,7 +875,7 @@ export default class TelaAnuncio extends Component {
               
               <FlatList keyExtractor={() => this.makeid(17)} data={this.state.cartoesAuto} horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20,flexGrow: 1, justifyContent: 'center'}} 
                 renderItem={({item}) => 
-                  <View>
+                  <View style={{paddingHorizontal:100}}>
                     <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, justifyContent:'center'}}>
                       <FontAwesome5 style={{marginTop:7, marginBottom:7}} name="user-tie" size={20}/>
                       <Image source={{uri: item.photo}} style={{width:100, height:50, borderRadius:30}}/>
@@ -885,7 +890,7 @@ export default class TelaAnuncio extends Component {
 
               <FlatList keyExtractor={() => this.makeid(17)} data={this.state.cartoesEstab} horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20,flexGrow: 1, justifyContent: 'center'}} 
                 renderItem={({item}) => 
-                  <View>
+                  <View style={{paddingHorizontal:100}}>
                     <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, justifyContent:'center', paddingBottom:30}}>
                       <FontAwesome5 style={{marginTop:7, marginBottom:7}} name="briefcase" size={20}/>
                       <Image source={{uri: item.photo}} style={{width:100, height:50, borderRadius:30}}/>

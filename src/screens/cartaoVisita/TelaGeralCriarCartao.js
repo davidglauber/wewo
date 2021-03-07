@@ -197,6 +197,7 @@ export default class TelaGeralCriarCartao extends Component {
       e.setState({foto: documentSnapshot.data().photoProfile})
       e.setState({premium: documentSnapshot.data().premium})
       e.setState({telefone: documentSnapshot.data().telefone})
+      e.setState({text: documentSnapshot.data().textPortfolio})
     })
 
   }

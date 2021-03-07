@@ -244,7 +244,7 @@ export default function Configuracoes() {
                       onPress: () => null,
                       style: "cancel"
                   },
-                  { text: "Sim", onPress: () => navigation.navigate('HomeNavigator') }
+                  { text: "Sim", onPress: () => navigation.navigate('Home') }
               ]);
               return true;
         }
