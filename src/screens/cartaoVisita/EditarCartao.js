@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   TextInput,
   Modal,
+  Platform,
   View,
   Dimensions,
   Text,
@@ -195,8 +196,10 @@ export default class EditarCartao extends Component {
     let e = this;
 
     //verifica se o usuario comprou a assinatura mensal
-    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual');
-    this.setState({usuarioComprou: comprou});
+    if(Platform.OS === "android") {
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual');
+      this.setState({usuarioComprou: comprou});
+    }
 
 
     let userUID = firebase.auth().currentUser.uid;

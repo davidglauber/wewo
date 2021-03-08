@@ -14,6 +14,7 @@ import {
   Alert,
   Image,
   ScrollView,
+  Platform,
   TouchableOpacity,
   TextInput,
   Modal,
@@ -192,9 +193,10 @@ export default class TelaCriarCartaoVisita extends Component {
     this.convertDate();
     let e = this;
 
-
-    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual');
-    this.setState({usuarioComprou: comprou});
+    if(Platform.OS === "android") {
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual');
+      this.setState({usuarioComprou: comprou});
+    }
 
 
     //getting categories

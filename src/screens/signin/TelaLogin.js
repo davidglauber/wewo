@@ -248,7 +248,7 @@ export default class TelaLogin extends Component {
   async signInWithFacebook() {
     let e = this;
     
-    await Facebook.initializeAsync('654536232159341', 'WeWo');
+    await Facebook.initializeAsync({appId:'654536232159341',appName:'WeWo'});
     try {
       const { type, token } = await
         Facebook.logInWithReadPermissionsAsync(
