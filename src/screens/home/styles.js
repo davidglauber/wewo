@@ -215,11 +215,10 @@ export const SafeAnuncioView = styled.SafeAreaView`
 
 
 export const AnuncioContainer = styled.TouchableOpacity`
-    width: 336px;
-    height: 170px; 
-    margin-bottom:5px; 
-    margin-top: 10px; 
-    border-radius: 30px; 
+    width: 500px;
+    height: 135px; 
+    margin-top: 3px; 
+    border-radius: 0px; 
     background-color: ${props => props.theme.backgroundColor};
 `
 
@@ -271,9 +270,7 @@ export const ButtonIconContainer = styled.View`
 
 export const Title = styled.Text`
     font-size:17px;
-    margin-top:20px;
     font-weight: bold; 
-    margin-left:20px; 
     color:${props => props.theme.colorTitle}
 `
 
@@ -319,9 +316,8 @@ export const TouchableDetails = styled.TouchableOpacity`
     width:100px; 
     height:20px; 
     border-radius: 30px;
-    margin-top: 24px;
     align-items: center;
-    margin-left: 31px
+    margin-left: 191px
 `
 
 export const TextDetails = styled.Text`

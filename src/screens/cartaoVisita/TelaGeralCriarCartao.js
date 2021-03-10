@@ -418,53 +418,50 @@ export default class TelaGeralCriarCartao extends Component {
                         keyExtractor={() => this.makeid(17)}
                         data={cartoesAuto}
                         renderItem={({item}) => 
-                            <AnuncioContainer style={{height: 190}} onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
-                              <View style={{flexDirection:'row'}}>
-                                  {item.video == null ?
-                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                    :
-                                    <Video 
-                                      source={{ uri: item.video }}
-                                      rate={1.0}
-                                      volume={0}
-                                      isMuted={false}
-                                      resizeMode="cover"
-                                      shouldPlay
-                                      isLooping
-                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
-                                    />
-                                  }
-                                  <View style={{flexDirection:'column'}}>
-                                    <Title style={{fontSize: this.responsibleFont()}}>{item.nome}</Title>
+                        <AnuncioContainer style={{ width: 336,
+                          height: 170,
+                          marginBottom:5,
+                          marginTop: 10,
+                          borderRadius: 30}} onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                          <View style={{flexDirection:'row'}}>
+                              {item.video == null ?
+                                <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                :
+                                <Video 
+                                  source={{ uri: item.video }}
+                                  rate={1.0}
+                                  volume={0}
+                                  isMuted={false}
+                                  resizeMode="cover"
+                                  shouldPlay
+                                  isLooping
+                                  style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                />
+                              }
+                              
+                              <View style={{flexDirection:'column'}}>
+                                <Title style={{fontSize: this.responsibleFont(),  fontSize:17, marginTop:20, fontWeight: 'bold', marginLeft:20}}>{item.title}</Title>
 
-                                    {this.cutDescription(item.description)}
+                                {this.cutDescription(item.description)}
+                              </View>
+                          </View>  
 
-                                    <View style={{flexDirection:'row', paddingHorizontal:40}}>
-                                      <ValueField style={{paddingTop:10, fontSize:12}}>{item.categoria}</ValueField>
-                                      <IconResponsive style={{marginLeft:15, marginTop:10}} name="clone" size={19} />
-                                    </View>
-                                  </View>
-                              </View>  
+                            <View style={{flexDirection: 'row'}}>
 
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                  <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
-                                      <TextDetails>+ detalhes</TextDetails>
-                                  </TouchableDetails>
+                              <TouchableOpacity onPress={() => this.props.navigation.navigate('EditarCartao', {idCartao: item.idCartao, type: item.type})} style={{marginTop: 24, marginLeft:100}}>
+                                  <IconResponsive  name="pencil-alt" size={19}/>
+                              </TouchableOpacity>
 
-                                  <TouchableOpacity onPress={() => this.props.navigation.navigate('EditarCartao', {idCartao: item.idCartao, type: item.type})} style={{marginTop: 24, marginRight: 10}}>
-                                      <IconResponsive  name="pencil-alt" size={19}/>
-                                  </TouchableOpacity>
+                              <TouchableOpacity onPress={() => this.deletePublish(item.idCartao)} style={{marginTop: 24,marginLeft:50}}>
+                                  <IconResponsive  name="trash" size={19}/>
+                              </TouchableOpacity>
 
-                                  <TouchableOpacity onPress={() => this.deletePublish(item.idCartao)} style={{marginTop: 24, marginRight: 10}}>
-                                      <IconResponsive  name="trash" size={19}/>
-                                  </TouchableOpacity>
+                              <View style={{marginTop: 24, marginLeft:50}}>
+                                  <IconResponsive  name="user-tie" size={19}/>
+                            </View>
+                          </View> 
 
-                                  <View style={{marginTop: 24, marginRight: 30}}>
-                                      <IconResponsive  name="user-tie" size={19}/>
-                                </View>
-                              </View> 
-
-                            </AnuncioContainer>
+                        </AnuncioContainer>
                         }
                       />
                     </View>
@@ -478,53 +475,50 @@ export default class TelaGeralCriarCartao extends Component {
                         keyExtractor={() => this.makeid(17)}
                         data={cartoesEstab}
                         renderItem={({item}) => 
-                            <AnuncioContainer style={{height: 190}} onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                              <View style={{flexDirection:'row'}}>
-                                  {item.video == null ?
-                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                    :
-                                    <Video 
-                                      source={{ uri: item.video }}
-                                      rate={1.0}
-                                      volume={0}
-                                      isMuted={false}
-                                      resizeMode="cover"
-                                      shouldPlay
-                                      isLooping
-                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
-                                    />
-                                  }
-                                  <View style={{flexDirection:'column', }}>
-                                    <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                        <AnuncioContainer style={{ width: 336,
+                          height: 170,
+                          marginBottom:5,
+                          marginTop: 10,
+                          borderRadius: 30}} onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                          <View style={{flexDirection:'row'}}>
+                              {item.video == null ?
+                                <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                :
+                                <Video 
+                                  source={{ uri: item.video }}
+                                  rate={1.0}
+                                  volume={0}
+                                  isMuted={false}
+                                  resizeMode="cover"
+                                  shouldPlay
+                                  isLooping
+                                  style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                />
+                              }
+                              
+                              <View style={{flexDirection:'column'}}>
+                                <Title style={{fontSize: this.responsibleFont(),  fontSize:17, marginTop:20, fontWeight: 'bold', marginLeft:20}}>{item.title}</Title>
 
-                                    {this.cutDescription(item.description)}
+                                {this.cutDescription(item.description)}
+                              </View>
+                          </View>  
 
-                                    <View style={{flexDirection:'row', paddingHorizontal:65}}>
-                                      <ValueField style={{paddingTop:10, fontSize:12}}>{item.categoria}</ValueField>
-                                      <IconResponsive style={{marginLeft:15, marginTop:10}} name="clone" size={19}/>
-                                    </View>
-                                  </View>
-                              </View>  
+                            <View style={{flexDirection: 'row'}}>
 
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                  <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                      <TextDetails>+ detalhes</TextDetails>
-                                  </TouchableDetails>
+                              <TouchableOpacity onPress={() => this.props.navigation.navigate('EditarCartao', {idCartao: item.idCartao, type: item.type})} style={{marginTop: 24, marginLeft:100}}>
+                                  <IconResponsive  name="pencil-alt" size={19}/>
+                              </TouchableOpacity>
 
-                                  <TouchableOpacity onPress={() => this.props.navigation.navigate('EditarCartao', {idCartao: item.idCartao, type: item.type})} style={{marginTop: 24, marginRight: 10}}>
-                                      <IconResponsive  name="pencil-alt" size={19}/>
-                                  </TouchableOpacity>
+                              <TouchableOpacity onPress={() => this.deletePublish(item.idCartao)} style={{marginTop: 24,marginLeft:50}}>
+                                  <IconResponsive  name="trash" size={19}/>
+                              </TouchableOpacity>
 
-                                  <TouchableOpacity onPress={() => this.deletePublish(item.idCartao)} style={{marginTop: 24, marginRight: 10}}>
-                                      <IconResponsive  name="trash" size={19}/>
-                                  </TouchableOpacity>
+                              <View style={{marginTop: 24, marginLeft:50}}>
+                                  <IconResponsive  name="briefcase" size={19}/>
+                            </View>
+                          </View> 
 
-                                  <View style={{marginTop: 24, marginRight: 30}}>
-                                      <IconResponsive  name="briefcase" size={19} />
-                                </View>
-                              </View> 
-
-                            </AnuncioContainer>
+                        </AnuncioContainer>
                         }
                       />
                     </View>

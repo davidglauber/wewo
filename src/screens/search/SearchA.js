@@ -45,6 +45,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 // SearchA Config
 const isRTL = I18nManager.isRTL;
 
+//consts
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 // SearchA Styles
 const styles = StyleSheet.create({
   screenContainer: {
@@ -130,8 +134,6 @@ export default class SearchA extends Component {
       textSearch: '',
       activesPublishesEstab:[],
       activesPublishesAuto: [],
-      cartoesEstab: [],
-      cartoesAuto: [],
       modalVisible: false,
       categories: [
         {
@@ -226,32 +228,6 @@ export default class SearchA extends Component {
         this.setModalVisible(false)
       })
 
-      await firebase.firestore().collection('cartoes').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("titleEstabArray", "array-contains", titlePublish).onSnapshot(documentSnapshot => {
-        let cartoesEstabDidMount = []
-        documentSnapshot.forEach(function(doc) {
-          cartoesEstabDidMount.push({
-            idUser: doc.data().idUser,
-            idCartao: doc.data().idCartao,
-            videoPublish: doc.data().videoPublish,
-            photo: doc.data().photoPublish,
-            local: doc.data().localEstab,
-            title: doc.data().titleEstab,
-            description: doc.data().descriptionEstab,
-            phone: doc.data().phoneNumberEstab,
-            timeOpen: doc.data().timeOpen,
-            timeClose: doc.data().timeClose,
-            premiumUser: doc.data().premiumUser,
-            type: doc.data().type,
-            verified: doc.data().verifiedPublish,
-            categoria: doc.data().categoryEstab,
-            workDays: doc.data().workDays
-          })
-        })
-        e.setState({cartoesEstab: cartoesEstabDidMount})
-        this.setModalVisible(false)
-  
-      })
-
     } else {
       await firebase.firestore().collection('anuncios').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("titleAutoArray", "array-contains", titlePublish).onSnapshot(documentSnapshot => {
         let anunciosAtivosAuto = [];
@@ -278,29 +254,6 @@ export default class SearchA extends Component {
   
       })
 
-
-
-      await firebase.firestore().collection('cartoes').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("titleAutoArray", "array-contains", titlePublish).onSnapshot(documentSnapshot => {
-        let cartoesAutoDidMount = []
-        documentSnapshot.forEach(function(doc) {
-          cartoesAutoDidMount.push({
-            idUser: doc.data().idUser,
-            nome: doc.data().nome,
-            idCartao: doc.data().idCartao,
-            videoPublish: doc.data().videoPublish,
-            premiumUser: doc.data().premiumUser,
-            photo: doc.data().photoPublish,
-            description: doc.data().descriptionAuto,
-            type: doc.data().type,
-            categoria: doc.data().categoryAuto,
-            phone: doc.data().phoneNumberAuto,
-            verified: doc.data().verifiedPublish
-          })
-        })
-        e.setState({cartoesAuto: cartoesAutoDidMount})
-        this.setModalVisible(false)
-  
-      })
     }
 
   }
@@ -312,9 +265,7 @@ export default class SearchA extends Component {
 
     if(text == ''){
       this.setState({activesPublishesEstab: []})
-      this.setState({cartoesEstab: []})
       this.setState({activesPublishesAuto: []})
-      this.setState({cartoesAuto: []})
     } else {
       return null;
     }
@@ -322,8 +273,8 @@ export default class SearchA extends Component {
   }
 
   cutDescription(text) {
-    if(text.length > 40) {
-      let shortDescription = text.substr(0, 40)
+    if(text.length > 25) {
+      let shortDescription = text.substr(0, 25)
 
       return(
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -433,51 +384,39 @@ export default class SearchA extends Component {
           
           <View style={{flex:1, alignItems: 'center'}}>
               <View>
-                  <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                      <View style={{flexDirection:'row'}}>
-                          {item.video == null ?
-                              <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                              :
-                              <Video 
-                                source={{ uri: item.video }}
-                                rate={1.0}
-                                volume={0}
-                                isMuted={false}
-                                resizeMode="cover"
-                                shouldPlay
-                                isLooping
-                                style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
-                              />
-                            }
-                          <View style={{flexDirection:'column'}}>
+              <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                  <View style={{flexDirection:'row'}}>
+                      {item.video == null ?
+                          <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/10, marginTop: 20}}></Image>
+                          :
+                          <Video 
+                            source={{ uri: item.video }}
+                            rate={1.0}
+                            volume={0}
+                            isMuted={false}
+                            resizeMode="cover"
+                            shouldPlay
+                            isLooping
+                            style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
+                          />
+                        }
+                      <View style={{flexDirection:'column'}}>
+                            <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
                               <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
-                              {this.cutDescription(item.description)}
-                          </View>
-                      </View>  
-
-                      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                          <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                              <TextDetails>+ detalhes</TextDetails>
-                          </TouchableDetails>
-
-
-                          <View style={{marginTop: 24}}>
-                                <ValueField>{item.value}</ValueField>
-                          </View>
-
-
-                          <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
-                            {item.premiumUser == true &&
-                                <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
-                            }
-                            <View style={{marginLeft:10}}>
-                              <IconResponsive name="briefcase" size={19}/> 
                             </View>
-                          </View>
+                              {this.cutDescription(item.description)}
+                      </View>
+                  </View>  
 
-                      </View> 
+                  <View style={{flexDirection: 'row'}}>
+                      <View style={{marginLeft:windowWidth/1.75, marginRight:windowWidth/6}}>
+                          <ValueField>{item.value}</ValueField>
+                      </View>
+                          <IconResponsive style={{marginLeft:16}}  name="briefcase" size={19}/>
 
-                  </AnuncioContainer>
+                  </View> 
+
+                </AnuncioContainer>
               </View>
           </View>
           
@@ -496,47 +435,36 @@ export default class SearchA extends Component {
                 
                 <View style={{flex:1, alignItems: 'center'}}>
                       <View>
-                          <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                      <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                   {item.video == null ?
-                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                    :
-                                    <Video 
-                                      source={{ uri: item.video }}
-                                      rate={1.0}
-                                      volume={0}
-                                      isMuted={false}
-                                      resizeMode="cover"
-                                      shouldPlay
-                                      isLooping
-                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
-                                    />
-                                  }
+                                      <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/10, marginTop: 20}}></Image>
+                                      :
+                                      <Video 
+                                        source={{ uri: item.video }}
+                                        rate={1.0}
+                                        volume={0}
+                                        isMuted={false}
+                                        resizeMode="cover"
+                                        shouldPlay
+                                        isLooping
+                                        style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
+                                      />
+                                    }
                                   <View style={{flexDirection:'column'}}>
-                                      <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
-                                      {this.cutDescription(item.description)}
+                                        <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                          <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                        </View>
+                                          {this.cutDescription(item.description)}
                                   </View>
                               </View>  
 
-                              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                  <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
-                                      <TextDetails>+ detalhes</TextDetails>
-                                  </TouchableDetails>
-
-                                  <View style={{marginTop: 24}}>
+                              <View style={{flexDirection: 'row'}}>
+                                  <View style={{marginLeft:windowWidth/1.75, marginRight:windowWidth/6}}>
                                       <ValueField>{item.value}</ValueField>
                                   </View>
+                                      <IconResponsive style={{marginLeft:16}}  name="user-tie" size={19}/>
 
-
-                                <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
-                                  {item.premiumUser == true &&
-                                      <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
-                                  }
-                                  <View style={{marginLeft:10}}>
-                                    <IconResponsive  name="user-tie" size={19}/> 
-                                  </View>
-                                </View>
-                                  
                               </View> 
 
                           </AnuncioContainer>
@@ -549,117 +477,7 @@ export default class SearchA extends Component {
               </FlatList>
             }
 
-              {this.state.cartoesAuto.length !== 0 &&
-              <FlatList
-                data={this.state.cartoesAuto}
-                keyExtractor={() => this.makeid(17)}
-                renderItem={({item}) => 
-
-                    <AnuncioContainer onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                          <View style={{flexDirection:'row'}}>
-                              {item.videoPublish == null ?
-                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                    :
-                                    <Video 
-                                      source={{ uri: item.videoPublish }}
-                                      rate={1.0}
-                                      volume={0}
-                                      isMuted={false}
-                                      resizeMode="cover"
-                                      shouldPlay
-                                      isLooping
-                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
-                                    />
-                                  }
-                              <View style={{flexDirection:'column'}}>
-                                <Title style={{fontSize: this.responsibleFont()}}>{item.nome}</Title>
-
-                                {this.cutDescription(item.description)}
-
-                              </View>
-                          </View>  
-
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                              <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                  <TextDetails>+ detalhes</TextDetails>
-                              </TouchableDetails>
-
-                              <View style={{flexDirection:'row', marginTop:15}}>
-                                  <ValueField style={{paddingTop:10, fontSize:12}}>{item.categoria}</ValueField>
-                                  <IconResponsive style={{marginLeft:15, marginTop:10}} name="clone" size={19}/>
-                              </View>
-
-                                <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
-                                  {item.premiumUser == true &&
-                                      <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
-                                  }
-                                  <View style={{marginLeft:10}}>
-                                    <IconResponsive  name="user-tie" size={19}/> 
-                                  </View>
-                                </View>
-                          </View> 
-
-                    </AnuncioContainer>
-                }
-              />
-              }
-
-            {this.state.cartoesEstab.length !== 0 &&
-              <FlatList
-                data={this.state.cartoesEstab}
-                keyExtractor={() => this.makeid(17)}
-                renderItem={({item}) => 
-
-                    <AnuncioContainer onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                          <View style={{flexDirection:'row'}}>
-                              {item.videoPublish == null ?
-                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
-                                    :
-                                    <Video 
-                                      source={{ uri: item.videoPublish }}
-                                      rate={1.0}
-                                      volume={0}
-                                      isMuted={false}
-                                      resizeMode="cover"
-                                      shouldPlay
-                                      isLooping
-                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
-                                    />
-                                  }
-                              <View style={{flexDirection:'column'}}>
-                                <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
-
-                                {this.cutDescription(item.description)}
-
-                              </View>
-                          </View>  
-
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                              <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                  <TextDetails>+ detalhes</TextDetails>
-                              </TouchableDetails>
-
-                              <View style={{flexDirection:'row', marginTop:15}}>
-                                  <ValueField style={{paddingTop:10, fontSize:12}}>{item.categoria}</ValueField>
-                                  <IconResponsive style={{marginLeft:15, marginTop:10}} name="clone" size={19}/>
-                              </View>
-
-                                <View style={{flexDirection:'row', marginTop: 24, marginRight: 20}}>
-                                  {item.premiumUser == true &&
-                                      <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
-                                  }
-                                  <View style={{marginLeft:10}}>
-                                    <IconResponsive  name="user-tie" size={19}/> 
-                                  </View>
-                                </View>
-                          </View> 
-
-                    </AnuncioContainer>
-                }
-              />
-              }
-
-          {this.state.activesPublishesAuto.length == 0 && this.state.activesPublishesEstab.length == 0 && this.state.cartoesAuto.length == 0 && this.state.cartoesEstab.length == 0 &&
+          {this.state.activesPublishesAuto.length == 0 && this.state.activesPublishesEstab.length == 0 &&
             <Text>Nenhum resultado encontrado!</Text>
           }
         </View>
