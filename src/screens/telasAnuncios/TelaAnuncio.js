@@ -80,6 +80,7 @@ const PLUS_ICON = IOS ? 'ios-add' : 'md-add';
 const CLOSE_ICON = IOS ? 'ios-close' : 'md-close';
 const SHARE_ICON = IOS ? 'ios-share' : 'md-share';
 const PORTFOLIO_ICON = IOS ? 'md-bookmarks' : 'md-bookmarks';
+const FAV_ICON = IOS ? 'heart' : 'heart';
 const imgHolder = require('../../assets/img/confeiteira.jpeg');
 
 //consts
@@ -237,6 +238,12 @@ export default class TelaAnuncio extends Component {
     };
   }
 
+
+  //sleep function
+  sleep = (time) => {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+  
   async componentDidMount() {
     let e = this;
     
@@ -482,6 +489,32 @@ export default class TelaAnuncio extends Component {
     modalizeRefPortfolio.current?.open()
   }
 
+  addTOFAVFIREBASE(id, publishObj) {
+    let currentUser = firebase.auth().currentUser;
+
+    if(currentUser == null) {
+      alert('Você precisa estar logado para favoritar um anúncio!')
+
+      this.setState({isOpen: false})
+
+      this.sleep(500).then(() => { 
+        this.setState({isOpen: true})
+      })
+    }
+
+    if(currentUser != null) {
+      firebase.firestore().collection('usuarios').doc(currentUser.uid).collection('favoritos').doc(id).set(publishObj)
+    
+      this.setState({isOpen: false})
+
+      this.sleep(500).then(() => { 
+        this.setState({isOpen: true})
+      })
+
+      alert("Anúncio salvo com sucesso!")
+    }
+  }
+
 
   goBack = () => {
     const {navigation} = this.props;
@@ -594,7 +627,7 @@ export default class TelaAnuncio extends Component {
       images,
     } = product;
     const usuarioEstado = firebase.auth().currentUser;
-
+    const idDoAnuncioRoute = this.props.route.params.idDoAnuncio;
     return (
       <SafeAnuncioView>
 
@@ -689,6 +722,19 @@ export default class TelaAnuncio extends Component {
                       <View style={styles.buttonIconContainer}>
                         <IconMain
                           name={PORTFOLIO_ICON}
+                          size={22}
+                          color={Colors.secondaryText}
+                        />
+                      </View>
+                    </TouchableItem>
+                  </ButtonIconContainer>
+
+
+                  <ButtonIconContainer style={{marginTop:150, borderRadius:10}}>
+                    <TouchableItem onPress={() => this.addTOFAVFIREBASE(idDoAnuncioRoute, item)} borderless>
+                      <View style={styles.buttonIconContainer}>
+                        <IconMain
+                          name={FAV_ICON}
                           size={22}
                           color={Colors.secondaryText}
                         />
@@ -990,6 +1036,18 @@ export default class TelaAnuncio extends Component {
                       <View style={styles.buttonIconContainer}>
                         <IconMain
                           name={PORTFOLIO_ICON}
+                          size={22}
+                          color={Colors.secondaryText}
+                        />
+                      </View>
+                    </TouchableItem>
+                  </ButtonIconContainer>
+
+                  <ButtonIconContainer style={{marginTop:150, borderRadius:10}}>
+                    <TouchableItem onPress={() => this.addTOFAVFIREBASE(idDoAnuncioRoute, item)} borderless>
+                      <View style={styles.buttonIconContainer}>
+                        <IconMain
+                          name={FAV_ICON}
                           size={22}
                           color={Colors.secondaryText}
                         />

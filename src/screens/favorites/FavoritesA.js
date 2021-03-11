@@ -35,6 +35,9 @@ const fotoCartaoVisita = require('../../assets/img/smile.jpg');
 // import colors
 import Colors from '../../theme/colors';
 
+//RESPONSIVE FONT 
+import { RFValue } from 'react-native-responsive-fontsize';
+
 // CartA Config
 const EMPTY_STATE_ICON = 'cart-remove';
 
@@ -227,6 +230,11 @@ export default class FavoritesA extends Component {
   }
 
 
+  responsibleFont() {
+    let Height = Dimensions.get('window').height
+
+    return RFValue(15, Height);
+  }
 
   cutDescription(text) {
     if(text.length > 40) {
@@ -288,7 +296,11 @@ export default class FavoritesA extends Component {
                     onSwipeableLeftOpen={() => this.RemoveFav(item.idCartao)}
                   > 
 
-                    <AnuncioContainer onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                    <AnuncioContainer style={{width: 336,
+                          height: 170,
+                          marginBottom:5,
+                          marginTop: 10,
+                          borderRadius: 30}} onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
                           <View style={{flexDirection:'row'}}>
                               {item.video == null ?
                                     <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
@@ -305,21 +317,17 @@ export default class FavoritesA extends Component {
                                     />
                                   }
                               <View style={{flexDirection:'column'}}>
-                                <Title>{item.nome}</Title>
+                                <Title style={{fontSize: this.responsibleFont(), fontSize:17, marginTop:20, fontWeight: 'bold', marginLeft:20}}>{item.nome}</Title>
 
                                 {this.cutDescription(item.description)}
 
                               </View>
                           </View>  
 
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                              <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                  <TextDetails>+ detalhes</TextDetails>
-                              </TouchableDetails>
-
-                              <View style={{flexDirection:'row', marginTop:15}}>
-                                  <ValueField style={{paddingTop:10, fontSize:12}}>{item.categoria}</ValueField>
-                                  <IconResponsive style={{marginLeft:15, marginTop:10}} name="clone" size={19}/>
+                            <View style={{flexDirection: 'row'}}>
+                              <View style={{flexDirection:'row', marginTop:15, marginLeft: 50}}>
+                                  <ValueField style={{paddingTop:10, fontSize:12,  paddingRight: 80}}>{item.categoria}</ValueField>
+                                  <IconResponsive style={{marginTop:10, marginRight:50}} name="clone" size={19}/>
                               </View>
 
                               <View style={{marginTop: 24, marginRight: 30}}>
@@ -345,9 +353,13 @@ export default class FavoritesA extends Component {
                     onSwipeableLeftOpen={() => this.RemoveFav(item.idCartao)}
                   > 
 
-                    <AnuncioContainer onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                              <View style={{flexDirection:'row'}}>
-                                  {item.video == null ?
+                        <AnuncioContainer style={{width: 336,
+                          height: 170,
+                          marginBottom:5,
+                          marginTop: 10,
+                          borderRadius: 30}} onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                          <View style={{flexDirection:'row'}}>
+                              {item.video == null ?
                                     <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
                                     :
                                     <Video 
@@ -361,28 +373,24 @@ export default class FavoritesA extends Component {
                                       style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
                                     />
                                   }
-                                  <View style={{flexDirection:'column', }}>
-                                    <Title>{item.title}</Title>
+                              <View style={{flexDirection:'column'}}>
+                                <Title style={{fontSize: this.responsibleFont(), fontSize:17, marginTop:20, fontWeight: 'bold', marginLeft:20}}>{item.title}</Title>
 
-                                    {this.cutDescription(item.description)}
+                                {this.cutDescription(item.description)}
 
-                                  </View>
-                              </View>  
+                              </View>
+                          </View>  
 
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                  <TouchableDetails onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
-                                      <TextDetails>+ detalhes</TextDetails>
-                                  </TouchableDetails>
+                            <View style={{flexDirection: 'row'}}>
+                              <View style={{flexDirection:'row', marginTop:15, marginLeft: 50}}>
+                                  <ValueField style={{paddingTop:10, fontSize:12,  paddingRight: 80}}>{item.categoria}</ValueField>
+                                  <IconResponsive style={{marginTop:10, marginRight:50}} name="clone" size={19}/>
+                              </View>
 
-                                  <View style={{flexDirection:'row', marginTop:15}}>
-                                      <ValueField style={{paddingTop:10, fontSize:12}}>{item.categoria}</ValueField>
-                                      <IconResponsive style={{marginLeft:15, marginTop:10}} name="clone" size={19}/>
-                                  </View>
-
-                                  <View style={{marginTop: 24, marginRight: 30}}>
-                                      <IconResponsive  name="briefcase" size={19}/>
-                                </View>
-                              </View> 
+                              <View style={{marginTop: 24, marginRight: 30}}>
+                                  <IconResponsive  name="briefcase" size={19}/>
+                            </View>
+                          </View> 
 
                     </AnuncioContainer>
                   </Swipeable>
