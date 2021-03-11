@@ -440,7 +440,7 @@ export default class TelaGeralCriarCartao extends Component {
                               }
                               
                               <View style={{flexDirection:'column'}}>
-                                <Title style={{fontSize: this.responsibleFont(),  fontSize:17, marginTop:20, fontWeight: 'bold', marginLeft:20}}>{item.title}</Title>
+                                <Title style={{fontSize: this.responsibleFont(),  fontSize:17, marginTop:20, fontWeight: 'bold', marginLeft:20}}>{item.nome}</Title>
 
                                 {this.cutDescription(item.description)}
                               </View>

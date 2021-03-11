@@ -96,7 +96,7 @@ console.log('Dark do HOMEEE: ' + dark)
       screenProps={{backgroundColor:'blue'}}
       tabBarOptions={{
         keyboardHidesTabBar: true,
-        activeTintColor: dark ? '#FFD700' : '#DAA520',
+        activeTintColor: dark ? '#d98b0d' : '#DAA520',
         inactiveTintColor: Colors.secondaryText,
         showLabel: false, // hide labels
         style: {
