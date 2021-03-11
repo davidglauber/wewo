@@ -222,7 +222,7 @@ export default class FavoritesA extends Component {
 
   RemoveFav(id) {
     let currentUser = firebase.auth().currentUser.uid;
-      firebase.firestore().collection('usuarios').doc(currentUser).collection('favoritos').where("idCartao", "==", id).get().then(function(querySnapshot) {
+      firebase.firestore().collection('usuarios').doc(currentUser).collection('favoritos').where("idAnuncio", "==", id).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc){
           doc.ref.delete();
         })
