@@ -259,14 +259,14 @@ async componentDidMount() {
       })
     })
 
-   /* if(Platform.OS === "android") {
+  /* if(Platform.OS === "android") {
       await AdMobInterstitial.setAdUnitID('ca-app-pub-1397640114399871/9421571551');
       await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true});
       await AdMobInterstitial.showAdAsync();
     }
   
     if(Platform.OS === "ios") {
-      await AdMobInterstitial.setAdUnitID('ca-app-pub-1397640114399871/9226130438');
+      await AdMobInterstitial.setAdUnitID('ca-app-pub-1397640114399871/3557513546');
       await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true});
       await AdMobInterstitial.showAdAsync();
     } */

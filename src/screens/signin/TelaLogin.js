@@ -16,6 +16,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Button,
+  Platform,
   Text,
   TouchableWithoutFeedback,
   View,
@@ -305,9 +306,13 @@ export default class TelaLogin extends Component {
               <FontAwesome5 name="google" size={35} style={{marginRight:25}} color="#DAA520"/>
           </TouchableOpacity>
 
+          {Platform.OS === 'ios' ? 
+            null 
+          :
           <TouchableOpacity onPress={() => this.signInWithFacebook()}>
               <FontAwesome5 name="facebook" size={35} style={{marginRight:15}} color="#DAA520"/>
           </TouchableOpacity>
+          }
           <View style={{marginBottom: 44, marginLeft: 10}}>
             <Button
               onPress={() => this.confirmIfUserHasBeenSignUp()}

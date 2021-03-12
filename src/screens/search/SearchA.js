@@ -397,7 +397,7 @@ export default class SearchA extends Component {
                             resizeMode="cover"
                             shouldPlay
                             isLooping
-                            style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
+                            style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/10, marginTop: 20 }}
                           />
                         }
                       <View style={{flexDirection:'column'}}>
@@ -409,7 +409,7 @@ export default class SearchA extends Component {
                   </View>  
 
                   <View style={{flexDirection: 'row'}}>
-                      <View style={{marginLeft:windowWidth/1.75, marginRight:windowWidth/6}}>
+                      <View style={{marginLeft:windowWidth/1.75, marginRight:windowWidth/12}}>
                           <ValueField>{item.value}</ValueField>
                       </View>
                           <IconResponsive style={{marginLeft:16}}  name="briefcase" size={19}/>
@@ -448,7 +448,7 @@ export default class SearchA extends Component {
                                         resizeMode="cover"
                                         shouldPlay
                                         isLooping
-                                        style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
+                                        style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/10, marginTop: 20 }}
                                       />
                                     }
                                   <View style={{flexDirection:'column'}}>
@@ -460,7 +460,7 @@ export default class SearchA extends Component {
                               </View>  
 
                               <View style={{flexDirection: 'row'}}>
-                                  <View style={{marginLeft:windowWidth/1.75, marginRight:windowWidth/6}}>
+                                  <View style={{marginLeft:windowWidth/1.75, marginRight:windowWidth/12}}>
                                       <ValueField>{item.value}</ValueField>
                                   </View>
                                       <IconResponsive style={{marginLeft:16}}  name="user-tie" size={19}/>
