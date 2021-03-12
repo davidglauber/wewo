@@ -147,7 +147,7 @@ export default class FavoritesA extends Component {
         cartoesAutoDidMount.push({
           idUser: doc.data().idUser,
           nome: doc.data().nome,
-          idCartao: doc.data().idCartao,
+          idAnuncio: doc.data().idAnuncio,
           video: doc.data().videoPublish,
           photo: doc.data().photo,
           description: doc.data().description,
@@ -168,7 +168,7 @@ export default class FavoritesA extends Component {
       documentSnapshot.forEach(function(doc) {
         cartoesEstabDidMount.push({
           idUser: doc.data().idUser,
-          idCartao: doc.data().idCartao,
+          idAnuncio: doc.data().idAnuncio,
           video: doc.data().videoPublish,
           photo: doc.data().photo,
           local: doc.data().localEstab,
@@ -283,7 +283,7 @@ export default class FavoritesA extends Component {
 
               {cartoesAuto.length == 0 && cartoesEstab.length == 0 &&
                 <View style={{flex:1, alignItems:'center', paddingTop:70, marginLeft:30}}>
-                  <Heading>Parece que você ainda não tem nenhum cartão favoritado :(</Heading>
+                  <Heading>Parece que você ainda não tem nenhum anúncio favoritado :(</Heading>
                 </View>
               }
               
@@ -293,7 +293,7 @@ export default class FavoritesA extends Component {
                 renderItem={({item}) => 
                   <Swipeable
                     renderLeftActions={this.RightAction}
-                    onSwipeableLeftOpen={() => this.RemoveFav(item.idCartao)}
+                    onSwipeableLeftOpen={() => this.RemoveFav(item.idAnuncio)}
                   > 
 
                     <AnuncioContainer style={{width: 336,
@@ -350,7 +350,7 @@ export default class FavoritesA extends Component {
                 renderItem={({item}) => 
                   <Swipeable
                     renderLeftActions={this.RightAction}
-                    onSwipeableLeftOpen={() => this.RemoveFav(item.idCartao)}
+                    onSwipeableLeftOpen={() => this.RemoveFav(item.idAnuncio)}
                   > 
 
                         <AnuncioContainer style={{width: 336,
