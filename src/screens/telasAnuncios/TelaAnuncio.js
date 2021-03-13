@@ -829,7 +829,7 @@ export default class TelaAnuncio extends Component {
                   }
 
 
-              { this.state.purchased == false ?
+              { this.state.purchased == false && Platform.OS === "android" &&
                 <AdMobBanner
                   style={{marginLeft: 20}}
                   bannerSize="leaderboard"
@@ -837,7 +837,23 @@ export default class TelaAnuncio extends Component {
                   servePersonalizedAds
                   onDidFailToReceiveAdWithError={(err) => console.log(err)} 
                 /> 
-                :
+              }
+
+              { this.state.purchased == true && Platform.OS === "android" &&
+                null
+              }
+
+              { this.state.purchased == false && Platform.OS === "ios" &&
+                <AdMobBanner
+                  style={{marginLeft: 20}}
+                  bannerSize="leaderboard"
+                  adUnitID="ca-app-pub-1397640114399871/5484416301"
+                  servePersonalizedAds
+                  onDidFailToReceiveAdWithError={(err) => console.log(err)} 
+                /> 
+              }
+
+              { this.state.purchased == true && Platform.OS === "ios" &&
                 null
               }
                 </View>
@@ -1142,17 +1158,33 @@ export default class TelaAnuncio extends Component {
 
 
 
-                { this.state.purchased == false ?
-                  <AdMobBanner
-                    style={{marginLeft: 20}}
-                    bannerSize="leaderboard"
-                    adUnitID="ca-app-pub-1397640114399871/3366763355"
-                    servePersonalizedAds
-                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                  /> 
-                  :
-                  null
-                }
+              { this.state.purchased == false && Platform.OS === "android" &&
+                <AdMobBanner
+                  style={{marginLeft: 20}}
+                  bannerSize="leaderboard"
+                  adUnitID="ca-app-pub-1397640114399871/3366763355"
+                  servePersonalizedAds
+                  onDidFailToReceiveAdWithError={(err) => console.log(err)} 
+                /> 
+              }
+
+              { this.state.purchased == true && Platform.OS === "android" &&
+                null
+              }
+
+              { this.state.purchased == false && Platform.OS === "ios" &&
+                <AdMobBanner
+                  style={{marginLeft: 20}}
+                  bannerSize="leaderboard"
+                  adUnitID="ca-app-pub-1397640114399871/5484416301"
+                  servePersonalizedAds
+                  onDidFailToReceiveAdWithError={(err) => console.log(err)} 
+                /> 
+              }
+
+              { this.state.purchased == true && Platform.OS === "ios" &&
+                null
+              }
                 </View>
 
             }
