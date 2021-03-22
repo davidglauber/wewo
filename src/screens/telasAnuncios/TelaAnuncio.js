@@ -234,7 +234,11 @@ export default class TelaAnuncio extends Component {
       phoneNavigator: this.props.route.params.phoneNumberNavigator,
       dateAuto:'',
       dateEstab:'',
-      isFetched: false
+      isFetched: false,
+      emailDoContratante: '',
+      fotoDoContratante:'',
+      nomeDoContratante:'',
+      telefoneDoContratante:''
     };
   }
 
@@ -332,6 +336,22 @@ export default class TelaAnuncio extends Component {
 
       e.setModalVisible(false)
       e.setState({isFetched: true})
+    })
+
+    await firebase.auth().onAuthStateChanged(user => {
+      if(user.uid !== null || user.uid !== undefined || user.uid !== '') {
+        firebase.firestore().collection('usuarios').doc(user.uid).onSnapshot(documentSnapshot => {
+          console.log('User data: ', documentSnapshot.data());
+          e.setState({emailDoContratante: documentSnapshot.data().email})
+          e.setState({nomeDoContratante: documentSnapshot.data().nome})
+          e.setState({fotoDoContratante: documentSnapshot.data().photoProfile})
+          e.setState({telefoneDoContratante: documentSnapshot.data().telefone})
+        })
+      } 
+      
+      if(user.uid == null || user.uid == undefined || user.uid == ''){
+        return null
+      }
     })
 
 
@@ -621,6 +641,25 @@ export default class TelaAnuncio extends Component {
     }
   }
 
+  sendService(idDoContratado, service, value) {
+    let userID = firebase.auth().currentUser;
+
+    if(userID == null) {
+      alert('Você não pode contratar alguém sem estar logado')
+    } else {
+      //parâmetros que devem ser enviados ao BD: Foto, nome, CEP, Serviço que quer contratar, Valor, Telefone, Calendário
+      this.props.navigation.navigate('ServiceCadaster', {
+        idDoContratado: idDoContratado,
+        idDoContratante: userID.uid,
+        nome: this.state.nomeDoContratante,
+        foto: this.state.fotoDoContratante,
+        servico: service,
+        telefone: this.state.telefoneDoContratante,
+        valor: value
+      });
+    }
+  }
+
   render() {
     const {product, anuncioAuto, anuncioEstab, isFetched} = this.state;
     const {
@@ -785,6 +824,11 @@ export default class TelaAnuncio extends Component {
                         <IconResponsiveNOBACK name="list-alt" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
                   </View>
+
+                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value)} style={{paddingHorizontal: 73, marginLeft:30, marginRight:30, marginTop:20, height:50, borderRadius:40,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                        <IconResponsive name="hands-helping" size={30}/>
+                        <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Contratar</TextTheme>
+                  </TouchableOpacity>
 
 
 

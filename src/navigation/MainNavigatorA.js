@@ -48,6 +48,8 @@ import TermsConditions from '../screens/terms/TermsConditionsA';
 // import HomeNavigator
 import HomeNavigator from './HomeNavigatorA';
 
+import ServiceCadaster from '../screens/telasAnuncios/ServiceCadaster';
+
 //screen of filter
 import HomeFiltro from '../screens/home/HomeFiltro';
 
@@ -288,6 +290,12 @@ function MainNavigatorA() {
         <Stack.Screen
           name="CartaoCategory2"
           component={CartaoCategory2}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="ServiceCadaster"
+          component={ServiceCadaster}
           options={{headerShown: false}}
         />
 
