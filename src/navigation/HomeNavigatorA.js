@@ -26,6 +26,8 @@ import Settings from '../screens/settings/Configuracoes';
 
 import SignUp from '../screens/signup/Cadastro';
 
+import Notifications from '../screens/notifications/NotificationsA';
+
 // import colors
 import Colors from '../theme/colors';
 
@@ -84,9 +86,10 @@ console.log('Dark do HOMEEE: ' + dark)
 
           if (route.name === 'Home') {
             iconName = `home${focused ? '' : '-outline'}`;
+            size = 40
           } else if (route.name === 'Favorites') {
             iconName = `star${focused ? '' : '-outline'}`;
-            size = 30
+            size = 20
           }
 
           // You can return any component that you like here!
@@ -96,14 +99,13 @@ console.log('Dark do HOMEEE: ' + dark)
       screenProps={{backgroundColor:'blue'}}
       tabBarOptions={{
         keyboardHidesTabBar: true,
-        activeTintColor: dark ? '#d98b0d' : '#DAA520',
+        activeTintColor: dark ? '#d98b0d' : '#d98b0d',
         inactiveTintColor: Colors.secondaryText,
         showLabel: false, // hide labels
         style: {
           backgroundColor: dark ? '#121212' : 'white' // TabBar background
         },
       }}>
-      <Tab.Screen name="Home" component={Home} />
       {/*
       <Tab.Screen
         name="Cart"
@@ -127,12 +129,31 @@ console.log('Dark do HOMEEE: ' + dark)
             <FontAwesome5
               name={`search${props.focused ? '' : ''}`}
               {...props}
+              size = {15}
             />
           ),
         }}
       />
 
+
     <Tab.Screen name="Favorites" component={Favorites}/>
+    
+    <Tab.Screen name="Home" component={Home} />
+    
+    <Tab.Screen
+      name="Notifications"
+      component={Notifications}
+      options={{
+        tabBarIcon: props => (
+          <FontAwesome5
+            name={`bell${props.focused ? '' : ''}`}
+            {...props}
+            size = {15}
+          />
+        ),
+      }}
+    />
+
 
     {status == true ? 
       <Tab.Screen
@@ -143,6 +164,7 @@ console.log('Dark do HOMEEE: ' + dark)
             <FontAwesome5
               name={`user${props.focused ? '' : ''}`}
               {...props}
+              size = {15}
             />
           ),
         }}
@@ -155,6 +177,7 @@ console.log('Dark do HOMEEE: ' + dark)
             <FontAwesome5
               name={`user-plus${props.focused ? '' : ''}`}
               {...props}
+              size = {15}
             />
           ),
         }}

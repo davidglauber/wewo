@@ -9,44 +9,49 @@
 import React, { Component } from "react";
 import {
   FlatList,
-  SafeAreaView,
   StatusBar,
+  Image,
+  Dimensions,
+  TouchableOpacity,
   StyleSheet,
   View
 } from "react-native";
 import remove from "lodash/remove";
 
+//CSS responsivo
+import { SafeBackground, IconResponsive, AnuncioContainer, IconResponsiveNOBACK, Heading, Title} from '../home/styles';
+
 // import components
-import EmptyState from "../../components/emptystate/EmptyState";
-import NotificationItem from "../../components/cards/NotificationItem";
+import { Modalize } from 'react-native-modalize';
 
 // import colors
 import Colors from "../../theme/colors";
 
+import { ThemeContext } from '../../../ThemeContext';
+
 // NotificationsA Config
 const EMPTY_STATE_ICON = "bell-ring-outline";
 
-// NotificationsA Styles
+
+//consts
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
-  screenContainer: {
-    flex: 1,
-    backgroundColor: "#fff"
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#efefef"
-  },
-  productsContainer: {
-    paddingTop: 8
+  paddingTitle: {
+    padding: 30
   }
-});
+})
 
 // NotificationsA
 export default class NotificationsA extends Component {
+  static contextType = ThemeContext;
+
   constructor(props) {
     super(props);
 
     this.state = {
+      modalizeRef: React.createRef(null),
       notifications: [
         {
           notificationId: 5,
@@ -121,6 +126,12 @@ export default class NotificationsA extends Component {
     });
   };
 
+
+  openModalize() {
+    const modalizeRef = this.state.modalizeRef;
+    modalizeRef.current?.open()
+  }
+
   keyExtractor = item => item.notificationId.toString();
 
   renderItem = ({ item, index }) => (
@@ -140,32 +151,58 @@ export default class NotificationsA extends Component {
     const { notifications } = this.state;
 
     return (
-      <SafeAreaView style={styles.screenContainer}>
+      <SafeBackground>
         <StatusBar
-          backgroundColor={Colors.statusBarColor}
-          barStyle="dark-content"
+          backgroundColor={this.context.dark ? '#121212' : 'white'}
+          barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
 
-        <View style={styles.container}>
-          {
-            notifications.length === 0 ? (
-              <EmptyState
-                showIcon
-                iconName={EMPTY_STATE_ICON}
-                title="Your Notifications List is Empty"
-                message="Stay tuned! Notifications about your orders will show up here"
-              />
-            ) : (
-              <FlatList
-                data={notifications}
-                renderItem={this.renderItem}
-                keyExtractor={this.keyExtractor}
-                contentContainerStyle={styles.productsContainer}
-              />
-            )
-          }
+        <View>
+          <Heading style={styles.paddingTitle}>Notificações</Heading>
+          <View style={{width: windowWidth/1.06, height:100, backgroundColor:'#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
+            <Image source={{uri: 'https://veja.abril.com.br/wp-content/uploads/2021/01/GettyImages-1229893385.jpg.jpg'}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+            <Title style={{marginLeft:10}}>Rodrigo Lombardi</Title>
+              <TouchableOpacity onPress={() => this.openModalize()} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: 'white', justifyContent:'center', alignItems:'center'}}>
+                <IconResponsiveNOBACK name="at" size={24}/>
+              </TouchableOpacity>
+          </View>
+
+          <View style={{width: windowWidth/1.06, height:100, backgroundColor:'#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
+            <Image source={{uri: 'https://veja.abril.com.br/wp-content/uploads/2021/01/GettyImages-1229893385.jpg.jpg'}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+            <Title style={{marginLeft:10}}>Rodrigo</Title>
+              <TouchableOpacity onPress={() => this.openModalize()} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: 'white', justifyContent:'center', alignItems:'center'}}>
+                <IconResponsiveNOBACK name="at" size={24}/>
+              </TouchableOpacity>
+          </View>
+
+          <View style={{width: windowWidth/1.06, height:100, backgroundColor:'#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
+            <Image source={{uri: 'https://veja.abril.com.br/wp-content/uploads/2021/01/GettyImages-1229893385.jpg.jpg'}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+            <Title style={{marginLeft:10}}>Rodrigo Lombardi</Title>
+              <TouchableOpacity onPress={() => this.openModalize()} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: 'white', justifyContent:'center', alignItems:'center'}}>
+                <IconResponsiveNOBACK name="at" size={24}/>
+              </TouchableOpacity>
+          </View>
         </View>
-      </SafeAreaView>
+
+        {/*Modalize dos comentários*/}
+        <Modalize
+            ref={this.state.modalizeRef}
+            snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+          >
+          <View style={{width: windowWidth/1.06, height:100, backgroundColor:'#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
+            <Image source={{uri: 'https://veja.abril.com.br/wp-content/uploads/2021/01/GettyImages-1229893385.jpg.jpg'}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+              <Title style={{marginLeft: windowWidth/6, fontSize: 15}}>Rodrigo Lombardi</Title>
+          </View>
+
+          <View style={{width: windowWidth/1.06, height:500, backgroundColor:'#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10}}>
+            <View style={{marginTop:20}}>
+              <Title style={{marginLeft: 30, fontSize: 27}}>CEP: 57046-503</Title>
+              <Title style={{marginLeft: 30, fontSize: 20, marginTop:10}}>SERVIÇO: Caminhão de Mudança</Title>
+            </View>
+          </View>
+        </Modalize>
+      </SafeBackground>
     );
   }
 }
