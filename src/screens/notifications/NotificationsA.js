@@ -25,8 +25,7 @@ import { SafeBackground, IconResponsive, AnuncioContainer, IconResponsiveNOBACK,
 // import components
 import { Modalize } from 'react-native-modalize';
 
-// import colors
-import Colors from "../../theme/colors";
+import firebase from '../../config/firebase';
 
 import { ThemeContext } from '../../../ThemeContext';
 
@@ -65,8 +64,37 @@ export default class NotificationsA extends Component {
     super(props);
 
     this.state = {
-      modalizeRef: React.createRef(null)
+      modalizeRef: React.createRef(null),
+      notificationsActivies: []
     };
+  }
+
+  async componentDidMount() {
+    let user = await firebase.auth().currentUser;
+    let e = this;
+
+    if(user == null) {
+      alert('Usuários não logados não tem notificações ativas')
+    } else {
+      await firebase.firestore().collection('notifications').where("idContratado", "==", user.uid).onSnapshot(documentSnapshot => {
+        let notifications = [];
+        documentSnapshot.forEach(function(doc) {
+          notifications.push({
+            idContratante: doc.data().idContratante,
+            idContratado: doc.data().idContratado,
+            photoProfile: doc.data().photoProfile,
+            nome: doc.data().nome,
+            telefone: doc.data().telefone,
+            service: doc.data().service,
+            valor: doc.data().valor,
+            cep: doc.data().cep,
+            dataServico: doc.data().dataServico
+          })
+        })
+
+        e.setState({notificationsActivies: notifications})
+      })
+    }
   }
 
   goBack = () => {
@@ -93,6 +121,16 @@ export default class NotificationsA extends Component {
     alert('Serviço cancelado! O usuário contratante será informado sobre o cancelamento')
   }
 
+  makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
   render() {
     return (
       <SafeBackground>
@@ -103,15 +141,24 @@ export default class NotificationsA extends Component {
 
         <View>
           <Heading style={styles.paddingTitle}>Notificações</Heading>
-          <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
-            <Image source={{uri: 'https://veja.abril.com.br/wp-content/uploads/2021/01/GettyImages-1229893385.jpg.jpg'}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
-            <Text  style={styles.titleMain}>Rodrigo Lombardi</Text>
-              <TouchableOpacity onPress={() => this.openModalize()} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
-                <IconResponsiveNOBACK name="at" size={24}/>
-              </TouchableOpacity>
-          </View>
+          <FlatList
+            keyExtractor={() => this.makeid(17)}
+            data={this.state.notificationsActivies}
+            renderItem={({item}) => 
+            <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
+              <Image source={{uri: item.photoProfile}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+              <Text  style={styles.titleMain}>{item.nome}</Text>
+                <TouchableOpacity onPress={() => this.openModalize()} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
+                  <IconResponsiveNOBACK name="at" size={24}/>
+                </TouchableOpacity>
+            </View>
+          }
+          ></FlatList>
 
         </View>
+
+
+
 
         {/*Modalize dos comentários*/}
         <Modalize
