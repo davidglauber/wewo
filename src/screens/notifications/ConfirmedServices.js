@@ -25,9 +25,14 @@ import { SafeBackground, IconResponsive, TextDescription2, IconResponsiveNOBACK,
 // import components
 import { Modalize } from 'react-native-modalize';
 
+import LottieView from 'lottie-react-native';
+
+import bell from '../../../assets/notification.json';
+
 import firebase from '../../config/firebase';
 
 import { ThemeContext } from '../../../ThemeContext';
+
 
 // NotificationsA Config
 const EMPTY_STATE_ICON = "bell-ring-outline";
@@ -154,6 +159,24 @@ export default class ConfirmedServices extends Component {
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
 
+      {this.state.notificationsActivies.length == 0 ?
+
+        <View>
+          <View style={{flexDirection:'row'}}>
+            <Heading style={styles.paddingTitle}>Meus Serviços</Heading>
+            <TouchableOpacity onPress={() => this.uploadedNotifications()}>
+              <IconResponsiveNOBACK style={{marginLeft:90, marginTop:30}} name="handshake" size={24}/>
+            </TouchableOpacity>
+          </View>
+          
+          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Para sua segurança, deve-se utilizar o Modo PagWeWo para efetuar o pagamento entre o Contratado e Contratante (não nos responsabilizamos por qualquer problema de pagamento fora da plataforma)</TextDescription2>
+
+          <View style={{alignItems:'center', marginTop:100}}>
+            <LottieView source={bell} style={{width:100, height:100}} autoPlay loop />  
+            <Text style={{color: this.context.dark ? 'white' : 'black'}}>Nenhuma Notificação Encontrada</Text>
+          </View>
+        </View>
+        :
         <View>
           <View style={{flexDirection:'row'}}>
           <Heading style={styles.paddingTitle}>Meus Serviços</Heading>
@@ -180,7 +203,7 @@ export default class ConfirmedServices extends Component {
 
         </View>
 
-
+        }
 
 
         {/*Modalize dos comentários*/}
@@ -222,7 +245,7 @@ export default class ConfirmedServices extends Component {
                 </View>
 
                 <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
-                  <Title style={{marginRight: 20, textAlign:'center', fontSize: 15, marginTop:25, color: this.context.dark ? 'white' : 'white'}}>Este é um resumo do que você enviou ao contratado(a)</Title>
+                  <Title style={{marginRight: 20, textAlign:'center', fontSize: 15, marginTop:25, color: this.context.dark ? 'white' : 'white'}}>Este é um resumo do serviço que você aceitou, lembre-se de comparecer!</Title>
                 </View>
 
             </View>

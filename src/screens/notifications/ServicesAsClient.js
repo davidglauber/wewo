@@ -25,6 +25,10 @@ import { SafeBackground, IconResponsive, TextDescription2, IconResponsiveNOBACK,
 // import components
 import { Modalize } from 'react-native-modalize';
 
+import LottieView from 'lottie-react-native';
+
+import bell from '../../../assets/notification.json';
+
 import firebase from '../../config/firebase';
 
 import { ThemeContext } from '../../../ThemeContext';
@@ -153,6 +157,25 @@ export default class ServicesAsClient extends Component {
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
 
+
+      {this.state.notificationsActivies.length == 0 ?
+      <View>
+          <View style={{flexDirection:'row'}}>
+            <Heading style={styles.paddingTitle}>Serviços que Contratei</Heading>
+            <TouchableOpacity onPress={() => this.uploadedNotifications()}>
+              <IconResponsiveNOBACK style={{marginLeft:90, marginTop:30}} name="handshake" size={24}/>
+            </TouchableOpacity>
+          </View>
+          
+          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PagWeWo)</TextDescription2>
+
+          <View style={{alignItems:'center', marginTop:100}}>
+            <LottieView source={bell} style={{width:100, height:100}} autoPlay loop />  
+            <Text style={{color: this.context.dark ? 'white' : 'black'}}>Nenhuma Notificação Encontrada</Text>
+          </View>
+        </View>
+        :
+
         <View>
           <View style={{flexDirection:'row'}}>
           <Heading style={styles.paddingTitle}>Serviços que Contratei</Heading>
@@ -179,7 +202,7 @@ export default class ServicesAsClient extends Component {
 
         </View>
 
-
+      }
 
 
         {/*Modalize dos comentários*/}

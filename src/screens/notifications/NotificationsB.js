@@ -25,9 +25,13 @@ import { SafeBackground, IconResponsive, AnuncioContainer, IconResponsiveNOBACK,
 // import components
 import { Modalize } from 'react-native-modalize';
 
+import LottieView from 'lottie-react-native';
+
 import firebase from '../../config/firebase';
 
 import { ThemeContext } from '../../../ThemeContext';
+
+import bell from '../../../assets/notification.json';
 
 // NotificationsA Config
 const EMPTY_STATE_ICON = "bell-ring-outline";
@@ -164,39 +168,62 @@ export default class NotificationsB extends Component {
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
 
-        <View>
-          <Heading style={styles.paddingTitle}>Notificações Enviadas</Heading>
-          <View style={{flexDirection:'row', justifyContent:'center'}}>
-            <TouchableOpacity onPress={() => this.uploadedNotifications()}>
-              <IconResponsiveNOBACK style={{marginRight:20}} name="arrow-circle-down" size={24}/>
-            </TouchableOpacity>
+        {this.state.notificationsActivies.length == 0 ?
+          <View>
+            <Heading style={styles.paddingTitle}>Notificações Enviadas</Heading>
+            <View style={{flexDirection:'row', justifyContent:'center'}}>
+              <TouchableOpacity onPress={() => this.uploadedNotifications()}>
+                <IconResponsiveNOBACK style={{marginRight:20}} name="arrow-circle-down" size={24}/>
+              </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => this.comfirmedServices()}>
-              <IconResponsiveNOBACK style={{marginRight:20}} name="check-double" size={24}/>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.comfirmedServices()}>
+                <IconResponsiveNOBACK style={{marginRight:20}} name="check-double" size={24}/>
+              </TouchableOpacity>
 
-            <TouchableOpacity>
-              <IconResponsiveNOBACK name="arrow-circle-up" size={24}/>
-            </TouchableOpacity>
-          </View>
-
-          <FlatList
-            keyExtractor={() => this.makeid(17)}
-            data={this.state.notificationsActivies}
-            renderItem={({item}) => 
-            <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
-              <Image source={{uri: item.photoProfile}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
-              <Text  style={styles.titleMain}>{item.nome}</Text>
-                <TouchableOpacity onPress={() => this.openModalize(item)} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
-                  <IconResponsiveNOBACK name="at" size={24}/>
-                </TouchableOpacity>
+              <TouchableOpacity>
+                <IconResponsiveNOBACK name="arrow-circle-up" size={24}/>
+              </TouchableOpacity>
             </View>
-          }
-          ></FlatList>
 
-        </View>
+            <View style={{alignItems:'center', marginTop:100}}>
+              <LottieView source={bell} style={{width:100, height:100}} autoPlay loop />  
+              <Text style={{color: this.context.dark ? 'white' : 'black'}}>Nenhuma Notificação Encontrada</Text>
+            </View>
+          </View>
+          :
+          <View>
+            <Heading style={styles.paddingTitle}>Notificações Enviadas</Heading>
+            <View style={{flexDirection:'row', justifyContent:'center'}}>
+              <TouchableOpacity onPress={() => this.uploadedNotifications()}>
+                <IconResponsiveNOBACK style={{marginRight:20}} name="arrow-circle-down" size={24}/>
+              </TouchableOpacity>
 
+              <TouchableOpacity onPress={() => this.comfirmedServices()}>
+                <IconResponsiveNOBACK style={{marginRight:20}} name="check-double" size={24}/>
+              </TouchableOpacity>
 
+              <TouchableOpacity>
+                <IconResponsiveNOBACK name="arrow-circle-up" size={24}/>
+              </TouchableOpacity>
+            </View>
+
+            <FlatList
+              keyExtractor={() => this.makeid(17)}
+              data={this.state.notificationsActivies}
+              renderItem={({item}) => 
+              <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
+                <Image source={{uri: item.photoProfile}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+                <Text  style={styles.titleMain}>{item.nome}</Text>
+                  <TouchableOpacity onPress={() => this.openModalize(item)} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
+                    <IconResponsiveNOBACK name="at" size={24}/>
+                  </TouchableOpacity>
+              </View>
+            }
+            ></FlatList>
+          </View>
+        }
+
+        
 
 
         {/*Modalize dos comentários*/}

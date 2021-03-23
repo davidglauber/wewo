@@ -141,7 +141,7 @@ export default class ServiceCadaster extends Component {
     
     
     
-    this.sleep(500).then(() => { 
+    this.sleep(1000).then(() => { 
         if(this.state.cepBOOLEAN == true){
             firebase.firestore().collection('notifications').doc(idRandom).set({
                 idContratante: e.state.idContratante,

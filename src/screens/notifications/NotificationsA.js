@@ -76,7 +76,8 @@ export default class NotificationsA extends Component {
       serviceUser:'',
       valueUser:'',
       telefoneUser:'',
-      dataUser:''
+      dataUser:'',
+      idNotification:''
     };
   }
 
@@ -128,6 +129,8 @@ export default class NotificationsA extends Component {
     this.setState({valueUser: userData.valor})
     this.setState({telefoneUser: userData.telefone})
     this.setState({dataUser: userData.dataServico})
+    this.setState({idNotification: userData.idNot})
+
 
     const modalizeRef = this.state.modalizeRef;
     modalizeRef.current?.open()
@@ -151,14 +154,23 @@ export default class NotificationsA extends Component {
   }
 
   async confirmButton(idNot) {
+    const modalizeRef = this.state.modalizeRef;
+    
     await firebase.firestore().collection('notifications').doc(idNot).update({
       confirmed: true
     })
+
+    modalizeRef.current?.close();
+    this.props.navigation.navigate('ConfirmedServices')
     alert('Serviço confirmado! Lembre-se de comparecer no local e ativar o modo pagamento no final do serviço!')
   }
 
-  deniedButton() {
-    alert('Serviço cancelado! O usuário contratante será informado sobre o cancelamento')
+  async deniedButton(idNot) {
+    const modalizeRef = this.state.modalizeRef;
+
+    await firebase.firestore().collection('notifications').doc(idNot).delete()
+    modalizeRef.current?.close();
+    alert('Serviço cancelado!')
   }
 
   makeid(length) {
@@ -279,12 +291,12 @@ export default class NotificationsA extends Component {
 
 
                 <View style={{flexDirection:'row'}}>
-                  <TouchableOpacity onPress={() => this.confirmButton()} style={{marginLeft: 30, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:20, borderRadius:50}}>
+                  <TouchableOpacity onPress={() => this.confirmButton(this.state.idNotification)} style={{marginLeft: 30, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:20, borderRadius:50}}>
                     <IconResponsiveNOBACK name="check" size={24}/>
                     <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Confirmar</Title>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => this.deniedButton()} style={{marginLeft: 30, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:120, borderRadius:50}}>
+                  <TouchableOpacity onPress={() => this.deniedButton(this.state.idNotification)} style={{marginLeft: 30, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:120, borderRadius:50}}>
                     <IconResponsiveNOBACK name="times" size={24}/>
                     <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Negar</Title>
                   </TouchableOpacity>
