@@ -133,6 +133,7 @@ export default class ServiceCadaster extends Component {
     let e = this;
     let dataAtual = this.convertDate();
     let userUID = firebase.auth().currentUser.uid;
+    let idRandom = this.makeid(25);
     e.setModalVisible(true)
 
 
@@ -142,8 +143,9 @@ export default class ServiceCadaster extends Component {
     
     this.sleep(500).then(() => { 
         if(this.state.cepBOOLEAN == true){
-            firebase.firestore().collection('notifications').doc().set({
+            firebase.firestore().collection('notifications').doc(idRandom).set({
                 idContratante: e.state.idContratante,
+                idNot: idRandom,
                 idContratado: e.state.id,
                 photoProfile: e.state.foto,
                 nome: e.state.nome,
@@ -151,7 +153,8 @@ export default class ServiceCadaster extends Component {
                 service: e.state.servico,
                 valor: e.state.valor,
                 cep: e.state.cep,
-                dataServico: dataAtual
+                dataServico: dataAtual,
+                confirmed: false
             })
 
             e.setModalVisible(false)

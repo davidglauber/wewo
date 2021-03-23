@@ -646,6 +646,8 @@ export default class TelaAnuncio extends Component {
 
     if(userID == null) {
       alert('Você não pode contratar alguém sem estar logado')
+    } else if (idDoContratado == userID.uid){
+      alert('Você não pode contratar a si mesmo')
     } else {
       //parâmetros que devem ser enviados ao BD: Foto, nome, CEP, Serviço que quer contratar, Valor, Telefone, Calendário
       this.props.navigation.navigate('ServiceCadaster', {

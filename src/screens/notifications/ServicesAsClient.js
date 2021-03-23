@@ -20,18 +20,14 @@ import {
 import remove from "lodash/remove";
 
 //CSS responsivo
-import { SafeBackground, IconResponsive, AnuncioContainer, IconResponsiveNOBACK, Heading, Title} from '../home/styles';
+import { SafeBackground, IconResponsive, TextDescription2, IconResponsiveNOBACK, Heading, Title} from '../home/styles';
 
 // import components
 import { Modalize } from 'react-native-modalize';
 
-import LottieView from 'lottie-react-native';
-
 import firebase from '../../config/firebase';
 
 import { ThemeContext } from '../../../ThemeContext';
-
-import bell from '../../../assets/notification.json';
 
 // NotificationsA Config
 const EMPTY_STATE_ICON = "bell-ring-outline";
@@ -43,7 +39,8 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   paddingTitle: {
-    padding: 30
+    padding: 30,
+    marginRight:10
   },
   title: {
     marginLeft: windowWidth/6, 
@@ -61,7 +58,7 @@ const styles = StyleSheet.create({
 })
 
 // NotificationsA
-export default class NotificationsA extends Component {
+export default class ServicesAsClient extends Component {
   static contextType = ThemeContext;
 
   constructor(props) {
@@ -87,12 +84,11 @@ export default class NotificationsA extends Component {
     if(user == null) {
       alert('Usuários não logados não tem notificações ativas')
     } else {
-      await firebase.firestore().collection('notifications').where("idContratado", "==", user.uid).where("confirmed", "==", false).onSnapshot(documentSnapshot => {
+      await firebase.firestore().collection('notifications').where("idContratante", "==", user.uid).onSnapshot(documentSnapshot => {
         let notifications = [];
         documentSnapshot.forEach(function(doc) {
           notifications.push({
             idContratante: doc.data().idContratante,
-            idNot: doc.data().idNot,
             idContratado: doc.data().idContratado,
             photoProfile: doc.data().photoProfile,
             nome: doc.data().nome,
@@ -135,30 +131,7 @@ export default class NotificationsA extends Component {
 
 
   uploadedNotifications(){
-    if(firebase.auth().currentUser == null){
-      alert('Você não pode acessar essa área sem estar logado!')
-    } else {
-      this.props.navigation.navigate('NotificationsB')
-    }
-  }
-
-  comfirmedServices() {
-    if(firebase.auth().currentUser == null){
-      alert('Você não pode acessar essa área sem estar logado!')
-    } else {
-      this.props.navigation.navigate('ConfirmedServices')
-    }
-  }
-
-  async confirmButton(idNot) {
-    await firebase.firestore().collection('notifications').doc(idNot).update({
-      confirmed: true
-    })
-    alert('Serviço confirmado! Lembre-se de comparecer no local e ativar o modo pagamento no final do serviço!')
-  }
-
-  deniedButton() {
-    alert('Serviço cancelado! O usuário contratante será informado sobre o cancelamento')
+    alert("iae chapa")
   }
 
   makeid(length) {
@@ -173,7 +146,6 @@ export default class NotificationsA extends Component {
 
   render() {
     const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser} = this.state;
-
     return (
       <SafeBackground>
         <StatusBar
@@ -181,60 +153,31 @@ export default class NotificationsA extends Component {
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
 
-        {this.state.notificationsActivies.length == 0 ?
-          <View>
-            <Heading style={styles.paddingTitle}>Notificações Recebidas</Heading>
-            <View style={{flexDirection:'row', justifyContent:'center'}}>
-              <TouchableOpacity>
-                <IconResponsiveNOBACK style={{marginRight:20}} name="arrow-circle-down" size={24}/>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => this.comfirmedServices()}>
-                <IconResponsiveNOBACK style={{marginRight:20}} name="check-double" size={24}/>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => this.uploadedNotifications()}>
-                <IconResponsiveNOBACK name="arrow-circle-up" size={24}/>
-              </TouchableOpacity>
-            </View>
-
-            <View style={{alignItems:'center', marginTop:100}}>
-              <LottieView source={bell} style={{width:100, height:100}} autoPlay loop />  
-              <Text style={{color: this.context.dark ? 'white' : 'black'}}>Nenhuma Notificação Encontrada</Text>
-            </View>
+        <View>
+          <View style={{flexDirection:'row'}}>
+          <Heading style={styles.paddingTitle}>Serviços que Contratei</Heading>
+            <TouchableOpacity onPress={() => this.uploadedNotifications()}>
+              <IconResponsiveNOBACK style={{marginLeft:90, marginTop:30}} name="handshake" size={24}/>
+            </TouchableOpacity>
           </View>
-          :
-          <View>
-            <Heading style={styles.paddingTitle}>Notificações Recebidas</Heading>
-            <View style={{flexDirection:'row', justifyContent:'center'}}>
-              <TouchableOpacity>
-                <IconResponsiveNOBACK style={{marginRight:20}} name="arrow-circle-down" size={24}/>
-              </TouchableOpacity>
+          
+          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PagWeWo)</TextDescription2>
 
-              <TouchableOpacity onPress={() => this.comfirmedServices()}>
-                <IconResponsiveNOBACK style={{marginRight:20}} name="check-double" size={24}/>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => this.uploadedNotifications()}>
-                <IconResponsiveNOBACK name="arrow-circle-up" size={24}/>
-              </TouchableOpacity>
+          <FlatList
+            keyExtractor={() => this.makeid(17)}
+            data={this.state.notificationsActivies}
+            renderItem={({item}) => 
+            <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
+              <Image source={{uri: item.photoProfile}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+              <Text  style={styles.titleMain}>{item.nome}</Text>
+                <TouchableOpacity onPress={() => this.openModalize(item)} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
+                  <IconResponsiveNOBACK name="at" size={24}/>
+                </TouchableOpacity>
             </View>
+          }
+          ></FlatList>
 
-            <FlatList
-              keyExtractor={() => this.makeid(17)}
-              data={this.state.notificationsActivies}
-              renderItem={({item}) => 
-              <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
-                <Image source={{uri: item.photoProfile}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
-                <Text  style={styles.titleMain}>{item.nome}</Text>
-                  <TouchableOpacity onPress={() => this.openModalize(item)} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
-                    <IconResponsiveNOBACK name="at" size={24}/>
-                  </TouchableOpacity>
-              </View>
-            }
-            ></FlatList>
-          </View>
-        }
+        </View>
 
 
 
@@ -277,18 +220,10 @@ export default class NotificationsA extends Component {
                   <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{dataUser}</Title>
                 </View>
 
-
-                <View style={{flexDirection:'row'}}>
-                  <TouchableOpacity onPress={() => this.confirmButton()} style={{marginLeft: 30, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:20, borderRadius:50}}>
-                    <IconResponsiveNOBACK name="check" size={24}/>
-                    <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Confirmar</Title>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.deniedButton()} style={{marginLeft: 30, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:120, borderRadius:50}}>
-                    <IconResponsiveNOBACK name="times" size={24}/>
-                    <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Negar</Title>
-                  </TouchableOpacity>
+                <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
+                  <Title style={{marginRight: 20, textAlign:'center', fontSize: 15, marginTop:25, color: this.context.dark ? 'white' : 'white'}}>Este é um resumo do que você enviou ao contratado(a)</Title>
                 </View>
+
             </View>
           </View>
         </Modalize>

@@ -65,6 +65,8 @@ import NotificationsB from '../screens/notifications/NotificationsB';
 
 import ConfirmedServices from '../screens/notifications/ConfirmedServices';
 
+import ServicesAsClient from '../screens/notifications/ServicesAsClient';
+
 import CartaoCategory2 from '../screens/cartaoVisita/CartaoCategory2';
 
 import TelaPrincipalAnuncio from '../screens/anuncios/TelaPrincipalAnuncio';
@@ -294,6 +296,12 @@ function MainNavigatorA() {
         <Stack.Screen
           name="ConfirmedServices"
           component={ConfirmedServices}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="ServicesAsClient"
+          component={ServicesAsClient}
           options={{headerShown: false}}
         />
         

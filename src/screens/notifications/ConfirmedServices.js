@@ -84,7 +84,7 @@ export default class ConfirmedServices extends Component {
     if(user == null) {
       alert('Usuários não logados não tem notificações ativas')
     } else {
-      await firebase.firestore().collection('notifications').where("idContratante", "==", user.uid).onSnapshot(documentSnapshot => {
+      await firebase.firestore().collection('notifications').where("idContratado", "==", user.uid).where("confirmed", "==", true).onSnapshot(documentSnapshot => {
         let notifications = [];
         documentSnapshot.forEach(function(doc) {
           notifications.push({
@@ -96,7 +96,8 @@ export default class ConfirmedServices extends Component {
             service: doc.data().service,
             valor: doc.data().valor,
             cep: doc.data().cep,
-            dataServico: doc.data().dataServico
+            dataServico: doc.data().dataServico,
+            confirmed: doc.data().confirmed
           })
         })
 
@@ -131,19 +132,7 @@ export default class ConfirmedServices extends Component {
 
 
   uploadedNotifications(){
-    this.props.navigation.navigate('HomeNavigator')
-  }
-
-  uploadedNotifications2(){
-    this.props.navigation.navigate('NotificationsB')
-  }
-
-  confirmButton() {
-    alert('Serviço confirmado! Lembre-se de comparecer no local e ativar o modo pagamento no final do serviço!')
-  }
-
-  deniedButton() {
-    alert('Serviço cancelado! O usuário contratante será informado sobre o cancelamento')
+    this.props.navigation.navigate('ServicesAsClient')
   }
 
   makeid(length) {
@@ -167,21 +156,13 @@ export default class ConfirmedServices extends Component {
 
         <View>
           <View style={{flexDirection:'row'}}>
-          <Heading style={styles.paddingTitle}>Serviços Ativos</Heading>
+          <Heading style={styles.paddingTitle}>Meus Serviços</Heading>
             <TouchableOpacity onPress={() => this.uploadedNotifications()}>
-              <IconResponsiveNOBACK style={{marginRight:20, marginTop:30}} name="arrow-circle-down" size={24}/>
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <IconResponsiveNOBACK style={{marginRight:20,marginTop:30}} name="check-double" size={24}/>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => this.uploadedNotifications2()}>
-              <IconResponsiveNOBACK style={{marginRight:20,marginTop:30}} name="arrow-circle-up" size={24}/>
+              <IconResponsiveNOBACK style={{marginLeft:90, marginTop:30}} name="handshake" size={24}/>
             </TouchableOpacity>
           </View>
           
-          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Importante: Para sua segurança, deve-se utilizar o Modo PagWeWo para efetuar o pagamento entre o Contratado e Contratante (não nos responsabilizamos por qualquer problema de pagamento fora da plataforma)</TextDescription2>
+          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Para sua segurança, deve-se utilizar o Modo PagWeWo para efetuar o pagamento entre o Contratado e Contratante (não nos responsabilizamos por qualquer problema de pagamento fora da plataforma)</TextDescription2>
 
           <FlatList
             keyExtractor={() => this.makeid(17)}
