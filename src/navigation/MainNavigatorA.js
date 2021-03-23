@@ -61,6 +61,10 @@ import CartaoFiltro from '../screens/cartaoVisita/CartaoFiltro';
 
 import CartaoCategory from '../screens/cartaoVisita/CartaoCategory';
 
+import NotificationsB from '../screens/notifications/NotificationsB';
+
+import ConfirmedServices from '../screens/notifications/ConfirmedServices';
+
 import CartaoCategory2 from '../screens/cartaoVisita/CartaoCategory2';
 
 import TelaPrincipalAnuncio from '../screens/anuncios/TelaPrincipalAnuncio';
@@ -280,6 +284,18 @@ function MainNavigatorA() {
           options={{headerShown: false}}
         />
 
+
+        <Stack.Screen
+          name="NotificationsB"
+          component={NotificationsB}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="ConfirmedServices"
+          component={ConfirmedServices}
+          options={{headerShown: false}}
+        />
         
         <Stack.Screen
           name="CartaoCategory"

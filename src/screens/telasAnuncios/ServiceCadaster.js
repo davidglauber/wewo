@@ -142,7 +142,7 @@ export default class ServiceCadaster extends Component {
     
     this.sleep(500).then(() => { 
         if(this.state.cepBOOLEAN == true){
-            firebase.firestore().collection('notifications').doc(userUID).set({
+            firebase.firestore().collection('notifications').doc().set({
                 idContratante: e.state.idContratante,
                 idContratado: e.state.id,
                 photoProfile: e.state.foto,

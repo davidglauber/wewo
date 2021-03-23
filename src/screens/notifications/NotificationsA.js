@@ -65,7 +65,14 @@ export default class NotificationsA extends Component {
 
     this.state = {
       modalizeRef: React.createRef(null),
-      notificationsActivies: []
+      notificationsActivies: [],
+      nameUser:'',
+      fotoUser:'',
+      cepUser:'',
+      serviceUser:'',
+      valueUser:'',
+      telefoneUser:'',
+      dataUser:''
     };
   }
 
@@ -108,9 +115,26 @@ export default class NotificationsA extends Component {
   };
 
 
-  openModalize() {
+  openModalize(userData) {
+    this.setState({nameUser: userData.nome})
+    this.setState({fotoUser: userData.photoProfile})
+    this.setState({cepUser: userData.cep})
+    this.setState({serviceUser: userData.service})
+    this.setState({valueUser: userData.valor})
+    this.setState({telefoneUser: userData.telefone})
+    this.setState({dataUser: userData.dataServico})
+
     const modalizeRef = this.state.modalizeRef;
     modalizeRef.current?.open()
+  }
+
+
+  uploadedNotifications(){
+    this.props.navigation.navigate('NotificationsB')
+  }
+
+  comfirmedServices() {
+    this.props.navigation.navigate('ConfirmedServices')
   }
 
   confirmButton() {
@@ -132,6 +156,7 @@ export default class NotificationsA extends Component {
   }
 
   render() {
+    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser} = this.state;
     return (
       <SafeBackground>
         <StatusBar
@@ -140,7 +165,21 @@ export default class NotificationsA extends Component {
         />
 
         <View>
-          <Heading style={styles.paddingTitle}>Notificações</Heading>
+          <Heading style={styles.paddingTitle}>Notificações Recebidas</Heading>
+          <View style={{flexDirection:'row', justifyContent:'center'}}>
+            <TouchableOpacity>
+              <IconResponsiveNOBACK style={{marginRight:20}} name="arrow-circle-down" size={24}/>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => this.comfirmedServices()}>
+              <IconResponsiveNOBACK style={{marginRight:20}} name="check-double" size={24}/>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => this.uploadedNotifications()}>
+              <IconResponsiveNOBACK name="arrow-circle-up" size={24}/>
+            </TouchableOpacity>
+          </View>
+
           <FlatList
             keyExtractor={() => this.makeid(17)}
             data={this.state.notificationsActivies}
@@ -148,7 +187,7 @@ export default class NotificationsA extends Component {
             <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
               <Image source={{uri: item.photoProfile}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
               <Text  style={styles.titleMain}>{item.nome}</Text>
-                <TouchableOpacity onPress={() => this.openModalize()} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
+                <TouchableOpacity onPress={() => this.openModalize(item)} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
                   <IconResponsiveNOBACK name="at" size={24}/>
                 </TouchableOpacity>
             </View>
@@ -166,48 +205,50 @@ export default class NotificationsA extends Component {
             snapPoint={500}
             modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
           >
-          <View style={{width: windowWidth/1.06, height:100, backgroundColor: '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
-            <Image source={{uri: 'https://veja.abril.com.br/wp-content/uploads/2021/01/GettyImages-1229893385.jpg.jpg'}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
-              <Text  style={styles.title}>Rodrigo Lombardi</Text>
-          </View>
 
-          <View style={{width: windowWidth/1.06, height:500, backgroundColor:'#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10}}>
-            <View style={{marginTop:20}}>
-              <Title style={{marginLeft: 30, fontSize: 27, color: this.context.dark ? 'white' : 'white'}}>CEP: 57046-503</Title>
-              
-              <View style={{marginLeft: 30, marginTop:30, flexDirection:'row'}}>
-                <IconResponsive name="tools" size={24}/>
-                <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>Caminhão de Mudança</Title>
-              </View>
+         
+            <View style={{width: windowWidth/1.06, height:100, backgroundColor: '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
+              <Image source={{uri: fotoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+                <Text  style={styles.title}>{nameUser}</Text>
+            </View>
 
-              <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
-                <IconResponsive name="dollar-sign" size={24}/>
-                <Title style={{marginLeft: 27, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>R$ 340</Title>
-              </View>
+            <View style={{width: windowWidth/1.06, height:500, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10}}>
+              <View style={{marginTop:20}}>
+                <Title style={{marginLeft: 30, fontSize: 27, color: this.context.dark ? 'white' : 'white'}}>CEP: {cepUser}</Title>
+                
+                <View style={{marginLeft: 30, marginTop:30, flexDirection:'row'}}>
+                  <IconResponsive name="tools" size={24}/>
+                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{serviceUser}</Title>
+                </View>
 
-              <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
-                <IconResponsive name="mobile" size={24}/>
-                <Title style={{marginLeft: 24, fontSize: 15, color: this.context.dark ? 'white' : 'white'}}>(82) 99432-4542</Title>
-              </View>
-              
+                <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
+                  <IconResponsive name="dollar-sign" size={24}/>
+                  <Title style={{marginLeft: 27, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{valueUser}</Title>
+                </View>
 
-              <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
-                <IconResponsive name="calendar-week" size={24}/>
-                <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>26/07/2021</Title>
-              </View>
+                <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
+                  <IconResponsive name="mobile" size={24}/>
+                  <Title style={{marginLeft: 24, fontSize: 15, color: this.context.dark ? 'white' : 'white'}}>{telefoneUser}</Title>
+                </View>
+                
+
+                <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
+                  <IconResponsive name="calendar-week" size={24}/>
+                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{dataUser}</Title>
+                </View>
 
 
-              <View style={{flexDirection:'row'}}>
-                <TouchableOpacity onPress={() => this.confirmButton()} style={{marginLeft: 30, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:20, borderRadius:50}}>
-                  <IconResponsiveNOBACK name="check" size={24}/>
-                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Confirmar</Title>
-                </TouchableOpacity>
+                <View style={{flexDirection:'row'}}>
+                  <TouchableOpacity onPress={() => this.confirmButton()} style={{marginLeft: 30, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:20, borderRadius:50}}>
+                    <IconResponsiveNOBACK name="check" size={24}/>
+                    <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Confirmar</Title>
+                  </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.deniedButton()} style={{marginLeft: 30, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:120, borderRadius:50}}>
-                  <IconResponsiveNOBACK name="times" size={24}/>
-                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Negar</Title>
-                </TouchableOpacity>
-              </View>
+                  <TouchableOpacity onPress={() => this.deniedButton()} style={{marginLeft: 30, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:120, borderRadius:50}}>
+                    <IconResponsiveNOBACK name="times" size={24}/>
+                    <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Negar</Title>
+                  </TouchableOpacity>
+                </View>
             </View>
           </View>
         </Modalize>

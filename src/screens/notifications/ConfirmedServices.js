@@ -20,7 +20,7 @@ import {
 import remove from "lodash/remove";
 
 //CSS responsivo
-import { SafeBackground, IconResponsive, AnuncioContainer, IconResponsiveNOBACK, Heading, Title} from '../home/styles';
+import { SafeBackground, IconResponsive, TextDescription2, IconResponsiveNOBACK, Heading, Title} from '../home/styles';
 
 // import components
 import { Modalize } from 'react-native-modalize';
@@ -39,7 +39,8 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   paddingTitle: {
-    padding: 30
+    padding: 30,
+    marginRight:10
   },
   title: {
     marginLeft: windowWidth/6, 
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
 })
 
 // NotificationsA
-export default class NotificationsB extends Component {
+export default class ConfirmedServices extends Component {
   static contextType = ThemeContext;
 
   constructor(props) {
@@ -133,8 +134,8 @@ export default class NotificationsB extends Component {
     this.props.navigation.navigate('HomeNavigator')
   }
 
-  comfirmedServices() {
-    this.props.navigation.navigate('ConfirmedServices')
+  uploadedNotifications2(){
+    this.props.navigation.navigate('NotificationsB')
   }
 
   confirmButton() {
@@ -165,20 +166,22 @@ export default class NotificationsB extends Component {
         />
 
         <View>
-          <Heading style={styles.paddingTitle}>Notificações Enviadas</Heading>
-          <View style={{flexDirection:'row', justifyContent:'center'}}>
+          <View style={{flexDirection:'row'}}>
+          <Heading style={styles.paddingTitle}>Serviços Ativos</Heading>
             <TouchableOpacity onPress={() => this.uploadedNotifications()}>
-              <IconResponsiveNOBACK style={{marginRight:20}} name="arrow-circle-down" size={24}/>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => this.comfirmedServices()}>
-              <IconResponsiveNOBACK style={{marginRight:20}} name="check-double" size={24}/>
+              <IconResponsiveNOBACK style={{marginRight:20, marginTop:30}} name="arrow-circle-down" size={24}/>
             </TouchableOpacity>
 
             <TouchableOpacity>
-              <IconResponsiveNOBACK name="arrow-circle-up" size={24}/>
+              <IconResponsiveNOBACK style={{marginRight:20,marginTop:30}} name="check-double" size={24}/>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => this.uploadedNotifications2()}>
+              <IconResponsiveNOBACK style={{marginRight:20,marginTop:30}} name="arrow-circle-up" size={24}/>
             </TouchableOpacity>
           </View>
+          
+          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Importante: Para sua segurança, deve-se utilizar o Modo PagWeWo para efetuar o pagamento entre o Contratado e Contratante (não nos responsabilizamos por qualquer problema de pagamento fora da plataforma)</TextDescription2>
 
           <FlatList
             keyExtractor={() => this.makeid(17)}
