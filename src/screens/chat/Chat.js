@@ -57,21 +57,42 @@ export default class Chat extends Component {
   async componentDidMount() {
     let e = this;
     let loggedUser = this.props.route.params.idLoggedUser;
+    let array = [];
+    let currentUser = firebase.auth().currentUser;
     this.setState({idUserLogado: this.props.route.params.idLoggedUser})
     this.setState({idUserDonoDoAnuncio: this.props.route.params.idDonoDoAnuncio})
 
 
-    await firebase.firestore().collection('chat').where('idContratante', "==", loggedUser).orderBy("texto", "desc").onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('chat').doc(currentUser.uid).collection('mensagem').orderBy("time", "asc").onSnapshot(documentSnapshot => {
       let chatContent = [];
       documentSnapshot.forEach(function(doc) {
         chatContent.push({
           idContratado: doc.data().idContratado,
           idContratante: doc.data().idContratante,
-          texto: doc.data().texto
+          statusMessage: doc.data().statusMessage,
+          texto: doc.data().texto,
+          time: doc.data().time
         })
       })
 
-      e.setState({chatFromFirebase: chatContent})
+      array.push(chatContent)
+    })
+
+    await firebase.firestore().collection('chat').doc(e.state.idUserDonoDoAnuncio).collection('mensagem').orderBy("time", "asc").onSnapshot(documentSnapshot => {
+      let chatContent2 = [];
+      documentSnapshot.forEach(function(doc) {
+        chatContent2.push({
+          idContratado: doc.data().idContratado,
+          idContratante: doc.data().idContratante,
+          statusMessage: doc.data().statusMessage,
+          texto: doc.data().texto,
+          time: doc.data().time
+        })
+      })
+
+      let arrayConcat = array.concat(chatContent2);
+
+      e.setState({chatFromFirebase: arrayConcat})
     })
   }
 
@@ -85,25 +106,52 @@ export default class Chat extends Component {
     return result;
   }
 
-  async uploadChatToFirebase() {
+  uploadChatToFirebase() {
+    let currentTime = new Date().getTime();
+
     let textChat = this.state.textChat;
+    let idUserDonoDoAnuncio = this.state.idUserDonoDoAnuncio;
+    let currentUser = firebase.auth().currentUser;
     let idRandom = this.makeid(25);
     let e = this;
 
-    await firebase.firestore().collection('chat').doc(idRandom).set({
+    firebase.firestore().collection('chat').doc(currentUser.uid).collection('mensagem').doc(idRandom).set({
         idContratante: e.state.idUserLogado,
         idContratado: e.state.idUserDonoDoAnuncio,
-        texto: textChat
+        texto: textChat,
+        statusMessage: 'sent',
+        time: currentTime
     })
+
+
+    if(this.state.idUserLogado == idUserDonoDoAnuncio) {
+      firebase.firestore().collection('chat').doc(currentUser.uid).collection('mensagem').doc(idRandom).set({
+        idContratante: e.state.idUserLogado,
+        idContratado: e.state.idUserDonoDoAnuncio,
+        texto: textChat,
+        statusMessage: 'sent',
+        time: currentTime
+      })
+    } else {
+      firebase.firestore().collection('chat').doc(idUserDonoDoAnuncio).collection('mensagem').doc(idRandom).set({
+        idContratante: e.state.idUserLogado,
+        idContratado: idUserDonoDoAnuncio,
+        texto: textChat,
+        statusMessage: 'received',
+        time: currentTime
+      })
+    }
+
 
     e.setState({textChat: ''})
 
-
   }
+
+
+
 
   onChangeText(text) {
     this.setState({textChat: text})
-    console.log('text: '  + this.state.textChat)
   }
 
 
@@ -134,9 +182,19 @@ export default class Chat extends Component {
               keyExtractor={() => this.makeid(17)}
               data={this.state.chatFromFirebase}
               renderItem={({item}) => 
-                <View style={{marginTop:10, marginLeft:50, backgroundColor:'#d98b0d', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
-                  <Text style={{color:'white'}}>{item.texto}</Text>
-                </View>
+              <View>
+                {item.statusMessage == 'sent' &&
+                  <View style={{marginTop:10, marginLeft:50, backgroundColor:'#d98b0d', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
+                    <Text style={{color:'white'}}>{item.texto}</Text>
+                  </View>
+                }
+
+                {item.statusMessage == 'received' &&
+                  <View style={{marginTop:10, marginRight:50, backgroundColor:'#d4cccb', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
+                    <Text style={{color:'black'}}>{item.texto}</Text>
+                  </View>
+                }
+              </View>
               }
             ></FlatList>
 

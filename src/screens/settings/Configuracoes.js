@@ -351,7 +351,7 @@ export default function Configuracoes() {
 
           <SectionHeader title="Chat" />
           <Setting
-            onPress={() => navigation.navigate('ChatReceive')}
+            onPress={() => navigation.navigate('ChatReceive', {idDonoDoAnuncio: firebase.auth().currentUser})}
             icon={CHAT_ICON}
             setting="Conversas"
           />
