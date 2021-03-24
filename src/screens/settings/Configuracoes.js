@@ -61,6 +61,7 @@ const ORDERS_ICON = IOS ? 'ios-list' : 'md-list';
 const VISIT_CARD = IOS ? 'ios-albums' : 'ios-albums';
 
 const ABOUT_ICON = IOS ? 'ios-finger-print' : 'md-finger-print';
+const CHAT_ICON = IOS ? 'chatbox-ellipses-outline' : 'chatbox-ellipses-outline';
 const UPDATE_ICON = IOS ? 'ios-cloud-download' : 'md-cloud-download';
 const TERMS_ICON = IOS ? 'book' : 'book';
 
@@ -348,12 +349,21 @@ export default function Configuracoes() {
             setting="Meus Portfólios"
           />
 
+          <SectionHeader title="Chat" />
+          <Setting
+            onPress={() => navigation.navigate('ChatReceive')}
+            icon={CHAT_ICON}
+            setting="Conversas"
+          />
+
           <SectionHeader title="Sobre" />
           <Setting
             onPress={() => navigation.navigate('AboutUs')}
             icon={ABOUT_ICON}
             setting="Quem Nós Somos"
           />
+
+
 
         {/* <Setting icon={UPDATE_ICON} setting="App Updates" /> */}
 

@@ -847,12 +847,9 @@ export default class TelaAnuncio extends Component {
                         <TextDescription2>Média: {this.state.notaMedia}</TextDescription2>
 
                         <CallAndMessageContainer>
-                          <TouchableResponsive onPress={() => this.openPhoneApp(this.state.phoneNavigator)}>
-                              <IconResponsiveNOBACK name="phone" size={20}/>
-                          </TouchableResponsive> 
-                          
-                          <TouchableResponsive onPress={() => this.openWhatsApp(this.state.phoneNavigator)}>
+                          <TouchableResponsive onPress={() => this.props.navigation.navigate('Chat', {idLoggedUser: usuarioEstado.uid, idDonoDoAnuncio: item.idUser})}>
                               <IconResponsiveNOBACK name="comment" size={20}/>
+                              <TextDescription2 style={{padding:10, fontWeight:'bold'}}>Chat</TextDescription2>
                           </TouchableResponsive>            
                         </CallAndMessageContainer>
                         
@@ -1175,12 +1172,9 @@ export default class TelaAnuncio extends Component {
                         <TextDescription2>Média: {this.state.notaMedia}</TextDescription2>
 
                         <CallAndMessageContainer>
-                          <TouchableResponsive onPress={() => this.openPhoneApp(this.state.phoneNavigator)}>
-                              <IconResponsiveNOBACK name="phone" size={20}/>
-                          </TouchableResponsive> 
-                          
                           <TouchableResponsive onPress={() => this.openWhatsApp(this.state.phoneNavigator)}>
                               <IconResponsiveNOBACK name="comment" size={20}/>
+                              <TextDescription2 style={{padding:10, fontWeight:'bold'}}>Chat</TextDescription2>
                           </TouchableResponsive>            
                         </CallAndMessageContainer>
                         

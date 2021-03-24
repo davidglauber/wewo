@@ -73,6 +73,10 @@ import TelaPrincipalAnuncio from '../screens/anuncios/TelaPrincipalAnuncio';
 
 import EditarAnuncio from '../screens/anuncios/EditarAnuncio';
 
+import Chat from '../screens/chat/Chat';
+
+import ChatReceive from '../screens/chat/ChatReceive';
+
 // import Product screen
 import TelaAnuncio from '../screens/telasAnuncios/TelaAnuncio';
 
@@ -308,6 +312,18 @@ function MainNavigatorA() {
         <Stack.Screen
           name="CartaoCategory"
           component={CartaoCategory}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="ChatReceive"
+          component={ChatReceive}
           options={{headerShown: false}}
         />
 

@@ -109,6 +109,15 @@ export const InputForm = styled.TextInput`
     color: ${props => props.theme.inversePallete};
     border-bottom-color: ${props => props.theme.color}
 `
+
+export const InputChat = styled.TextInput`
+    border-width:1.5px;
+    border-radius:20px;
+    color: ${props => props.theme.inversePallete};
+    padding:10px;
+    border-color: ${props => props.theme.color};
+`
+
 export const CaptionTerms = styled(Caption)`
     padding-bottom: 12px;
     text-align: left;
@@ -254,7 +263,7 @@ export const TouchableResponsive = styled.TouchableOpacity`
     flex-direction: row;
     padding:10px; 
     align-items: center; 
-    width: 40px; 
+    width: 90px; 
     height: 40px; 
     border-radius: 20px; 
     background: ${props => props.theme.inverseContainerCall}
