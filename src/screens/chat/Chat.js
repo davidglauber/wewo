@@ -63,36 +63,20 @@ export default class Chat extends Component {
     this.setState({idUserDonoDoAnuncio: this.props.route.params.idDonoDoAnuncio})
 
 
-    await firebase.firestore().collection('chat').doc(currentUser.uid).collection('mensagem').orderBy("time", "asc").onSnapshot(documentSnapshot => {
-      let chatContent = [];
-      documentSnapshot.forEach(function(doc) {
-        chatContent.push({
-          idContratado: doc.data().idContratado,
-          idContratante: doc.data().idContratante,
-          statusMessage: doc.data().statusMessage,
-          texto: doc.data().texto,
-          time: doc.data().time
-        })
-      })
 
-      array.push(chatContent)
-    })
-
-    await firebase.firestore().collection('chat').doc(e.state.idUserDonoDoAnuncio).collection('mensagem').orderBy("time", "asc").onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('usuarios').doc(currentUser.uid).collection('chat').orderBy("time", "asc").onSnapshot(documentSnapshot => {
       let chatContent2 = [];
       documentSnapshot.forEach(function(doc) {
         chatContent2.push({
-          idContratado: doc.data().idContratado,
-          idContratante: doc.data().idContratante,
+          idContratado: doc.data().idUsuarioQueEnviou,
+          idContratante: doc.data().idUsuarioQueRecebeu,
           statusMessage: doc.data().statusMessage,
           texto: doc.data().texto,
           time: doc.data().time
         })
       })
 
-      let arrayConcat = array.concat(chatContent2);
-
-      e.setState({chatFromFirebase: arrayConcat})
+      e.setState({chatFromFirebase: chatContent2})
     })
   }
 
@@ -112,36 +96,26 @@ export default class Chat extends Component {
     let textChat = this.state.textChat;
     let idUserDonoDoAnuncio = this.state.idUserDonoDoAnuncio;
     let currentUser = firebase.auth().currentUser;
-    let idRandom = this.makeid(25);
     let e = this;
 
-    firebase.firestore().collection('chat').doc(currentUser.uid).collection('mensagem').doc(idRandom).set({
-        idContratante: e.state.idUserLogado,
-        idContratado: e.state.idUserDonoDoAnuncio,
+
+    //vai aparecer para o usuario que enviou a mensagem
+    firebase.firestore().collection('usuarios').doc(currentUser.uid).collection('chat').doc().set({
+        idUsuarioQueEnviou: currentUser.uid,
+        idUsuarioQueRecebeu: e.state.idUserDonoDoAnuncio,
         texto: textChat,
         statusMessage: 'sent',
         time: currentTime
     })
 
-
-    if(this.state.idUserLogado == idUserDonoDoAnuncio) {
-      firebase.firestore().collection('chat').doc(currentUser.uid).collection('mensagem').doc(idRandom).set({
-        idContratante: e.state.idUserLogado,
-        idContratado: e.state.idUserDonoDoAnuncio,
-        texto: textChat,
-        statusMessage: 'sent',
-        time: currentTime
-      })
-    } else {
-      firebase.firestore().collection('chat').doc(idUserDonoDoAnuncio).collection('mensagem').doc(idRandom).set({
-        idContratante: e.state.idUserLogado,
-        idContratado: idUserDonoDoAnuncio,
-        texto: textChat,
-        statusMessage: 'received',
-        time: currentTime
-      })
-    }
-
+    //vai aparecer para o usuario que recebeu a mensagem
+    firebase.firestore().collection('usuarios').doc(idUserDonoDoAnuncio).collection('chat').doc().set({
+      idUsuarioQueEnviou: currentUser.uid,
+      idUsuarioQueRecebeu: e.state.idUserDonoDoAnuncio,
+      texto: textChat,
+      statusMessage: 'received',
+      time: currentTime
+    })
 
     e.setState({textChat: ''})
 
