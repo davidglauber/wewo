@@ -50,14 +50,14 @@ export default class Chat extends Component {
       foto:'',
       modalVisible: false,
       textChat: '',
-      chatFromFirebase: []
+      chatFromFirebase: [],
+      idUserRespondedorDaMensagem: ''
     };
   }
 
   async componentDidMount() {
     let e = this;
     let loggedUser = this.props.route.params.idLoggedUser;
-    let array = [];
     let currentUser = firebase.auth().currentUser;
     this.setState({idUserLogado: this.props.route.params.idLoggedUser})
     this.setState({idUserDonoDoAnuncio: this.props.route.params.idDonoDoAnuncio})
@@ -74,6 +74,7 @@ export default class Chat extends Component {
           texto: doc.data().texto,
           time: doc.data().time
         })
+
       })
 
       e.setState({chatFromFirebase: chatContent2})
@@ -97,25 +98,53 @@ export default class Chat extends Component {
     let idUserDonoDoAnuncio = this.state.idUserDonoDoAnuncio;
     let currentUser = firebase.auth().currentUser;
     let e = this;
+    let userQueEnviouAMensagem = ''
+
+    this.state.chatFromFirebase.map((l => {
+      userQueEnviouAMensagem = l.idContratado
+    }))
 
 
-    //vai aparecer para o usuario que enviou a mensagem
-    firebase.firestore().collection('usuarios').doc(currentUser.uid).collection('chat').doc().set({
+    if(idUserDonoDoAnuncio == currentUser.uid){
+      //vai aparecer para o usuario que enviou a mensagem
+      firebase.firestore().collection('usuarios').doc(currentUser.uid).collection('chat').doc().set({
         idUsuarioQueEnviou: currentUser.uid,
         idUsuarioQueRecebeu: e.state.idUserDonoDoAnuncio,
         texto: textChat,
         statusMessage: 'sent',
         time: currentTime
-    })
+      })
 
-    //vai aparecer para o usuario que recebeu a mensagem
-    firebase.firestore().collection('usuarios').doc(idUserDonoDoAnuncio).collection('chat').doc().set({
-      idUsuarioQueEnviou: currentUser.uid,
-      idUsuarioQueRecebeu: e.state.idUserDonoDoAnuncio,
-      texto: textChat,
-      statusMessage: 'received',
-      time: currentTime
-    })
+      //vai aparecer para o usuario que recebeu a mensagem
+      firebase.firestore().collection('usuarios').doc(userQueEnviouAMensagem).collection('chat').doc().set({
+        idUsuarioQueEnviou: currentUser.uid,
+        idUsuarioQueRecebeu: userQueEnviouAMensagem,
+        texto: textChat,
+        statusMessage: 'received',
+        time: currentTime
+      })
+    } else {
+      //vai aparecer para o usuario que enviou a mensagem
+      firebase.firestore().collection('usuarios').doc(currentUser.uid).collection('chat').doc().set({
+          idUsuarioQueEnviou: currentUser.uid,
+          idUsuarioQueRecebeu: e.state.idUserDonoDoAnuncio,
+          texto: textChat,
+          statusMessage: 'sent',
+          time: currentTime
+      })
+  
+      //vai aparecer para o usuario que recebeu a mensagem
+      firebase.firestore().collection('usuarios').doc(idUserDonoDoAnuncio).collection('chat').doc().set({
+        idUsuarioQueEnviou: currentUser.uid,
+        idUsuarioQueRecebeu: e.state.idUserDonoDoAnuncio,
+        texto: textChat,
+        statusMessage: 'received',
+        time: currentTime
+      })
+    }
+
+
+
 
     e.setState({textChat: ''})
 
@@ -168,6 +197,7 @@ export default class Chat extends Component {
                     <Text style={{color:'black'}}>{item.texto}</Text>
                   </View>
                 }
+                
               </View>
               }
             ></FlatList>
