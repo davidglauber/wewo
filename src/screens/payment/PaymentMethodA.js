@@ -220,12 +220,12 @@ export default function PaymentMethodA() {
         {plan == 'mensal' ?
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
             <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
-            <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 9,99</Text>
+            <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 14,99</Text>
           </View>
         :
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
             <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
-            <Text style={{fontSize:20, fontWeight:'bold'}}>Anual: R$ 99,99</Text>
+            <Text style={{fontSize:20, fontWeight:'bold'}}>Anual: R$ 160,00</Text>
           </View>
         }
 

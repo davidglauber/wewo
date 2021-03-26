@@ -263,7 +263,7 @@ export const TouchableResponsive = styled.TouchableOpacity`
     flex-direction: row;
     padding:10px; 
     align-items: center; 
-    width: 90px; 
+    width: 40px; 
     height: 40px; 
     border-radius: 20px; 
     background: ${props => props.theme.inverseContainerCall}

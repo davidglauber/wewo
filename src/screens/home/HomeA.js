@@ -403,7 +403,7 @@ async componentDidMount() {
                                         resizeMode="cover"
                                         shouldPlay
                                         isLooping
-                                        style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                        style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
                                       />
                                     }
                                   
@@ -456,7 +456,7 @@ async componentDidMount() {
                                         resizeMode="cover"
                                         shouldPlay
                                         isLooping
-                                        style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                        style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
                                       />
                                     }
                                   
@@ -562,7 +562,7 @@ async componentDidMount() {
                                         resizeMode="cover"
                                         shouldPlay
                                         isLooping
-                                        style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                        style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
                                       />
                                     }
                                   

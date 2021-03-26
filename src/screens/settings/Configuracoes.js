@@ -349,13 +349,6 @@ export default function Configuracoes() {
             setting="Meus Portfólios"
           />
 
-          <SectionHeader title="Chat" />
-          <Setting
-            onPress={() => navigation.navigate('ChatReceive', {idDonoDoAnuncio: firebase.auth().currentUser})}
-            icon={CHAT_ICON}
-            setting="Conversas"
-          />
-
           <SectionHeader title="Sobre" />
           <Setting
             onPress={() => navigation.navigate('AboutUs')}
