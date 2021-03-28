@@ -49,7 +49,7 @@ import firebase from '../../config/firebase';
 
 //import icons
 import { FontAwesome5 } from '@expo/vector-icons';
-import { SafeAnuncioView, ValueFieldPrincipal, ViewComment, ReviewView, TextDetails, TouchableResponsive, SignUpBottom, IconResponsiveNOBACK, ButtonIconContainer, CallAndMessageContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
+import { SafeAnuncioView, ValueFieldPrincipal, ViewComment, ReviewView, TextDetails, CategoryAndSub, TouchableResponsive, SignUpBottom, IconResponsiveNOBACK, ButtonIconContainer, CallAndMessageContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
 
 import {Heading6} from '../../components/text/CustomText';
 
@@ -219,6 +219,7 @@ export default class TelaAnuncio extends Component {
       usersThatVotedFirebase: [],
       mediaAvaliacao: [],
       modalizeRef: React.createRef(null),
+      modalizeRefDisponibilidade: React.createRef(null),
       modalizeRefPortfolio: React.createRef(null),
       notaMedia: 0,
       fotoUser: '',
@@ -508,6 +509,13 @@ export default class TelaAnuncio extends Component {
     const modalizeRefPortfolio = this.state.modalizeRefPortfolio;
 
     modalizeRefPortfolio.current?.open()
+  }
+
+
+  openModalizeDisponibilidade() {
+    const modalizeRefDisponibilidade = this.state.modalizeRefDisponibilidade;
+
+    modalizeRefDisponibilidade.current?.open()
   }
 
   addTOFAVFIREBASE(id, publishObj) {
@@ -807,10 +815,10 @@ export default class TelaAnuncio extends Component {
 
 
 
-                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
+                  <TouchableOpacity onPress={() => this.openModalizeDisponibilidade()} style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                       <IconResponsiveNOBACK name="clock" size={25}/>
-                      <TextTheme style={{fontSize:15, marginLeft: 15}}>Disponível {item.workDays} dias na semana</TextTheme>
-                  </View>
+                      <TextTheme style={{fontSize:15, marginLeft: 15}}>Ver disponibilidade</TextTheme>
+                  </TouchableOpacity>
 
                   <TouchableOpacity onPress={() => this.openModalizePortfolio()} style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                       <IconResponsiveNOBACK name="user-tie" size={25}/>
@@ -1022,6 +1030,187 @@ export default class TelaAnuncio extends Component {
 
 
 
+          {/*Modalize do Calendário*/}
+          <Modalize
+            ref={this.state.modalizeRefDisponibilidade}
+            snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+          >
+            <View style={{alignItems:'center', marginTop:40}}>
+              <Heading6 style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, color:'#fff'} : {fontWeight:'bold', marginLeft: 10, color:'#000'}}>Disponibilidade</Heading6>
+              {this.state.anuncioAuto.length !== 0 &&
+                <FlatList
+                  keyExtractor={() => this.makeid(17)}
+                  data={this.state.anuncioAuto}
+                  horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20,flexGrow: 1, justifyContent: 'center'}} 
+                  renderItem={({item}) =>
+                  <View style={{flexDirection:'row'}}>
+                    {item.workDays.includes('domingo') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>D</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>D</Text>
+                      </View>
+                    }
+
+                    {item.workDays.includes('segunda') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                    }
+
+
+                    {item.workDays.includes('terça') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>T</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>T</Text>
+                      </View>
+                    }
+
+
+                    {item.workDays.includes('quarta') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                    }
+
+
+                    {item.workDays.includes('quinta') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                    }
+
+                    {item.workDays.includes('sexta') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                    }
+
+                    {item.workDays.includes('sábado') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                    }
+
+                  </View>
+                  }
+                /> 
+              }
+
+              {this.state.anuncioEstab.length !== 0 &&
+                <FlatList
+                  keyExtractor={() => this.makeid(17)}
+                  data={this.state.anuncioEstab}
+                  horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20,flexGrow: 1, justifyContent: 'center'}} 
+                  renderItem={({item}) =>
+                  <View style={{flexDirection:'row'}}>
+                    {item.workDays.includes('domingo') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>D</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>D</Text>
+                      </View>
+                    }
+
+                    {item.workDays.includes('segunda') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                    }
+
+
+                    {item.workDays.includes('terça') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>T</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>T</Text>
+                      </View>
+                    }
+
+
+                    {item.workDays.includes('quarta') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                    }
+
+
+                    {item.workDays.includes('quinta') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                    }
+
+                    {item.workDays.includes('sexta') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                    }
+
+                    {item.workDays.includes('sábado') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                    }
+
+                  </View>
+                  }
+                /> 
+              }
+              
+            </View>
+          </Modalize>
+
 
 
 
@@ -1138,10 +1327,10 @@ export default class TelaAnuncio extends Component {
                     </View>
                   </View>
 
-                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
+                  <TouchableOpacity onPress={() => this.openModalizeDisponibilidade()} style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                       <IconResponsiveNOBACK name="clock" size={25}/>
-                      <TextTheme style={{fontSize:15, marginLeft: 15}}>Aberto por {item.workDays} dias na semana até {item.timeClose} hrs</TextTheme>
-                  </View>
+                      <TextTheme style={{fontSize:15, marginLeft: 15}}>Ver disponibilidade</TextTheme>
+                  </TouchableOpacity>
 
 
 
