@@ -145,13 +145,13 @@ export default class CriarAnuncio extends Component {
       enderecoCepAuto: [],
       UFEstab: '',
       UFAuto:'',
-      segunda:false,
-      terca:false, 
-      quarta:false,
-      quinta:false,
-      sexta:false,
-      sabado:false,
-      domingo:false,
+      segunda:'',
+      terca:'', 
+      quarta:'',
+      quinta:'',
+      sexta:'',
+      sabado:'',
+      domingo:'',
       modalizeRef: React.createRef(null),
       modalizeRefDescription: React.createRef(null),
       modalizeRefDescriptionEstab: React.createRef(null),
@@ -178,7 +178,8 @@ export default class CriarAnuncio extends Component {
       isPhotoLoaded3: false,
       usuarioComprou: false,
       arrayWordsAuto: [],
-      arrayWordsEstab: []
+      arrayWordsEstab: [],
+      daysWeek: []
     };
   }
 
@@ -733,7 +734,7 @@ export default class CriarAnuncio extends Component {
                                           videoPublish: urlImage,
                                           photoPublish2: urlImage2,
                                           photoPublish3: urlImage3,
-                                          workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                          workDays: e.state.daysWeek,
                                           timeOpen: e.state.horarioOpen,
                                           timeClose: e.state.horarioClose
                                         })
@@ -759,7 +760,7 @@ export default class CriarAnuncio extends Component {
                                           videoPublish: urlImage,
                                           photoPublish2: urlImage2,
                                           photoPublish3: urlImage3,
-                                          workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                          workDays: e.state.daysWeek,
                                           timeOpen: e.state.horarioOpen,
                                           timeClose: e.state.horarioClose
                                         })
@@ -807,7 +808,7 @@ export default class CriarAnuncio extends Component {
                                           phoneNumberAuto: e.state.phoneAuto,
                                           categoryAuto: e.state.categoria,
                                           subcategoryAuto: e.state.subcategoria,
-                                          workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                          workDays: e.state.daysWeek,
                                           videoPublish: urlImage,
                                           photoPublish2: urlImage2,
                                           photoPublish3: urlImage3,
@@ -832,7 +833,7 @@ export default class CriarAnuncio extends Component {
                                           phoneNumberAuto: e.state.phoneAuto,
                                           categoryAuto: e.state.categoria,
                                           subcategoryAuto: e.state.subcategoria,
-                                          workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                          workDays: e.state.daysWeek,
                                           videoPublish: urlImage,
                                           photoPublish2: urlImage2,
                                           photoPublish3: urlImage3,
@@ -921,7 +922,7 @@ export default class CriarAnuncio extends Component {
                                           photoPublish: urlImage,
                                           photoPublish2: urlImage2,
                                           photoPublish3: urlImage3,
-                                          workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                          workDays: e.state.daysWeek,
                                           timeOpen: e.state.horarioOpen,
                                           timeClose: e.state.horarioClose
                                         })
@@ -947,7 +948,7 @@ export default class CriarAnuncio extends Component {
                                           photoPublish: urlImage,
                                           photoPublish2: urlImage2,
                                           photoPublish3: urlImage3,
-                                          workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                          workDays: e.state.daysWeek,
                                           timeOpen: e.state.horarioOpen,
                                           timeClose: e.state.horarioClose
                                         })
@@ -995,7 +996,7 @@ export default class CriarAnuncio extends Component {
                                           phoneNumberAuto: e.state.phoneAuto,
                                           categoryAuto: e.state.categoria,
                                           subcategoryAuto: e.state.subcategoria,
-                                          workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                          workDays: e.state.daysWeek,
                                           photoPublish: urlImage,
                                           photoPublish2: urlImage2,
                                           photoPublish3: urlImage3,
@@ -1020,7 +1021,7 @@ export default class CriarAnuncio extends Component {
                                           phoneNumberAuto: e.state.phoneAuto,
                                           categoryAuto: e.state.categoria,
                                           subcategoryAuto: e.state.subcategoria,
-                                          workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                          workDays: e.state.daysWeek,
                                           photoPublish: urlImage,
                                           photoPublish2: urlImage2,
                                           photoPublish3: urlImage3,
@@ -1120,7 +1121,7 @@ export default class CriarAnuncio extends Component {
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
                                         timeClose: e.state.horarioClose
                                       })
@@ -1145,7 +1146,7 @@ export default class CriarAnuncio extends Component {
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
                                         timeClose: e.state.horarioClose
                                       })
@@ -1191,7 +1192,7 @@ export default class CriarAnuncio extends Component {
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
@@ -1214,7 +1215,7 @@ export default class CriarAnuncio extends Component {
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
@@ -1301,7 +1302,7 @@ export default class CriarAnuncio extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
                                         timeClose: e.state.horarioClose
                                       })
@@ -1326,7 +1327,7 @@ export default class CriarAnuncio extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
                                         timeClose: e.state.horarioClose
                                       })
@@ -1372,7 +1373,7 @@ export default class CriarAnuncio extends Component {
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
@@ -1395,7 +1396,7 @@ export default class CriarAnuncio extends Component {
                                         phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
@@ -1450,6 +1451,34 @@ export default class CriarAnuncio extends Component {
     let Height = Dimensions.get('window').height
 
     return RFValue(12, Height);
+  }
+
+
+  addingDaysOfWeek(day) {
+
+    if(day == 'segunda') {
+      this.setState({segunda: day})
+    }
+    if(day == 'terca') {
+      this.setState({terca: day})
+    }
+    if(day == 'quarta') {
+      this.setState({quarta: day})
+    }
+    if(day == 'quinta') {
+      this.setState({quinta: day})
+    }
+    if(day == 'sexta') {
+      this.setState({sexta: day})
+    }
+    if(day == 'sabado') {
+      this.setState({sabado: day})
+    }
+    if(day == 'domingo') {
+      this.setState({domingo: day})
+    }
+
+    this.state.daysWeek.push(day)
   }
 
   render() {
@@ -1625,93 +1654,93 @@ export default class CriarAnuncio extends Component {
 
                           <View style={{flexDirection:'row'}}>
                                 
-                                { this.state.segunda == false ?
+                                { this.state.segunda == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.setState({segunda: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('segunda')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Seg</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                      <ChooseOption onPress={() => this.setState({segunda: false})} style={{marginLeft:15, marginTop:20}}/>
+                                      <ChooseOption onPress={() => this.setState({segunda: ''})} style={{marginLeft:15, marginTop:20}}/>
                                       <TextDays>Seg</TextDays>
                                     </View>
                                 }
 
-                                { this.state.terca == false ?
+                                { this.state.terca == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.setState({terca: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('terca')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Ter</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                      <ChooseOption onPress={() => this.setState({terca: false})} style={{marginLeft:15, marginTop:20}}/>
+                                      <ChooseOption onPress={() => this.setState({terca: ''})} style={{marginLeft:15, marginTop:20}}/>
                                       <TextDays>Ter</TextDays>
                                     </View>
                                 }
 
 
-                                { this.state.quarta == false ?
+                                { this.state.quarta == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.setState({quarta: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('quarta')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Qua</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                      <ChooseOption onPress={() => this.setState({quarta: false})} style={{marginLeft:15, marginTop:20}}/>
+                                      <ChooseOption onPress={() => this.setState({quarta: ''})} style={{marginLeft:15, marginTop:20}}/>
                                       <TextDays>Qua</TextDays>
                                     </View>
                                 }
                               </View>
 
                               <View style={{flexDirection:'row'}}>
-                                { this.state.quinta == false ?
+                                { this.state.quinta == '' ?
                                   <View style={{flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={() => this.setState({quinta: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('quinta')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                     <TextDays>Qui</TextDays>
                                   </View>
 
                                 :
                                   <View style={{flexDirection:'row'}}>
-                                    <ChooseOption onPress={() => this.setState({quinta: false})} style={{marginLeft:15, marginTop:20}}/>
+                                    <ChooseOption onPress={() => this.setState({quinta: ''})} style={{marginLeft:15, marginTop:20}}/>
                                     <TextDays>Qui</TextDays>
                                   </View>
                                 }
 
-                                { this.state.sexta == false ?
+                                { this.state.sexta == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={() => this.setState({sexta: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sexta')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sex</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                        <ChooseOption onPress={() => this.setState({sexta: false})} style={{marginLeft:15, marginTop:20}}/>
+                                        <ChooseOption onPress={() => this.setState({sexta: ''})} style={{marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sex</TextDays>
                                     </View>
                                 }
 
 
-                                { this.state.sabado == false ?
+                                { this.state.sabado == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={() => this.setState({sabado: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sabado')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sáb</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                        <ChooseOption onPress={() => this.setState({sabado: false})} style={{marginLeft:15, marginTop:20}}/>
+                                        <ChooseOption onPress={() => this.setState({sabado: ''})} style={{marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sáb</TextDays>
                                     </View>
                                 }
                               </View>
 
                             <View style={{flexDirection:'row'}}>
-                                { this.state.domingo == false ?
+                                { this.state.domingo == '' ?
                                   <View style={{flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={() => this.setState({domingo: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('domingo')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                     <TextDays>Dom</TextDays>
                                   </View>
                                   :
                                   <View style={{flexDirection:'row'}}>
-                                    <ChooseOption onPress={() => this.setState({domingo: false})} style={{marginLeft:15, marginTop:20}}/>
+                                    <ChooseOption onPress={() => this.setState({domingo: ''})} style={{marginLeft:15, marginTop:20}}/>
                                     <TextDays>Dom</TextDays>
                                   </View>
                                 }
@@ -1805,93 +1834,93 @@ export default class CriarAnuncio extends Component {
 
                               <View style={{flexDirection:'row'}}>
                                 
-                                { this.state.segunda == false ?
+                                { this.state.segunda == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.setState({segunda: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('segunda')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Seg</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                      <ChooseOption onPress={() => this.setState({segunda: false})} style={{marginLeft:15, marginTop:20}}/>
+                                      <ChooseOption onPress={() => this.setState({segunda: ''})} style={{marginLeft:15, marginTop:20}}/>
                                       <TextDays>Seg</TextDays>
                                     </View>
                                 }
 
-                                { this.state.terca == false ?
+                                { this.state.terca == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.setState({terca: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('terca')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Ter</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                      <ChooseOption onPress={() => this.setState({terca: false})} style={{marginLeft:15, marginTop:20}}/>
+                                      <ChooseOption onPress={() => this.setState({terca: ''})} style={{marginLeft:15, marginTop:20}}/>
                                       <TextDays>Ter</TextDays>
                                     </View>
                                 }
 
 
-                                { this.state.quarta == false ?
+                                { this.state.quarta == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.setState({quarta: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('quarta')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Qua</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                      <ChooseOption onPress={() => this.setState({quarta: false})} style={{marginLeft:15, marginTop:20}}/>
+                                      <ChooseOption onPress={() => this.setState({quarta: ''})} style={{marginLeft:15, marginTop:20}}/>
                                       <TextDays>Qua</TextDays>
                                     </View>
                                 }
                               </View>
 
                               <View style={{flexDirection:'row'}}>
-                                { this.state.quinta == false ?
+                                { this.state.quinta == '' ?
                                   <View style={{flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={() => this.setState({quinta: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('quinta')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                     <TextDays>Qui</TextDays>
                                   </View>
 
                                 :
                                   <View style={{flexDirection:'row'}}>
-                                    <ChooseOption onPress={() => this.setState({quinta: false})} style={{marginLeft:15, marginTop:20}}/>
+                                    <ChooseOption onPress={() => this.setState({quinta: ''})} style={{marginLeft:15, marginTop:20}}/>
                                     <TextDays>Qui</TextDays>
                                   </View>
                                 }
 
-                                { this.state.sexta == false ?
+                                { this.state.sexta == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={() => this.setState({sexta: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sexta')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sex</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                        <ChooseOption onPress={() => this.setState({sexta: false})} style={{marginLeft:15, marginTop:20}}/>
+                                        <ChooseOption onPress={() => this.setState({sexta: ''})} style={{marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sex</TextDays>
                                     </View>
                                 }
 
 
-                                { this.state.sabado == false ?
+                                { this.state.sabado == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={() => this.setState({sabado: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sabado')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sáb</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                        <ChooseOption onPress={() => this.setState({sabado: false})} style={{marginLeft:15, marginTop:20}}/>
+                                        <ChooseOption onPress={() => this.setState({sabado: ''})} style={{marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sáb</TextDays>
                                     </View>
                                 }
                               </View>
 
                             <View style={{flexDirection:'row'}}>
-                                { this.state.domingo == false ?
+                                { this.state.domingo == '' ?
                                   <View style={{flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={() => this.setState({domingo: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('domingo')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                     <TextDays>Dom</TextDays>
                                   </View>
                                   :
                                   <View style={{flexDirection:'row'}}>
-                                    <ChooseOption onPress={() => this.setState({domingo: false})} style={{marginLeft:15, marginTop:20}}/>
+                                    <ChooseOption onPress={() => this.setState({domingo: ''})} style={{marginLeft:15, marginTop:20}}/>
                                     <TextDays>Dom</TextDays>
                                   </View>
                                 }

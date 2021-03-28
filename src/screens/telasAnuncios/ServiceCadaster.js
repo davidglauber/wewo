@@ -282,6 +282,7 @@ export default class ServiceCadaster extends Component {
                     mode={this.state.mode}
                     is24Hour={true}
                     onChange={this.onChange}
+                    
                     display="default"
                     style={{width: 320, backgroundColor: "white"}}
                 />
