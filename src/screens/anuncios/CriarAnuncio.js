@@ -58,6 +58,9 @@ import LottieView from 'lottie-react-native';
 
 import loading from '../../../assets/loading.json';
 
+//import datepicker
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 //import IAP API 
 import {purchased} from '../../config/purchase';
 
@@ -170,6 +173,9 @@ export default class CriarAnuncio extends Component {
       animated: true,
       modalVisible: false,
       currentDate: new Date(),
+      hour: new Date(),
+      showHour: false,
+      hourFocused: false,
       date: '',
       subcategorias:[],
       subcategoria:'',
@@ -1458,28 +1464,44 @@ export default class CriarAnuncio extends Component {
 
     if(day == 'segunda') {
       this.setState({segunda: day})
+      this.setState({showHour: true})
     }
     if(day == 'terca') {
       this.setState({terca: day})
+      this.setState({showHour: true})
     }
     if(day == 'quarta') {
       this.setState({quarta: day})
+      this.setState({showHour: true})
     }
     if(day == 'quinta') {
       this.setState({quinta: day})
+      this.setState({showHour: true})
     }
     if(day == 'sexta') {
       this.setState({sexta: day})
+      this.setState({showHour: true})
     }
     if(day == 'sabado') {
       this.setState({sabado: day})
+      this.setState({showHour: true})
     }
     if(day == 'domingo') {
       this.setState({domingo: day})
+      this.setState({showHour: true})
     }
 
     this.state.daysWeek.push(day)
   }
+
+
+  onChange = (event, selectedHour) => {
+    this.setState({showHour: false})
+    const currentDate = selectedHour || this.state.hour;
+    this.setState({hour: currentDate});
+    console.log('hora selecionada: ' + currentDate)
+    
+  };
 
   render() {
     const { categorias, categoria } = this.state
@@ -1745,6 +1767,19 @@ export default class CriarAnuncio extends Component {
                                   </View>
                                 }
                             </View>
+
+
+                            {this.state.showHour == true &&
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={this.state.hour}
+                                    mode='time'
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={this.onChange}
+                                    style={{width: 320, backgroundColor: "white"}}
+                                />
+                            }
 
                           <View style={{flexDirection:'row', paddingTop:50, paddingBottom:10, alignItems:'center', justifyContent:'center'}}>                          
                             <View style={{marginRight:70}}>

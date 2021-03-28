@@ -1033,7 +1033,7 @@ export default class TelaAnuncio extends Component {
           {/*Modalize do Calendário*/}
           <Modalize
             ref={this.state.modalizeRefDisponibilidade}
-            snapPoint={500}
+            snapPoint={250}
             modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
           >
             <View style={{alignItems:'center', marginTop:40}}>
@@ -1207,6 +1207,10 @@ export default class TelaAnuncio extends Component {
                   }
                 /> 
               }
+
+              <View style={{marginTop:40, borderWidth:3, borderColor:'#d98b0d', padding:20, borderRadius:30}}>
+                <Text style={{fontWeight:'bold'}}>8:30 - 22:00</Text>
+              </View>
               
             </View>
           </Modalize>
