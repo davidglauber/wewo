@@ -176,6 +176,14 @@ export default class EditarAnuncio extends Component {
       idAnuncio: '',
       currentDate: new Date(),
       date: '',
+      hour: new Date(),
+      horarioAbre: '',
+      horarioFecha: '',
+      showHour: false,
+      hourClose: new Date(),
+      showHourClose: false,
+      hourFocusedClose: false,
+      hourFocused: false,
       subcategorias:[],
       subcategoria:'',
       usuarioComprou: false,
@@ -247,6 +255,8 @@ export default class EditarAnuncio extends Component {
             let video = ''
             let titulo = ''
             let type = ''
+            let abertura = ''
+            let fechamento = ''
             let verificado = false
             let location = ''
             let ufauto = ''
@@ -270,6 +280,8 @@ export default class EditarAnuncio extends Component {
                 imagem2 = doc.data().photoPublish2,
                 imagem3 = doc.data().photoPublish3,
                 video = doc.data().videoPublish,
+                abertura = doc.data().timeOpen,
+                fechamento = doc.data().timeClose,
                 verificado = false
             })
 
@@ -289,6 +301,8 @@ export default class EditarAnuncio extends Component {
             e.setState({image2: imagem2})
             e.setState({image3: imagem3})
             e.setState({video: video})
+            e.setState({horarioAbre: abertura})
+            e.setState({horarioClose: fechamento})
 
             console.log("ARRAY DE NOME PESQUISA: " + arrayAuto)
         })
@@ -358,8 +372,8 @@ export default class EditarAnuncio extends Component {
             e.setState({type: type})
             e.setState({UFEstab: ufestab})
             e.setState({enderecoEstab: local})
-            e.setState({horarioOpen: abertura})
-            e.setState({horarioClose: fechamento})
+            e.setState({horarioAbre: abertura})
+            e.setState({horarioFecha: fechamento})
             e.setState({workDays: workDays})
 
             console.log("ARRAY DE NOME PESQUISA: " + arrayEstab)
@@ -898,8 +912,8 @@ export default class EditarAnuncio extends Component {
                                           photoPublish2: urlImage2,
                                           photoPublish3: urlImage3,
                                           workDays: e.state.daysWeek,
-                                          timeOpen: e.state.horarioOpen,
-                                          timeClose: e.state.horarioClose
+                                          timeOpen: e.state.horarioAbre,
+                                          timeClose: e.state.horarioFecha
                                         })
                             
                                         //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
@@ -924,8 +938,8 @@ export default class EditarAnuncio extends Component {
                                           photoPublish2: urlImage2,
                                           photoPublish3: urlImage3,
                                           workDays: e.state.daysWeek,
-                                          timeOpen: e.state.horarioOpen,
-                                          timeClose: e.state.horarioClose
+                                          timeOpen: e.state.horarioAbre,
+                                          timeClose: e.state.horarioFecha
                                         })
                                       })
                                     })
@@ -970,6 +984,8 @@ export default class EditarAnuncio extends Component {
                                           videoPublish: urlImage,
                                           photoPublish2: urlImage2,
                                           photoPublish3: urlImage3,
+                                          timeOpen: e.state.horarioAbre,
+                                          timeClose: e.state.horarioFecha
                                         })
                             
                                         //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
@@ -995,6 +1011,8 @@ export default class EditarAnuncio extends Component {
                                           videoPublish: urlImage,
                                           photoPublish2: urlImage2,
                                           photoPublish3: urlImage3,
+                                          timeOpen: e.state.horarioAbre,
+                                          timeClose: e.state.horarioFecha
                                         })
                                       })
                                     })
@@ -1074,8 +1092,8 @@ export default class EditarAnuncio extends Component {
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeOpen: e.state.horarioAbre,
+                                        timeClose: e.state.horarioFecha
                                       })
                           
                                       //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
@@ -1100,8 +1118,8 @@ export default class EditarAnuncio extends Component {
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeOpen: e.state.horarioAbre,
+                                        timeClose: e.state.horarioFecha
                                       })
                                     })
                                   })
@@ -1146,6 +1164,8 @@ export default class EditarAnuncio extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
+                                        timeOpen: e.state.horarioAbre,
+                                        timeClose: e.state.horarioFecha
                                       })
                           
                                       //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
@@ -1171,6 +1191,8 @@ export default class EditarAnuncio extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
+                                        timeOpen: e.state.horarioAbre,
+                                        timeClose: e.state.horarioFecha
                                       })
                                     })
                                   })
@@ -1270,8 +1292,8 @@ export default class EditarAnuncio extends Component {
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeOpen: e.state.horarioAbre,
+                                        timeClose: e.state.horarioFecha
                                       })
                           
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
@@ -1296,8 +1318,8 @@ export default class EditarAnuncio extends Component {
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeOpen: e.state.horarioAbre,
+                                        timeClose: e.state.horarioFecha
                                       })
             
                                     })
@@ -1347,6 +1369,8 @@ export default class EditarAnuncio extends Component {
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
+                                        timeOpen: e.state.horarioAbre,
+                                        timeClose: e.state.horarioFecha
                                       })
                           
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
@@ -1372,6 +1396,8 @@ export default class EditarAnuncio extends Component {
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
+                                        timeOpen: e.state.horarioAbre,
+                                        timeClose: e.state.horarioFecha
                                       })
                                     })
                                 }).catch(function(error) {
@@ -1457,8 +1483,8 @@ export default class EditarAnuncio extends Component {
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeOpen: e.state.horarioAbre,
+                                        timeClose: e.state.horarioFecha
                                       })
                           
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
@@ -1483,8 +1509,8 @@ export default class EditarAnuncio extends Component {
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeOpen: e.state.horarioAbre,
+                                        timeClose: e.state.horarioFecha
                                       })
             
                                     })
@@ -1534,6 +1560,8 @@ export default class EditarAnuncio extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
+                                        timeOpen: e.state.horarioAbre,
+                                        timeClose: e.state.horarioFecha
                                       })
                           
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
@@ -1559,6 +1587,8 @@ export default class EditarAnuncio extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
+                                        timeOpen: e.state.horarioAbre,
+                                        timeClose: e.state.horarioFecha
                                       })
                                     })
                                 }).catch(function(error) {
@@ -1636,6 +1666,31 @@ export default class EditarAnuncio extends Component {
     this.state.daysWeek.push(day)
   }
 
+
+  onChange = (event, selectedHour) => {
+    this.setState({showHour: false})
+
+    let hourComplete = selectedHour.getHours();
+    let minutesComplete = selectedHour.getMinutes();
+    let completeTime = hourComplete + ':' + minutesComplete;
+    
+    this.setState({horarioAbre: completeTime})
+    console.log('hora selecionada: ' + completeTime)
+    
+  };
+
+
+  onChangeClose = (event, selectedHour) => {
+    this.setState({showHourClose: false})
+
+    let hourComplete = selectedHour.getHours();
+    let minutesComplete = selectedHour.getMinutes();
+    let completeTime = hourComplete + ':' + minutesComplete;
+    
+    this.setState({horarioFecha: completeTime})
+    console.log('hora selecionada: ' + completeTime)
+    
+  };
 
   render() {
     const { categorias, categoria } = this.state
@@ -1916,6 +1971,58 @@ export default class EditarAnuncio extends Component {
                                 }
                             </View>
 
+                            <View style={{flexDirection:'row'}}>
+                              <View>
+                                  <TitleChangeColor style={{fontWeight:'bold', paddingLeft: 15, marginTop:20, fontSize: this.responsibleFont()}}>Horário de Abertura</TitleChangeColor>
+                                  <View style={{marginLeft:14, width: 130, height:30}}>
+                                      <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginTop:4}} onPress={() => this.setState({showHour: true})}> 
+                                        <IconResponsiveNOBACK name="clock" size={24}/>
+                                        {this.state.horarioAbre == '' ? 
+                                          <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>Abertura</Text> 
+                                        : <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>{this.state.horarioAbre}</Text> 
+                                        }
+                                      </TouchableOpacity>
+                                  </View>
+                              </View>
+
+                                <View>
+                                  <TitleChangeColor style={{fontWeight:'bold', paddingLeft: 35, marginTop:20, fontSize: this.responsibleFont()}}>Horário de Fechamento</TitleChangeColor>
+                                    <View style={{marginLeft:44, width: 130, height:30}}>
+                                        <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginTop:4}} onPress={() => this.setState({showHourClose: true})}> 
+                                          <IconResponsiveNOBACK name="stopwatch" size={24}/>
+                                          {this.state.horarioFecha == '' ?
+                                            <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>Fechamento</Text>
+                                          : <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>{this.state.horarioFecha}</Text>
+                                          }
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+
+                            {this.state.showHour == true &&
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={this.state.hour}
+                                    mode='time'
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={this.onChange}
+                                    style={{width: 320, backgroundColor: "white"}}
+                                />
+                            }
+
+                            {this.state.showHourClose == true &&
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={this.state.hourClose}
+                                    mode='time'
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={this.onChangeClose}
+                                    style={{width: 320, backgroundColor: "white"}}
+                                />
+                            }
+
                           <View style={{flexDirection:'row', paddingTop:50, paddingBottom:10, alignItems:'center', justifyContent:'center'}}>                          
                             <View style={{marginRight:70}}>
                               <TouchableOpacity onPress={() => this.openModalize()} style={{justifyContent:'center', alignItems:'center', flexDirection:'row', marginLeft:8, marginRight:5, borderRadius:10}}>
@@ -2098,13 +2205,13 @@ export default class EditarAnuncio extends Component {
 
                             <View style={{flexDirection:'row'}}>
                               <View>
-                                <TitleChangeColor style={{fontWeight:'bold', paddingLeft: 15, marginTop:20, fontSize: this.responsibleFont()}}>Horário de Abertura</TitleChangeColor>
+                                  <TitleChangeColor style={{fontWeight:'bold', paddingLeft: 15, marginTop:20, fontSize: this.responsibleFont()}}>Horário de Abertura</TitleChangeColor>
                                   <View style={{marginLeft:14, width: 130, height:30}}>
-                                      <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginTop:4}} onPress={() => this.openModalizeAbertura()}> 
+                                      <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginTop:4}} onPress={() => this.setState({showHour: true})}> 
                                         <IconResponsiveNOBACK name="clock" size={24}/>
-                                        {this.state.horarioOpen == '' ? 
+                                        {this.state.horarioAbre == '' ? 
                                           <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>Abertura</Text> 
-                                        : <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>{this.state.horarioOpen}</Text> 
+                                        : <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>{this.state.horarioAbre}</Text> 
                                         }
                                       </TouchableOpacity>
                                   </View>
@@ -2113,16 +2220,40 @@ export default class EditarAnuncio extends Component {
                                 <View>
                                   <TitleChangeColor style={{fontWeight:'bold', paddingLeft: 35, marginTop:20, fontSize: this.responsibleFont()}}>Horário de Fechamento</TitleChangeColor>
                                     <View style={{marginLeft:44, width: 130, height:30}}>
-                                        <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginTop:4}} onPress={() => this.openModalizeFechamento()}> 
+                                        <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginTop:4}} onPress={() => this.setState({showHourClose: true})}> 
                                           <IconResponsiveNOBACK name="stopwatch" size={24}/>
-                                          {this.state.horarioClose == '' ?
+                                          {this.state.horarioFecha == '' ?
                                             <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>Fechamento</Text>
-                                          : <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>{this.state.horarioClose}</Text>
+                                          : <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>{this.state.horarioFecha}</Text>
                                           }
                                         </TouchableOpacity>
                                     </View>
                                 </View>
                             </View>
+
+                            {this.state.showHour == true &&
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={this.state.hour}
+                                    mode='time'
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={this.onChange}
+                                    style={{width: 320, backgroundColor: "white"}}
+                                />
+                            }
+
+                            {this.state.showHourClose == true &&
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    value={this.state.hourClose}
+                                    mode='time'
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={this.onChangeClose}
+                                    style={{width: 320, backgroundColor: "white"}}
+                                />
+                            }
                               
                             </View>
 

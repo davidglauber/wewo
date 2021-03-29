@@ -293,7 +293,9 @@ export default class TelaAnuncio extends Component {
           description: doc.data().descriptionAuto,
           workDays: doc.data().workDays,
           type: doc.data().type,
-          verified: doc.data().verifiedPublish
+          verified: doc.data().verifiedPublish,
+          timeOpen: doc.data().timeOpen,
+          timeClose: doc.data().timeClose,
         })
         dataAtual = doc.data().publishData
       })
@@ -1044,6 +1046,7 @@ export default class TelaAnuncio extends Component {
                   data={this.state.anuncioAuto}
                   horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20,flexGrow: 1, justifyContent: 'center'}} 
                   renderItem={({item}) =>
+                  <View>
                   <View style={{flexDirection:'row'}}>
                     {item.workDays.includes('domingo') ?
                       <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
@@ -1118,6 +1121,12 @@ export default class TelaAnuncio extends Component {
                       </View>
                     }
 
+
+
+                  </View>
+                    <View style={{marginTop:40, marginHorizontal:100, borderWidth:3, borderColor:'#d98b0d', padding:20, borderRadius:30}}>
+                      <Text style={{fontWeight:'bold'}}>{item.timeOpen} - {item.timeClose}</Text>
+                    </View>
                   </View>
                   }
                 /> 
@@ -1129,6 +1138,7 @@ export default class TelaAnuncio extends Component {
                   data={this.state.anuncioEstab}
                   horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20,flexGrow: 1, justifyContent: 'center'}} 
                   renderItem={({item}) =>
+                  <View>
                   <View style={{flexDirection:'row'}}>
                     {item.workDays.includes('domingo') ?
                       <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
@@ -1204,14 +1214,15 @@ export default class TelaAnuncio extends Component {
                     }
 
                   </View>
+                    <View style={{marginTop:40, marginHorizontal:100, borderWidth:3, borderColor:'#d98b0d', padding:20, borderRadius:30}}>
+                      <Text style={{fontWeight:'bold'}}>{item.timeOpen} - {item.timeClose}</Text>
+                    </View>
+                  </View>
                   }
                 /> 
               }
 
-              <View style={{marginTop:40, borderWidth:3, borderColor:'#d98b0d', padding:20, borderRadius:30}}>
-                <Text style={{fontWeight:'bold'}}>8:30 - 22:00</Text>
-              </View>
-              
+            
             </View>
           </Modalize>
 
