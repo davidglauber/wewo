@@ -828,20 +828,9 @@ export default class EditarAnuncio extends Component {
 
   uploadFormToFirebase(typePublish) {
     let routeIdAnuncio = this.props.route.params.idAnuncio;
-    let segunda = this.state.segunda;
-    let terca = this.state.terca;
-    let quarta = this.state.quarta;
-    let quinta = this.state.quinta;
-    let sexta = this.state.sexta;
-    let sabado = this.state.sabado;
-    let domingo = this.state.domingo;
     let e = this;
 
     
-
-    let publishId = e.makeid(17);
-    let getSameIdToDocument = '';
-        getSameIdToDocument = publishId;
 
     let imageId = e.makeid(17);
     let imageId2 = e.makeid(17);
@@ -1063,7 +1052,7 @@ export default class EditarAnuncio extends Component {
           })
 
 
-        } else {
+        } if(this.state.image !== null) {
           getFileBlob(this.state.image, async blob => {
             await firebase.storage().ref(`${storageUrl}/images/${imageId}`).put(blob).then((snapshot) => {
                 imageIdStorageState = imageId
@@ -1452,7 +1441,7 @@ export default class EditarAnuncio extends Component {
           })
         })
 
-      } else {
+      } if(this.state.image !== null) {
         getFileBlob(this.state.image, async blob => {
           await firebase.storage().ref(`${storageUrl}/images/${imageId}`).put(blob).then((snapshot) => {
               imageIdStorageState = imageId
