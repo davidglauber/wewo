@@ -1048,11 +1048,11 @@ export default class TelaAnuncio extends Component {
                   <View>
                   <View style={{flexDirection:'row'}}>
                     {item.workDays.includes('domingo') ?
-                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, marginLeft:10, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
                         <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>D</Text>
                       </View>
                       :
-                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, marginLeft:10,  alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
                         <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>D</Text>
                       </View>
                     }
@@ -1140,11 +1140,11 @@ export default class TelaAnuncio extends Component {
                   <View>
                   <View style={{flexDirection:'row'}}>
                     {item.workDays.includes('domingo') ?
-                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, marginLeft:10, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
                         <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>D</Text>
                       </View>
                       :
-                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, marginLeft:10, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
                         <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>D</Text>
                       </View>
                     }

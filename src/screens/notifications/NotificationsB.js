@@ -11,6 +11,7 @@ import {
   FlatList,
   StatusBar,
   Image,
+  Alert,
   Dimensions,
   Text,
   TouchableOpacity,
@@ -70,6 +71,7 @@ export default class NotificationsB extends Component {
     this.state = {
       modalizeRef: React.createRef(null),
       notificationsActivies: [],
+      itemData: '',
       nameUser:'',
       fotoUser:'',
       cepUser:'',
@@ -101,7 +103,8 @@ export default class NotificationsB extends Component {
             valor: doc.data().valor,
             cep: doc.data().cep,
             dataServico: doc.data().dataServico,
-            horario: doc.data().horario
+            horario: doc.data().horario,
+            idNot: doc.data().idNot
           })
         })
 
@@ -130,6 +133,7 @@ export default class NotificationsB extends Component {
     this.setState({telefoneUser: userData.telefone})
     this.setState({dataUser: userData.dataServico})
     this.setState({horarioUser: userData.horario})
+    this.setState({itemData: userData.idNot})
 
     const modalizeRef = this.state.modalizeRef;
     modalizeRef.current?.open()
@@ -162,8 +166,34 @@ export default class NotificationsB extends Component {
     return result;
   }
 
+
+
+  deleteNotificationService(itemToBeDeletedFunction){
+    firebase.firestore().collection('notifications').where('idNot', '==', itemToBeDeletedFunction).get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc){
+        doc.ref.delete();
+      })
+    })
+
+  }
+
+
+
+
+  deleteService(serviceId) {
+    Alert.alert(
+      'Cancelar',
+      'Tem certeza que quer cancelar o serviço?',
+      [
+        {text: 'Abortar', onPress: () => {}, style: 'cancel'},
+        {text: 'Sim, quero cancelar', onPress: () => this.deleteNotificationService(serviceId)}
+      ],
+      {cancelable: false},
+    );
+  };
+
   render() {
-    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser, horarioUser} = this.state;
+    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser, horarioUser, itemData} = this.state;
     return (
       <SafeBackground>
         <StatusBar
@@ -240,6 +270,9 @@ export default class NotificationsB extends Component {
             <View style={{width: windowWidth/1.06, height:100, backgroundColor: '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
               <Image source={{uri: fotoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
                 <Text  style={styles.title}>{nameUser}</Text>
+                <TouchableOpacity onPress={() => this.deleteService(itemData)} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
+                  <IconResponsiveNOBACK name="times-circle" size={24}/>
+                </TouchableOpacity>
             </View>
 
             <View style={{width: windowWidth/1.06, height:500, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10}}>

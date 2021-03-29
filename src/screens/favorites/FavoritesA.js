@@ -30,16 +30,12 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import firebase from '../../config/firebase';
 
 
-const fotoCartaoVisita = require('../../assets/img/smile.jpg');
 
 // import colors
 import Colors from '../../theme/colors';
 
 //RESPONSIVE FONT 
 import { RFValue } from 'react-native-responsive-fontsize';
-
-// CartA Config
-const EMPTY_STATE_ICON = 'cart-remove';
 
 //CSS responsivo
 import {SafeBackground, IconResponsive,TextDetails, Description, IconResponsiveNOBACK, TouchableDetails, Favorite, Heading, AnuncioContainer, ValueField, Title, SwipeLeft} from '../home/styles';
@@ -48,6 +44,11 @@ import { ThemeContext } from '../../../ThemeContext';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { Video } from 'expo-av';
+
+//consts
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 
 // CartA Styles
 const styles = StyleSheet.create({
@@ -74,10 +75,6 @@ const styles = StyleSheet.create({
   titleText: {
     fontWeight: '700',
     color: 'white'
-  },
-  productList: {
-    // spacing = paddingHorizontal + ActionProductCardHorizontal margin = 12 + 4 = 16
-    paddingHorizontal: 12,
   },
   subTotalText: {
     top: -2,
@@ -237,8 +234,8 @@ export default class FavoritesA extends Component {
   }
 
   cutDescription(text) {
-    if(text.length > 40) {
-      let shortDescription = text.substr(0, 40)
+    if(text.length > 25) {
+      let shortDescription = text.substr(0, 25)
 
       return(
         <View style={{justifyContent: 'center', alignItems: 'center',}}>
@@ -296,14 +293,10 @@ export default class FavoritesA extends Component {
                     onSwipeableLeftOpen={() => this.RemoveFav(item.idAnuncio)}
                   > 
 
-                    <AnuncioContainer style={{width: 336,
-                          height: 170,
-                          marginBottom:5,
-                          marginTop: 10,
-                          borderRadius: 30}} onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                    <AnuncioContainer onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
                           <View style={{flexDirection:'row'}}>
                               {item.video == null ?
-                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: 20, marginTop: 20}}></Image>
                                     :
                                     <Video 
                                       source={{ uri: item.video }}
@@ -313,26 +306,26 @@ export default class FavoritesA extends Component {
                                       resizeMode="cover"
                                       shouldPlay
                                       isLooping
-                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                      style={{ width:88, height:88, borderRadius: 50, marginLeft: 20, marginTop: 20 }}
                                     />
                                   }
-                              <View style={{flexDirection:'column'}}>
-                                <Title style={{fontSize: this.responsibleFont(), fontSize:17, marginTop:20, fontWeight: 'bold', marginLeft:20}}>{item.nome}</Title>
-
-                                {this.cutDescription(item.description)}
-
-                              </View>
+                                  <View style={{flexDirection:'column'}}>
+                                        <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                          <Title style={{fontSize: this.responsibleFont()}}>{item.nome}</Title>
+                                        </View>
+                                        {this.cutDescription(item.description)}
+                                  </View>
                           </View>  
 
-                            <View style={{flexDirection: 'row'}}>
-                              <View style={{flexDirection:'row', marginTop:15, marginLeft: 50}}>
-                                  <ValueField style={{paddingTop:10, fontSize:12,  paddingRight: 80}}>{item.categoria}</ValueField>
-                                  <IconResponsive style={{marginTop:10, marginRight:50}} name="clone" size={19}/>
+                          <View style={{flexDirection: 'row'}}>
+                              <View style={{marginLeft:windowWidth/2.71}}>
+                                  <ValueField>{item.categoria}</ValueField>
+                              </View>
+                              <View style={{flexDirection:'row', position:'absolute', left:windowWidth/1.4}}>
+                                  <IconResponsive style={{marginLeft:16}}  name="clone" size={19}/>
+                                  <IconResponsive style={{marginLeft:10}}  name="user-tie" size={19}/>
                               </View>
 
-                              <View style={{marginTop: 24, marginRight: 30}}>
-                                  <IconResponsive  name="user-tie" size={19}/>
-                            </View>
                           </View> 
 
                     </AnuncioContainer>
@@ -353,14 +346,10 @@ export default class FavoritesA extends Component {
                     onSwipeableLeftOpen={() => this.RemoveFav(item.idAnuncio)}
                   > 
 
-                        <AnuncioContainer style={{width: 336,
-                          height: 170,
-                          marginBottom:5,
-                          marginTop: 10,
-                          borderRadius: 30}} onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                        <AnuncioContainer onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
                           <View style={{flexDirection:'row'}}>
                               {item.video == null ?
-                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: 20, marginTop: 20}}></Image>
                                     :
                                     <Video 
                                       source={{ uri: item.video }}
@@ -370,27 +359,27 @@ export default class FavoritesA extends Component {
                                       resizeMode="cover"
                                       shouldPlay
                                       isLooping
-                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                      style={{ width:88, height:88, borderRadius: 50, marginLeft: 20, marginTop: 20 }}
                                     />
                                   }
                               <View style={{flexDirection:'column'}}>
-                                <Title style={{fontSize: this.responsibleFont(), fontSize:17, marginTop:20, fontWeight: 'bold', marginLeft:20}}>{item.title}</Title>
-
-                                {this.cutDescription(item.description)}
-
+                                    <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                      <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                    </View>
+                                    {this.cutDescription(item.description)}
                               </View>
+
                           </View>  
 
                             <View style={{flexDirection: 'row'}}>
-                              <View style={{flexDirection:'row', marginTop:15, marginLeft: 50}}>
-                                  <ValueField style={{paddingTop:10, fontSize:12,  paddingRight: 80}}>{item.categoria}</ValueField>
-                                  <IconResponsive style={{marginTop:10, marginRight:50}} name="clone" size={19}/>
+                              <View style={{marginLeft:windowWidth/2.71}}>
+                                  <ValueField>{item.categoria}</ValueField>
                               </View>
-
-                              <View style={{marginTop: 24, marginRight: 30}}>
-                                  <IconResponsive  name="briefcase" size={19}/>
-                            </View>
-                          </View> 
+                              <View style={{flexDirection:'row', position:'absolute', left:windowWidth/1.4}}>
+                                  <IconResponsive style={{marginLeft:16}}  name="clone" size={19}/>
+                                  <IconResponsive style={{marginLeft:10}}  name="briefcase" size={19}/>
+                              </View>
+                            </View> 
 
                     </AnuncioContainer>
                   </Swipeable>
