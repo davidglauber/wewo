@@ -55,6 +55,9 @@ export default class ServiceCadaster extends Component {
       telefone:'',
       valor:'',
       date: new Date(),
+      hour: new Date(),
+      showHour: false,
+      horario:'',
       mode:'date',
       showDate: false,
       cep: '',
@@ -80,7 +83,20 @@ export default class ServiceCadaster extends Component {
     this.setState({showDate: false})
     const currentDate = selectedDate || this.state.date;
     this.setState({date: currentDate});
+    this.setState({showHour: true})
     console.log('data selecionada: ' + currentDate)
+  };
+
+  onChangeHour = (event, selectedHour) => {
+    this.setState({showHour: false})
+
+    let hourComplete = selectedHour.getHours();
+    let minutesComplete = selectedHour.getMinutes();
+    let completeTime = hourComplete + ':' + minutesComplete;
+    
+    this.setState({horario: completeTime})
+    console.log('hora selecionada: ' + completeTime)
+    
   };
 
 
@@ -153,6 +169,7 @@ export default class ServiceCadaster extends Component {
                 service: e.state.servico,
                 valor: e.state.valor,
                 cep: e.state.cep,
+                horario: e.state.horario,
                 dataServico: dataAtual,
                 confirmed: false
             })
@@ -287,6 +304,19 @@ export default class ServiceCadaster extends Component {
                     style={{width: 320, backgroundColor: "white"}}
                 />
             }
+
+            {this.state.showHour == true &&
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={this.state.hour}
+                    mode='time'
+                    is24Hour={true}
+                    display="default"
+                    onChange={this.onChangeHour}
+                    style={{width: 320, backgroundColor: "white"}}
+                />
+            }
+
 
           </View>
         </ScrollView>

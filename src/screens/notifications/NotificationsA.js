@@ -77,7 +77,8 @@ export default class NotificationsA extends Component {
       valueUser:'',
       telefoneUser:'',
       dataUser:'',
-      idNotification:''
+      idNotification:'',
+      horarioUser:''
     };
   }
 
@@ -101,7 +102,8 @@ export default class NotificationsA extends Component {
             service: doc.data().service,
             valor: doc.data().valor,
             cep: doc.data().cep,
-            dataServico: doc.data().dataServico
+            dataServico: doc.data().dataServico,
+            horario: doc.data().horario
           })
         })
 
@@ -130,6 +132,7 @@ export default class NotificationsA extends Component {
     this.setState({telefoneUser: userData.telefone})
     this.setState({dataUser: userData.dataServico})
     this.setState({idNotification: userData.idNot})
+    this.setState({horarioUser: userData.horario})
 
 
     const modalizeRef = this.state.modalizeRef;
@@ -184,7 +187,7 @@ export default class NotificationsA extends Component {
   }
 
   render() {
-    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser} = this.state;
+    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser, horarioUser} = this.state;
 
     return (
       <SafeBackground>
@@ -287,6 +290,11 @@ export default class NotificationsA extends Component {
                 <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
                   <IconResponsive name="calendar-week" size={24}/>
                   <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{dataUser}</Title>
+                </View>
+                
+                <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
+                  <IconResponsive name="clock" size={24}/>
+                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{horarioUser}</Title>
                 </View>
 
 

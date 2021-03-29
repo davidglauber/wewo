@@ -78,7 +78,8 @@ export default class ConfirmedServices extends Component {
       serviceUser:'',
       valueUser:'',
       telefoneUser:'',
-      dataUser:''
+      dataUser:'',
+      horarioUser:''
     };
   }
 
@@ -102,7 +103,8 @@ export default class ConfirmedServices extends Component {
             valor: doc.data().valor,
             cep: doc.data().cep,
             dataServico: doc.data().dataServico,
-            confirmed: doc.data().confirmed
+            confirmed: doc.data().confirmed,
+            horario: doc.data().horario
           })
         })
 
@@ -130,6 +132,7 @@ export default class ConfirmedServices extends Component {
     this.setState({valueUser: userData.valor})
     this.setState({telefoneUser: userData.telefone})
     this.setState({dataUser: userData.dataServico})
+    this.setState({horarioUser: userData.horario})
 
     const modalizeRef = this.state.modalizeRef;
     modalizeRef.current?.open()
@@ -151,7 +154,7 @@ export default class ConfirmedServices extends Component {
   }
 
   render() {
-    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser} = this.state;
+    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser, horarioUser} = this.state;
     return (
       <SafeBackground>
         <StatusBar
@@ -244,6 +247,11 @@ export default class ConfirmedServices extends Component {
                   <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{dataUser}</Title>
                 </View>
 
+                <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
+                  <IconResponsive name="clock" size={24}/>
+                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{horarioUser}</Title>
+                </View>
+                
                 <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
                   <Title style={{marginRight: 20, textAlign:'center', fontSize: 15, marginTop:25, color: this.context.dark ? 'white' : 'white'}}>Este é um resumo do serviço que você aceitou, lembre-se de comparecer!</Title>
                 </View>

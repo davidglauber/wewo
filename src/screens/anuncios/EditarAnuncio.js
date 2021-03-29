@@ -33,6 +33,10 @@ import Layout from '../../theme/layout';
 //import firebase
 import firebase from '../../config/firebase';
 
+
+//import datepicker
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 //import image picker
 import * as ImagePicker from 'expo-image-picker';
 
@@ -297,12 +301,12 @@ export default class EditarAnuncio extends Component {
             e.setState({type: type})
             e.setState({UFAuto: ufauto})
             e.setState({phoneAuto: telefone})
+            e.setState({video: video})
             e.setState({image: imagem})
             e.setState({image2: imagem2})
             e.setState({image3: imagem3})
-            e.setState({video: video})
             e.setState({horarioAbre: abertura})
-            e.setState({horarioClose: fechamento})
+            e.setState({horarioFecha: fechamento})
 
             console.log("ARRAY DE NOME PESQUISA: " + arrayAuto)
         })
@@ -365,10 +369,10 @@ export default class EditarAnuncio extends Component {
             e.setState({subcategoria: subcategoria})
             e.setState({precoEstab: valor})
             e.setState({phoneEstab: telefone})
+            e.setState({video: video})
             e.setState({image: imagem})
             e.setState({image2: imagem2})
             e.setState({image3: imagem3})
-            e.setState({video: video})
             e.setState({type: type})
             e.setState({UFEstab: ufestab})
             e.setState({enderecoEstab: local})
@@ -819,6 +823,9 @@ export default class EditarAnuncio extends Component {
 
 
 
+
+
+
   uploadFormToFirebase(typePublish) {
     let routeIdAnuncio = this.props.route.params.idAnuncio;
     let segunda = this.state.segunda;
@@ -829,6 +836,8 @@ export default class EditarAnuncio extends Component {
     let sabado = this.state.sabado;
     let domingo = this.state.domingo;
     let e = this;
+
+    
 
     let publishId = e.makeid(17);
     let getSameIdToDocument = '';
@@ -844,9 +853,8 @@ export default class EditarAnuncio extends Component {
     let imageIdStorageState2 = '';
     let imageIdStorageState3 = '';
 
-    var isPhotoLoaded = false;
-    var isPhotoLoaded2 = false;
-    var isPhotoLoaded3 = false;
+    
+
 
       var getFileBlob = async function (url, cb) { 
           var xhr = new XMLHttpRequest();
@@ -859,51 +867,60 @@ export default class EditarAnuncio extends Component {
       }
       
       if(typePublish === 'Autonomo') { 
-        if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.enderecoAuto !== '' && this.state.nomeAuto !== '' && this.state.phoneAuto !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.enderecoAuto !== '' && this.state.precoAuto !== '' && this.state.nomeAuto !== '' && this.state.phoneAuto !== '') {
+        
         this.setModalVisible(true)
 
         if(this.state.video !== null){
           getFileBlob(this.state.video, async blob => {
             await firebase.storage().ref(`${storageUrl}/images/${imageId}`).put(blob).then((snapshot) => {
                 imageIdStorageState = imageId
-                isPhotoLoaded = true
-                console.log('O video foi salvo no Storage!');
+                e.setState({isPhotoLoaded: true})
+                console.log('O vídeo foi salvo no Storage!');
                 console.log('Valor image state: ' + imageIdStorageState);
-
-
-
+                
+  
                 getFileBlob(this.state.image2, async blob => {
                   await firebase.storage().ref(`${storageUrl}/images/${imageId2}`).put(blob).then((snapshot) => {
                       imageIdStorageState2 = imageId2
-                      isPhotoLoaded2 = true
+                      e.setState({isPhotoLoaded2: true})
                       console.log('A imagem foi salva no Storage!');
                       console.log('Valor image state2: ' + imageIdStorageState2);
                       
-
-
-
+  
+  
+  
+  
+  
+  
+  
+  
                       getFileBlob(this.state.image3, async blob => {
                         await firebase.storage().ref(`${storageUrl}/images/${imageId3}`).put(blob).then((snapshot) => {
                             imageIdStorageState3 = imageId3
+                            console.log('A imagem foi salva no Storage!');
+                            console.log('Valor image state3: ' + imageIdStorageState3);
+                            
+              
               
                             if(type == 'Estabelecimento'){
-                              if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                              if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.video !== null) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
-                                    firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
-                                      firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
-                                        firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
+                                    firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
+                                      firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
+                                        firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).set({
                                           titleEstab: e.state.tituloEstab,
                                           titleEstabArray: e.state.arrayWordsEstab,
                                           idAnuncio: routeIdAnuncio,
                                           idUser: userUID,
-                                          descriptionEstab: e.state.descricaoEstab,
-                                          valueServiceEstab: e.state.precoEstab,
                                           publishData: e.state.date,
                                           media: 0,
+                                          descriptionEstab: e.state.descricaoEstab,
+                                          valueServiceEstab: e.state.precoEstab,
                                           type: 'Estabelecimento',
-                                          UFEstab: e.state.UFEstab,
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
+                                          UFEstab: e.state.UFEstab,
                                           phoneNumberEstab: e.state.phoneEstab,
                                           localEstab: e.state.enderecoEstab,
                                           categoryEstab: e.state.categoria,
@@ -916,16 +933,16 @@ export default class EditarAnuncio extends Component {
                                           timeClose: e.state.horarioFecha
                                         })
                             
-                                        //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
-                                        firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
+                                        //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
+                                        firebase.firestore().collection('anuncios').doc(routeIdAnuncio).set({
                                           titleEstab: e.state.tituloEstab,
                                           titleEstabArray: e.state.arrayWordsEstab,
                                           idAnuncio: routeIdAnuncio,
                                           idUser: userUID,
-                                          descriptionEstab: e.state.descricaoEstab,
-                                          valueServiceEstab: e.state.precoEstab,
                                           publishData: e.state.date,
                                           media: 0,
+                                          descriptionEstab: e.state.descricaoEstab,
+                                          valueServiceEstab: e.state.precoEstab,
                                           type: 'Estabelecimento',
                                           UFEstab: e.state.UFEstab,
                                           verifiedPublish: true,
@@ -941,8 +958,12 @@ export default class EditarAnuncio extends Component {
                                           timeOpen: e.state.horarioAbre,
                                           timeClose: e.state.horarioFecha
                                         })
+              
                                       })
-                                    })
+              
+                                  }).catch(function(error) {
+                                    console.log('ocorreu um erro ao carregar a imagem: ' + error.message)
+                                  })
                         
                                 })
                         
@@ -957,24 +978,25 @@ export default class EditarAnuncio extends Component {
                               }
                             }
                         
+                        
                             if(type == 'Autonomo') {
-                              if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.enderecoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
+                              if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
-                                    firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {    
-                                      firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {    
-                                        firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
+                                    firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
+                                      firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
+                                        firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).set({
                                           titleAuto: e.state.tituloAuto,
                                           titleAutoArray: e.state.arrayWordsAuto,
                                           idAnuncio: routeIdAnuncio,
                                           idUser: userUID,
-                                          nome: e.state.nomeAuto,
                                           publishData: e.state.date,
                                           media: 0,
+                                          nome: e.state.nomeAuto,
                                           descriptionAuto: e.state.descricaoAuto,
                                           valueServiceAuto: e.state.precoAuto,
+                                          localAuto: e.state.enderecoAuto,
                                           type: 'Autonomo',
                                           UFAuto: e.state.UFAuto,
-                                          localAuto: e.state.enderecoAuto,
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
                                           phoneNumberAuto: e.state.phoneAuto,
@@ -988,20 +1010,20 @@ export default class EditarAnuncio extends Component {
                                           timeClose: e.state.horarioFecha
                                         })
                             
-                                        //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
-                                        firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
+                                        //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
+                                        firebase.firestore().collection('anuncios').doc(routeIdAnuncio).set({
                                           titleAuto: e.state.tituloAuto,
                                           titleAutoArray: e.state.arrayWordsAuto,
                                           idAnuncio: routeIdAnuncio,
                                           idUser: userUID,
-                                          nome: e.state.nomeAuto,
-                                          publishData: e.state.date,
                                           media: 0,
+                                          publishData: e.state.date,
+                                          nome: e.state.nomeAuto,
                                           descriptionAuto: e.state.descricaoAuto,
                                           valueServiceAuto: e.state.precoAuto,
+                                          localAuto: e.state.enderecoAuto,
                                           type: 'Autonomo',
                                           UFAuto: e.state.UFAuto,
-                                          localAuto: e.state.enderecoAuto,
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
                                           phoneNumberAuto: e.state.phoneAuto,
@@ -1015,10 +1037,10 @@ export default class EditarAnuncio extends Component {
                                           timeClose: e.state.horarioFecha
                                         })
                                       })
-                                    })
                                   }).catch(function(error) {
                                     console.log('ocorreu um erro ao carregar a imagem: ' + error.message)
                                   })
+                                })
                         
                                     this.setModalVisible(true)
                         
@@ -1029,205 +1051,216 @@ export default class EditarAnuncio extends Component {
                                 alert('Todos os campos devem ser preenchidos!')
                               }
                               
-                            }
               
+                            } 
               
-                            console.log('A imagem foi salva no Storage!');
-                            console.log('Valor image state3: ' + imageIdStorageState3);
-                            
                         })
                       })
+              
                   })
                 })
             })
           })
 
-      } else {
-        getFileBlob(this.state.image, async blob => {
-          await firebase.storage().ref(`${storageUrl}/images/${imageId}`).put(blob).then((snapshot) => {
-              imageIdStorageState = imageId
-              isPhotoLoaded = true
-              console.log('A imagem foi salva no Storage!');
-              console.log('Valor image state: ' + imageIdStorageState);
 
-
-
-              getFileBlob(this.state.image2, async blob => {
-                await firebase.storage().ref(`${storageUrl}/images/${imageId2}`).put(blob).then((snapshot) => {
-                    imageIdStorageState2 = imageId2
-                    isPhotoLoaded2 = true
-                    console.log('A imagem foi salva no Storage!');
-                    console.log('Valor image state2: ' + imageIdStorageState2);
-                    
-
-
-
-                    getFileBlob(this.state.image3, async blob => {
-                      await firebase.storage().ref(`${storageUrl}/images/${imageId3}`).put(blob).then((snapshot) => {
-                          imageIdStorageState3 = imageId3
-            
-                          if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null) {
-                                firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
-                                  firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
-                                    firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
-                                      firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
-                                        titleEstab: e.state.tituloEstab,
-                                        titleEstabArray: e.state.arrayWordsEstab,
-                                        idAnuncio: routeIdAnuncio,
-                                        idUser: userUID,
-                                        descriptionEstab: e.state.descricaoEstab,
-                                        valueServiceEstab: e.state.precoEstab,
-                                        publishData: e.state.date,
-                                        media: 0,
-                                        type: 'Estabelecimento',
-                                        UFEstab: e.state.UFEstab,
-                                        verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
-                                        localEstab: e.state.enderecoEstab,
-                                        categoryEstab: e.state.categoria,
-                                        subcategoryEstab: e.state.subcategoria,
-                                        photoPublish: urlImage,
-                                        photoPublish2: urlImage2,
-                                        photoPublish3: urlImage3,
-                                        workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioAbre,
-                                        timeClose: e.state.horarioFecha
+        } else {
+          getFileBlob(this.state.image, async blob => {
+            await firebase.storage().ref(`${storageUrl}/images/${imageId}`).put(blob).then((snapshot) => {
+                imageIdStorageState = imageId
+                e.setState({isPhotoLoaded: true})
+                console.log('A imagem foi salva no Storage!');
+                console.log('Valor image state: ' + imageIdStorageState);
+                
+  
+                getFileBlob(this.state.image2, async blob => {
+                  await firebase.storage().ref(`${storageUrl}/images/${imageId2}`).put(blob).then((snapshot) => {
+                      imageIdStorageState2 = imageId2
+                      e.setState({isPhotoLoaded2: true})
+                      console.log('A imagem foi salva no Storage!');
+                      console.log('Valor image state2: ' + imageIdStorageState2);
+                      
+  
+  
+  
+  
+  
+  
+  
+  
+                      getFileBlob(this.state.image3, async blob => {
+                        await firebase.storage().ref(`${storageUrl}/images/${imageId3}`).put(blob).then((snapshot) => {
+                            imageIdStorageState3 = imageId3
+                            console.log('A imagem foi salva no Storage!');
+                            console.log('Valor image state3: ' + imageIdStorageState3);
+                            
+              
+              
+                            if(type == 'Estabelecimento'){
+                              if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioFecha !== '' && this.state.horarioAbre !== '' && this.state.categoria !== '' && this.state.image !== null) {
+                                  firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
+                                    firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
+                                      firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
+                                        firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).set({
+                                          titleEstab: e.state.tituloEstab,
+                                          titleEstabArray: e.state.arrayWordsEstab,
+                                          idAnuncio: routeIdAnuncio,
+                                          idUser: userUID,
+                                          publishData: e.state.date,
+                                          media: 0,
+                                          descriptionEstab: e.state.descricaoEstab,
+                                          valueServiceEstab: e.state.precoEstab,
+                                          type: 'Estabelecimento',
+                                          verifiedPublish: true,
+                                          premiumUser: e.state.usuarioComprou,
+                                          UFEstab: e.state.UFEstab,
+                                          phoneNumberEstab: e.state.phoneEstab,
+                                          localEstab: e.state.enderecoEstab,
+                                          categoryEstab: e.state.categoria,
+                                          subcategoryEstab: e.state.subcategoria,
+                                          photoPublish: urlImage,
+                                          photoPublish2: urlImage2,
+                                          photoPublish3: urlImage3,
+                                          workDays: e.state.daysWeek,
+                                          timeOpen: e.state.horarioAbre,
+                                          timeClose: e.state.horarioFecha
+                                        })
+                            
+                                        //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
+                                        firebase.firestore().collection('anuncios').doc(routeIdAnuncio).set({
+                                          titleEstab: e.state.tituloEstab,
+                                          titleEstabArray: e.state.arrayWordsEstab,
+                                          idAnuncio: routeIdAnuncio,
+                                          idUser: userUID,
+                                          publishData: e.state.date,
+                                          media: 0,
+                                          descriptionEstab: e.state.descricaoEstab,
+                                          valueServiceEstab: e.state.precoEstab,
+                                          type: 'Estabelecimento',
+                                          UFEstab: e.state.UFEstab,
+                                          verifiedPublish: true,
+                                          premiumUser: e.state.usuarioComprou,
+                                          phoneNumberEstab: e.state.phoneEstab,
+                                          localEstab: e.state.enderecoEstab,
+                                          categoryEstab: e.state.categoria,
+                                          subcategoryEstab: e.state.subcategoria,
+                                          photoPublish: urlImage,
+                                          photoPublish2: urlImage2,
+                                          photoPublish3: urlImage3,
+                                          workDays: e.state.daysWeek,
+                                          timeOpen: e.state.horarioAbre,
+                                          timeClose: e.state.horarioFecha
+                                        })
+              
                                       })
-                          
-                                      //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
-                                      firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
-                                        titleEstab: e.state.tituloEstab,
-                                        titleEstabArray: e.state.arrayWordsEstab,
-                                        idAnuncio: routeIdAnuncio,
-                                        idUser: userUID,
-                                        descriptionEstab: e.state.descricaoEstab,
-                                        valueServiceEstab: e.state.precoEstab,
-                                        publishData: e.state.date,
-                                        media: 0,
-                                        type: 'Estabelecimento',
-                                        UFEstab: e.state.UFEstab,
-                                        verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
-                                        localEstab: e.state.enderecoEstab,
-                                        categoryEstab: e.state.categoria,
-                                        subcategoryEstab: e.state.subcategoria,
-                                        photoPublish: urlImage,
-                                        photoPublish2: urlImage2,
-                                        photoPublish3: urlImage3,
-                                        workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioAbre,
-                                        timeClose: e.state.horarioFecha
-                                      })
-                                    })
+              
+                                  }).catch(function(error) {
+                                    console.log('ocorreu um erro ao carregar a imagem: ' + error.message)
                                   })
-                      
-                              })
-                      
-                                this.setModalVisible(true)
-                      
-                              this.sleep(5000).then(() => { 
-                                this.props.navigation.navigate('TelaPrincipalAnuncio')
-                              })
-                      
-                            } else {
-                              alert('Todos os campos devem ser preenchidos!')
-                            }
-                          }
-                      
-                          if(type == 'Autonomo') {
-                            if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.enderecoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
-                                firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
-                                  firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {    
-                                    firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {    
-                                      firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
-                                        titleAuto: e.state.tituloAuto,
-                                        titleAutoArray: e.state.arrayWordsAuto,
-                                        idAnuncio: routeIdAnuncio,
-                                        idUser: userUID,
-                                        nome: e.state.nomeAuto,
-                                        publishData: e.state.date,
-                                        media: 0,
-                                        descriptionAuto: e.state.descricaoAuto,
-                                        valueServiceAuto: e.state.precoAuto,
-                                        type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
-                                        verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
-                                        categoryAuto: e.state.categoria,
-                                        subcategoryAuto: e.state.subcategoria,
-                                        workDays: e.state.daysWeek,
-                                        photoPublish: urlImage,
-                                        photoPublish2: urlImage2,
-                                        photoPublish3: urlImage3,
-                                        timeOpen: e.state.horarioAbre,
-                                        timeClose: e.state.horarioFecha
-                                      })
-                          
-                                      //editar anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
-                                      firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
-                                        titleAuto: e.state.tituloAuto,
-                                        titleAutoArray: e.state.arrayWordsAuto,
-                                        idAnuncio: routeIdAnuncio,
-                                        idUser: userUID,
-                                        nome: e.state.nomeAuto,
-                                        publishData: e.state.date,
-                                        media: 0,
-                                        descriptionAuto: e.state.descricaoAuto,
-                                        valueServiceAuto: e.state.precoAuto,
-                                        type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
-                                        verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
-                                        categoryAuto: e.state.categoria,
-                                        subcategoryAuto: e.state.subcategoria,
-                                        workDays: e.state.daysWeek,
-                                        photoPublish: urlImage,
-                                        photoPublish2: urlImage2,
-                                        photoPublish3: urlImage3,
-                                        timeOpen: e.state.horarioAbre,
-                                        timeClose: e.state.horarioFecha
-                                      })
-                                    })
-                                  })
-                                }).catch(function(error) {
-                                  console.log('ocorreu um erro ao carregar a imagem: ' + error.message)
+                        
                                 })
-                      
+                        
                                   this.setModalVisible(true)
-                      
+                        
                                 this.sleep(5000).then(() => { 
                                   this.props.navigation.navigate('TelaPrincipalAnuncio')
                                 })
-                            } else {
-                              alert('Todos os campos devem ser preenchidos!')
+                        
+                              } else {
+                                alert('Todos os campos devem ser preenchidos!')
+                              }
                             }
+                        
+                        
+                            if(type == 'Autonomo') {
+                              if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
+                                  firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
+                                    firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
+                                      firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
+                                        firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).set({
+                                          titleAuto: e.state.tituloAuto,
+                                          titleAutoArray: e.state.arrayWordsAuto,
+                                          idAnuncio: routeIdAnuncio,
+                                          idUser: userUID,
+                                          publishData: e.state.date,
+                                          media: 0,
+                                          nome: e.state.nomeAuto,
+                                          descriptionAuto: e.state.descricaoAuto,
+                                          valueServiceAuto: e.state.precoAuto,
+                                          localAuto: e.state.enderecoAuto,
+                                          type: 'Autonomo',
+                                          UFAuto: e.state.UFAuto,
+                                          verifiedPublish: true,
+                                          premiumUser: e.state.usuarioComprou,
+                                          phoneNumberAuto: e.state.phoneAuto,
+                                          categoryAuto: e.state.categoria,
+                                          subcategoryAuto: e.state.subcategoria,
+                                          workDays: e.state.daysWeek,
+                                          photoPublish: urlImage,
+                                          photoPublish2: urlImage2,
+                                          photoPublish3: urlImage3,
+                                          timeOpen: e.state.horarioAbre,
+                                          timeClose: e.state.horarioFecha
+                                        })
                             
-                          }
-            
-            
-                          console.log('A imagem foi salva no Storage!');
-                          console.log('Valor image state3: ' + imageIdStorageState3);
-                          
+                                        //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
+                                        firebase.firestore().collection('anuncios').doc(routeIdAnuncio).set({
+                                          titleAuto: e.state.tituloAuto,
+                                          titleAutoArray: e.state.arrayWordsAuto,
+                                          idAnuncio: routeIdAnuncio,
+                                          idUser: userUID,
+                                          publishData: e.state.date,
+                                          media: 0,
+                                          nome: e.state.nomeAuto,
+                                          descriptionAuto: e.state.descricaoAuto,
+                                          valueServiceAuto: e.state.precoAuto,
+                                          localAuto: e.state.enderecoAuto,
+                                          type: 'Autonomo',
+                                          UFAuto: e.state.UFAuto,
+                                          verifiedPublish: true,
+                                          premiumUser: e.state.usuarioComprou,
+                                          phoneNumberAuto: e.state.phoneAuto,
+                                          categoryAuto: e.state.categoria,
+                                          subcategoryAuto: e.state.subcategoria,
+                                          workDays: e.state.daysWeek,
+                                          photoPublish: urlImage,
+                                          photoPublish2: urlImage2,
+                                          photoPublish3: urlImage3,
+                                          timeOpen: e.state.horarioAbre,
+                                          timeClose: e.state.horarioFecha
+                                        })
+                                      })
+                                  }).catch(function(error) {
+                                    console.log('ocorreu um erro ao carregar a imagem: ' + error.message)
+                                  })
+                                })
+                        
+                                    this.setModalVisible(true)
+                        
+                                  this.sleep(5000).then(() => { 
+                                    this.props.navigation.navigate('TelaPrincipalAnuncio')
+                                  })
+                              } else {
+                                alert('Todos os campos devem ser preenchidos!')
+                              }
+                              
+              
+                            } 
+              
+                        })
                       })
-                    })
+              
+                  })
                 })
-              })
+            })
           })
-        })
-      }
+        }
 
-          
       } else {
         alert('Por favor, verifique se TODOS os campos estão preenchidos (incluindo 3 imagens)')
       }
+
     }
+
 
     if(typePublish === 'Estabelecimento') {
       if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.enderecoEstab !== '' && this.state.phoneEstab !== '') {
@@ -1239,7 +1272,7 @@ export default class EditarAnuncio extends Component {
           await firebase.storage().ref(`${storageUrl}/images/${imageId}`).put(blob).then((snapshot) => {
               imageIdStorageState = imageId
               e.setState({isPhotoLoaded: true})
-              console.log('O vídeo foi salvo no Storage!');
+              console.log('A imagem foi salva no Storage!');
               console.log('Valor image state: ' + imageIdStorageState);
               
 
@@ -1267,11 +1300,11 @@ export default class EditarAnuncio extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.video !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
-                                      firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
+                                      firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).set({
                                         titleEstab: e.state.tituloEstab,
                                         titleEstabArray: e.state.arrayWordsEstab,
                                         idAnuncio: routeIdAnuncio,
@@ -1281,7 +1314,6 @@ export default class EditarAnuncio extends Component {
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
                                         type: 'Estabelecimento',
-                                        UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
@@ -1297,7 +1329,7 @@ export default class EditarAnuncio extends Component {
                                       })
                           
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
-                                      firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
+                                      firebase.firestore().collection('anuncios').doc(routeIdAnuncio).set({
                                         titleEstab: e.state.tituloEstab,
                                         titleEstabArray: e.state.arrayWordsEstab,
                                         idAnuncio: routeIdAnuncio,
@@ -1307,7 +1339,6 @@ export default class EditarAnuncio extends Component {
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
                                         type: 'Estabelecimento',
-                                        UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
@@ -1343,23 +1374,21 @@ export default class EditarAnuncio extends Component {
                       
                       
                           if(type == 'Autonomo') {
-                            if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.phoneAuto !== '' && this.state.enderecoAuto !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
+                            if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
-                                      firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
+                                      firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).set({
                                         titleAuto: e.state.tituloAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         idAnuncio: routeIdAnuncio,
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         media: 0,
                                         nome: e.state.nomeAuto,
-                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
@@ -1374,19 +1403,17 @@ export default class EditarAnuncio extends Component {
                                       })
                           
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
-                                      firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
+                                      firebase.firestore().collection('anuncios').doc(routeIdAnuncio).set({
                                         titleAuto: e.state.tituloAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         idAnuncio: routeIdAnuncio,
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         media: 0,
                                         nome: e.state.nomeAuto,
-                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
@@ -1458,11 +1485,11 @@ export default class EditarAnuncio extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.image !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
-                                      firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
+                                      firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).set({
                                         titleEstab: e.state.tituloEstab,
                                         titleEstabArray: e.state.arrayWordsEstab,
                                         idAnuncio: routeIdAnuncio,
@@ -1472,7 +1499,6 @@ export default class EditarAnuncio extends Component {
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
                                         type: 'Estabelecimento',
-                                        UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
@@ -1488,7 +1514,7 @@ export default class EditarAnuncio extends Component {
                                       })
                           
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
-                                      firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
+                                      firebase.firestore().collection('anuncios').doc(routeIdAnuncio).set({
                                         titleEstab: e.state.tituloEstab,
                                         titleEstabArray: e.state.arrayWordsEstab,
                                         idAnuncio: routeIdAnuncio,
@@ -1498,7 +1524,6 @@ export default class EditarAnuncio extends Component {
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
                                         type: 'Estabelecimento',
-                                        UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
@@ -1534,23 +1559,21 @@ export default class EditarAnuncio extends Component {
                       
                       
                           if(type == 'Autonomo') {
-                            if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.phoneAuto !== '' && this.state.enderecoAuto !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
+                            if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
-                                      firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).update({
+                                      firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').doc(routeIdAnuncio).set({
                                         titleAuto: e.state.tituloAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         idAnuncio: routeIdAnuncio,
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         media: 0,
                                         nome: e.state.nomeAuto,
-                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
@@ -1565,19 +1588,17 @@ export default class EditarAnuncio extends Component {
                                       })
                           
                                       //subir anuncio para a pasta principal onde todos os anuncios ativos serão visiveis
-                                      firebase.firestore().collection('anuncios').doc(routeIdAnuncio).update({
+                                      firebase.firestore().collection('anuncios').doc(routeIdAnuncio).set({
                                         titleAuto: e.state.tituloAuto,
+                                        titleAutoArray: e.state.arrayWordsAuto,
                                         idAnuncio: routeIdAnuncio,
                                         idUser: userUID,
                                         publishData: e.state.date,
                                         media: 0,
                                         nome: e.state.nomeAuto,
-                                        titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         phoneNumberAuto: e.state.phoneAuto,
@@ -1617,11 +1638,19 @@ export default class EditarAnuncio extends Component {
         })
       }
 
+
       } else {
         alert('Por favor, verifique se TODOS os campos estão preenchidos (incluindo 3 imagens)')
       }
     }
+
   }
+
+
+
+
+
+
 
 
   searchCEPEstab() {

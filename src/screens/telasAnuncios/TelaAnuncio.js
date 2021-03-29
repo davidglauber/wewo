@@ -327,8 +327,7 @@ export default class TelaAnuncio extends Component {
           description: doc.data().descriptionEstab,
           type: doc.data().type,
           verified: doc.data().verifiedPublish,
-          timeToOpen: doc.data().timeOpen,
-          timeToClose: doc.data().timeClose,
+          timeOpen: doc.data().timeOpen,
           local: doc.data().localEstab,
           workDays: doc.data().workDays,
           timeClose: doc.data().timeClose
@@ -1125,7 +1124,7 @@ export default class TelaAnuncio extends Component {
 
                   </View>
                     <View style={{marginTop:40, marginHorizontal:100, borderWidth:3, borderColor:'#d98b0d', padding:20, borderRadius:30}}>
-                      <Text style={{fontWeight:'bold'}}>{item.timeOpen} - {item.timeClose}</Text>
+                      <Text style={{fontWeight:'bold', color: this.context.dark ? 'white' : 'black'}}>{item.timeOpen} - {item.timeClose}</Text>
                     </View>
                   </View>
                   }
@@ -1215,7 +1214,7 @@ export default class TelaAnuncio extends Component {
 
                   </View>
                     <View style={{marginTop:40, marginHorizontal:100, borderWidth:3, borderColor:'#d98b0d', padding:20, borderRadius:30}}>
-                      <Text style={{fontWeight:'bold'}}>{item.timeOpen} - {item.timeClose}</Text>
+                      <Text style={{fontWeight:'bold', color: this.context.dark ? 'white' : 'black'}}>{item.timeOpen} - {item.timeClose}</Text>
                     </View>
                   </View>
                   }

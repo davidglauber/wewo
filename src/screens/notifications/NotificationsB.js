@@ -76,7 +76,8 @@ export default class NotificationsB extends Component {
       serviceUser:'',
       valueUser:'',
       telefoneUser:'',
-      dataUser:''
+      dataUser:'',
+      horarioUser:''
     };
   }
 
@@ -99,7 +100,8 @@ export default class NotificationsB extends Component {
             service: doc.data().service,
             valor: doc.data().valor,
             cep: doc.data().cep,
-            dataServico: doc.data().dataServico
+            dataServico: doc.data().dataServico,
+            horario: doc.data().horario
           })
         })
 
@@ -127,6 +129,7 @@ export default class NotificationsB extends Component {
     this.setState({valueUser: userData.valor})
     this.setState({telefoneUser: userData.telefone})
     this.setState({dataUser: userData.dataServico})
+    this.setState({horarioUser: userData.horario})
 
     const modalizeRef = this.state.modalizeRef;
     modalizeRef.current?.open()
@@ -160,7 +163,7 @@ export default class NotificationsB extends Component {
   }
 
   render() {
-    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser} = this.state;
+    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser, horarioUser} = this.state;
     return (
       <SafeBackground>
         <StatusBar
@@ -262,6 +265,11 @@ export default class NotificationsB extends Component {
                 <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
                   <IconResponsive name="calendar-week" size={24}/>
                   <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{dataUser}</Title>
+                </View>
+
+                <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
+                  <IconResponsive name="clock" size={24}/>
+                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{horarioUser}</Title>
                 </View>
 
                 <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
