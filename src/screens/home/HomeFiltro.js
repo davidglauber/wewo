@@ -500,8 +500,8 @@ async componentDidMount() {
 
 
   cutDescription(text) {
-    if(text.length > 40) {
-      let shortDescription = text.substr(0, 40)
+    if(text.length > 25) {
+      let shortDescription = text.substr(0, 25)
 
       return(
         <View style={{justifyContent: 'center', alignItems: 'center',}}>

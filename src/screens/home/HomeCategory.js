@@ -253,8 +253,8 @@ async componentDidMount() {
 
 
   cutDescription(text) {
-    if(text.length > 40) {
-      let shortDescription = text.substr(0, 40)
+    if(text.length > 25) {
+      let shortDescription = text.substr(0, 25)
 
       return(
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -314,7 +314,7 @@ async componentDidMount() {
                   keyExtractor={() => this.makeid(17)}
                   data={categories}
                   renderItem={({item}) => 
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeCategory2', {titleOfCategory: item.titleCategory})} style={{width: windowWidth/3, height:50, alignItems:'center', justifyContent:'center', backgroundColor: '#DAA520', borderRadius:10, marginRight: 20}}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeCategory2', {titleOfCategory: item.titleCategory})} style={{width: windowWidth/3, height:50, alignItems:'center', justifyContent:'center', backgroundColor: '#d98b0d', borderRadius:50, marginRight: 20}}>
                       <Text style={{fontWeight:'bold', color:'#fff', fontSize:13}}>{item.titleCategory}</Text>
                     </TouchableOpacity>
                 }

@@ -409,10 +409,12 @@ export default class SearchA extends Component {
                   </View>  
 
                   <View style={{flexDirection: 'row'}}>
-                      <View style={{marginLeft:windowWidth/1.75, marginRight:windowWidth/12}}>
+                      <View style={{marginLeft:windowWidth/2.3}}>
                           <ValueField>{item.value}</ValueField>
                       </View>
+                      <View style={{position:'absolute', left: windowWidth/1.3}}>
                           <IconResponsive style={{marginLeft:16}}  name="briefcase" size={19}/>
+                      </View>
 
                   </View> 
 
@@ -463,8 +465,9 @@ export default class SearchA extends Component {
                                   <View style={{marginLeft:windowWidth/1.75, marginRight:windowWidth/12}}>
                                       <ValueField>{item.value}</ValueField>
                                   </View>
+                                  <View style={{position:'absolute', left: windowWidth/1.3}}>
                                       <IconResponsive style={{marginLeft:16}}  name="user-tie" size={19}/>
-
+                                  </View>
                               </View> 
 
                           </AnuncioContainer>
