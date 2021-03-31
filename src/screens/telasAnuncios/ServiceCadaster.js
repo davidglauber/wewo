@@ -27,12 +27,19 @@ import { SafeAnuncioView, Heading, TextDescription2, IconResponsive, InputForm, 
 
 import { ThemeContext } from '../../../ThemeContext';
 
+import { Modalize } from 'react-native-modalize';
+
+// import components
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import LottieView from 'lottie-react-native';
 
 //import datepicker
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+
+//locationSERVICES
+import * as Location from 'expo-location';
 
 import loading from '../../../assets/loading.json';
 
@@ -60,14 +67,61 @@ export default class ServiceCadaster extends Component {
       horario:'',
       mode:'date',
       showDate: false,
-      cep: '',
-      cepBOOLEAN: false,
+      cep: null,
+      locationServiceEnabled: false,
       modalVisible: false,
+      modalizeLocation: React.createRef(null)
     };
   }
 
 
+  async CheckIfLocationEnabled() {
+    let enabled = await Location.hasServicesEnabledAsync();
+
+    if (!enabled) {
+      Alert.alert(
+        'O serviço de localização não está ativado',
+        'Por favor ative o serviço de localização para continuar',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    } else {
+      this.setState({locationServiceEnabled: enabled});
+    }
+  };
+
+
+
+  async GetCurrentLocation(){
+    let { status } = await Location.requestPermissionsAsync();
+
+    if (status !== 'granted') {
+      Alert.alert(
+        'Permissão negada pelo usuário',
+        'Permita o app usar o serviço de localização',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    }
   
+    let { coords } = await Location.getCurrentPositionAsync();
+  
+    if (coords) {
+      const { latitude, longitude } = coords;
+      let response = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude
+      });
+  
+      for (let item of response) {
+        let address = `${item.region}, ${item.subregion}, ${item.district}, ${item.street} (${item.postalCode})`;
+        this.setState({cep: address})
+
+      }
+    }
+  };
+
+
   componentDidMount() {
     this.setState({id: this.props.route.params.idDoContratado})
     this.setState({idContratante: this.props.route.params.idDoContratante})
@@ -76,6 +130,9 @@ export default class ServiceCadaster extends Component {
     this.setState({servico: this.props.route.params.servico})
     this.setState({telefone: this.props.route.params.telefone})
     this.setState({valor: this.props.route.params.valor})
+
+    //pede ao usuario para habilitar os serviços de localização
+    this.CheckIfLocationEnabled();
   }
 
 
@@ -125,40 +182,27 @@ export default class ServiceCadaster extends Component {
     return fullDate;
   }
 
-  cepText = (text) => {
-    this.setState({
-      cep: text,
-    });
-  };
-
-    //sleep function
-    sleep = (time) => {
-        return new Promise((resolve) => setTimeout(resolve, time));
-    }
-
-  searchCEP() {
-    fetch(`https://viacep.com.br/ws/${this.state.cep}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({cepBOOLEAN: true})).catch(err => this.setState({cepBOOLEAN: false}))
+  //sleep function
+  sleep = (time) => {
+      return new Promise((resolve) => setTimeout(resolve, time));
   }
 
 
+  openModalizeLocation() {
+    this.GetCurrentLocation();
+    const modalizeLocation = this.state.modalizeLocation;
 
+    modalizeLocation.current?.open()
+  }
 
   updateToFirebase() {
-    this.searchCEP();
-
     let e = this;
     let dataAtual = this.convertDate();
     let userUID = firebase.auth().currentUser.uid;
     let idRandom = this.makeid(25);
     e.setModalVisible(true)
 
-
-
-    
-    
-    
     this.sleep(2000).then(() => { 
-        if(this.state.cepBOOLEAN == true){
             firebase.firestore().collection('notifications').doc(idRandom).set({
                 idContratante: e.state.idContratante,
                 idNot: idRandom,
@@ -176,10 +220,6 @@ export default class ServiceCadaster extends Component {
 
             e.setModalVisible(false)
             e.props.navigation.navigate('Home')
-        } else {
-            alert('Erro no CEP, confire-o novamente') 
-            e.props.navigation.navigate('Home')
-        }
     })
   }
 
@@ -240,7 +280,7 @@ export default class ServiceCadaster extends Component {
             </View>
 
             <View style={{marginTop:30, paddingHorizontal:20}}>
-                <Subtitle2EditProfile>Seu telefone</Subtitle2EditProfile>
+                <Subtitle2EditProfile>Seu Telefone</Subtitle2EditProfile>
                 <InputForm
                     value={this.state.telefone}
                     style={{marginBottom: 10}}
@@ -265,20 +305,9 @@ export default class ServiceCadaster extends Component {
                 />
             </View>
 
-            <View style={{marginTop:30, paddingHorizontal:20}}>
-                <Subtitle2EditProfile>Seu CEP (o contratado usará para chegar até você)</Subtitle2EditProfile>
-                <InputForm
-                    value={this.state.cep}
-                    style={{marginBottom: 10}}
-                    editable={true}
-                    onChangeText={text => this.cepText(text) }
-                    autoCapitalize={'words'}
-                    maxLength={8}
-                    minLength={8}
-                    keyboardType={"numeric"}
-                    placeholder="Digite seu CEP (só números)                                                                       "
-                />
-            </View>
+            <TouchableOpacity onPress={() => this.openModalizeLocation()} style={{marginTop:30, paddingHorizontal:20}}>
+                <Subtitle2EditProfile style={{textAlign:'center'}}>Clique aqui para adicionar o endereço (se o campo ficar vazio será considerado remoto)</Subtitle2EditProfile>
+            </TouchableOpacity>
             
             <View style={{marginTop:30, paddingHorizontal:20}}>
                 <TouchableOpacity onPress={() => this.setState({showDate: true})}>
@@ -317,6 +346,37 @@ export default class ServiceCadaster extends Component {
                 />
             }
 
+
+          {/*Modalize do CEP*/}
+          <Modalize
+            ref={this.state.modalizeLocation}
+            snapPoint={400}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+            >
+            <View style={{flex:1,alignItems:'center', flexDirection:'column'}}>
+                <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, color:'#fff'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000'}}>Localização</Text>
+                
+                {this.state.cep == null ?
+                  <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff', textAlign:'center'} : {fontWeight: 'bold', padding:15,color:'#000',textAlign:'center'}}>Nenhum endereço encontrado</Text>
+                :
+                  <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff', textAlign:'center'} : {fontWeight: 'bold', padding:15,color:'#000',textAlign:'center'}}>{this.state.cep}</Text>  
+                }
+                <View style={{flexDirection:'row'}}>
+                  <TouchableOpacity onPress={() => this.GetCurrentLocation()} style={{alignItems:'center', justifyContent:'center', marginTop:10, marginRight:15, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                    <FontAwesome5 name="search-location" size={24} color={'#9A9A9A'}/>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => this.setState({cep: null})} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                    <FontAwesome5 name="times-circle" size={24} color={'#9A9A9A'}/>
+                  </TouchableOpacity>
+                </View>
+            </View>
+                 
+
+            <View>
+              <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#fff', textAlign:'center'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000', textAlign:'center'}}>Por favor, verifique se as informações conferem, caso não, pesquise o endereço novamente</Text>
+            </View>
+          </Modalize>
 
           </View>
         </ScrollView>

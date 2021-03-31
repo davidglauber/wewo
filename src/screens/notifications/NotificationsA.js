@@ -301,36 +301,45 @@ export default class NotificationsA extends Component {
                 </TouchableOpacity>
             </View>
 
-            <View style={{width: windowWidth/1.06, height:500, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10}}>
+          <View style={{width: windowWidth/1.06, height:500, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10}}>
               <View style={{marginTop:20}}>
-                <Title style={{marginLeft: 30, fontSize: 27, color: this.context.dark ? 'white' : 'white'}}>CEP: {cepUser}</Title>
                 
+                {cepUser == null &&
+                  <View style={{marginLeft: 30, marginTop:30, flexDirection:'row'}}>
+                    <IconResponsive name="laptop-house" size={24}/>
+                    <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>Remoto</Title>
+                  </View>
+                }
+
+                {cepUser !== null &&
+                  <View style={{marginLeft: 30, marginTop:30, flexDirection:'row', maxWidth:250}}>
+                    <IconResponsive name="map-marker" size={24}/>
+                    <Title style={{marginLeft: 10, fontSize: 15, marginTop:5, textAlign:'center', color: this.context.dark ? 'white' : 'white'}}>{cepUser}</Title>
+                  </View>
+                }
+
                 <View style={{marginLeft: 30, marginTop:30, flexDirection:'row'}}>
                   <IconResponsive name="tools" size={24}/>
-                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{serviceUser}</Title>
+                  <Title style={{marginLeft: 20, marginRight:20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{serviceUser}</Title>
+                  
+                  <IconResponsive name="dollar-sign" size={24}/>
+                  <Title style={{marginLeft: 10, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{valueUser}</Title>
                 </View>
 
                 <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
-                  <IconResponsive name="dollar-sign" size={24}/>
-                  <Title style={{marginLeft: 27, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{valueUser}</Title>
+                  <IconResponsive name="calendar-week" size={24}/>
+                  <Title style={{marginLeft: 20, marginRight:45, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{dataUser}</Title>
+                  
+                  <IconResponsive name="clock" size={24}/>
+                  <Title style={{marginLeft: 10, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{horarioUser}</Title>
                 </View>
+
 
                 <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
                   <IconResponsive name="mobile" size={24}/>
                   <Title style={{marginLeft: 24, fontSize: 15, color: this.context.dark ? 'white' : 'white'}}>{telefoneUser}</Title>
                 </View>
                 
-
-                <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
-                  <IconResponsive name="calendar-week" size={24}/>
-                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{dataUser}</Title>
-                </View>
-                
-                <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
-                  <IconResponsive name="clock" size={24}/>
-                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{horarioUser}</Title>
-                </View>
-
 
                 <View style={{flexDirection:'row'}}>
                   <TouchableOpacity onPress={() => this.confirmButton(this.state.idNotification)} style={{marginLeft: 30, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:20, borderRadius:50}}>
@@ -343,6 +352,7 @@ export default class NotificationsA extends Component {
                     <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Negar</Title>
                   </TouchableOpacity>
                 </View>
+
             </View>
           </View>
         </Modalize>

@@ -277,17 +277,37 @@ export default class NotificationsB extends Component {
 
             <View style={{width: windowWidth/1.06, height:500, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10}}>
               <View style={{marginTop:20}}>
-                <Title style={{marginLeft: 30, fontSize: 27, color: this.context.dark ? 'white' : 'white'}}>CEP: {cepUser}</Title>
                 
+                {cepUser == null &&
+                  <View style={{marginLeft: 30, marginTop:30, flexDirection:'row'}}>
+                    <IconResponsive name="laptop-house" size={24}/>
+                    <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>Remoto</Title>
+                  </View>
+                }
+
+                {cepUser !== null &&
+                  <View style={{marginLeft: 30, marginTop:30, flexDirection:'row'}}>
+                    <IconResponsive name="map-marker" size={24}/>
+                    <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{cepUser}</Title>
+                  </View>
+                }
+
                 <View style={{marginLeft: 30, marginTop:30, flexDirection:'row'}}>
                   <IconResponsive name="tools" size={24}/>
-                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{serviceUser}</Title>
+                  <Title style={{marginLeft: 20, marginRight:20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{serviceUser}</Title>
+                  
+                  <IconResponsive name="dollar-sign" size={24}/>
+                  <Title style={{marginLeft: 10, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{valueUser}</Title>
                 </View>
 
                 <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
-                  <IconResponsive name="dollar-sign" size={24}/>
-                  <Title style={{marginLeft: 27, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{valueUser}</Title>
+                  <IconResponsive name="calendar-week" size={24}/>
+                  <Title style={{marginLeft: 20, marginRight:45, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{dataUser}</Title>
+                  
+                  <IconResponsive name="clock" size={24}/>
+                  <Title style={{marginLeft: 10, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{horarioUser}</Title>
                 </View>
+
 
                 <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
                   <IconResponsive name="mobile" size={24}/>
@@ -295,15 +315,6 @@ export default class NotificationsB extends Component {
                 </View>
                 
 
-                <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
-                  <IconResponsive name="calendar-week" size={24}/>
-                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{dataUser}</Title>
-                </View>
-
-                <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
-                  <IconResponsive name="clock" size={24}/>
-                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{horarioUser}</Title>
-                </View>
 
                 <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
                   <Title style={{marginRight: 20, textAlign:'center', fontSize: 15, marginTop:25, color: this.context.dark ? 'white' : 'white'}}>Este é um resumo do que você enviou ao contratado(a)</Title>

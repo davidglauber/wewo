@@ -667,7 +667,7 @@ export default class TelaAnuncio extends Component {
         foto: this.state.fotoDoContratante,
         servico: service,
         telefone: this.state.telefoneDoContratante,
-        valor: value
+        valor: value,
       });
     }
   }
