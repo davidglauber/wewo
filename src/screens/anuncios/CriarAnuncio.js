@@ -70,6 +70,10 @@ import { RFValue } from 'react-native-responsive-fontsize';
 // import colors
 import Colors from '../../theme/colors';
 
+
+//locationSERVICES
+import * as Location from 'expo-location';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -140,8 +144,8 @@ export default class CriarAnuncio extends Component {
       tituloEstab:'',
       descricaoAuto:'',
       descricaoEstab:'',
-      enderecoEstab:'',
-      enderecoAuto:'',
+      enderecoEstab:null,
+      enderecoAuto:null,
       cepEstab: '',
       cepAuto: '',
       enderecoCepEstab: [],
@@ -159,8 +163,6 @@ export default class CriarAnuncio extends Component {
       modalizeRefDescription: React.createRef(null),
       modalizeRefDescriptionEstab: React.createRef(null),
       modalizeRefSub: React.createRef(null),
-      modalizeRefAbertura: React.createRef(null),
-      modalizeRefFechamento: React.createRef(null),
       modalizePhotos: React.createRef(null),
       modalizeVideoAndPhoto: React.createRef(null),
       modalizeLocationEstab: React.createRef(null),
@@ -190,7 +192,9 @@ export default class CriarAnuncio extends Component {
       usuarioComprou: false,
       arrayWordsAuto: [],
       arrayWordsEstab: [],
-      daysWeek: []
+      daysWeek: [],
+      errorMsg: null,
+      locationServiceEnabled: false
     };
   }
 
@@ -205,6 +209,68 @@ export default class CriarAnuncio extends Component {
     this.setState({date: fullDate});
   }
 
+
+
+  async CheckIfLocationEnabled() {
+    let enabled = await Location.hasServicesEnabledAsync();
+
+    if (!enabled) {
+      Alert.alert(
+        'O serviço de localização não está ativado',
+        'Por favor ative o serviço de localização para continuar',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    } else {
+      this.setState({locationServiceEnabled: enabled});
+    }
+  };
+
+
+
+  async GetCurrentLocation(type){
+    let { status } = await Location.requestPermissionsAsync();
+
+    this.setModalVisible(true)
+
+    if (status !== 'granted') {
+      Alert.alert(
+        'Permissão negada pelo usuário',
+        'Permita o app usar o serviço de localização',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    }
+  
+    let { coords } = await Location.getCurrentPositionAsync();
+  
+    if (coords) {
+      const { latitude, longitude } = coords;
+      let response = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude
+      });
+  
+      for (let item of response) {
+        let address = `${item.region}, ${item.subregion}, ${item.district}, ${item.street} (${item.postalCode})`;
+  
+        
+        if(type == 'Autonomo') {
+          this.setState({enderecoAuto: address})
+          this.searchCEPAuto(item.postalCode.replace('-', ''))
+        }
+
+        if(type == 'Estabelecimento') {
+          this.setState({enderecoEstab: address})
+          this.searchCEPEstab(item.postalCode.replace('-', ''))
+        }
+      }
+      this.setModalVisible(false)
+    }
+  };
+
+
+
   async componentDidMount() {
     this.convertDate();
     let e = this;
@@ -214,6 +280,9 @@ export default class CriarAnuncio extends Component {
       let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual');
       this.setState({usuarioComprou: comprou});
     }
+
+    //pede ao usuario para habilitar os serviços de localização
+    this.CheckIfLocationEnabled();
 
     //getting categories
     await firebase.firestore().collection('categorias').get().then(function(querySnapshot) {
@@ -338,15 +407,6 @@ export default class CriarAnuncio extends Component {
     console.log('nome auto'  + this.state.nomeAuto)
   }
 
-  onChangeEnderecoEstab(text) {
-    this.setState({enderecoEstab: text})
-    console.log('endereco estab'  + this.state.enderecoEstab)
-  }
-
-  onChangeEnderecoAuto(text) {
-    this.setState({enderecoAuto: text})
-    console.log('endereco estab'  + this.state.enderecoAuto)
-  }
 
   onChangeCEPEstab(text) {
     this.setState({cepEstab: text})
@@ -410,20 +470,6 @@ export default class CriarAnuncio extends Component {
   }
 
 
-
-  openModalizeAbertura() {
-    const modalizeRefAbertura = this.state.modalizeRefAbertura;
-
-    modalizeRefAbertura.current?.open()
-  }
-
-  openModalizeFechamento() {
-    const modalizeRefFechamento = this.state.modalizeRefFechamento;
-
-    modalizeRefFechamento.current?.open()
-  }
-
-
   getCategory(id, param) {
     const modalizeRef = this.state.modalizeRef;
     this.setState({categoria: param})
@@ -460,13 +506,9 @@ export default class CriarAnuncio extends Component {
     modalizeLocationEstab.current?.close()
   }
 
-  closeLocationModalAuto(estado, local, lograd) {
+  closeLocationModalAuto() {
     const modalizeLocationAuto = this.state.modalizeLocationAuto;
 
-    const sumLocation = `${lograd}, ${local}, ${estado}`;
-
-    this.setState({enderecoAuto: sumLocation})
-    this.setState({UFAuto: estado})
     modalizeLocationAuto.current?.close()
   }
 
@@ -483,25 +525,6 @@ export default class CriarAnuncio extends Component {
 
     modalizeRefDescriptionEstab.current?.close()
   }
-
-  getHorarioOpen(param) {
-    const modalizeRefAbertura = this.state.modalizeRefAbertura;
-    this.setState({horarioOpen: param})
-    modalizeRefAbertura.current?.close()
-
-    console.log('Horario open Selecionado: '  + param)
-
-  }
-
-  getHorarioClose(param) {
-    const modalizeRefFechamento = this.state.modalizeRefFechamento;
-    this.setState({horarioClose: param})
-    modalizeRefFechamento.current?.close()
-
-    console.log('Horario close Selecionado: '  + param)
-  }
-
-
 
   async imagePickerGetPhoto() {
     if (Constants.platform.ios) {
@@ -684,7 +707,7 @@ export default class CriarAnuncio extends Component {
       }
       
       if(typePublish === 'Autonomo') { 
-      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.enderecoAuto !== '' && this.state.precoAuto !== '' && this.state.nomeAuto !== '' && this.state.phoneAuto !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.nomeAuto !== '' && this.state.phoneAuto !== '') {
         
         this.setModalVisible(true)
 
@@ -721,7 +744,7 @@ export default class CriarAnuncio extends Component {
               
               
                             if(type == 'Estabelecimento'){
-                              if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                              if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.video !== null) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                       firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -913,7 +936,7 @@ export default class CriarAnuncio extends Component {
               
               
                             if(type == 'Estabelecimento'){
-                              if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioFecha !== '' && this.state.horarioAbre !== '' && this.state.categoria !== '' && this.state.image !== null) {
+                              if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.horarioFecha !== '' && this.state.horarioAbre !== '' && this.state.categoria !== '' && this.state.image !== null) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                       firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1080,7 +1103,7 @@ export default class CriarAnuncio extends Component {
 
 
     if(typePublish === 'Estabelecimento') {
-      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.enderecoEstab !== '' && this.state.phoneEstab !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '') {
         
         this.setModalVisible(true)
 
@@ -1117,7 +1140,7 @@ export default class CriarAnuncio extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.video !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1302,7 +1325,7 @@ export default class CriarAnuncio extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.image !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.image !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1465,12 +1488,13 @@ export default class CriarAnuncio extends Component {
 
 
 
-  searchCEPEstab() {
-    fetch(`https://viacep.com.br/ws/${this.state.cepEstab}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({enderecoCepEstab: obj})).catch(err => alert('O CEP pode estar errado ou não existir!'))
+  searchCEPEstab(cepuser) {
+    fetch(`https://viacep.com.br/ws/${cepuser}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({UFEstab: obj.uf})).catch(err => alert('Ocorreu um erro ao consultar o estado!'))
   }
 
-  searchCEPAuto() {
-    fetch(`https://viacep.com.br/ws/${this.state.cepAuto}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({enderecoCepAuto: obj})).catch(err => alert('O CEP pode estar errado ou não existir!'))
+  searchCEPAuto(cepuser) {
+    fetch(`https://viacep.com.br/ws/${cepuser}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({UFAuto: obj.uf})).catch(err => alert('Ocorreu um erro ao consultar o estado!'))
+  
   }
 
 
@@ -1688,7 +1712,6 @@ export default class CriarAnuncio extends Component {
                             <TouchableOpacity onPress={() => this.openModalizeLocationAuto()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
                                 <InputForm
                                   value={this.state.enderecoAuto}
-                                  onChangeText={text => this.onChangeEnderecoAuto(text)}
                                   keyboardType={"default"}
                                   editable={false}
                                   placeholder="Endereço do Autônomo                                                   "
@@ -1929,7 +1952,6 @@ export default class CriarAnuncio extends Component {
                             <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
                                 <InputForm
                                   value={this.state.enderecoEstab}
-                                  onChangeText={text => this.onChangeEnderecoEstab(text)}
                                   keyboardType={"default"}
                                   editable={false}
                                   placeholder="Endereço do Estabelecimento                                                   "
@@ -2323,49 +2345,28 @@ export default class CriarAnuncio extends Component {
 
 
 
-           {/*Modalize do CEP Estab*/}
-            <Modalize
+          {/*Modalize do CEP Estabelecimento*/}
+          <Modalize
             ref={this.state.modalizeLocationEstab}
-            snapPoint={500}
+            snapPoint={400}
             modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
             >
-            <View style={{flex:1,alignItems:'center', flexDirection:'row'}}>
-                <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff'} : {fontWeight: 'bold', padding:15,color:'#000'}}>Insira seu CEP</Text>  
-
-                  <View style={{marginRight:20}}>
-                    <InputForm
-                      value={this.state.cepEstab}
-                      maxLength={8}
-                      minLength={8}
-                      onChangeText={text => this.onChangeCEPEstab(text)}
-                      keyboardType={"numeric"}
-                      placeholder="O CEP NÃO PODE TER (-)"
-                    />
-
-                  </View> 
-                  <TouchableOpacity onPress={() => this.searchCEPEstab()} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:10}}>
-                    <FontAwesome5 name="search-location" size={24} color={'#9A9A9A'}/>
-                  </TouchableOpacity>
-
+            <View style={{flex:1,alignItems:'center', flexDirection:'column'}}>
+                <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, color:'#fff'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000'}}>Localização</Text>
+                
+                {this.state.enderecoEstab == null ?
+                  <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff', textAlign:'center'} : {fontWeight: 'bold', padding:15,color:'#000',textAlign:'center'}}>Nenhum endereço encontrado</Text>
+                :
+                  <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff', textAlign:'center'} : {fontWeight: 'bold', padding:15,color:'#000',textAlign:'center'}}>{this.state.enderecoEstab}</Text>  
+                }
+                <TouchableOpacity onPress={() => this.GetCurrentLocation('Estabelecimento')} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                  <FontAwesome5 name="search-location" size={24} color={'#9A9A9A'}/>
+                </TouchableOpacity>
             </View>
+                 
 
             <View>
-              <Text style={this.context.dark ?{fontWeight: 'bold', padding:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', padding:15, marginTop: 10, color:'#000'}}>Estado: {this.state.enderecoCepEstab.uf}</Text>
-              <Text style={this.context.dark ?{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#000'}}>Cidade: {this.state.enderecoCepEstab.localidade}</Text>
-              <Text style={this.context.dark ?{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#000'}}>Logradouro: {this.state.enderecoCepEstab.logradouro}</Text>
-                
-
-              <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#fff'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000'}}>Por favor, verifique se as informações conferem, caso sim, confirme e termine o cadastro</Text>
-              
-              <View style={{alignItems: 'center', justifyContent:'center'}}>
-                <TouchableOpacity
-                  onPress={() => this.closeLocationModalEstab(this.state.enderecoCepEstab.uf, this.state.enderecoCepEstab.localidade, this.state.enderecoCepEstab.logradouro)}
-                  style={{borderRadius:30, alignItems:'center', justifyContent:'center', backgroundColor:'#DAA520', height: 40, width: 40, marginBottom:40}}
-                  >
-                  <FontAwesome5 name="check-circle" size={24} color={'white'}/>
-                </TouchableOpacity>
-              </View>
-                
+              <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#fff', textAlign:'center'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000', textAlign:'center'}}>Por favor, verifique se as informações conferem, caso não, pesquise o endereço novamente</Text>
             </View>
           </Modalize>
 
@@ -2374,46 +2375,25 @@ export default class CriarAnuncio extends Component {
           {/*Modalize do CEP Auto*/}
           <Modalize
             ref={this.state.modalizeLocationAuto}
-            snapPoint={500}
+            snapPoint={400}
             modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
             >
-            <View style={{flex:1,alignItems:'center', flexDirection:'row'}}>
-                <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff'} : {fontWeight: 'bold', padding:15,color:'#000'}}>Insira seu CEP</Text>  
-
-                  <View style={{marginRight:20}}>
-                    <InputForm
-                      value={this.state.cepAuto}
-                      maxLength={8}
-                      minLength={8}
-                      onChangeText={text => this.onChangeCEPAuto(text)}
-                      keyboardType={"numeric"}
-                      placeholder="O CEP NÃO PODE TER (-)"
-                    />
-
-                  </View> 
-                  <TouchableOpacity onPress={() => this.searchCEPAuto()} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:10}}>
-                    <FontAwesome5 name="search-location" size={24} color={'#9A9A9A'}/>
-                  </TouchableOpacity>
-
+            <View style={{flex:1,alignItems:'center', flexDirection:'column'}}>
+                <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, color:'#fff'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000'}}>Localização</Text>
+                
+                {this.state.enderecoAuto == null ?
+                  <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff', textAlign:'center'} : {fontWeight: 'bold', padding:15,color:'#000',textAlign:'center'}}>Nenhum endereço encontrado</Text>
+                :
+                  <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff', textAlign:'center'} : {fontWeight: 'bold', padding:15,color:'#000',textAlign:'center'}}>{this.state.enderecoAuto}</Text>  
+                }
+                <TouchableOpacity onPress={() => this.GetCurrentLocation('Autonomo')} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                  <FontAwesome5 name="search-location" size={24} color={'#9A9A9A'}/>
+                </TouchableOpacity>
             </View>
+                 
 
             <View>
-              <Text style={this.context.dark ?{fontWeight: 'bold', padding:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', padding:15, marginTop: 10, color:'#000'}}>Estado: {this.state.enderecoCepAuto.uf}</Text>
-              <Text style={this.context.dark ?{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#000'}}>Cidade: {this.state.enderecoCepAuto.localidade}</Text>
-              <Text style={this.context.dark ?{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#000'}}>Logradouro: {this.state.enderecoCepAuto.logradouro}</Text>
-                
-
-              <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#fff'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000'}}>Por favor, verifique se as informações conferem, caso sim, confirme e termine o cadastro</Text>
-              
-              <View style={{alignItems: 'center', justifyContent:'center'}}>
-                <TouchableOpacity
-                  onPress={() => this.closeLocationModalAuto(this.state.enderecoCepAuto.uf, this.state.enderecoCepAuto.localidade, this.state.enderecoCepAuto.logradouro)}
-                  style={{borderRadius:30, alignItems:'center', justifyContent:'center', backgroundColor:'#DAA520', height: 40, width: 40, marginBottom:40}}
-                  >
-                  <FontAwesome5 name="check-circle" size={24} color={'white'}/>
-                </TouchableOpacity>
-              </View>
-                
+              <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#fff', textAlign:'center'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000', textAlign:'center'}}>Por favor, verifique se as informações conferem, caso não, pesquise o endereço novamente</Text>
             </View>
           </Modalize>
 
@@ -2450,227 +2430,6 @@ export default class CriarAnuncio extends Component {
             </View>
           </Modalize>
 
-
-          {/*Modalize do horario de abertura*/}
-          <Modalize
-            ref={this.state.modalizeRefAbertura}
-            snapPoint={500}
-            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
-          >
-            <View style={{alignItems:'flex-start', marginTop:40}}>
-            <Heading6 style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, color:'#fff'} : {fontWeight:'bold', marginLeft: 10, color:'#000'}}>Selecione o Horário de Abertura</Heading6>
-                <View>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('1:00')}>
-                      <CategoryAndSub>1:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('2:00')}>
-                      <CategoryAndSub>2:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('3:00')}>
-                      <CategoryAndSub>3:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('4:00')}>
-                      <CategoryAndSub>4:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('5:00')}>
-                      <CategoryAndSub>5:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('6:00')}>
-                      <CategoryAndSub>6:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('7:00')}>
-                      <CategoryAndSub>7:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('8:00')}>
-                      <CategoryAndSub>8:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('9:00')}>
-                      <CategoryAndSub>9:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('10:00')}>
-                      <CategoryAndSub>10:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('11:00')}>
-                      <CategoryAndSub>11:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('12:00')}>
-                      <CategoryAndSub>12:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('13:00')}>
-                      <CategoryAndSub>13:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('14:00')}>
-                      <CategoryAndSub>14:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('15:00')}>
-                      <CategoryAndSub>15:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('16:00')}>
-                      <CategoryAndSub>16:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('17:00')}>
-                      <CategoryAndSub>17:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('18:00')}>
-                      <CategoryAndSub>18:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('19:00')}>
-                      <CategoryAndSub>19:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('20:00')}>
-                      <CategoryAndSub>20:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('21:00')}>
-                      <CategoryAndSub>21:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('22:00')}>
-                      <CategoryAndSub>22:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('23:00')}>
-                      <CategoryAndSub>23:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('00:00')}>
-                      <CategoryAndSub>00:00</CategoryAndSub>
-                  </TouchableOpacity>
-                </View>
-            </View>
-          </Modalize>
-
-
-
-
-           {/*Modalize do horario de FECHAMENTO*/}
-           <Modalize
-            ref={this.state.modalizeRefFechamento}
-            snapPoint={500}
-            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
-          >
-            <View style={{alignItems:'flex-start', marginTop:40}}>
-            <Heading6 style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, color:'#fff'} : {fontWeight:'bold', marginLeft: 10, color:'#000'}}>Selecione o Horário de Fechamento</Heading6>
-                <View>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('1:00')}>
-                      <CategoryAndSub>1:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('2:00')}>
-                      <CategoryAndSub>2:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('3:00')}>
-                      <CategoryAndSub>3:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('4:00')}>
-                      <CategoryAndSub>4:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('5:00')}>
-                      <CategoryAndSub>5:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('6:00')}>
-                      <CategoryAndSub>6:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('7:00')}>
-                      <CategoryAndSub>7:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('8:00')}>
-                      <CategoryAndSub>8:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('9:00')}>
-                      <CategoryAndSub>9:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('10:00')}>
-                      <CategoryAndSub>10:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('11:00')}>
-                      <CategoryAndSub>11:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('12:00')}>
-                      <CategoryAndSub>12:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('13:00')}>
-                      <CategoryAndSub>13:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('14:00')}>
-                      <CategoryAndSub>14:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('15:00')}>
-                      <CategoryAndSub>15:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('16:00')}>
-                      <CategoryAndSub>16:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('17:00')}>
-                      <CategoryAndSub>17:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('18:00')}>
-                      <CategoryAndSub>18:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('19:00')}>
-                      <CategoryAndSub>19:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('20:00')}>
-                      <CategoryAndSub>20:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('21:00')}>
-                      <CategoryAndSub>21:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('22:00')}>
-                      <CategoryAndSub>22:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('23:00')}>
-                      <CategoryAndSub>23:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('00:00')}>
-                      <CategoryAndSub>00:00</CategoryAndSub>
-                  </TouchableOpacity>
-                </View>
-            </View>
-          </Modalize>
         </SafeBackgroundPublish>
       </Fragment>
     );

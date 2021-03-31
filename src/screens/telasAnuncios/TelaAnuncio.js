@@ -828,7 +828,11 @@ export default class TelaAnuncio extends Component {
 
                   <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                       <IconResponsiveNOBACK name="map-marked-alt" size={25}/>
-                        <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.local}</TextTheme>
+                        {item.local == null ?
+                          <TextTheme style={{fontSize:15, marginLeft: 15}}>Remoto</TextTheme>
+                        :
+                          <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.local}</TextTheme>
+                        }
                   </View>
 
                   <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
@@ -1350,7 +1354,11 @@ export default class TelaAnuncio extends Component {
 
                   <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                       <IconResponsiveNOBACK name="map-marked-alt" size={25}/>
-                        <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.local}</TextTheme>
+                        {item.local == null ?
+                          <TextTheme style={{fontSize:15, marginLeft: 15}}>Remoto</TextTheme>
+                        :
+                          <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.local}</TextTheme>
+                        }
                   </View>
 
 
