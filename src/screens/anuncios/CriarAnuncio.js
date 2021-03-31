@@ -408,16 +408,6 @@ export default class CriarAnuncio extends Component {
   }
 
 
-  onChangeCEPEstab(text) {
-    this.setState({cepEstab: text})
-    console.log('cepEstab'  + this.state.cepEstab)
-  }
-
-  onChangeCEPAuto(text) {
-    this.setState({cepAuto: text})
-    console.log('cepAuto'  + this.state.cepAuto)
-  }
-
 
   openModalize() {
     const modalizeRef = this.state.modalizeRef;
@@ -495,23 +485,6 @@ export default class CriarAnuncio extends Component {
 
     modalizePhotos.current?.close()
   }
-
-  closeLocationModalEstab(estado, local, lograd) {
-    const modalizeLocationEstab = this.state.modalizeLocationEstab;
-
-    const sumLocation = `${lograd}, ${local}, ${estado}`;
-
-    this.setState({enderecoEstab: sumLocation})
-    this.setState({UFEstab: estado})
-    modalizeLocationEstab.current?.close()
-  }
-
-  closeLocationModalAuto() {
-    const modalizeLocationAuto = this.state.modalizeLocationAuto;
-
-    modalizeLocationAuto.current?.close()
-  }
-
 
 
   closeDescriptionModal(){
@@ -2359,9 +2332,15 @@ export default class CriarAnuncio extends Component {
                 :
                   <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff', textAlign:'center'} : {fontWeight: 'bold', padding:15,color:'#000',textAlign:'center'}}>{this.state.enderecoEstab}</Text>  
                 }
-                <TouchableOpacity onPress={() => this.GetCurrentLocation('Estabelecimento')} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
-                  <FontAwesome5 name="search-location" size={24} color={'#9A9A9A'}/>
-                </TouchableOpacity>
+                <View style={{flexDirection:'row'}}>
+                  <TouchableOpacity onPress={() => this.GetCurrentLocation('Estabelecimento')} style={{alignItems:'center', justifyContent:'center', marginTop:10, marginRight:15, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                    <FontAwesome5 name="search-location" size={24} color={'#9A9A9A'}/>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => this.setState({enderecoEstab: null})} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                    <FontAwesome5 name="times-circle" size={24} color={'#9A9A9A'}/>
+                  </TouchableOpacity>
+                </View>
             </View>
                  
 
@@ -2386,9 +2365,15 @@ export default class CriarAnuncio extends Component {
                 :
                   <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff', textAlign:'center'} : {fontWeight: 'bold', padding:15,color:'#000',textAlign:'center'}}>{this.state.enderecoAuto}</Text>  
                 }
-                <TouchableOpacity onPress={() => this.GetCurrentLocation('Autonomo')} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
-                  <FontAwesome5 name="search-location" size={24} color={'#9A9A9A'}/>
-                </TouchableOpacity>
+                <View style={{flexDirection:'row'}}>
+                  <TouchableOpacity onPress={() => this.GetCurrentLocation('Autonomo')} style={{alignItems:'center', justifyContent:'center', marginTop:10, marginRight:15, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                    <FontAwesome5 name="search-location" size={24} color={'#9A9A9A'}/>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => this.setState({enderecoAuto: null})} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                    <FontAwesome5 name="times-circle" size={24} color={'#9A9A9A'}/>
+                  </TouchableOpacity>
+                </View>
             </View>
                  
 
