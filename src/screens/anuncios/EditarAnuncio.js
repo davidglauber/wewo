@@ -165,6 +165,8 @@ export default class EditarAnuncio extends Component {
       modalizeRef: React.createRef(null),
       modalizeRefDescription: React.createRef(null),
       modalizeRefDescriptionEstab: React.createRef(null),
+      modalizeRefValueEstab:  React.createRef(null),
+      modalizeRefValueAuto:  React.createRef(null),
       modalizeRefSub: React.createRef(null),
       modalizePhotos: React.createRef(null),
       modalizeVideoAndPhoto: React.createRef(null),
@@ -600,6 +602,11 @@ export default class EditarAnuncio extends Component {
     modalizeRefDescriptionEstab.current?.open()
   }
 
+  openModalizeValueEstab() {
+    const modalizeRefValueEstab = this.state.modalizeRefValueEstab;
+
+    modalizeRefValueEstab.current?.open()
+  }
 
 
   openModalizeSubCategoria() {
@@ -1903,7 +1910,7 @@ export default class EditarAnuncio extends Component {
                                 
                                 { this.state.segunda == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('segunda')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('segunda')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Seg</TextDays>
                                     </View>
                                     :
@@ -1915,7 +1922,7 @@ export default class EditarAnuncio extends Component {
 
                                 { this.state.terca == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('terça')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('terça')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Ter</TextDays>
                                     </View>
                                     :
@@ -1928,7 +1935,7 @@ export default class EditarAnuncio extends Component {
 
                                 { this.state.quarta == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('quarta')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('quarta')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Qua</TextDays>
                                     </View>
                                     :
@@ -1942,7 +1949,7 @@ export default class EditarAnuncio extends Component {
                               <View style={{flexDirection:'row'}}>
                                 { this.state.quinta == '' ?
                                   <View style={{flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('quinta')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('quinta')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                     <TextDays>Qui</TextDays>
                                   </View>
 
@@ -1955,7 +1962,7 @@ export default class EditarAnuncio extends Component {
 
                                 { this.state.sexta == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sexta')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sexta')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sex</TextDays>
                                     </View>
                                     :
@@ -1968,7 +1975,7 @@ export default class EditarAnuncio extends Component {
 
                                 { this.state.sabado == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sábado')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sábado')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sáb</TextDays>
                                     </View>
                                     :
@@ -1982,7 +1989,7 @@ export default class EditarAnuncio extends Component {
                             <View style={{flexDirection:'row'}}>
                                 { this.state.domingo == '' ?
                                   <View style={{flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('domingo')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('domingo')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                     <TextDays>Dom</TextDays>
                                   </View>
                                   :
@@ -2098,15 +2105,16 @@ export default class EditarAnuncio extends Component {
                               />
                             </TouchableOpacity>
 
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                            <TouchableOpacity onPress={() => this.openModalizeValueEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
                               <InputFormMask
                                 type={'money'}
+                                editable={false}
                                 value={this.state.precoEstab}
                                 onChangeText={text => this.onChangePrecoEstab(text)}
                                 keyboardType={"number-pad"}
                                 placeholder="Valor do Serviço                                                          "
                               />
-                            </View>
+                            </TouchableOpacity>
 
                             <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
                               <InputFormMask
@@ -2135,7 +2143,7 @@ export default class EditarAnuncio extends Component {
                                 
                                 { this.state.segunda == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('segunda')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('segunda')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Seg</TextDays>
                                     </View>
                                     :
@@ -2147,7 +2155,7 @@ export default class EditarAnuncio extends Component {
 
                                 { this.state.terca == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('terça')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('terça')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Ter</TextDays>
                                     </View>
                                     :
@@ -2160,7 +2168,7 @@ export default class EditarAnuncio extends Component {
 
                                 { this.state.quarta == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('quarta')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('quarta')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Qua</TextDays>
                                     </View>
                                     :
@@ -2174,7 +2182,7 @@ export default class EditarAnuncio extends Component {
                               <View style={{flexDirection:'row'}}>
                                 { this.state.quinta == '' ?
                                   <View style={{flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('quinta')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('quinta')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                     <TextDays>Qui</TextDays>
                                   </View>
 
@@ -2187,7 +2195,7 @@ export default class EditarAnuncio extends Component {
 
                                 { this.state.sexta == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sexta')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sexta')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sex</TextDays>
                                     </View>
                                     :
@@ -2200,7 +2208,7 @@ export default class EditarAnuncio extends Component {
 
                                 { this.state.sabado == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sábado')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sábado')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sáb</TextDays>
                                     </View>
                                     :
@@ -2214,7 +2222,7 @@ export default class EditarAnuncio extends Component {
                             <View style={{flexDirection:'row'}}>
                                 { this.state.domingo == '' ?
                                   <View style={{flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('domingo')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('domingo')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                     <TextDays>Dom</TextDays>
                                   </View>
                                   :
@@ -2353,6 +2361,28 @@ export default class EditarAnuncio extends Component {
                   </TouchableOpacity>
                 </View>
               ))}
+            </View>
+          </Modalize>
+
+
+          {/*Modalize do preço ESTABELECIMENTO*/}
+          <Modalize
+            ref={this.state.modalizeRefValueEstab}
+            snapPoint={500}
+          >
+            <View style={{flex:1,alignItems:'center'}}>
+                <Text style={{fontWeight: 'bold', padding:15, textAlign:'center'}}>Deseja selecionar um preço? {'\n'}(caso fique em branco será definido como "a combinar")</Text>  
+              
+              <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                <InputFormMask
+                  type={'money'}
+                  value={this.state.precoEstab}
+                  onChangeText={text => this.onChangePrecoEstab(text)}
+                  keyboardType={"number-pad"}
+                  placeholder="Valor do Serviço                                                          "
+                />
+              </View>
+
             </View>
           </Modalize>
 

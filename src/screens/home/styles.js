@@ -166,8 +166,8 @@ export const InputFormMask = styled(TextInputMask)`
 
 export const ChooseOption = styled.TouchableOpacity`
     background-color: ${props => props.theme.color};
-    width:18px; 
-    height:18px;
+    width:22px; 
+    height:22px;
     border-radius:30px
 `
 export const Subtitle2Publish = styled(Subtitle2)`

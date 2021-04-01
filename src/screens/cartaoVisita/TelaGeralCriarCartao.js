@@ -331,7 +331,7 @@ export default class TelaGeralCriarCartao extends Component {
 
       if(comprou == false) {
         if(cartoesDidMount.length >= 1) {
-          alert('A conta free permite até 1 Portfólio, consulte a tela de PLANOS para mais informações')
+          alert('A conta free permite até 1 Portfólio/Produto, consulte a tela de PLANOS para mais informações')
         }
 
         if(cartoesDidMount.length  < 1) {
