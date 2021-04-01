@@ -826,12 +826,12 @@ export default class TelaAnuncio extends Component {
                       <TextTheme style={{fontSize:15, marginLeft: 15, marginRight: windowWidth/3}}>{item.nome}</TextTheme>
                   </TouchableOpacity>
 
-                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
+                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center', maxWidth:300}}>
                       <IconResponsiveNOBACK name="map-marked-alt" size={25}/>
                         {item.local == null ?
                           <TextTheme style={{fontSize:15, marginLeft: 15}}>Remoto</TextTheme>
                         :
-                          <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.local}</TextTheme>
+                          <TextTheme style={{fontSize:15, marginLeft: 15, textAlign:'justify'}}>{item.local}</TextTheme>
                         }
                   </View>
 
@@ -994,20 +994,20 @@ export default class TelaAnuncio extends Component {
               <Text style={this.context.dark ? {color:'#fff', padding:10, fontWeight:'bold', fontSize:20} : {color:'#000', padding:10, fontWeight:'bold', fontSize:20}}>{this.state.nomeUser}</Text>
               <Text style={this.context.dark ? {color:'#fff', paddingLeft:40, paddingRight:40} : {color:'#000', paddingLeft:40, paddingRight:40}}>{this.state.textPortfolio}</Text>
               
-              <Heading6 style={this.context.dark ? {fontWeight:'bold', marginTop: 50, color:'#FFD700'} : {fontWeight:'bold', marginTop:50, color:'#000'}}>Mais detalhes</Heading6>
+              <Heading6 style={this.context.dark ? {fontWeight:'bold', marginTop: 50, color:'#d98b0d'} : {fontWeight:'bold', marginTop:50, color:'#000'}}>Mais detalhes</Heading6>
               
               
               <FlatList keyExtractor={() => this.makeid(17)} data={this.state.cartoesAuto} horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20,flexGrow: 1, justifyContent: 'center'}} 
                 renderItem={({item}) => 
                   <View style={{paddingHorizontal:100}}>
-                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, justifyContent:'center'}}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{backgroundColor:'#d98b0d', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, justifyContent:'center'}}>
                       <FontAwesome5 style={{marginTop:7, marginBottom:7}} name="user-tie" size={20}/>
                       <Image source={{uri: item.photo}} style={{width:100, height:50, borderRadius:30}}/>
                       <Text style={{fontWeight:'bold'}}>{item.nome}</Text>
-                      <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                      <View>
                         <FontAwesome5 style={{marginTop:35}} name="chevron-circle-up" size={30}/>
-                      </TouchableOpacity>
-                    </View>
+                      </View>
+                    </TouchableOpacity>
                   </View>
               }
               />
@@ -1015,14 +1015,14 @@ export default class TelaAnuncio extends Component {
               <FlatList keyExtractor={() => this.makeid(17)} data={this.state.cartoesEstab} horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20,flexGrow: 1, justifyContent: 'center'}} 
                 renderItem={({item}) => 
                   <View style={{paddingHorizontal:100}}>
-                    <View style={{backgroundColor:'#FFD700', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, justifyContent:'center', paddingBottom:30}}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{backgroundColor:'#d98b0d', borderRadius:30, width: windowWidth/2, height:200, alignItems:'center', paddingTop:20, justifyContent:'center', paddingBottom:30}}>
                       <FontAwesome5 style={{marginTop:7, marginBottom:7}} name="briefcase" size={20}/>
                       <Image source={{uri: item.photo}} style={{width:100, height:50, borderRadius:30}}/>
                       <Text style={{fontWeight:'bold'}}>{item.title}</Text>
-                      <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                      <View>
                         <FontAwesome5 style={{marginTop:35}} name="chevron-circle-up" size={30}/>
-                      </TouchableOpacity>
-                    </View>
+                      </View>
+                    </TouchableOpacity>
                   </View>
               }
               />
@@ -1352,12 +1352,12 @@ export default class TelaAnuncio extends Component {
 
 
 
-                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
+                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center', maxWidth:300}}>
                       <IconResponsiveNOBACK name="map-marked-alt" size={25}/>
                         {item.local == null ?
                           <TextTheme style={{fontSize:15, marginLeft: 15}}>Remoto</TextTheme>
                         :
-                          <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.local}</TextTheme>
+                          <TextTheme style={{fontSize:15, marginLeft: 15, textAlign:'justify'}}>{item.local}</TextTheme>
                         }
                   </View>
 
