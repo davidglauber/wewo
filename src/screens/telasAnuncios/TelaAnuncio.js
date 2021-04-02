@@ -49,7 +49,7 @@ import firebase from '../../config/firebase';
 
 //import icons
 import { FontAwesome5 } from '@expo/vector-icons';
-import { SafeAnuncioView, ValueFieldPrincipal, ViewComment, ReviewView, TextDetails, CategoryAndSub, TouchableResponsive, SignUpBottom, IconResponsiveNOBACK, ButtonIconContainer, CallAndMessageContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
+import { SafeAnuncioView, ValueFieldPrincipal, ViewComment, ReviewView, TouchableResponsive, SignUpBottom, IconResponsiveNOBACK, ButtonIconContainer, CallAndMessageContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
 
 import {Heading6} from '../../components/text/CustomText';
 
@@ -793,12 +793,13 @@ export default class TelaAnuncio extends Component {
                     </TouchableItem>
                   </ButtonIconContainer>
 
+
+                  <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', position:'absolute', bottom: windowHeight/3.9, opacity:0.8, left: windowWidth/3.7, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
                 </View>
 
                   <View style={styles.descriptionContainer}>
                       <View style={styles.productTitleContainer}>
                             <Heading>{item.title}</Heading>
-                          <ValueFieldPrincipal style={{fontSize: 18}}>{item.value}</ValueFieldPrincipal>
                       </View>
                   </View>
 
@@ -1274,6 +1275,7 @@ export default class TelaAnuncio extends Component {
                         source={{uri: item.photo3}}
                         style={styles.slideImg}
                       />
+
                   </Swiper>
 
                   <ButtonIconContainer style={{borderRadius:10}}>
@@ -1323,13 +1325,17 @@ export default class TelaAnuncio extends Component {
                       </View>
                     </TouchableItem>
                   </ButtonIconContainer>
+                  
+
+
+                    <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', position:'absolute', bottom: windowHeight/3.9, opacity:0.8, left: windowWidth/3.7, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
+
 
                 </View>
 
                   <View style={styles.descriptionContainer}>
                       <View style={styles.productTitleContainer}>
                             <Heading>{item.title}</Heading>
-                          <ValueFieldPrincipal style={{fontSize: 18}}>{item.value}</ValueFieldPrincipal>
                       </View>
                   </View>
 
