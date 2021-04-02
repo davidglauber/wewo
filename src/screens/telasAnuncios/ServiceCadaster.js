@@ -167,6 +167,13 @@ export default class ServiceCadaster extends Component {
     return result;
   }
 
+
+  onChangePreco(text) {
+    this.setState({valor: text})
+    console.log('preco estab'  + this.state.valor)
+  }
+
+
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
   }
@@ -297,8 +304,7 @@ export default class ServiceCadaster extends Component {
                 <InputForm
                     value={this.state.valor}
                     style={{marginBottom: 10}}
-                    editable={false}
-                    onChangeText={() => {}}
+                    onChangeText={text => this.onChangePreco(text)}
                     autoCapitalize={'words'}
                     maxLength={32}
                     placeholder="Valor do serviço                                                                       "
