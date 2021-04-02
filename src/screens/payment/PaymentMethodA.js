@@ -200,7 +200,7 @@ export default function PaymentMethodA() {
         }
 
         {plan == 'anual' ?
-          <View style={{flexDirection:'row'}}>
+          <View style={{flexDirection:'row', marginTop:20}}>
               <ChooseOption/>
               <TouchableOpacity>
                   <Subtitle2Publish
@@ -208,7 +208,7 @@ export default function PaymentMethodA() {
               </TouchableOpacity>
           </View>
         :
-          <View style={{flexDirection:'row'}}>
+          <View style={{flexDirection:'row', marginTop:20}}>
               <TouchableOpacity onPress={() => setPlan('anual')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
                 <TouchableOpacity onPress={() => setPlan('anual')}>
                     <Subtitle2Publish>Anual</Subtitle2Publish>
