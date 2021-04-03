@@ -96,6 +96,7 @@ export default class ConfirmedServices extends Component {
           notifications.push({
             idContratante: doc.data().idContratante,
             idContratado: doc.data().idContratado,
+            idNot: doc.data().idNot,
             photoProfile: doc.data().photoProfile,
             nome: doc.data().nome,
             telefone: doc.data().telefone,
@@ -155,6 +156,7 @@ export default class ConfirmedServices extends Component {
 
   render() {
     const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser, horarioUser} = this.state;
+    const user = firebase.auth().currentUser;
     return (
       <SafeBackground>
         <StatusBar
@@ -197,6 +199,9 @@ export default class ConfirmedServices extends Component {
             <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
               <Image source={{uri: item.photoProfile}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
               <Text  style={styles.titleMain}>{item.nome}</Text>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {idLoggedUser: user.uid, idDonoDoAnuncio: item.idContratante, idNotification: item.idNot})} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/5, justifyContent:'center', alignItems:'center'}}>
+                  <IconResponsive name="comment" size={24}/>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.openModalize(item)} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
                   <IconResponsiveNOBACK name="at" size={24}/>
                 </TouchableOpacity>

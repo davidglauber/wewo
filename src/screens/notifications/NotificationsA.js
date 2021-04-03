@@ -104,8 +104,7 @@ export default class NotificationsA extends Component {
             valor: doc.data().valor,
             cep: doc.data().cep,
             dataServico: doc.data().dataServico,
-            horario: doc.data().horario,
-            idNot: doc.data().idNot
+            horario: doc.data().horario
           })
         })
 
