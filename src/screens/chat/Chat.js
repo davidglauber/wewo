@@ -51,26 +51,24 @@ export default class Chat extends Component {
       modalVisible: false,
       textChat: '',
       chatFromFirebase: [],
-      idUserRespondedorDaMensagem: ''
+      idUserRespondedorDaMensagem: '',
     };
   }
 
   async componentDidMount() {
     let e = this;
-    let loggedUser = this.props.route.params.idLoggedUser;
-    let currentUser = firebase.auth().currentUser;
     this.setState({idUserLogado: this.props.route.params.idLoggedUser})
     this.setState({idUserDonoDoAnuncio: this.props.route.params.idDonoDoAnuncio})
 
+    console.log('USUARIO DONO DO ANUNCIO: ' + this.props.route.params.idDonoDoAnuncio)
+    
 
-
-    await firebase.firestore().collection('usuarios').doc(currentUser.uid).collection('chat').orderBy("time", "asc").onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('notifications').doc(this.props.route.params.idNotification).collection('chat').orderBy("time", "asc").onSnapshot(documentSnapshot => {
       let chatContent2 = [];
       documentSnapshot.forEach(function(doc) {
         chatContent2.push({
           idContratado: doc.data().idUsuarioQueEnviou,
           idContratante: doc.data().idUsuarioQueRecebeu,
-          statusMessage: doc.data().statusMessage,
           texto: doc.data().texto,
           time: doc.data().time
         })
@@ -98,53 +96,13 @@ export default class Chat extends Component {
     let idUserDonoDoAnuncio = this.state.idUserDonoDoAnuncio;
     let currentUser = firebase.auth().currentUser;
     let e = this;
-    let userQueEnviouAMensagem = ''
 
-    this.state.chatFromFirebase.map((l => {
-      userQueEnviouAMensagem = l.idContratado
-    }))
-
-
-    if(idUserDonoDoAnuncio == currentUser.uid){
-      //vai aparecer para o usuario que enviou a mensagem
-      firebase.firestore().collection('usuarios').doc(currentUser.uid).collection('chat').doc().set({
+      firebase.firestore().collection('notifications').doc(this.props.route.params.idNotification).collection('chat').doc().set({
         idUsuarioQueEnviou: currentUser.uid,
         idUsuarioQueRecebeu: e.state.idUserDonoDoAnuncio,
         texto: textChat,
-        statusMessage: 'sent',
         time: currentTime
       })
-
-      //vai aparecer para o usuario que recebeu a mensagem
-      firebase.firestore().collection('usuarios').doc(userQueEnviouAMensagem).collection('chat').doc().set({
-        idUsuarioQueEnviou: currentUser.uid,
-        idUsuarioQueRecebeu: userQueEnviouAMensagem,
-        texto: textChat,
-        statusMessage: 'received',
-        time: currentTime
-      })
-    } else {
-      //vai aparecer para o usuario que enviou a mensagem
-      firebase.firestore().collection('usuarios').doc(currentUser.uid).collection('chat').doc().set({
-          idUsuarioQueEnviou: currentUser.uid,
-          idUsuarioQueRecebeu: e.state.idUserDonoDoAnuncio,
-          texto: textChat,
-          statusMessage: 'sent',
-          time: currentTime
-      })
-  
-      //vai aparecer para o usuario que recebeu a mensagem
-      firebase.firestore().collection('usuarios').doc(idUserDonoDoAnuncio).collection('chat').doc().set({
-        idUsuarioQueEnviou: currentUser.uid,
-        idUsuarioQueRecebeu: e.state.idUserDonoDoAnuncio,
-        texto: textChat,
-        statusMessage: 'received',
-        time: currentTime
-      })
-    }
-
-
-
 
     e.setState({textChat: ''})
 
@@ -159,6 +117,7 @@ export default class Chat extends Component {
 
 
   render() {
+    const currentUserId = firebase.auth().currentUser.uid; 
     return (
       <SafeAnuncioView>
         <Modal
@@ -186,13 +145,13 @@ export default class Chat extends Component {
               data={this.state.chatFromFirebase}
               renderItem={({item}) => 
               <View>
-                {item.statusMessage == 'sent' &&
+                {currentUserId == item.idContratado &&
                   <View style={{marginTop:10, marginLeft:50, backgroundColor:'#d98b0d', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
                     <Text style={{color:'white'}}>{item.texto}</Text>
                   </View>
                 }
 
-                {item.statusMessage == 'received' &&
+                {currentUserId !== item.idContratado &&
                   <View style={{marginTop:10, marginRight:50, backgroundColor:'#d4cccb', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
                     <Text style={{color:'black'}}>{item.texto}</Text>
                   </View>
