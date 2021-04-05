@@ -47,8 +47,12 @@ const styles = StyleSheet.create({
     padding: 30,
     marginRight:10
   },
+  moneyCard: {
+    position:'absolute',
+    right:windowWidth/8
+  },
   title: {
-    marginLeft: windowWidth/6, 
+    marginLeft: 20, 
     fontSize: 15, 
     fontWeight: 'bold', 
     color: 'white'
@@ -225,6 +229,9 @@ export default class ConfirmedServices extends Component {
             <View style={{width: windowWidth/1.06, height:100, backgroundColor: '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
               <Image source={{uri: fotoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
                 <Text  style={styles.title}>{nameUser}</Text>
+                <TouchableOpacity style={styles.moneyCard} onPress={() => this.props.navigation.navigate('PaymentServices')}>
+                  <IconResponsive name="money-check-alt" size={24}/>
+                </TouchableOpacity>
             </View>
 
             <View style={{width: windowWidth/1.06, height:500, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10}}>

@@ -73,6 +73,8 @@ import TelaPrincipalAnuncio from '../screens/anuncios/TelaPrincipalAnuncio';
 
 import EditarAnuncio from '../screens/anuncios/EditarAnuncio';
 
+import PaymentServices from '../screens/payment/PaymentServices';
+
 import Chat from '../screens/chat/Chat';
 
 import ChatReceive from '../screens/chat/ChatReceive';
@@ -321,6 +323,12 @@ function MainNavigatorA() {
           options={{headerShown: false}}
         />
 
+        <Stack.Screen
+          name="PaymentServices"
+          component={PaymentServices}
+          options={{headerShown: false}}
+        />
+        
         <Stack.Screen
           name="ChatReceive"
           component={ChatReceive}
