@@ -173,8 +173,8 @@ export default class ConfirmedServices extends Component {
         <View>
           <View style={{flexDirection:'row'}}>
             <Heading style={styles.paddingTitle}>Meus Serviços</Heading>
-            <TouchableOpacity onPress={() => this.uploadedNotifications()}>
-              <IconResponsiveNOBACK style={{marginLeft:90, marginTop:30}} name="handshake" size={24}/>
+            <TouchableOpacity style={{position:'absolute', left:windowWidth/1.2, marginTop:30}} onPress={() => this.uploadedNotifications()}>
+              <IconResponsiveNOBACK name="handshake" size={24}/>
             </TouchableOpacity>
           </View>
           
@@ -189,8 +189,8 @@ export default class ConfirmedServices extends Component {
         <View>
           <View style={{flexDirection:'row'}}>
           <Heading style={styles.paddingTitle}>Meus Serviços</Heading>
-            <TouchableOpacity onPress={() => this.uploadedNotifications()}>
-              <IconResponsiveNOBACK style={{marginLeft:90, marginTop:30}} name="handshake" size={24}/>
+            <TouchableOpacity style={{position:'absolute', left:windowWidth/1.2, marginTop:30}} onPress={() => this.uploadedNotifications()}>
+              <IconResponsiveNOBACK name="handshake" size={24}/>
             </TouchableOpacity>
           </View>
           

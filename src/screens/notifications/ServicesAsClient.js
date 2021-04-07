@@ -138,10 +138,6 @@ export default class ServicesAsClient extends Component {
   }
 
 
-  uploadedNotifications(){
-    alert("iae chapa")
-  }
-
   makeid(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -167,9 +163,6 @@ export default class ServicesAsClient extends Component {
       <View>
           <View style={{flexDirection:'row'}}>
             <Heading style={styles.paddingTitle}>Serviços que Contratei</Heading>
-            <TouchableOpacity onPress={() => this.uploadedNotifications()}>
-              <IconResponsiveNOBACK style={{marginLeft:90, marginTop:30}} name="handshake" size={24}/>
-            </TouchableOpacity>
           </View>
           
           <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PagWeWo)</TextDescription2>
@@ -184,9 +177,6 @@ export default class ServicesAsClient extends Component {
         <View>
           <View style={{flexDirection:'row'}}>
           <Heading style={styles.paddingTitle}>Serviços que Contratei</Heading>
-            <TouchableOpacity onPress={() => this.uploadedNotifications()}>
-              <IconResponsiveNOBACK style={{marginLeft:90, marginTop:30}} name="handshake" size={24}/>
-            </TouchableOpacity>
           </View>
           
           <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PagWeWo)</TextDescription2>

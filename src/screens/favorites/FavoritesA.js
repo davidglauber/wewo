@@ -279,8 +279,8 @@ export default class FavoritesA extends Component {
             <View>
 
               {cartoesAuto.length == 0 && cartoesEstab.length == 0 &&
-                <View style={{flex:1, alignItems:'center', paddingTop:70, marginLeft:30}}>
-                  <Heading>Parece que você ainda não tem nenhum anuncio favoritado :(</Heading>
+                <View style={{flex:1, alignItems:'center', paddingTop:70, marginLeft:30, maxWidth: windowWidth/1.2}}>
+                  <Heading style={{textAlign:'center'}}>Parece que você ainda não tem nenhum anuncio favoritado :(</Heading>
                 </View>
               }
               
