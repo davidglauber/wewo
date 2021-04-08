@@ -78,6 +78,7 @@ export default class PaymentServices extends Component {
       brCodeValue: '',
       endpointMP: '',
       valueService: '',
+      value:20
     };
   }
 
@@ -85,10 +86,18 @@ export default class PaymentServices extends Component {
   sleep = (time) => {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
-
-
+  
+  
   componentDidMount() {
-    this.setState({valueService: this.props.route.params.valuePayment})
+    let valueRoute = ''
+    valueRoute =  this.props.route.params.valuePayment;
+
+    this.setState({valueService: valueRoute})
+    
+    let replace = valueRoute.replace('R$', '');
+    let replacePoint = replace.replace(',','.');
+
+    this.setState({value: replacePoint})
   }
 
   goBack = () => {
@@ -113,13 +122,12 @@ export default class PaymentServices extends Component {
   }
 
   mercadoPago() {
-    let replace = this.state.valueService.replace('R$', '');
-    let replacePoint = replace.replace(',','.')
+    let value = this.state.value;
+    let newNumber = new Number(value);
+
     
     this.setState({brCodeValue:'loaded'});
-    console.log('replacepoint: ' + replacePoint)
     
-    this.sleep(1000).then(() => { 
       fetch('https://api.mercadopago.com/checkout/preferences?access_token=APP_USR-4801354026747963-040711-bd3c57cc909703918b030e1eeaa28c66-188576751', {
         method:'POST',
         mode: 'no-cors',
@@ -133,7 +141,7 @@ export default class PaymentServices extends Component {
               title:"Pagamento de Serviço",
               quantity: 1,
               currency_id:"BRL",
-              unit_price: 25.6,
+              unit_price: newNumber,
               picture_url: "https://a-static.mlcdn.com.br/618x463/lapis-simples-com-borracha-preto-art-school/sakurashop/5093/0223ea02b0d96a9172d018a598d8fa32.jpg"
             }
           ]
@@ -142,7 +150,6 @@ export default class PaymentServices extends Component {
       .then((res) => res.json())
       .then((json) => this.setState({endpointMP: json.sandbox_init_point}))
       .catch(() => alert('erroo ao requisitar o mercado pago'))
-    })
   }
     
   render() {
@@ -155,7 +162,8 @@ export default class PaymentServices extends Component {
         />
         {this.state.brCodeValue == '' ?
           <View style={{alignItems:'center'}}>
-            <Heading style={styles.paddingTitle}>Pagamentos ({this.state.valueService})</Heading>
+            <Heading style={styles.paddingTitle}>Pagamento</Heading>
+            <Heading style={{paddingTop: 10, marginBottom:10}}>Valor do Serviço: {this.state.valueService}</Heading>
             <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Escolha o método de pagamento que mais lhe é conveniente (será cobrada uma pequena taxa sobre o valor para a manuntenção da plataforma)</TextDescription2>
               <TouchableOpacity onPress={() => this.pixQRCODE()}>
                 <Image source={require('../../../assets/pix.png')} style={{width:134, height:134}}/>
