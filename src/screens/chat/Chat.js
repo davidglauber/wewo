@@ -62,7 +62,8 @@ export default class Chat extends Component {
       modalizeRef: React.createRef(null),
       chatFromFirebase: [],
       idUserRespondedorDaMensagem: '',
-      valueUser:''
+      valueUser:'',
+      type: ''
     };
   }
 
@@ -71,6 +72,7 @@ export default class Chat extends Component {
     this.setState({idUserLogado: this.props.route.params.idLoggedUser})
     this.setState({idUserDonoDoAnuncio: this.props.route.params.idDonoDoAnuncio})
     this.setState({valueUser: this.props.route.params.valuePayment})
+    this.setState({type: this.props.route.params.type})
 
     console.log('USUARIO DONO DO ANUNCIO: ' + this.props.route.params.idDonoDoAnuncio)
     console.log('Valor do SERVIÇO: ' + this.props.route.params.valuePayment)
@@ -157,9 +159,11 @@ export default class Chat extends Component {
           <View style={{alignItems:'center', marginTop:15}}>
             <Heading>Chat</Heading>
             
-            <TouchableOpacity style={styles.moneyCard} onPress={() => this.openModalize()}>
-              <IconResponsiveNOBACK name="money-bill-alt" size={24}/>
-            </TouchableOpacity>
+            {this.state.type == 'confirmedNotif' &&
+              <TouchableOpacity style={styles.moneyCard} onPress={() => this.openModalize()}>
+                <IconResponsiveNOBACK name="money-bill-alt" size={24}/>
+              </TouchableOpacity>
+            }
 
             <FlatList
               keyExtractor={() => this.makeid(17)}
