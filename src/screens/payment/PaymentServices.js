@@ -31,11 +31,14 @@ import firebase from '../../config/firebase';
 
 import { ThemeContext } from '../../../ThemeContext';
 
+import { WebView } from 'react-native-webview'
 
 //QRCODE
 import QRCode from 'react-native-qrcode-svg';
 
-import MercadoPagoCheckout from '@blackbox-vision/react-native-mercadopago-px';
+//BIBLIOTECA PIX
+import { staticPix } from "pix-charge";
+
 
 //consts
 const windowWidth = Dimensions.get('window').width;
@@ -64,26 +67,6 @@ const styles = StyleSheet.create({
   }
 })
 
-// You should create the preference server-side, not client-side but we show client-side for the sake of simplicity
-const getPreferenceId = async (payer, ...items) => {
-  const response = await fetch(
-    `https://api.mercadopago.com/checkout/preferences?access_token=TEST-4801354026747963-040711-377b3fce36180bd55a0eeb4ab28ecd37-188576751`,
-    {
-      method: 'POST',
-      body: JSON.stringify({
-        items,
-        payer: {
-          email: payer,
-        },
-      }),
-    }
-  );
-
-  const preference = await response.json();
-
-  return preference.id;
-};
-
 // NotificationsA
 export default class PaymentServices extends Component {
   static contextType = ThemeContext;
@@ -92,8 +75,20 @@ export default class PaymentServices extends Component {
     super(props);
 
     this.state = {
-      paymentResult:null
+      brCodeValue: '',
+      endpointMP: '',
+      valueService: '',
     };
+  }
+
+  //sleep function
+  sleep = (time) => {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+
+
+  componentDidMount() {
+    this.setState({valueService: this.props.route.params.valuePayment})
   }
 
   goBack = () => {
@@ -117,49 +112,68 @@ export default class PaymentServices extends Component {
     return result;
   }
 
-  pixQRCODE() {
-    console.log('br code:')
+  mercadoPago() {
+    let replace = this.state.valueService.replace('R$', '');
+    let replacePoint = replace.replace(',','.')
+    
+    this.setState({brCodeValue:'loaded'});
+    console.log('replacepoint: ' + replacePoint)
+    
+    this.sleep(1000).then(() => { 
+      fetch('https://api.mercadopago.com/checkout/preferences?access_token=APP_USR-4801354026747963-040711-bd3c57cc909703918b030e1eeaa28c66-188576751', {
+        method:'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          external_reference:"test_user_7106258@testuser.com",
+          items: [
+            {
+              title:"Pagamento de Serviço",
+              quantity: 1,
+              currency_id:"BRL",
+              unit_price: 25.6,
+              picture_url: "https://a-static.mlcdn.com.br/618x463/lapis-simples-com-borracha-preto-art-school/sakurashop/5093/0223ea02b0d96a9172d018a598d8fa32.jpg"
+            }
+          ]
+        })
+      })
+      .then((res) => res.json())
+      .then((json) => this.setState({endpointMP: json.sandbox_init_point}))
+      .catch(() => alert('erroo ao requisitar o mercado pago'))
+    })
   }
-
+    
   render() {
-    const startCheckout = async () => {
-      try {
-        const preferenceId = await getPreferenceId('payer@email.com', {
-          title: 'Dummy Item Title',
-          description: 'Dummy Item Description',
-          quantity: 1,
-          currency_id: 'ARS',
-          unit_price: 150.0,
-        });
-  
-        const payment = await MercadoPagoCheckout.createPayment({
-          publicKey: 'TEST-5780a04e-0f67-497b-9491-7c608290abb8',
-          preferenceId,
-        });
-  
-        this.setState({paymentResult: payment});
-      } catch (err) {
-        Alert.alert('Something went wrong', err.message);
-      }
-    };
-
+    const endpointMP = this.state.endpointMP
     return (
       <SafeBackground>
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
-        <View style={{alignItems:'center'}}>
-          <Heading style={styles.paddingTitle}>Pagamentos</Heading>
-          <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Escolha o método de pagamento que mais lhe é conveniente (será cobrada uma pequena taxa sobre o valor para a manuntenção da plataforma)</TextDescription2>
-            {/*<TouchableOpacity onPress={() => this.pixQRCODE()}>
-              <Image source={require('../../../assets/pix.png')} style={{width:134, height:134}}/>
-            </TouchableOpacity>*/
-            }
-            <TouchableOpacity onPress={startCheckout}>
-              <Text style={styles.text}>Pagar com Mercado Pago</Text>
-            </TouchableOpacity>
-        </View>
+        {this.state.brCodeValue == '' ?
+          <View style={{alignItems:'center'}}>
+            <Heading style={styles.paddingTitle}>Pagamentos ({this.state.valueService})</Heading>
+            <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Escolha o método de pagamento que mais lhe é conveniente (será cobrada uma pequena taxa sobre o valor para a manuntenção da plataforma)</TextDescription2>
+              <TouchableOpacity onPress={() => this.pixQRCODE()}>
+                <Image source={require('../../../assets/pix.png')} style={{width:134, height:134}}/>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.mercadoPago()}>
+                <Image source={require('../../../assets/MPlogo.png')} style={{width:248, height:64}}/>
+              </TouchableOpacity>
+              <TextDescription2 style={{paddingHorizontal:60, marginTop:10, fontSize:10, textAlign:'center'}}>(Conta Mercado Pago, Cartão de Crédito ou Débito, Pix, Boleto, Cartão Virtual Caixa, Lotérica e PayPal)</TextDescription2>
+              {this.state.brCodeValue !== '' &&
+                <QRCode
+                  size={300}
+                  value={this.state.brCodeValue}
+                />
+              }
+          </View>
+        :
+          <WebView source={{ uri: endpointMP }} />
+        }
       </SafeBackground>
     );
   }
