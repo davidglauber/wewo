@@ -15,6 +15,8 @@ import {
   TouchableOpacity,
   Text,
   Modal,
+  TextInput,
+  StyleSheet,
   View,
 } from 'react-native';
 
@@ -24,13 +26,14 @@ import {
 //import firebase
 import firebase from '../../config/firebase';
 
-import { SafeAnuncioView, Heading, TextDescription2, IconResponsive, InputChat, Subtitle2EditProfile, ButtonCustomized, IconResponsiveNOBACK} from '../home/styles';
+import { SafeAnuncioView, Heading, InputChat, IconResponsiveNOBACK, InputFormMask} from '../home/styles';
 
 import { ThemeContext } from '../../../ThemeContext';
 
 
 import LottieView from 'lottie-react-native';
 
+import { Modalize } from 'react-native-modalize';
 
 import loading from '../../../assets/loading.json';
 
@@ -38,6 +41,12 @@ import loading from '../../../assets/loading.json';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+const styles = StyleSheet.create({
+  moneyCard: {
+    position:'absolute',
+    left:windowWidth/1.2
+  }
+})
 export default class Chat extends Component {
   static contextType = ThemeContext
 
@@ -50,8 +59,10 @@ export default class Chat extends Component {
       foto:'',
       modalVisible: false,
       textChat: '',
+      modalizeRef: React.createRef(null),
       chatFromFirebase: [],
       idUserRespondedorDaMensagem: '',
+      valueUser:''
     };
   }
 
@@ -59,9 +70,10 @@ export default class Chat extends Component {
     let e = this;
     this.setState({idUserLogado: this.props.route.params.idLoggedUser})
     this.setState({idUserDonoDoAnuncio: this.props.route.params.idDonoDoAnuncio})
+    this.setState({valueUser: this.props.route.params.valuePayment})
 
     console.log('USUARIO DONO DO ANUNCIO: ' + this.props.route.params.idDonoDoAnuncio)
-    
+    console.log('Valor do SERVIÇO: ' + this.props.route.params.valuePayment)
 
     await firebase.firestore().collection('notifications').doc(this.props.route.params.idNotification).collection('chat').orderBy("time", "asc").onSnapshot(documentSnapshot => {
       let chatContent2 = [];
@@ -77,6 +89,12 @@ export default class Chat extends Component {
 
       e.setState({chatFromFirebase: chatContent2})
     })
+  }
+
+  openModalize() {
+    const modalizeRef = this.state.modalizeRef;
+
+    modalizeRef.current?.open()
   }
 
   makeid(length) {
@@ -117,6 +135,7 @@ export default class Chat extends Component {
 
 
   render() {
+    const { valueUser } = this.state;
     const currentUserId = firebase.auth().currentUser.uid; 
     return (
       <SafeAnuncioView>
@@ -138,7 +157,9 @@ export default class Chat extends Component {
           <View style={{alignItems:'center', marginTop:15}}>
             <Heading>Chat</Heading>
             
-
+            <TouchableOpacity style={styles.moneyCard} onPress={() => this.openModalize()}>
+              <IconResponsiveNOBACK name="money-bill-alt" size={24}/>
+            </TouchableOpacity>
 
             <FlatList
               keyExtractor={() => this.makeid(17)}
@@ -163,6 +184,30 @@ export default class Chat extends Component {
 
           </View>
         </ScrollView>
+
+        {/*Modalize para definir o valor*/}
+          <Modalize
+            ref={this.state.modalizeRef}
+            snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+          >
+            <View style={{alignItems:'center', marginTop:40, paddingHorizontal:40}}>
+              <Heading style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, marginBottom:10, color:'#fff'} : {fontWeight:'bold', marginBottom:10, marginLeft: 10, color:'#d98b0d'}}>Definir Valor</Heading>
+                <InputFormMask
+                  type={'money'}
+                  value={this.state.valueUser}
+                  placeholderTextColor={this.context.dark ? "#fff" : "#000"}
+                  style={{borderWidth:3, borderColor: '#DAA520', borderRadius:20, padding:10}}
+                  onChangeText={(text) => this.setState({valueUser: text})}
+                  keyboardType={"number-pad"}
+                  placeholder="Digite o valor definitivo do serviço...                                                          "
+                />
+
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: valueUser})} style={{marginTop:30, paddingHorizontal:20}}>
+                <IconResponsiveNOBACK name="telegram-plane" size={35}/>
+            </TouchableOpacity>
+            </View>
+          </Modalize>
         
         <View style={{paddingHorizontal:20}}>
             <InputChat
@@ -175,7 +220,6 @@ export default class Chat extends Component {
                 minLength={1}
                 placeholder="Digite sua mensagem...                                                                       "
             />
-            
             <TouchableOpacity onPress={() => this.uploadChatToFirebase()} style={{paddingHorizontal:20, marginLeft: windowWidth/1.45, marginBottom: windowHeight/20}}>
                 <IconResponsiveNOBACK name="telegram-plane" size={27}/>
             </TouchableOpacity>
