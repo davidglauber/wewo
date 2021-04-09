@@ -165,6 +165,9 @@ export default class PaymentServices extends Component {
 
 
   pixQRCODE() {
+    let value = this.state.value;
+    let newNumber = new Number(value);
+
     this.openModalize();
 
     fetch('https://api.mercadopago.com/v1/payments', {
@@ -175,16 +178,12 @@ export default class PaymentServices extends Component {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          transaction_amount: 10.0,
+          transaction_amount: newNumber,
           payment_method_id: "pix",
           payer: {
             first_name: "Test",
             last_name: "Testador",
-            email: "dadee@gmail.com",
-            identification: {
-                type: "CPF",
-                number: "19119119100"
-            }
+            email: "dadee@gmail.com"          
           }
         })
       })

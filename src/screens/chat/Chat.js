@@ -222,6 +222,7 @@ export default class Chat extends Component {
                 maxLength={255}
                 multiline={true}
                 minLength={1}
+                placeholderTextColor={this.context.dark ? "#fff" : "#000"}
                 placeholder="Digite sua mensagem...                                                                       "
             />
             <TouchableOpacity onPress={() => this.uploadChatToFirebase()} style={{paddingHorizontal:20, marginLeft: windowWidth/1.45, marginBottom: windowHeight/20}}>
