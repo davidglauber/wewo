@@ -76,9 +76,11 @@ export default class PaymentServices extends Component {
 
     this.state = {
       brCodeValue: '',
+      QRCode:'',
       endpointMP: '',
       valueService: '',
-      value:20
+      value:20,
+      modalizeRef: React.createRef(null)
     };
   }
 
@@ -99,6 +101,15 @@ export default class PaymentServices extends Component {
 
     this.setState({value: replacePoint})
   }
+
+
+  openModalize() {
+    const modalizeRef = this.state.modalizeRef;
+
+    modalizeRef.current?.open()
+  }
+
+
 
   goBack = () => {
     const { navigation } = this.props;
@@ -151,6 +162,36 @@ export default class PaymentServices extends Component {
       .then((json) => this.setState({endpointMP: json.sandbox_init_point}))
       .catch(() => alert('erroo ao requisitar o mercado pago'))
   }
+
+
+  pixQRCODE() {
+    this.openModalize();
+
+    fetch('https://api.mercadopago.com/v1/payments', {
+        method:'POST',
+        mode: 'no-cors',
+        headers: {
+          'Authorization': 'Bearer APP_USR-4801354026747963-040711-bd3c57cc909703918b030e1eeaa28c66-188576751',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          transaction_amount: 10.0,
+          payment_method_id: "pix",
+          payer: {
+            first_name: "Test",
+            last_name: "Testador",
+            email: "dadee@gmail.com",
+            identification: {
+                type: "CPF",
+                number: "19119119100"
+            }
+          }
+        })
+      })
+      .then((res) => res.json())
+      .then((json) => this.setState({QRCode: `data:image/png;base64,${json.point_of_interaction.transaction_data.qr_code_base64}`}))
+      .catch(() => alert('erroo ao requisitar o mercado pago'))
+  }
     
   render() {
     const endpointMP = this.state.endpointMP
@@ -172,16 +213,23 @@ export default class PaymentServices extends Component {
                 <Image source={require('../../../assets/MPlogo.png')} style={{width:248, height:64}}/>
               </TouchableOpacity>
               <TextDescription2 style={{paddingHorizontal:60, marginTop:10, fontSize:10, textAlign:'center'}}>(Conta Mercado Pago, Cartão de Crédito ou Débito, Pix, Boleto, Cartão Virtual Caixa, Lotérica e PayPal)</TextDescription2>
-              {this.state.brCodeValue !== '' &&
-                <QRCode
-                  size={300}
-                  value={this.state.brCodeValue}
-                />
-              }
           </View>
         :
           <WebView source={{ uri: endpointMP }} />
         }
+
+          {/*Modalize dos comentários*/}
+            <Modalize
+              ref={this.state.modalizeRef}
+              snapPoint={500}
+              modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+            >
+            <View style={{alignItems:'center', marginTop:40}}>
+              <Text>Pague através desse QR Code</Text>
+              <Image style={{width: 300, height: 300}} source={{uri: this.state.QRCode}}/>
+            </View>
+          </Modalize>
+
       </SafeBackground>
     );
   }
