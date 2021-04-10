@@ -69,6 +69,8 @@ import ServicesAsClient from '../screens/notifications/ServicesAsClient';
 
 import CartaoCategory2 from '../screens/cartaoVisita/CartaoCategory2';
 
+import PixPayment from '../screens/payment/PixPayment';
+
 import TelaPrincipalAnuncio from '../screens/anuncios/TelaPrincipalAnuncio';
 
 import EditarAnuncio from '../screens/anuncios/EditarAnuncio';
@@ -314,6 +316,12 @@ function MainNavigatorA() {
         <Stack.Screen
           name="CartaoCategory"
           component={CartaoCategory}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="PixPayment"
+          component={PixPayment}
           options={{headerShown: false}}
         />
 

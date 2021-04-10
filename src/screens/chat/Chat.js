@@ -26,7 +26,7 @@ import {
 //import firebase
 import firebase from '../../config/firebase';
 
-import { SafeAnuncioView, Heading, InputChat, IconResponsiveNOBACK, InputFormMask} from '../home/styles';
+import { SafeAnuncioView, Heading, InputChat, IconResponsiveNOBACK, TextDescription2, InputFormMask} from '../home/styles';
 
 import { ThemeContext } from '../../../ThemeContext';
 
@@ -197,6 +197,7 @@ export default class Chat extends Component {
           >
             <View style={{alignItems:'center', marginTop:40, paddingHorizontal:40}}>
               <Heading style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, marginBottom:10, color:'#fff'} : {fontWeight:'bold', marginBottom:10, marginLeft: 10, color:'#d98b0d'}}>Definir Valor</Heading>
+              <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>(Digite o valor negociado)</TextDescription2>
                 <InputFormMask
                   type={'money'}
                   value={this.state.valueUser}
