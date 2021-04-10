@@ -80,6 +80,8 @@ export default class PaymentServices extends Component {
       endpointMP: '',
       valueService: '',
       value:20,
+      paymentStatus:'',
+      idTransaction:'',
       modalizeRef: React.createRef(null)
     };
   }
@@ -132,6 +134,73 @@ export default class PaymentServices extends Component {
     return result;
   }
 
+  saveImportantData(qrcode64, statusPayment, idTransaction){
+    this.setState({QRCode: qrcode64})
+    this.setState({paymentStatus: statusPayment})
+    this.setState({idTransaction: idTransaction})
+  }
+
+
+  redirectToPagePix(status) {
+    this.setState({paymentStatus: status})
+    this.props.navigation.navigate('PixPayment')
+  }
+
+  getPaymentStatus(id) {
+    //vê se o status já está "approved"
+    fetch(`https://api.mercadopago.com/v1/payments/search?status=approved&id=${id}`, {
+      method:'GET',
+      headers: {
+        'Authorization': 'Bearer APP_USR-4801354026747963-040711-bd3c57cc909703918b030e1eeaa28c66-188576751'
+      }
+    })
+    .then((res) => res.json())
+    .then((json) => this.redirectToPagePix(json.results[0].status))
+  }
+
+
+
+  pixQRCODE() {
+    let value = this.state.value;
+    let newNumber = new Number(value);
+
+    let percentToWeWo = (newNumber / 100)* 5;
+
+    this.openModalize();
+
+    //cria o pix
+    fetch('https://api.mercadopago.com/v1/payments', {
+        method:'POST',
+        mode: 'no-cors',
+        headers: {
+          'Authorization': 'Bearer APP_USR-4801354026747963-040711-bd3c57cc909703918b030e1eeaa28c66-188576751', 
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          transaction_amount: percentToWeWo,
+          payment_method_id: "pix",
+          payer: {
+            first_name: "WEWO",
+            last_name: `REFERENTE AO SERVIÇO PRESTADO`,
+            email: "wewo@gmail.com"
+          }
+        })
+      })
+      .then((res) => res.json())
+      .then((json) =>  this.saveImportantData(json.point_of_interaction.transaction_data.qr_code_base64, json.status, json.id))
+      .catch(() => alert('erro ao requisitar PIX'))
+  }
+
+
+
+
+
+
+
+
+
+
+
   mercadoPago() {
     let value = this.state.value;
     let newNumber = new Number(value);
@@ -178,6 +247,12 @@ export default class PaymentServices extends Component {
             <Heading style={styles.paddingTitle}>Pagamento</Heading>
             <Heading style={{paddingTop: 10, marginBottom:10}}>Valor do Serviço: {this.state.valueService}</Heading>
             <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Escolha o método de pagamento que mais lhe é conveniente (será cobrada uma pequena taxa sobre o valor para a manuntenção da plataforma)</TextDescription2>
+              {/*
+                <TouchableOpacity onPress={() => this.pixQRCODE()}>
+                  <Image source={require('../../../assets/pix.png')} style={{width:134, height:134}}/>
+                </TouchableOpacity>
+                */
+              }
               <TouchableOpacity onPress={() => this.props.navigation.navigate('PixPayment')}>
                 <Image source={require('../../../assets/pix.png')} style={{width:134, height:134}}/>
               </TouchableOpacity>
@@ -190,18 +265,20 @@ export default class PaymentServices extends Component {
           <WebView source={{ uri: endpointMP }} />
         }
 
-          {/*Modalize dos comentários
+          {/*Modalize dos comentários*/}
             <Modalize
               ref={this.state.modalizeRef}
-              snapPoint={500}
+              snapPoint={650}
               modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
             >
             <View style={{alignItems:'center', marginTop:40}}>
-              <Text>Pague através desse QR Code</Text>
-              <Image style={{width: 300, height: 300}} source={{uri: this.state.QRCode}}/>
+              <Text style={{paddingHorizontal:20, textAlign:'center'}}>Pague a taxa através desse QR Code {"\n\n"}(ao ser confirmado o pagamento, será aberto uma tela para pagar a parte do contratado){"\n\n"}Taxa: R${(this.state.value / 100) * 5}{"\n"}Status: {this.state.paymentStatus}</Text>
+              <Image style={{width: 300, height: 300}} source={{uri: `data:image/png;base64,${this.state.QRCode}`}}/>
+              <TouchableOpacity onPress={() => this.getPaymentStatus(this.state.idTransaction)}>
+                <IconResponsiveNOBACK name="sync-alt" size={30} color={'#d98b0d'}/>
+              </TouchableOpacity>
             </View>
           </Modalize>
-          */}
 
       </SafeBackground>
     );

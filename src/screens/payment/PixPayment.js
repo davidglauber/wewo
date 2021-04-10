@@ -91,9 +91,6 @@ export default class PixPayment extends Component {
           backgroundColor={this.context.dark ? '#121212' : 'white'}
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
-            <View style={{alignItems:'center'}}>
-                <Text>Taxa: 5%</Text>
-            </View>
           <WebView source={{ uri: 'https://www.gerarpix.com.br/' }} />
       </SafeBackground>
     );
