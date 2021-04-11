@@ -235,7 +235,9 @@ export default class PaymentServices extends Component {
 
 
   render() {
-    const endpointMP = this.state.endpointMP
+    const endpointMP = this.state.endpointMP;
+    const valorDoServicoMenosATaxa = `R$ ${((this.state.value / 100) * 95).toFixed(2)}`;
+
     return (
       <SafeBackground>
         <StatusBar
@@ -253,7 +255,7 @@ export default class PaymentServices extends Component {
                 </TouchableOpacity>
                 */
               }
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('PixPayment')}>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('PixPayment', {valueLessTax: valorDoServicoMenosATaxa})}>
                 <Image source={require('../../../assets/pix.png')} style={{width:134, height:134}}/>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.mercadoPago()}>

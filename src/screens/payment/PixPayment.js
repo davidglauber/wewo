@@ -19,7 +19,7 @@ import {
 } from "react-native";
 
 //CSS responsivo
-import { SafeBackground, TextDays, InputFormMask, TextDescription2, ChooseOption, Heading, Title} from '../home/styles';
+import { SafeBackground, TextDays, InputFormMask, TextTheme, InputForm, IconResponsive, TextDescription2, ChooseOption, Heading, Title} from '../home/styles';
 
 
 import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
@@ -29,8 +29,6 @@ import { ThemeContext } from '../../../ThemeContext';
 
 import { WebView } from 'react-native-webview'
 
-//QRCODE
-import QRCode from 'react-native-qrcode-svg';
 
 //BIBLIOTECA PIX
 import { staticPix } from "pix-charge";
@@ -74,10 +72,21 @@ export default class PixPayment extends Component {
       typePix:'',
       tel:'',
       cnpj:'',
-      email:''
+      email:'',
+      nomeBeneficiario:'',
+      valor:'',
+      QRCode: ''
     };
   }
   
+
+
+  componentDidMount() {
+    let value = this.props.route.params.valueLessTax;
+    this.setState({valor: value})
+    alert('VALOR PARAMETRO: ' + value)
+  }
+
   goBack = () => {
     const { navigation } = this.props;
     navigation.goBack();
@@ -104,13 +113,43 @@ export default class PixPayment extends Component {
     console.log('TELEFONE'  + this.state.tel)
   }
 
-  emailChange = text => {
-    this.setState({
-      email: text,
-    });
+  onChangeEmail(text) {
+    this.setState({email: text})
+    console.log('EMAIL'  + this.state.email)
+  }
 
-    console.log('email: ' + this.state.email)
-  };
+  onChangeBeneficiario(text) {
+    this.setState({nomeBeneficiario: text})
+    console.log('NOME'  + this.state.nomeBeneficiario)
+  }
+
+  onChangeValor(text) {
+    this.setState({valor: text})
+    console.log('VALOR'  + this.state.valor)
+  }
+
+
+  generateQRCODEPIX(typeKey) {
+    if(typeKey == 'CPF') {
+      //cria o qrcode do contratado
+      fetch('https://www.gerarpix.com.br/emvqr-static', {
+        method:'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          key_type: "CPF",
+          key: this.state.cpf,
+          name: this.state.nomeBeneficiario,
+          amount: this.state.valor,
+        })
+      })
+      .then((res) => res.json())
+      .then((json) =>  console.log(json))
+      .catch((err) => console.log('erro ao requisitar PIX: ' + err))
+      }
+  }
 
   render() {
     return (
@@ -147,7 +186,7 @@ export default class PixPayment extends Component {
                 }
                 
                 {this.state.typePix == 'cpf' &&
-                  <View>
+                  <View style={{paddingHorizontal:30}}>
                     <View style={{flexDirection:'row'}}>
                       <ChooseOption onPress={() => this.setState({typePix: ''})} style={{marginTop:20}}/>
                       <TextDays>CPF</TextDays>
@@ -158,13 +197,34 @@ export default class PixPayment extends Component {
                       value={this.state.cpf}
                       onChangeText={text => this.onChangeCPF(text)}
                       keyboardType={"number-pad"}
-                      placeholder="Seu CPF                                                          "
+                      placeholder="Seu CPF Pix (obrigatório)                                                          "
                     />
+
+                    <InputForm
+                      value={this.state.nomeBeneficiario}
+                      onChangeText={text => this.onChangeBeneficiario(text)}
+                      maxLength={20}
+                      placeholder="Seu Nome (obrigatório)                                                        "
+                    />
+
+                    <InputFormMask
+                      type={'money'}
+                      editable={false}
+                      value={this.state.valor}
+                      onChangeText={text => this.onChangeValor(text)}
+                      keyboardType={"number-pad"}
+                      placeholder="Valor do serviço sem a taxa (obrigatório)                                                         "
+                    />
+
+                  <TouchableOpacity onPress={() => this.generateQRCODEPIX('CPF')} style={{paddingHorizontal: 73, marginLeft:30, marginRight:30, marginTop:20, height:50, borderRadius:40,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                        <IconResponsive name="qrcode" size={30}/>
+                        <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Gerar QRCode</TextTheme>
+                  </TouchableOpacity>
                   </View>
                 }
 
                 {this.state.typePix == 'cnpj' &&
-                  <View>
+                  <View style={{paddingHorizontal:30}}>
                     <View style={{flexDirection:'row'}}>
                       <ChooseOption onPress={() => this.setState({typePix: ''})} style={{marginTop:20}}/>
                       <TextDays>CNPJ</TextDays>
@@ -175,13 +235,34 @@ export default class PixPayment extends Component {
                       value={this.state.cnpj}
                       onChangeText={text => this.onChangeCNPJ(text)}
                       keyboardType={"number-pad"}
-                      placeholder="Seu CNPJ                                                          "
+                      placeholder="Seu CNPJ Pix                                                          "
                     />
+
+                    <InputForm
+                      value={this.state.nomeBeneficiario}
+                      onChangeText={text => this.onChangeBeneficiario(text)}
+                      maxLength={20}
+                      placeholder="Seu Nome (obrigatório)                                                        "
+                    />
+
+                    <InputFormMask
+                      type={'money'}
+                      editable={false}
+                      value={this.state.valor}
+                      onChangeText={text => this.onChangeValor(text)}
+                      keyboardType={"number-pad"}
+                      placeholder="Valor do serviço sem a taxa (obrigatório)                                                         "
+                    />
+
+                  <TouchableOpacity onPress={() => this.generateQRCODEPIX('CNPJ')} style={{paddingHorizontal: 73, marginLeft:30, marginRight:30, marginTop:20, height:50, borderRadius:40,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                        <IconResponsive name="qrcode" size={30}/>
+                        <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Gerar QRCode</TextTheme>
+                  </TouchableOpacity>
                   </View>
                 }
 
                 {this.state.typePix == 'telefone' &&
-                  <View>
+                  <View style={{paddingHorizontal:30}}>
                     <View style={{flexDirection:'row'}}>
                       <ChooseOption onPress={() => this.setState({typePix: ''})} style={{marginTop:20}}/>
                       <TextDays>TELEFONE</TextDays>
@@ -192,26 +273,66 @@ export default class PixPayment extends Component {
                       value={this.state.tel}
                       onChangeText={text => this.onChangeTEL(text)}
                       keyboardType={"number-pad"}
-                      placeholder="Seu Telefone                                                          "
+                      placeholder="Seu Telefone Pix                                                         "
                     />
+
+                    <InputForm
+                      value={this.state.nomeBeneficiario}
+                      onChangeText={text => this.onChangeBeneficiario(text)}
+                      maxLength={20}
+                      placeholder="Seu Nome (obrigatório)                                                        "
+                    />
+
+                    <InputFormMask
+                      type={'money'}
+                      editable={false}
+                      value={this.state.valor}
+                      onChangeText={text => this.onChangeValor(text)}
+                      keyboardType={"number-pad"}
+                      placeholder="Valor do serviço sem a taxa (obrigatório)                                                         "
+                    />
+
+                  <TouchableOpacity onPress={() => this.generateQRCODEPIX('Telefone')} style={{paddingHorizontal: 73, marginLeft:30, marginRight:30, marginTop:20, height:50, borderRadius:40,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                        <IconResponsive name="qrcode" size={30}/>
+                        <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Gerar QRCode</TextTheme>
+                  </TouchableOpacity>
                   </View>
                 }
 
                 {this.state.typePix == 'email' &&
-                  <View>
+                  <View style={{paddingHorizontal:30}}>
                     <View style={{flexDirection:'row'}}>
                       <ChooseOption onPress={() => this.setState({typePix: ''})} style={{marginTop:20}}/>
-                      <TextDays>CPF</TextDays>
+                      <TextDays>EMAIL</TextDays>
                     </View>
 
-                    <UnderlineTextInput
-                      onRef={r => {
-                        this.email = r;
-                      }}
-                      onChangeText={this.emailChange}
-                      placeholder="Seu E-mail"
-                      keyboardType={"email-address"}
+                    <InputForm
+                      value={this.state.email}
+                      onChangeText={text => this.onChangeEmail(text)}
+                      maxLength={20}
+                      placeholder="Seu Email Pix                                                        "
                     />
+
+                    <InputForm
+                      value={this.state.nomeBeneficiario}
+                      onChangeText={text => this.onChangeBeneficiario(text)}
+                      maxLength={20}
+                      placeholder="Seu Nome (obrigatório)                                                        "
+                    />
+
+                    <InputFormMask
+                      type={'money'}
+                      editable={false}
+                      value={this.state.valor}
+                      onChangeText={text => this.onChangeValor(text)}
+                      keyboardType={"number-pad"}
+                      placeholder="Valor do serviço sem a taxa (obrigatório)                                                         "
+                    />
+
+                  <TouchableOpacity onPress={() => this.generateQRCODEPIX('Email')} style={{paddingHorizontal: 73, marginLeft:30, marginRight:30, marginTop:20, height:50, borderRadius:40,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                        <IconResponsive name="qrcode" size={30}/>
+                        <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Gerar QRCode</TextTheme>
+                  </TouchableOpacity>
                   </View>
                 }
 
