@@ -83,7 +83,8 @@ export default class ConfirmedServices extends Component {
       valueUser:'',
       telefoneUser:'',
       dataUser:'',
-      horarioUser:''
+      horarioUser:'', 
+      idNotUser:''
     };
   }
 
@@ -138,6 +139,7 @@ export default class ConfirmedServices extends Component {
     this.setState({telefoneUser: userData.telefone})
     this.setState({dataUser: userData.dataServico})
     this.setState({horarioUser: userData.horario})
+    this.setState({idNotUser: userData.idNot})
 
     const modalizeRef = this.state.modalizeRef;
     modalizeRef.current?.open()
@@ -159,7 +161,7 @@ export default class ConfirmedServices extends Component {
   }
 
   render() {
-    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser, horarioUser} = this.state;
+    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser, horarioUser, idNotUser} = this.state;
     const user = firebase.auth().currentUser;
     return (
       <SafeBackground>
@@ -213,7 +215,7 @@ export default class ConfirmedServices extends Component {
           }
           ></FlatList>
 
-          <View style={{marginTop:windowHeight/2.6, paddingHorizontal:30, marginRight:20}}>
+          <View style={{position:'absolute', top:windowHeight/1.1, paddingHorizontal:30, marginRight:20}}>
             <View style={{flexDirection:'row'}}>
               <IconResponsiveNOBACK style={{marginRight:20}} name="comment" size={24}/>
               <TextDescription2 style={{textAlign:'justify', fontWeight:'bold'}}>Negocie o valor com seu cliente</TextDescription2>
@@ -240,7 +242,7 @@ export default class ConfirmedServices extends Component {
             <View style={{width: windowWidth/1.06, height:100, backgroundColor: '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
               <Image source={{uri: fotoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
                 <Text  style={styles.title}>{nameUser}</Text>
-                <TouchableOpacity style={styles.moneyCard} onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: valueUser})}>
+                <TouchableOpacity style={styles.moneyCard} onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: valueUser, idNotification: idNotUser})}>
                   <IconResponsive name="money-check-alt" size={24}/>
                 </TouchableOpacity>
             </View>

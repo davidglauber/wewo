@@ -208,7 +208,7 @@ export default class Chat extends Component {
                   placeholder="Digite o valor definitivo do serviço...                                                          "
                 />
 
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: valueUser})} style={{marginTop:30, paddingHorizontal:20}}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: valueUser, idNotification: this.props.route.params.idNotification})} style={{marginTop:30, paddingHorizontal:20}}>
                 <IconResponsiveNOBACK name="telegram-plane" size={35}/>
             </TouchableOpacity>
             </View>

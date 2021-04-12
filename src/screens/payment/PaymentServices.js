@@ -82,6 +82,7 @@ export default class PaymentServices extends Component {
       value:20,
       paymentStatus:'',
       idTransaction:'',
+      idNot: '',
       modalizeRef: React.createRef(null)
     };
   }
@@ -95,6 +96,9 @@ export default class PaymentServices extends Component {
   componentDidMount() {
     let valueRoute = ''
     valueRoute =  this.props.route.params.valuePayment;
+    let idNotifyRoute = this.props.route.params.idNotification;
+
+    this.setState({idNot: idNotifyRoute})
 
     this.setState({valueService: valueRoute})
     
@@ -142,8 +146,10 @@ export default class PaymentServices extends Component {
 
 
   redirectToPagePix(status) {
+    let valorDoServicoMenosATaxa = `R$ ${((this.state.value / 100) * 95).toFixed(2)}`;
     this.setState({paymentStatus: status})
-    this.props.navigation.navigate('PixPayment')
+    
+    this.props.navigation.navigate('PixPayment', {valueLessTax: valorDoServicoMenosATaxa, idNot: this.state.idNot})
   }
 
   getPaymentStatus(id) {
@@ -156,6 +162,7 @@ export default class PaymentServices extends Component {
     })
     .then((res) => res.json())
     .then((json) => this.redirectToPagePix(json.results[0].status))
+    .catch((err) => alert('Houve um erro ao verificar o status da transação: ' + err))
   }
 
 
@@ -164,7 +171,8 @@ export default class PaymentServices extends Component {
     let value = this.state.value;
     let newNumber = new Number(value);
 
-    let percentToWeWo = (newNumber / 100)* 5;
+    let percentToWeWo = ((newNumber / 100) * 5).toFixed(2);
+    let percentToWeWoNumberInt = new Number(percentToWeWo);
 
     this.openModalize();
 
@@ -177,7 +185,7 @@ export default class PaymentServices extends Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          transaction_amount: percentToWeWo,
+          transaction_amount: percentToWeWoNumberInt,
           payment_method_id: "pix",
           payer: {
             first_name: "WEWO",
@@ -188,7 +196,7 @@ export default class PaymentServices extends Component {
       })
       .then((res) => res.json())
       .then((json) =>  this.saveImportantData(json.point_of_interaction.transaction_data.qr_code_base64, json.status, json.id))
-      .catch(() => alert('erro ao requisitar PIX'))
+      .catch((err) => alert('erro ao requisitar : ' + err))
   }
 
 
@@ -205,7 +213,8 @@ export default class PaymentServices extends Component {
     let value = this.state.value;
     let newNumber = new Number(value);
 
-    let percentToWeWo = (newNumber / 100)* 5;
+    let percentToWeWo = ((newNumber / 100) * 5).toFixed(2);
+    let percentToWeWoNumberInt = new Number(percentToWeWo);
     
     this.setState({brCodeValue:'loaded'});
     
@@ -222,7 +231,7 @@ export default class PaymentServices extends Component {
               title:"Pagamento de Serviço",
               quantity: 1,
               currency_id:"BRL",
-              unit_price: percentToWeWo,
+              unit_price: percentToWeWoNumberInt,
               picture_url: "https://a-static.mlcdn.com.br/618x463/lapis-simples-com-borracha-preto-art-school/sakurashop/5093/0223ea02b0d96a9172d018a598d8fa32.jpg"
             }
           ]
@@ -236,7 +245,6 @@ export default class PaymentServices extends Component {
 
   render() {
     const endpointMP = this.state.endpointMP;
-    const valorDoServicoMenosATaxa = `R$ ${((this.state.value / 100) * 95).toFixed(2)}`;
 
     return (
       <SafeBackground>
@@ -249,13 +257,7 @@ export default class PaymentServices extends Component {
             <Heading style={styles.paddingTitle}>Pagamento</Heading>
             <Heading style={{paddingTop: 10, marginBottom:10}}>Valor do Serviço: {this.state.valueService}</Heading>
             <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Escolha o método de pagamento que mais lhe é conveniente (será cobrada uma pequena taxa sobre o valor para a manuntenção da plataforma)</TextDescription2>
-              {/*
-                <TouchableOpacity onPress={() => this.pixQRCODE()}>
-                  <Image source={require('../../../assets/pix.png')} style={{width:134, height:134}}/>
-                </TouchableOpacity>
-                */
-              }
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('PixPayment', {valueLessTax: valorDoServicoMenosATaxa})}>
+              <TouchableOpacity onPress={() => this.pixQRCODE()}>
                 <Image source={require('../../../assets/pix.png')} style={{width:134, height:134}}/>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.mercadoPago()}>
@@ -274,7 +276,7 @@ export default class PaymentServices extends Component {
               modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
             >
             <View style={{alignItems:'center', marginTop:40}}>
-              <Text style={{paddingHorizontal:20, textAlign:'center'}}>Pague a taxa através desse QR Code {"\n\n"}(ao ser confirmado o pagamento, será aberto uma tela para pagar a parte do contratado){"\n\n"}Taxa: R${(this.state.value / 100) * 5}{"\n"}Status: {this.state.paymentStatus}</Text>
+              <Text style={{paddingHorizontal:20, textAlign:'center'}}>Pague a taxa através desse QR Code {"\n\n"}(ao ser confirmado o pagamento, será aberto uma tela para pagar a parte do contratado, NÃO FECHE A PÁGINA){"\n\n"}Taxa: R${((this.state.value / 100) * 5).toFixed(2)}{"\n"}Status: {this.state.paymentStatus}</Text>
               <Image style={{width: 300, height: 300}} source={{uri: `data:image/png;base64,${this.state.QRCode}`}}/>
               <TouchableOpacity onPress={() => this.getPaymentStatus(this.state.idTransaction)}>
                 <IconResponsiveNOBACK name="sync-alt" size={30} color={'#d98b0d'}/>
