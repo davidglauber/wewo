@@ -23,7 +23,7 @@ import {
 //import firebase
 import firebase from '../../config/firebase';
 
-import { SafeAnuncioView, Heading, TextDescription2, IconResponsive, InputForm, Subtitle2EditProfile, ButtonCustomized, IconResponsiveNOBACK} from '../home/styles';
+import { SafeAnuncioView, Heading, TextDescription2, IconResponsive, InputForm, InputFormMask, Subtitle2EditProfile, ButtonCustomized, IconResponsiveNOBACK} from '../home/styles';
 
 import { ThemeContext } from '../../../ThemeContext';
 
@@ -301,13 +301,13 @@ export default class ServiceCadaster extends Component {
 
             <View style={{marginTop:30, paddingHorizontal:20}}>
                 <Subtitle2EditProfile>Valor do Serviço</Subtitle2EditProfile>
-                <InputForm
-                    value={this.state.valor}
-                    style={{marginBottom: 10}}
-                    onChangeText={text => this.onChangePreco(text)}
-                    autoCapitalize={'words'}
-                    maxLength={32}
-                    placeholder="Valor do serviço                                                                       "
+                <InputFormMask
+                  type={'money'}
+                  style={{marginBottom: 10}}
+                  value={this.state.valor}
+                  onChangeText={text => this.onChangePreco(text)}
+                  keyboardType={"number-pad"}
+                  placeholder="Valor do Serviço                                                          "
                 />
             </View>
 

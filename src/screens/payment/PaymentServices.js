@@ -146,10 +146,14 @@ export default class PaymentServices extends Component {
 
 
   redirectToPagePix(status) {
-    let valorDoServicoMenosATaxa = `R$ ${((this.state.value / 100) * 95).toFixed(2)}`;
-    this.setState({paymentStatus: status})
-    
-    this.props.navigation.navigate('PixPayment', {valueLessTax: valorDoServicoMenosATaxa, idNot: this.state.idNot})
+    if(status !== 'pending') {
+      let valorDoServicoMenosATaxa = `R$ ${((this.state.value / 100) * 95).toFixed(2)}`;
+      this.setState({paymentStatus: status})
+      
+      this.props.navigation.navigate('PixPayment', {valueLessTax: valorDoServicoMenosATaxa, idNot: this.state.idNot})
+    } else {
+      return alert('O Pix do Serviço só será habilitado depois de pagar a taxa de manutenção');
+    }
   }
 
   getPaymentStatus(id) {
