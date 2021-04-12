@@ -337,7 +337,7 @@ export default function Configuracoes() {
             setting="Escolha o Seu Plano"
           />
 
-          <SectionHeader title="Anúncios & Cartões de Visita" />
+          <SectionHeader title="Anúncios / Portifólios / Produtos" />
           <Setting
             onPress={() => navigation.navigate('TelaPrincipalAnuncio')}
             icon={ORDERS_ICON}
@@ -346,7 +346,7 @@ export default function Configuracoes() {
           <Setting
             onPress={() => navigation.navigate('TelaGeralCriarCartao')}
             icon={VISIT_CARD}
-            setting="Meus Portfólios"
+            setting="Meus Portfólios/Produtos"
           />
 
           <SectionHeader title="Sobre" />

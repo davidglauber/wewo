@@ -213,7 +213,11 @@ export default class PixPayment extends Component {
 
   async finishService(itemToBeDeleted){
     alert('Serviço finalizado! Lembre o cliente para te avaliar!')
-    await firebase.firestore().collection('notifications').doc(itemToBeDeleted).delete()
+    await firebase.firestore().collection('notifications').where("idNot", "==", itemToBeDeleted).get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc){
+        doc.ref.delete();
+      })
+    })
     this.props.navigation.navigate('Home')
   }
 

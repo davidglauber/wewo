@@ -853,23 +853,13 @@ export default class TelaAnuncio extends Component {
                         <AirbnbRating
                           count={5}
                           reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
-                          defaultRating={this.state.notaMedia}
+                          defaultRating={Math.round(this.state.notaMedia)}
                           size={15}
                           onFinishRating={(number) => this.finishRating(item.idAnuncio, number)}
                           />
 
-                        <TextDescription2>Média: {this.state.notaMedia}</TextDescription2>
+                        <TextDescription2>Média: {(this.state.notaMedia).toFixed(1)}</TextDescription2>
 
-                        <CallAndMessageContainer>
-                          <TouchableResponsive onPress={() => this.openPhoneApp(this.state.phoneNavigator)}>
-                              <IconResponsiveNOBACK name="phone" size={20}/>
-                          </TouchableResponsive> 
-                          
-                          <TouchableResponsive onPress={() => this.openWhatsApp(this.state.phoneNavigator)}>
-                              <IconResponsiveNOBACK name="comment" size={20}/>
-                          </TouchableResponsive>            
-                        </CallAndMessageContainer>
-                        
                         <TouchableOpacity style={{marginTop:7}} onPress={() => this.openModalize()}>
                           <IconResponsiveNOBACK style={{marginTop:15}} name="comments" size={17}/>
                         </TouchableOpacity>
@@ -1384,22 +1374,13 @@ export default class TelaAnuncio extends Component {
                         <AirbnbRating
                           count={5}
                           reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
-                          defaultRating={this.state.notaMedia}
+                          defaultRating={Math.round(this.state.notaMedia)}
                           size={15}
                           onFinishRating={(number) => this.finishRating(item.idAnuncio, number)}
                           />
 
-                        <TextDescription2>Média: {this.state.notaMedia}</TextDescription2>
+                        <TextDescription2>Média: {(this.state.notaMedia).toFixed(1)}</TextDescription2>
 
-                        <CallAndMessageContainer>
-                          <TouchableResponsive onPress={() => this.openPhoneApp(this.state.phoneNavigator)}>
-                              <IconResponsiveNOBACK name="phone" size={20}/>
-                          </TouchableResponsive> 
-                          
-                          <TouchableResponsive onPress={() => this.openWhatsApp(this.state.phoneNavigator)}>
-                              <IconResponsiveNOBACK name="comment" size={20}/>
-                          </TouchableResponsive>            
-                        </CallAndMessageContainer>
                         
                         <TouchableOpacity style={{marginTop:7}} onPress={() => this.openModalize()}>
                           <IconResponsiveNOBACK style={{marginTop:15}} name="comments" size={17}/>
