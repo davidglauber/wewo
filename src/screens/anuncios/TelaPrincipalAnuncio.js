@@ -224,23 +224,23 @@ export default class TelaPrincipalAnuncio extends Component {
       })
       
 
-      if(anunciosDidMount.length  < 1) {
+      if(anunciosDidMount.length  < 3) {
         this.props.navigation.navigate('Orders')
       }
 
 
       if(comprou == true) {
-        if(anunciosDidMount.length <= 5) {
+        if(anunciosDidMount.length <= 15) {
           this.props.navigation.navigate('Orders')
         }
       } 
 
       if(comprou == false) {
-        if(anunciosDidMount.length >= 1) {
-          alert('A conta Free permite até 1 anúncio, consulte a tela de PLANOS para mais informações')
+        if(anunciosDidMount.length >= 3) {
+          alert('A conta Free permite até 3 anúncios, consulte a tela de PLANOS para mais informações')
         }
 
-        if(anunciosDidMount.length  < 1) {
+        if(anunciosDidMount.length  < 3) {
           this.props.navigation.navigate('Orders')
         }
       }

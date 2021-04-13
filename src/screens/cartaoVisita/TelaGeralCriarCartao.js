@@ -318,23 +318,23 @@ export default class TelaGeralCriarCartao extends Component {
 
 
 
-      if(cartoesDidMount.length  < 1) {
+      if(cartoesDidMount.length  < 7) {
         this.props.navigation.navigate('TelaCriarCartaoVisita')
       }
 
 
       if(comprou == true) {
-        if(cartoesDidMount.length <= 5) {
+        if(cartoesDidMount.length <= 100) {
           this.props.navigation.navigate('TelaCriarCartaoVisita')
         }
       } 
 
       if(comprou == false) {
-        if(cartoesDidMount.length >= 1) {
-          alert('A conta free permite até 1 Portfólio/Produto, consulte a tela de PLANOS para mais informações')
+        if(cartoesDidMount.length >= 7) {
+          alert('A conta free permite até 7 Portfólios/Produtos, consulte a tela de PLANOS para mais informações')
         }
 
-        if(cartoesDidMount.length  < 1) {
+        if(cartoesDidMount.length  < 7) {
           this.props.navigation.navigate('TelaCriarCartaoVisita')
         }
       }
