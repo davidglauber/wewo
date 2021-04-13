@@ -808,7 +808,6 @@ export default class TelaAnuncio extends Component {
                   </View>
 
 
-
                   <View style={styles.pickerGroup}>
                     <View style={styles.pickerContainer}>
                       <TextDescription2 style={styles.caption}>Informações do Autônomo:</TextDescription2>
@@ -840,6 +839,7 @@ export default class TelaAnuncio extends Component {
                         <IconResponsiveNOBACK name="list-alt" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
                   </View>
+
 
                   <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value)} style={{paddingHorizontal: 73, marginLeft:30, marginRight:30, marginTop:20, height:50, borderRadius:40,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
                         <IconResponsive name="hands-helping" size={30}/>
@@ -1368,6 +1368,18 @@ export default class TelaAnuncio extends Component {
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
                   </TouchableOpacity>
 
+
+                  <FlatList keyExtractor={() => this.makeid(17)} data={this.state.cartoesEstab} horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20}} 
+                    renderItem={({item}) => 
+                      <View style={{paddingHorizontal:43}}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{backgroundColor:'#d98b0d', borderRadius:20, width: windowWidth/1.3, height:130, alignItems:'center', paddingTop:20, justifyContent:'center', paddingBottom:30}}>
+                          <Text>Produto</Text>
+                          <Image source={{uri: item.photo}} style={{width:100, height:50, borderRadius:30}}/>
+                          <Text style={{fontWeight:'bold'}}>{item.title}</Text>
+                        </TouchableOpacity>
+                      </View>
+                  }
+                  />
 
                   <ViewComment>
                       <ReviewView>

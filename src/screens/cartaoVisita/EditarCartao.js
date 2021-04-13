@@ -64,6 +64,12 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 import LottieView from 'lottie-react-native';
 
+//locationSERVICES
+import * as Location from 'expo-location';
+
+//import datepicker
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 import loading from '../../../assets/loading.json';
 
 // import colors
@@ -137,21 +143,22 @@ export default class EditarCartao extends Component {
       tituloEstab:'',
       descricaoAuto:'',
       descricaoEstab:'',
-      enderecoEstab:'',
-      enderecoAuto:'',
+      enderecoEstab: null,
+      enderecoAuto: null,
       cepEstab: '',
       cepAuto: '',
+      precoEstab:'',
       enderecoCepEstab: [],
       enderecoCepAuto: [],
       UFEstab: '',
       UFAuto:'',
-      segunda:false,
-      terca:false, 
-      quarta:false,
-      quinta:false,
-      sexta:false,
-      sabado:false,
-      domingo:false,
+      segunda:'',
+      terca:'', 
+      quarta:'',
+      quinta:'',
+      sexta:'',
+      sabado:'',
+      domingo:'',
       modalizeRef: React.createRef(null),
       modalizeRefSub: React.createRef(null),
       modalizeRefDescription: React.createRef(null),
@@ -166,6 +173,10 @@ export default class EditarCartao extends Component {
       image2:null,
       image3:null,
       video:null,
+      showHour: false,
+      showHourClose: false,
+      hour: new Date(),
+      hourClose: new Date(),
       imageName:'',
       animated: true,
       modalVisible: false,
@@ -176,7 +187,9 @@ export default class EditarCartao extends Component {
       arrayWordsAuto: [],
       arrayWordsEstab: [],
       subcategoria:'',
-      usuarioComprou: false
+      usuarioComprou: false,
+      daysWeek: [],
+      locationServiceEnabled: false
     };
   }
 
@@ -297,6 +310,7 @@ export default class EditarCartao extends Component {
             let imagem3 = ''
             let video = ''
             let titulo = ''
+            let valor = ''
             let verificado = false
             let local = ''
             let abertura = ''
@@ -319,6 +333,7 @@ export default class EditarCartao extends Component {
                 imagem2 = doc.data().photoPublish2,
                 imagem3 = doc.data().photoPublish3,
                 video = doc.data().videoPublish,
+                valor = doc.data().valueServiceEstab,
                 verificado = false,
                 ufestab = doc.data().UFEstab,
                 type = doc.data().type,
@@ -339,6 +354,7 @@ export default class EditarCartao extends Component {
             e.setState({image2: imagem2})
             e.setState({image3: imagem3})
             e.setState({video: video})
+            e.setState({precoEstab: valor})
             e.setState({type: type})
             e.setState({UFEstab: ufestab})
             e.setState({enderecoEstab: local})
@@ -470,6 +486,10 @@ export default class EditarCartao extends Component {
   onChangeEnderecoAuto(text) {
     this.setState({enderecoAuto: text})
     console.log('endereco estab'  + this.state.enderecoAuto)
+  }
+
+  onChangePrecoEstab(text) {
+    this.setState({precoEstab: text})
   }
 
   onChangeCEPEstab(text) {
@@ -622,6 +642,89 @@ export default class EditarCartao extends Component {
     console.log('Horario close Selecionado: '  + param)
   }
 
+
+  onChange = (event, selectedHour) => {
+    this.setState({showHour: false})
+
+    let hourComplete = selectedHour.getHours();
+    let minutesComplete = selectedHour.getMinutes();
+    let completeTime = hourComplete + ':' + minutesComplete;
+    
+    this.setState({horarioOpen: completeTime})
+    console.log('hora selecionada: ' + completeTime)
+    
+  };
+
+  onChangeClose = (event, selectedHour) => {
+    this.setState({showHourClose: false})
+
+    let hourComplete = selectedHour.getHours();
+    let minutesComplete = selectedHour.getMinutes();
+    let completeTime = hourComplete + ':' + minutesComplete;
+    
+    this.setState({horarioClose: completeTime})
+    console.log('hora selecionada: ' + completeTime)
+    
+  };
+
+
+  async CheckIfLocationEnabled() {
+    let enabled = await Location.hasServicesEnabledAsync();
+
+    if (!enabled) {
+      Alert.alert(
+        'O serviço de localização não está ativado',
+        'Por favor ative o serviço de localização para continuar',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    } else {
+      this.setState({locationServiceEnabled: enabled});
+    }
+  };
+
+
+  async GetCurrentLocation(type){
+    let { status } = await Location.requestPermissionsAsync();
+
+    this.setModalVisible(true)
+
+    if (status !== 'granted') {
+      Alert.alert(
+        'Permissão negada pelo usuário',
+        'Permita o app usar o serviço de localização',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    }
+  
+    let { coords } = await Location.getCurrentPositionAsync();
+  
+    if (coords) {
+      const { latitude, longitude } = coords;
+      let response = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude
+      });
+  
+      for (let item of response) {
+        let address = `${item.region}, ${item.subregion}, ${item.district}, ${item.street} (${item.postalCode})`;
+  
+        
+        if(type == 'Autonomo') {
+          this.setState({enderecoAuto: address})
+          this.searchCEPAuto(item.postalCode.replace('-', ''))
+        }
+
+        if(type == 'Estabelecimento') {
+          this.setState({enderecoEstab: address})
+          this.searchCEPEstab(item.postalCode.replace('-', ''))
+        }
+      }
+      this.setModalVisible(false)
+    }
+  };
+  
 
 
   async imagePickerGetPhoto() {
@@ -811,7 +914,7 @@ export default class EditarCartao extends Component {
 
 
       if(typePublish === 'Estabelecimento') {
-      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '', this.state.precoEstab !== '') {
         this.setModalVisible(true)
 
 
@@ -845,7 +948,7 @@ export default class EditarCartao extends Component {
                           imageIdStorageState3 = imageId3
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.precoEstab !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
@@ -855,6 +958,7 @@ export default class EditarCartao extends Component {
                                         idCartao: routeIdCartao,
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
+                                        valueServiceEstab: e.state.precoEstab,
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
@@ -868,7 +972,7 @@ export default class EditarCartao extends Component {
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
                                         timeClose: e.state.horarioClose
                                       })
@@ -880,6 +984,7 @@ export default class EditarCartao extends Component {
                                         idCartao: routeIdCartao,
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
+                                        valueServiceEstab: e.state.precoEstab,
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
@@ -893,7 +998,7 @@ export default class EditarCartao extends Component {
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
                                         timeClose: e.state.horarioClose
                                       })
@@ -983,7 +1088,7 @@ export default class EditarCartao extends Component {
           })
         })
 
-      } else {
+      } if(this.state.image !== null) {
         getFileBlob(this.state.image, async blob => {
           await firebase.storage().ref(`${storageUrl}/images/${imageId}`).put(blob).then((snapshot) => {
               imageIdStorageState = imageId
@@ -1013,13 +1118,14 @@ export default class EditarCartao extends Component {
                           imageIdStorageState3 = imageId3
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.precoEstab !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
                                       firebase.firestore().collection('usuarios').doc(userUID).collection('cartoes').doc(routeIdCartao).update({
                                         titleEstab: e.state.tituloEstab,
                                         titleEstabArray: e.state.arrayWordsEstab,
+                                        valueServiceEstab: e.state.precoEstab,
                                         idCartao: routeIdCartao,
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
@@ -1036,7 +1142,7 @@ export default class EditarCartao extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
                                         timeClose: e.state.horarioClose
                                       })
@@ -1048,6 +1154,7 @@ export default class EditarCartao extends Component {
                                         idCartao: routeIdCartao,
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
+                                        valueServiceEstab: e.state.precoEstab,
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
@@ -1061,7 +1168,7 @@ export default class EditarCartao extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
                                         timeClose: e.state.horarioClose
                                       })
@@ -1193,7 +1300,7 @@ export default class EditarCartao extends Component {
                           imageIdStorageState3 = imageId3
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.precoEstab !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
@@ -1203,6 +1310,7 @@ export default class EditarCartao extends Component {
                                         idCartao: routeIdCartao,
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
+                                        valueServiceEstab: e.state.precoEstab,
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
@@ -1216,7 +1324,7 @@ export default class EditarCartao extends Component {
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
                                         timeClose: e.state.horarioClose
                                       })
@@ -1228,6 +1336,7 @@ export default class EditarCartao extends Component {
                                         idCartao: routeIdCartao,
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
+                                        valueServiceEstab: e.state.precoEstab,
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
@@ -1241,7 +1350,7 @@ export default class EditarCartao extends Component {
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
                                         timeClose: e.state.horarioClose
                                       })
@@ -1331,7 +1440,7 @@ export default class EditarCartao extends Component {
           })
         })
 
-      } else {
+      } if(this.state.image !== null) {
         getFileBlob(this.state.image, async blob => {
           await firebase.storage().ref(`${storageUrl}/images/${imageId}`).put(blob).then((snapshot) => {
               imageIdStorageState = imageId
@@ -1361,7 +1470,7 @@ export default class EditarCartao extends Component {
                           imageIdStorageState3 = imageId3
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.precoEstab !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
@@ -1371,6 +1480,7 @@ export default class EditarCartao extends Component {
                                         idCartao: routeIdCartao,
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
+                                        valueServiceEstab: e.state.precoEstab,
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
@@ -1384,7 +1494,7 @@ export default class EditarCartao extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
                                         timeClose: e.state.horarioClose
                                       })
@@ -1396,6 +1506,7 @@ export default class EditarCartao extends Component {
                                         idCartao: routeIdCartao,
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
+                                        valueServiceEstab: e.state.precoEstab,
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
@@ -1409,7 +1520,7 @@ export default class EditarCartao extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: segunda + terca + quarta + quinta + sexta + sabado + domingo,
+                                        workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
                                         timeClose: e.state.horarioClose
                                       })
@@ -1508,12 +1619,40 @@ export default class EditarCartao extends Component {
   }
 
 
-  searchCEPEstab() {
-    fetch(`https://viacep.com.br/ws/${this.state.cepEstab}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({enderecoCepEstab: obj})).catch(err => alert('O CEP pode estar errado ou não existir!'))
+  searchCEPEstab(cepuser) {
+    fetch(`https://viacep.com.br/ws/${cepuser}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({UFEstab: obj.uf})).catch(err => alert('Ocorreu um erro ao consultar o estado!'))
   }
 
-  searchCEPAuto() {
-    fetch(`https://viacep.com.br/ws/${this.state.cepAuto}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({enderecoCepAuto: obj})).catch(err => alert('O CEP pode estar errado ou não existir!'))
+  searchCEPAuto(cepuser) {
+    fetch(`https://viacep.com.br/ws/${cepuser}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({UFAuto: obj.uf})).catch(err => alert('Ocorreu um erro ao consultar o estado!'))
+  }
+
+
+  addingDaysOfWeek(day) {
+
+    if(day == 'segunda') {
+      this.setState({segunda: day})
+    }
+    if(day == 'terça') {
+      this.setState({terca: day})
+    }
+    if(day == 'quarta') {
+      this.setState({quarta: day})
+    }
+    if(day == 'quinta') {
+      this.setState({quinta: day})
+    }
+    if(day == 'sexta') {
+      this.setState({sexta: day})
+    }
+    if(day == 'sábado') {
+      this.setState({sabado: day})
+    }
+    if(day == 'domingo') {
+      this.setState({domingo: day})
+    }
+
+    this.state.daysWeek.push(day)
   }
 
   responsibleFont() {
@@ -1566,7 +1705,7 @@ export default class EditarCartao extends Component {
 
                         
                         <View style={{flexDirection:'row', alignItems:'center'}}>
-                          { this.state.type == 'Estabelecimento' ?
+                          { this.state.type == 'Estabelecimento' &&
                             <View style={{flexDirection:'row'}}>
                                 <ChooseOption/>
                                 <TouchableOpacity>
@@ -1574,13 +1713,6 @@ export default class EditarCartao extends Component {
                                       style={{fontWeight: 'bold'}}>Estabelecimento</Subtitle2Publish>
                                 </TouchableOpacity>
                             </View>
-                          :
-                            <View style={{flexDirection:'row'}}>
-                                <TouchableOpacity onPress={() => this.setState({type: 'Estabelecimento'})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
-                                  <TouchableOpacity onPress={() => this.setState({type: 'Estabelecimento'})}>
-                                      <Subtitle2Publish>Estabelecimento</Subtitle2Publish>
-                                  </TouchableOpacity>
-                            </View>                         
                           }
                         </View>
 
@@ -1616,20 +1748,13 @@ export default class EditarCartao extends Component {
                         }
               </View>
 
-                     {this.state.type == 'Autonomo' ?     
+                     {this.state.type == 'Autonomo' &&  
                       <View style={{flexDirection:'row', padding: 16}}>
                               <ChooseOption/>
                                   <TouchableOpacity>
                                       <Subtitle2Publish
                                         style={{fontWeight: 'bold'}}>Autônomo</Subtitle2Publish>
                                   </TouchableOpacity>
-                      </View>
-                      :
-                      <View style={{flexDirection:'row', padding: 16}}>
-                              <TouchableOpacity onPress={() => this.setState({type: 'Autonomo'})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
-                              <TouchableOpacity onPress={() => this.setState({type: 'Autonomo'})}>
-                                  <Subtitle2Publish>Autônomo</Subtitle2Publish>
-                              </TouchableOpacity>
                       </View>
                      }
                     </View>
@@ -1729,7 +1854,7 @@ export default class EditarCartao extends Component {
                                 value={this.state.tituloEstab}
                                 onChangeText={text => this.onChangeTituloEstab(text)}
                                 maxLength={20}
-                                placeholder="Nome da Empresa                                                        "
+                                placeholder="Nome do Produto (até 20 caracteres)                                                        "
                               />
                             </View>
 
@@ -1738,9 +1863,19 @@ export default class EditarCartao extends Component {
                                 editable={false}
                                 value={this.state.descricaoEstab}
                                 onChangeText={text => this.onChangeDescricaoEstab(text)}
-                                placeholder="Dê a melhor descrição do seu negócio                                                    "
+                                placeholder="Descrição do seu produto... capriche ;)                                                    "
                               />
                             </TouchableOpacity>
+
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                              <InputFormMask
+                                type={'money'}
+                                value={this.state.precoEstab}
+                                onChangeText={text => this.onChangePrecoEstab(text)}
+                                keyboardType={"number-pad"}
+                                placeholder="Valor do Produto                                                          "
+                              />
+                            </View>
 
                             <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
                               <InputFormMask
@@ -1765,95 +1900,95 @@ export default class EditarCartao extends Component {
 
                             <View>
 
-                              <View style={{flexDirection:'row'}}>
-                                
-                                { this.state.segunda == false ?
+                            <View style={{flexDirection:'row'}}>
+
+                                { this.state.segunda == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.setState({segunda: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('segunda')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Seg</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                      <ChooseOption onPress={() => this.setState({segunda: false})} style={{marginLeft:15, marginTop:20}}/>
+                                      <ChooseOption onPress={() => this.setState({segunda: ''})} style={{marginLeft:15, marginTop:20}}/>
                                       <TextDays>Seg</TextDays>
                                     </View>
                                 }
 
-                                { this.state.terca == false ?
+                                { this.state.terca == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.setState({terca: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('terça')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Ter</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                      <ChooseOption onPress={() => this.setState({terca: false})} style={{marginLeft:15, marginTop:20}}/>
+                                      <ChooseOption onPress={() => this.setState({terca: ''})} style={{marginLeft:15, marginTop:20}}/>
                                       <TextDays>Ter</TextDays>
                                     </View>
                                 }
 
 
-                                { this.state.quarta == false ?
+                                { this.state.quarta == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.setState({quarta: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('quarta')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Qua</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                      <ChooseOption onPress={() => this.setState({quarta: false})} style={{marginLeft:15, marginTop:20}}/>
+                                      <ChooseOption onPress={() => this.setState({quarta: ''})} style={{marginLeft:15, marginTop:20}}/>
                                       <TextDays>Qua</TextDays>
                                     </View>
                                 }
                               </View>
 
                               <View style={{flexDirection:'row'}}>
-                                { this.state.quinta == false ?
+                                { this.state.quinta == '' ?
                                   <View style={{flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={() => this.setState({quinta: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('quinta')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                     <TextDays>Qui</TextDays>
                                   </View>
 
                                 :
                                   <View style={{flexDirection:'row'}}>
-                                    <ChooseOption onPress={() => this.setState({quinta: false})} style={{marginLeft:15, marginTop:20}}/>
+                                    <ChooseOption onPress={() => this.setState({quinta: ''})} style={{marginLeft:15, marginTop:20}}/>
                                     <TextDays>Qui</TextDays>
                                   </View>
                                 }
 
-                                { this.state.sexta == false ?
+                                { this.state.sexta == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={() => this.setState({sexta: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sexta')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sex</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                        <ChooseOption onPress={() => this.setState({sexta: false})} style={{marginLeft:15, marginTop:20}}/>
+                                        <ChooseOption onPress={() => this.setState({sexta: ''})} style={{marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sex</TextDays>
                                     </View>
                                 }
 
 
-                                { this.state.sabado == false ?
+                                { this.state.sabado == '' ?
                                     <View style={{flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={() => this.setState({sabado: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sábado')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sáb</TextDays>
                                     </View>
                                     :
                                     <View style={{flexDirection:'row'}}>
-                                        <ChooseOption onPress={() => this.setState({sabado: false})} style={{marginLeft:15, marginTop:20}}/>
+                                        <ChooseOption onPress={() => this.setState({sabado: ''})} style={{marginLeft:15, marginTop:20}}/>
                                         <TextDays>Sáb</TextDays>
                                     </View>
                                 }
                               </View>
 
                             <View style={{flexDirection:'row'}}>
-                                { this.state.domingo == false ?
+                                { this.state.domingo == '' ?
                                   <View style={{flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={() => this.setState({domingo: true})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('domingo')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                     <TextDays>Dom</TextDays>
                                   </View>
                                   :
                                   <View style={{flexDirection:'row'}}>
-                                    <ChooseOption onPress={() => this.setState({domingo: false})} style={{marginLeft:15, marginTop:20}}/>
+                                    <ChooseOption onPress={() => this.setState({domingo: ''})} style={{marginLeft:15, marginTop:20}}/>
                                     <TextDays>Dom</TextDays>
                                   </View>
                                 }
@@ -1863,7 +1998,7 @@ export default class EditarCartao extends Component {
                               <View>
                                 <TitleChangeColor style={{fontWeight:'bold', paddingLeft: 15, marginTop:20, fontSize: this.responsibleFont()}}>Horário de Abertura</TitleChangeColor>
                                   <View style={{marginLeft:14, width: 130, height:30}}>
-                                      <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginTop:4}} onPress={() => this.openModalizeAbertura()}> 
+                                      <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginTop:4}} onPress={() => this.setState({showHour: true})}> 
                                         <IconResponsiveNOBACK name="clock" size={24}/>
                                         {this.state.horarioOpen == '' ? 
                                           <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>Abertura</Text> 
@@ -1876,7 +2011,7 @@ export default class EditarCartao extends Component {
                                 <View>
                                   <TitleChangeColor style={{fontWeight:'bold', paddingLeft: 35, marginTop:20, fontSize: this.responsibleFont()}}>Horário de Fechamento</TitleChangeColor>
                                     <View style={{marginLeft:44, width: 130, height:30}}>
-                                        <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginTop:4}} onPress={() => this.openModalizeFechamento()}> 
+                                        <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginTop:4}} onPress={() => this.setState({showHourClose: true})}> 
                                           <IconResponsiveNOBACK name="stopwatch" size={24}/>
                                           {this.state.horarioClose == '' ?
                                             <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>Fechamento</Text>
@@ -1930,6 +2065,31 @@ export default class EditarCartao extends Component {
 
             </ViewTopForm>
           </SafeViewPublish>
+
+
+          {this.state.showHour == true &&
+              <DateTimePicker
+                  testID="dateTimePicker"
+                  value={this.state.hour}
+                  mode='time'
+                  is24Hour={true}
+                  display="default"
+                  onChange={this.onChange}
+                  style={{width: 320, backgroundColor: "white"}}
+              />
+          }
+
+          {this.state.showHourClose == true &&
+              <DateTimePicker
+                  testID="dateTimePicker"
+                  value={this.state.hourClose}
+                  mode='time'
+                  is24Hour={true}
+                  display="default"
+                  onChange={this.onChangeClose}
+                  style={{width: 320, backgroundColor: "white"}}
+              />
+          }
 
           {/*Modalize da categoria*/}
           <Modalize
@@ -2090,49 +2250,34 @@ export default class EditarCartao extends Component {
 
 
 
-          {/*Modalize do CEP Estab*/}
+          {/*Modalize do CEP Estabelecimento*/}
           <Modalize
-            ref={this.state.modalizeLocationEstab}
-            snapPoint={500}
-            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+              ref={this.state.modalizeLocationEstab}
+              snapPoint={400}
+              modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
             >
-            <View style={{flex:1,alignItems:'center', flexDirection:'row'}}>
-                <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff'} : {fontWeight: 'bold', padding:15,color:'#000'}}>Insira seu CEP</Text>  
-
-                  <View style={{marginRight:20}}>
-                    <InputForm
-                      value={this.state.cepEstab}
-                      maxLength={8}
-                      minLength={8}
-                      onChangeText={text => this.onChangeCEPEstab(text)}
-                      keyboardType={"numeric"}
-                      placeholder="O CEP NÃO PODE TER (-)"
-                    />
-
-                  </View> 
-                  <TouchableOpacity onPress={() => this.searchCEPEstab()} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:10}}>
+            <View style={{flex:1,alignItems:'center', flexDirection:'column'}}>
+                <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, color:'#fff'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000'}}>Localização</Text>
+                
+                {this.state.enderecoEstab == null ?
+                  <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff', textAlign:'center'} : {fontWeight: 'bold', padding:15,color:'#000',textAlign:'center'}}>Nenhum endereço encontrado</Text>
+                :
+                  <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff', textAlign:'center'} : {fontWeight: 'bold', padding:15,color:'#000',textAlign:'center'}}>{this.state.enderecoEstab}</Text>  
+                }
+                <View style={{flexDirection:'row'}}>
+                  <TouchableOpacity onPress={() => this.GetCurrentLocation('Estabelecimento')} style={{alignItems:'center', justifyContent:'center', marginTop:10, marginRight:15, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
                     <FontAwesome5 name="search-location" size={24} color={'#9A9A9A'}/>
                   </TouchableOpacity>
 
+                  <TouchableOpacity onPress={() => this.setState({enderecoEstab: null})} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                    <FontAwesome5 name="times-circle" size={24} color={'#9A9A9A'}/>
+                  </TouchableOpacity>
+                </View>
             </View>
+                 
 
             <View>
-              <Text style={this.context.dark ?{fontWeight: 'bold', padding:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', padding:15, marginTop: 10, color:'#000'}}>Estado: {this.state.enderecoCepEstab.uf}</Text>
-              <Text style={this.context.dark ?{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#000'}}>Cidade: {this.state.enderecoCepEstab.localidade}</Text>
-              <Text style={this.context.dark ?{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#000'}}>Logradouro: {this.state.enderecoCepEstab.logradouro}</Text>
-                
-
-              <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#fff'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000'}}>Por favor, verifique se as informações conferem, caso sim, confirme e termine o cadastro</Text>
-              
-              <View style={{alignItems: 'center', justifyContent:'center'}}>
-                <TouchableOpacity
-                  onPress={() => this.closeLocationModalEstab(this.state.enderecoCepEstab.uf, this.state.enderecoCepEstab.localidade, this.state.enderecoCepEstab.logradouro)}
-                  style={{borderRadius:30, alignItems:'center', justifyContent:'center', backgroundColor:'#DAA520', height: 40, width: 40, marginBottom:40}}
-                  >
-                  <FontAwesome5 name="check-circle" size={24} color={'white'}/>
-                </TouchableOpacity>
-              </View>
-                
+              <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#fff', textAlign:'center'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000', textAlign:'center'}}>Por favor, verifique se as informações conferem, caso não, pesquise o endereço novamente</Text>
             </View>
           </Modalize>
 

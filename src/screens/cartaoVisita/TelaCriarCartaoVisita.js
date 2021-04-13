@@ -138,14 +138,13 @@ export default class TelaCriarCartaoVisita extends Component {
       categoria:'',
       horarioOpen:'',
       horarioClose:'',
-      phoneAuto:'',
       phoneEstab:'',
       nomeAuto:'',
       tituloEstab:'',
       descricaoAuto:'',
       descricaoEstab:'',
-      enderecoEstab:'',
-      enderecoAuto:'',
+      enderecoEstab: null,
+      enderecoAuto: null,
       cepEstab: '',
       precoEstab:'',
       cepAuto: '',
@@ -284,11 +283,6 @@ export default class TelaCriarCartaoVisita extends Component {
 
   keyExtractor = item => item.orderNumber.toString();
 
-  onChangePhoneAuto(text) {
-    this.setState({phoneAuto: text})
-    console.log('auto phone: '  + this.state.phoneAuto)
-  }
-
   onChangePhoneEstab(text) {
     this.setState({phoneEstab: text})
     console.log('estab phone: '  + this.state.phoneEstab)
@@ -408,12 +402,6 @@ export default class TelaCriarCartaoVisita extends Component {
     modalizeLocationEstab.current?.open()
   }
 
-
-  openModalizeLocationAuto() {
-    const modalizeLocationAuto = this.state.modalizeLocationAuto;
-
-    modalizeLocationAuto.current?.open()
-  }
 
 
   closeDescriptionModal(){
@@ -535,10 +523,6 @@ export default class TelaCriarCartaoVisita extends Component {
         let address = `${item.region}, ${item.subregion}, ${item.district}, ${item.street} (${item.postalCode})`;
   
         
-        if(type == 'Autonomo') {
-          this.setState({enderecoAuto: address})
-          this.searchCEPAuto(item.postalCode.replace('-', ''))
-        }
 
         if(type == 'Estabelecimento') {
           this.setState({enderecoEstab: address})
@@ -831,7 +815,7 @@ export default class TelaCriarCartaoVisita extends Component {
                       
                       
                           if(type == 'Autonomo') {
-                            if(this.state.descricaoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.enderecoAuto !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
+                            if(this.state.descricaoAuto !== '' && this.state.categoria !== '' && this.state.enderecoAuto !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -844,11 +828,8 @@ export default class TelaCriarCartaoVisita extends Component {
                                         titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -866,11 +847,8 @@ export default class TelaCriarCartaoVisita extends Component {
                                         titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1003,7 +981,7 @@ export default class TelaCriarCartaoVisita extends Component {
                       
                       
                           if(type == 'Autonomo') {
-                            if(this.state.descricaoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.enderecoAuto !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
+                            if(this.state.descricaoAuto !== '' && this.state.categoria !== '' && this.state.enderecoAuto !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1016,11 +994,8 @@ export default class TelaCriarCartaoVisita extends Component {
                                         titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1038,11 +1013,8 @@ export default class TelaCriarCartaoVisita extends Component {
                                         titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1085,7 +1057,7 @@ export default class TelaCriarCartaoVisita extends Component {
 
 
     if(typePublish === 'Autonomo') {
-      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.nomeAuto !== '' && this.state.descricaoAuto !== '' && this.state.phoneAuto !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.nomeAuto !== '' && this.state.descricaoAuto !== '') {
         this.setModalVisible(true)
 
 
@@ -1188,7 +1160,7 @@ export default class TelaCriarCartaoVisita extends Component {
                       
                       
                           if(type == 'Autonomo') {
-                            if(this.state.descricaoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' &&this.state.enderecoAuto !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
+                            if(this.state.descricaoAuto !== '' && this.state.categoria !== '' &&this.state.enderecoAuto !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1201,11 +1173,8 @@ export default class TelaCriarCartaoVisita extends Component {
                                         titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1223,11 +1192,8 @@ export default class TelaCriarCartaoVisita extends Component {
                                         titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1360,7 +1326,7 @@ export default class TelaCriarCartaoVisita extends Component {
                       
                       
                           if(type == 'Autonomo') {
-                            if(this.state.descricaoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' &&this.state.enderecoAuto !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
+                            if(this.state.descricaoAuto !== '' && this.state.categoria !== '' &&this.state.enderecoAuto !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1373,11 +1339,8 @@ export default class TelaCriarCartaoVisita extends Component {
                                         titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1395,11 +1358,8 @@ export default class TelaCriarCartaoVisita extends Component {
                                         titleAutoArray: e.state.arrayWordsAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1441,15 +1401,9 @@ export default class TelaCriarCartaoVisita extends Component {
   }
 
 
-  
-  searchCEPEstab() {
-    fetch(`https://viacep.com.br/ws/${this.state.cepEstab}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({enderecoCepEstab: obj})).catch(err => alert('O CEP pode estar errado ou não existir!'))
+  searchCEPEstab(cepuser) {
+    fetch(`https://viacep.com.br/ws/${cepuser}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({UFEstab: obj.uf})).catch(err => alert('Ocorreu um erro ao consultar o estado!'))
   }
-
-  searchCEPAuto() {
-    fetch(`https://viacep.com.br/ws/${this.state.cepAuto}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({enderecoCepAuto: obj})).catch(err => alert('O CEP pode estar errado ou não existir!'))
-  }
-
 
   responsibleFont() {
     let Height = Dimensions.get('window').height
@@ -1556,12 +1510,7 @@ export default class TelaCriarCartaoVisita extends Component {
                         </View> 
                         
                         :
-
-                        <View>
-                          <TouchableOpacity onPress={() => this.openModalizeLocationAuto()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
-                            <FontAwesome5 name="map-marker-alt" size={24} color={'#9A9A9A'}/>
-                          </TouchableOpacity>
-                        </View>
+                          null                        
                         }
               </View>
 
@@ -1608,35 +1557,16 @@ export default class TelaCriarCartaoVisita extends Component {
                               />
                           </View>
 
-                          <TouchableOpacity onPress={() => this.openModalizeLocationAuto()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputForm
-                                value={this.state.enderecoAuto}
-                                onChangeText={text => this.onChangeEnderecoAuto(text)}
-                                keyboardType={"default"}
-                                editable={false}
-                                placeholder="Endereço do Autônomo                                                   "
-                              />
-                          </TouchableOpacity>
 
                           <TouchableOpacity onPress={() => this.openModalizeDescricao()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
                               <InputForm
                                 editable={false}
                                 value={this.state.descricaoAuto}
                                 onChangeText={text => this.onChangeDescricaoAuto(text)}
-                                placeholder="Dê a melhor descrição das suas habilidades, detalhe-as                                                    "
+                                placeholder="Descreva os serviços que você já realizou                                                    "
                               />
                           </TouchableOpacity>
 
-                          <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputFormMask
-                                type={'cel-phone'}
-                                keyboardType={"phone-pad"}
-                                maxLength={17}
-                                value={this.state.phoneAuto}
-                                onChangeText={text => this.onChangePhoneAuto(text)}
-                                placeholder="Número de Telefone                                                   "
-                              />
-                          </View>
                           <View style={{flexDirection:'row', paddingTop:50, paddingBottom:10, alignItems:'center', justifyContent:'center'}}>                          
                             <View style={{marginRight:70}}>
                               <TouchableOpacity onPress={() => this.openModalize()} style={{justifyContent:'center', alignItems:'center', flexDirection:'row', marginLeft:8, marginRight:5, borderRadius:10}}>
@@ -1994,7 +1924,7 @@ export default class TelaCriarCartaoVisita extends Component {
                         value={this.state.descricaoAuto}
                         onChangeText={text => this.onChangeDescricaoAuto(text)}
                         style={{padding: 20}}
-                        placeholder="Dê a melhor descrição das suas habilidades, detalhe-as"
+                        placeholder="Descreva os serviços que você já realizou (detalhe-os), o usuário contratante verá essas informações para avaliar seu perfil"
                       />
 
                       <View style={{alignItems:'center'}}>

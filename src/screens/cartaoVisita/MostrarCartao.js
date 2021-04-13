@@ -64,7 +64,7 @@ const imgHolder = require('../../assets/img/confeiteira.jpeg');
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-import { SafeAnuncioView, SignUpBottom, IconResponsiveNOBACK, ViewComment, ReviewView,  TouchableResponsive, ButtonIconContainer, CallAndMessageContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
+import { SafeAnuncioView, SignUpBottom, IconResponsiveNOBACK, ValueFieldPrincipal, ViewComment, ReviewView,  TouchableResponsive, ButtonIconContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
 
 import { Modalize } from 'react-native-modalize';
 
@@ -214,6 +214,7 @@ export default class MostrarCartao extends Component {
       cartaoEstab:[],
       purchased: false,
       modalizeRef: React.createRef(null),
+      modalizeRefDisponibilidade: React.createRef(null),
       usersThatVotedFirebase: [],
       mediaAvaliacao: [],
       notaMedia: 0,
@@ -279,9 +280,7 @@ export default class MostrarCartao extends Component {
           photo: doc.data().photoPublish,
           photo2: doc.data().photoPublish2,
           photo3: doc.data().photoPublish3,
-          phone: doc.data().phoneNumberAuto,
           categoria: doc.data().categoryAuto,
-          local: doc.data().localAuto,
           subcategoria: doc.data().subcategoryAuto,
           description: doc.data().descriptionAuto,
           type: doc.data().type,
@@ -317,11 +316,11 @@ export default class MostrarCartao extends Component {
           description: doc.data().descriptionEstab,
           type: doc.data().type,
           verified: doc.data().verifiedPublish,
-          timeToOpen: doc.data().timeOpen,
-          timeToClose: doc.data().timeClose,
+          timeOpen: doc.data().timeOpen,
+          timeClose: doc.data().timeClose,
           local: doc.data().localEstab,
           workDays: doc.data().workDays,
-          timeClose: doc.data().timeClose
+          valueServiceEstab: doc.data().valueServiceEstab
         })
         dataAtual = doc.data().publishData
       })
@@ -475,6 +474,14 @@ export default class MostrarCartao extends Component {
        result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
+  }
+
+  
+
+  openModalizeDisponibilidade() {
+    const modalizeRefDisponibilidade = this.state.modalizeRefDisponibilidade;
+
+    modalizeRefDisponibilidade.current?.open()
   }
 
 
@@ -655,18 +662,6 @@ export default class MostrarCartao extends Component {
                     </View>
                   </View>
 
-
-
-                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
-                        <IconResponsiveNOBACK name="phone-square" size={30}/>
-                        <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.phone}</TextTheme>
-                  </View>
-
-                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
-                      <IconResponsiveNOBACK name="map-marked-alt" size={25}/>
-                      <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.local}</TextTheme>
-                  </View>
-
                   <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                         <IconResponsiveNOBACK name="list-alt" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
@@ -678,23 +673,13 @@ export default class MostrarCartao extends Component {
                         <AirbnbRating
                           count={5}
                           reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
-                          defaultRating={this.state.notaMedia}
+                          defaultRating={Math.round(this.state.notaMedia)}
                           size={15}
                           onFinishRating={(number) => this.finishRating(item.idCartao, number)}
                           />
 
-                        <TextDescription2>Média: {this.state.notaMedia}</TextDescription2>
+                        <TextDescription2>Média: {(this.state.notaMedia).toFixed(1)}</TextDescription2>
 
-                        <CallAndMessageContainer>
-                          <TouchableResponsive onPress={() => this.openPhoneApp(this.state.phoneNavigator)}>
-                              <IconResponsiveNOBACK name="phone" size={20}/>
-                          </TouchableResponsive> 
-                          
-                          <TouchableResponsive onPress={() => this.openWhatsApp(this.state.phoneNavigator)}>
-                              <IconResponsiveNOBACK name="comment" size={20}/>
-                          </TouchableResponsive>            
-                        </CallAndMessageContainer>
-                        
                         <TouchableOpacity style={{marginTop:7}} onPress={() => this.openModalize()}>
                           <IconResponsiveNOBACK style={{marginTop:15}} name="comments" size={17}/>
                         </TouchableOpacity>
@@ -733,6 +718,200 @@ export default class MostrarCartao extends Component {
 
 
 
+
+          {/*Modalize do Calendário*/}
+          <Modalize
+            ref={this.state.modalizeRefDisponibilidade}
+            snapPoint={250}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+          >
+            <View style={{alignItems:'center', marginTop:40}}>
+              <Heading6 style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, color:'#fff'} : {fontWeight:'bold', marginLeft: 10, color:'#000'}}>Disponibilidade</Heading6>
+              {this.state.cartaoAuto.length !== 0 &&
+                <FlatList
+                  keyExtractor={() => this.makeid(17)}
+                  data={this.state.cartaoAuto}
+                  horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20,flexGrow: 1, justifyContent: 'center'}} 
+                  renderItem={({item}) =>
+                  <View>
+                  <View style={{flexDirection:'row'}}>
+                    {item.workDays.includes('domingo') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, marginLeft:10, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>D</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, marginLeft:10,  alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>D</Text>
+                      </View>
+                    }
+
+                    {item.workDays.includes('segunda') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                    }
+
+
+                    {item.workDays.includes('terça') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>T</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>T</Text>
+                      </View>
+                    }
+
+
+                    {item.workDays.includes('quarta') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                    }
+
+
+                    {item.workDays.includes('quinta') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                    }
+
+                    {item.workDays.includes('sexta') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                    }
+
+                    {item.workDays.includes('sábado') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                    }
+
+
+
+                  </View>
+                    <View style={{marginTop:40, marginHorizontal:100, borderWidth:3, borderColor:'#d98b0d', padding:20, borderRadius:30}}>
+                      <Text style={{fontWeight:'bold', color: this.context.dark ? 'white' : 'black'}}>{item.timeOpen} - {item.timeClose}</Text>
+                    </View>
+                  </View>
+                  }
+                /> 
+              }
+
+              {this.state.cartaoEstab.length !== 0 &&
+                <FlatList
+                  keyExtractor={() => this.makeid(17)}
+                  data={this.state.cartaoEstab}
+                  horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20,flexGrow: 1, justifyContent: 'center'}} 
+                  renderItem={({item}) =>
+                  <View>
+                  <View style={{flexDirection:'row'}}>
+                    {item.workDays.includes('domingo') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, marginLeft:10, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>D</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, marginLeft:10, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>D</Text>
+                      </View>
+                    }
+
+                    {item.workDays.includes('segunda') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                    }
+
+
+                    {item.workDays.includes('terça') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>T</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>T</Text>
+                      </View>
+                    }
+
+
+                    {item.workDays.includes('quarta') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                    }
+
+
+                    {item.workDays.includes('quinta') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>Q</Text>
+                      </View>
+                    }
+
+                    {item.workDays.includes('sexta') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                    }
+
+                    {item.workDays.includes('sábado') ?
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                      :
+                      <View style={{width:30, height:30, borderRadius:50, marginRight:15, alignItems:'center', justifyContent:'center', backgroundColor:'#3F3F3F'}}>
+                        <Text style={{color:'white', fontWeight:'bold', fontSize:17}}>S</Text>
+                      </View>
+                    }
+
+                  </View>
+                    <View style={{marginTop:40, marginHorizontal:100, borderWidth:3, borderColor:'#d98b0d', padding:20, borderRadius:30}}>
+                      <Text style={{fontWeight:'bold', color: this.context.dark ? 'white' : 'black'}}>{item.timeOpen} - {item.timeClose}</Text>
+                    </View>
+                  </View>
+                  }
+                /> 
+              }
+
+            
+            </View>
+          </Modalize>
 
 
 
@@ -861,6 +1040,8 @@ export default class MostrarCartao extends Component {
                       </View>
                     </TouchableItem>
                   </ButtonIconContainer>
+
+                  <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', position:'absolute', bottom: windowHeight/3.9, opacity:0.8, left: windowWidth/3.7, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.valueServiceEstab}</ValueFieldPrincipal>
                   
                 </View>
 
@@ -882,10 +1063,10 @@ export default class MostrarCartao extends Component {
                     </View>
                   </View>
 
-                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
+                  <TouchableOpacity onPress={() => this.openModalizeDisponibilidade()} style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                       <IconResponsiveNOBACK name="clock" size={25}/>
-                      <TextTheme style={{fontSize:15, marginLeft: 15}}>Aberto por {item.workDays} dias na semana até {item.timeClose} hrs</TextTheme>
-                  </View>
+                      <TextTheme style={{fontSize:15, marginLeft: 15}}>Ver disponibilidade</TextTheme>
+                  </TouchableOpacity>
 
 
 
@@ -894,11 +1075,6 @@ export default class MostrarCartao extends Component {
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.local}</TextTheme>
                   </View>
 
-
-                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
-                        <IconResponsiveNOBACK name="phone-square" size={30}/>
-                        <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.phone}</TextTheme>
-                  </View>
 
                   <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                         <IconResponsiveNOBACK name="list-alt" size={30}/>
@@ -910,23 +1086,13 @@ export default class MostrarCartao extends Component {
                         <AirbnbRating
                           count={5}
                           reviews={["Horrível", "Ruim", "OK", "Bom", "Incrível"]}
-                          defaultRating={this.state.notaMedia}
+                          defaultRating={Math.round(this.state.notaMedia)}
                           size={15}
                           onFinishRating={(number) => this.finishRating(item.idCartao, number)}
                           />
 
-                        <TextDescription2>Média: {this.state.notaMedia}</TextDescription2>
+                        <TextDescription2>Média: {(this.state.notaMedia).toFixed(1)}</TextDescription2>
 
-                        <CallAndMessageContainer>
-                          <TouchableResponsive onPress={() => this.openPhoneApp(this.state.phoneNavigator)}>
-                              <IconResponsiveNOBACK name="phone" size={20}/>
-                          </TouchableResponsive> 
-                          
-                          <TouchableResponsive onPress={() => this.openWhatsApp(this.state.phoneNavigator)}>
-                              <IconResponsiveNOBACK name="comment" size={20}/>
-                          </TouchableResponsive>            
-                        </CallAndMessageContainer>
-                        
                         <TouchableOpacity style={{marginTop:7}} onPress={() => this.openModalize()}>
                           <IconResponsiveNOBACK style={{marginTop:15}} name="comments" size={17}/>
                         </TouchableOpacity>
