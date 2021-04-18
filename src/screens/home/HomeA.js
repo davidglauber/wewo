@@ -70,7 +70,8 @@ export default class HomeA extends Component {
       isFetchedButton: false,
       modalVisible: true,
       products: [],
-      purchased: false
+      purchased: false,
+      type:'Autonomo'
     };
   }
 
@@ -372,7 +373,50 @@ async componentDidMount() {
                     </TouchCategory>
                 }
                 ></FlatList>
+
             </ScrollView>
+
+
+        {this.state.type == 'Estabelecimento' &&
+          <View style={{flexDirection:'row', justifyContent:'center'}}>
+            <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Autonomo'})}>
+              <IconResponsiveNOBACK
+                style={{color:'#3E3C3F'}}
+                name="user-tie"
+                size={24}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={{padding:15}}>
+              <IconResponsiveNOBACK
+                name="briefcase"
+                size={24}
+              />
+            </TouchableOpacity>
+          </View>
+        }
+
+        {this.state.type == 'Autonomo' &&
+          <View style={{flexDirection:'row', justifyContent:'center'}}>
+            <TouchableOpacity style={{padding:15}}>
+              <IconResponsiveNOBACK
+                name="user-tie"
+                size={24}
+              /> 
+            </TouchableOpacity>
+
+            <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Estabelecimento'})}>
+              <IconResponsiveNOBACK
+                style={{color:'#3E3C3F'}}
+                name="briefcase"
+                size={24}
+              />
+            </TouchableOpacity>
+
+          </View>
+        }
+
+
 
             <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
               <Heading>Anúncios</Heading>
@@ -381,118 +425,65 @@ async componentDidMount() {
               </TouchableOpacity>
             </View>
 
-            {/*ANUNCIOS DE USUARIOS PREMIUM AUTONOMO*/}
-            <FlatList 
-                keyExtractor={() => this.makeid(17)}
-                data={premiumPublishesAuto}
-                renderItem={({item}) =>
-                
-                
-                <View style={{flex:1, alignItems: 'center'}}>
-                      <View>
-                          <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
-                              <View style={{flexDirection:'row'}}>
-                                    {item.video == null ?
-                                      <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20}}></Image>
-                                      :
-                                      <Video 
-                                        source={{ uri: item.video }}
-                                        rate={1.0}
-                                        volume={0}
-                                        isMuted={false}
-                                        resizeMode="cover"
-                                        shouldPlay
-                                        isLooping
-                                        style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
-                                      />
-                                    }
-                                  
-                                  <View style={{flexDirection:'column'}}>
-                                        <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
-                                          <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
-                                        </View>
-                                          {this.cutDescription(item.description)}
-                                  </View>
-                              </View> 
-                              
+
+            {this.state.type == 'Autonomo' &&
+              <ScrollView>
+                <FlatList 
+                  keyExtractor={() => this.makeid(17)}
+                  data={premiumPublishesAuto}
+                  renderItem={({item}) =>
+                  
+                  
+                  <View style={{flex:1, alignItems: 'center'}}>
+                        <View>
+                            <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                                <View style={{flexDirection:'row'}}>
+                                      {item.video == null ?
+                                        <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20}}></Image>
+                                        :
+                                        <Video 
+                                          source={{ uri: item.video }}
+                                          rate={1.0}
+                                          volume={0}
+                                          isMuted={false}
+                                          resizeMode="cover"
+                                          shouldPlay
+                                          isLooping
+                                          style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
+                                        />
+                                      }
+                                    
+                                    <View style={{flexDirection:'column'}}>
+                                          <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                            <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                          </View>
+                                            {this.cutDescription(item.description)}
+                                    </View>
+                                </View> 
+                                
 
 
-                              <View style={{flexDirection: 'row'}}>
-                                  <View style={{marginLeft:windowWidth/1.75}}>
-                                      <ValueField>{item.value}</ValueField>
-                                  </View>
+                                <View style={{flexDirection: 'row'}}>
+                                    <View style={{marginLeft:windowWidth/1.75}}>
+                                        <ValueField>{item.value}</ValueField>
+                                    </View>
 
-                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.05}}>
-                                      <IconResponsive style={{marginLeft:16}}  name="user-tie" size={19}/>
-                                      <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
-                                  </View>
+                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.05}}>
+                                        <IconResponsive style={{marginLeft:16}}  name="user-tie" size={19}/>
+                                        <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
+                                    </View>
 
-                              </View> 
+                                </View> 
 
-                          </AnuncioContainer>
-                      </View>
+                            </AnuncioContainer>
+                        </View>
 
-                  </View>
-                
-              }
-              >
-              </FlatList>
-
-              {/*ANUNCIOS DE USUARIOS PREMIUM ESTABELECIMENTOS*/}
-              <FlatList 
-                keyExtractor={() => this.makeid(17)}
-                data={premiumPublishesEstab}
-                renderItem={({item}) =>
-                
-                <View style={{flex:1, alignItems: 'center'}}>
-                    <View>
-                    <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
-                              <View style={{flexDirection:'row'}}>
-                                    {item.video == null ?
-                                      <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20}}></Image>
-                                      :
-                                      <Video 
-                                        source={{ uri: item.video }}
-                                        rate={1.0}
-                                        volume={0}
-                                        isMuted={false}
-                                        resizeMode="cover"
-                                        shouldPlay
-                                        isLooping
-                                        style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
-                                      />
-                                    }
-                                  
-                                  <View style={{flexDirection:'column'}}>
-                                        <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
-                                          <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
-                                        </View>
-                                          {this.cutDescription(item.description)}
-                                  </View>
-                              </View> 
-                              
-
-
-                              <View style={{flexDirection: 'row'}}>
-                                  <View style={{marginLeft:windowWidth/1.75}}>
-                                      <ValueField>{item.value}</ValueField>
-                                  </View>
-                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.05}}>
-                                      <IconResponsive style={{marginLeft:16}}  name="briefcase" size={19}/>
-                                      <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
-                                  </View>
-                              </View> 
-
-                          </AnuncioContainer>
                     </View>
-                </View>
-                
-              }
-              >
-              </FlatList>
-
-
-
+                  
+                }
+                >
+                </FlatList>
+              
               <FlatList 
                 keyExtractor={() => this.makeid(17)}
                 data={activesPublishesAuto}
@@ -543,60 +534,120 @@ async componentDidMount() {
 
                   </View>
                 
-              }
-              >
-              </FlatList>
-
-              <FlatList 
-                keyExtractor={() => this.makeid(17)}
-                data={activesPublishesEstab}
-                renderItem={({item}) =>
-                
-                <View style={{flex:1, alignItems: 'center'}}>
-                    <View>
-                    <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
-                              <View style={{flexDirection:'row'}}>
-                                    {item.video == null ?
-                                      <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20}}></Image>
-                                      :
-                                      <Video 
-                                        source={{ uri: item.video }}
-                                        rate={1.0}
-                                        volume={0}
-                                        isMuted={false}
-                                        resizeMode="cover"
-                                        shouldPlay
-                                        isLooping
-                                        style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
-                                      />
-                                    }
-                                  
-                                  <View style={{flexDirection:'column'}}>
-                                        <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
-                                          <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
-                                        </View>
-                                          {this.cutDescription(item.description)}
-                                  </View>
-                              </View> 
-                              
+                  }
+                  >
+                </FlatList>
+              </ScrollView>
+            }
 
 
-                              <View style={{flexDirection: 'row'}}>
-                                  <View style={{marginLeft:windowWidth/1.75, marginRight:windowWidth/6}}>
-                                      <ValueField>{item.value}</ValueField>
-                                  </View>
-                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.05}}>
-                                      <IconResponsive style={{marginLeft:16}}  name="briefcase" size={19}/>
-                                  </View>
-                              </View> 
+            {this.state.type == 'Estabelecimento' &&
+              <ScrollView>
+                <FlatList 
+                  keyExtractor={() => this.makeid(17)}
+                  data={premiumPublishesEstab}
+                  renderItem={({item}) =>
+                  
+                  <View style={{flex:1, alignItems: 'center'}}>
+                      <View>
+                      <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                                <View style={{flexDirection:'row'}}>
+                                      {item.video == null ?
+                                        <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20}}></Image>
+                                        :
+                                        <Video 
+                                          source={{ uri: item.video }}
+                                          rate={1.0}
+                                          volume={0}
+                                          isMuted={false}
+                                          resizeMode="cover"
+                                          shouldPlay
+                                          isLooping
+                                          style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
+                                        />
+                                      }
+                                    
+                                    <View style={{flexDirection:'column'}}>
+                                          <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                            <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                          </View>
+                                            {this.cutDescription(item.description)}
+                                    </View>
+                                </View> 
+                                
 
-                          </AnuncioContainer>
-                    </View>
-                </View>
-                
-              }
-              >
-              </FlatList>
+
+                                <View style={{flexDirection: 'row'}}>
+                                    <View style={{marginLeft:windowWidth/1.75}}>
+                                        <ValueField>{item.value}</ValueField>
+                                    </View>
+                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.05}}>
+                                        <IconResponsive style={{marginLeft:16}}  name="briefcase" size={19}/>
+                                        <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
+                                    </View>
+                                </View> 
+
+                            </AnuncioContainer>
+                      </View>
+                  </View>
+                  
+                }
+                >
+                </FlatList>
+
+                <FlatList 
+                  keyExtractor={() => this.makeid(17)}
+                  data={activesPublishesEstab}
+                  renderItem={({item}) =>
+                  
+                  <View style={{flex:1, alignItems: 'center'}}>
+                      <View>
+                      <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                                <View style={{flexDirection:'row'}}>
+                                      {item.video == null ?
+                                        <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20}}></Image>
+                                        :
+                                        <Video 
+                                          source={{ uri: item.video }}
+                                          rate={1.0}
+                                          volume={0}
+                                          isMuted={false}
+                                          resizeMode="cover"
+                                          shouldPlay
+                                          isLooping
+                                          style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
+                                        />
+                                      }
+                                    
+                                    <View style={{flexDirection:'column'}}>
+                                          <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                            <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                          </View>
+                                            {this.cutDescription(item.description)}
+                                    </View>
+                                </View> 
+                                
+
+
+                                <View style={{flexDirection: 'row'}}>
+                                    <View style={{marginLeft:windowWidth/1.75, marginRight:windowWidth/6}}>
+                                        <ValueField>{item.value}</ValueField>
+                                    </View>
+                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.05}}>
+                                        <IconResponsive style={{marginLeft:16}}  name="briefcase" size={19}/>
+                                    </View>
+                                </View> 
+
+                            </AnuncioContainer>
+                      </View>
+                  </View>
+                  
+                }
+                >
+                </FlatList>
+              </ScrollView>
+            }
+
 
           </ScrollView>
         </View>
