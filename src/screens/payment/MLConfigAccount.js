@@ -24,20 +24,11 @@ import { SafeBackground, IconResponsive, TextDescription2, IconResponsiveNOBACK,
 // import components
 import { Modalize } from 'react-native-modalize';
 
-import LottieView from 'lottie-react-native';
-
-
 import firebase from '../../config/firebase';
 
 import { ThemeContext } from '../../../ThemeContext';
 
 import { WebView } from 'react-native-webview'
-
-//QRCODE
-import QRCode from 'react-native-qrcode-svg';
-
-//BIBLIOTECA PIX
-import { staticPix } from "pix-charge";
 
 
 //consts
@@ -77,7 +68,14 @@ export default class MLConfigAccount extends Component {
     this.state = {
       modalizeRef: React.createRef(null),
       webviewBoolean: false,
-      accessTokenMP: ""
+      accessTokenMP: "",
+      name: "",
+      phone: "",
+      fotoPerfil: "",
+      dateBorn: "",
+      email: "",
+      premium: null,
+      textPortfolio: ""
     };
   }
 
@@ -86,6 +84,21 @@ export default class MLConfigAccount extends Component {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
   
+
+  
+  async componentDidMount() {
+    let currentUser = firebase.auth().currentUser.uid;
+    await firebase.firestore().collection('usuarios').doc(currentUser).onSnapshot(documentSnapshot => {
+      console.log('User data: ', documentSnapshot.data());
+      this.setState({name: documentSnapshot.data().nome})
+      this.setState({phone: documentSnapshot.data().telefone})
+      this.setState({fotoPerfil: documentSnapshot.data().photoProfile})
+      this.setState({email: documentSnapshot.data().email})
+      this.setState({dateBorn: documentSnapshot.data().dataNascimento})
+      this.setState({premium: documentSnapshot.data().premium})
+      this.setState({textPortfolio: documentSnapshot.data().textPortfolio})
+    })
+  }
   
 
   openModalize() {
@@ -122,6 +135,20 @@ export default class MLConfigAccount extends Component {
     return result;
   }
 
+  firebaseSetIDMP(json) {
+    let e = this;
+    let currentUser = firebase.auth().currentUser.uid;
+    firebase.firestore().collection('usuarios').doc(currentUser).set({
+      dataNascimento: e.state.dateBorn,
+      email: e.state.email,
+      nome: e.state.name,
+      photoProfile: e.state.fotoPerfil,
+      premium: e.state.premium,
+      telefone: e.state.phone,
+      textPortfolio: e.state.textPortfolio,
+      idMP: json.user_id
+    })
+  }
 
   _onNavigationStateChange(webViewState){
     let removeUrl = webViewState.url.replace('https://www.mercadopago.com/mp.php?code=', '');
@@ -142,8 +169,8 @@ export default class MLConfigAccount extends Component {
         })
       })
       .then((res) => res.json())
-      .then((json) => console.log('JSON DA RESPOSTA: ' + JSON.stringify(json)))
-      .catch(() => alert('erroo ao autenticar usuário mercado pago'))
+      .then((json) => this.firebaseSetIDMP(json)) 
+      .catch(() => alert('erro ao autenticar usuário mercado pago, tente novamente'))
   }
 
 
