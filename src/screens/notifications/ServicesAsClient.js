@@ -78,7 +78,8 @@ export default class ServicesAsClient extends Component {
       valueUser:'',
       telefoneUser:'',
       dataUser:'',
-      horarioUser:''
+      horarioUser:'',
+      idNotification: ''    
     };
   }
 
@@ -96,6 +97,8 @@ export default class ServicesAsClient extends Component {
             idContratante: doc.data().idContratante,
             idContratado: doc.data().idContratado,
             photoProfile: doc.data().photoProfile,
+            photoUser: doc.data().photoUser,
+            title: doc.data().titlePublish,
             idNot: doc.data().idNot,
             nome: doc.data().nome,
             telefone: doc.data().telefone,
@@ -124,14 +127,15 @@ export default class ServicesAsClient extends Component {
 
 
   openModalize(userData) {
-    this.setState({nameUser: userData.nome})
-    this.setState({fotoUser: userData.photoProfile})
+    this.setState({nameUser: userData.title})
+    this.setState({fotoUser: userData.photoUser})
     this.setState({cepUser: userData.cep})
     this.setState({serviceUser: userData.service})
     this.setState({valueUser: userData.valor})
     this.setState({telefoneUser: userData.telefone})
     this.setState({dataUser: userData.dataServico})
     this.setState({horarioUser: userData.horario})
+    this.setState({idNotification: userData.idNot})
 
     const modalizeRef = this.state.modalizeRef;
     modalizeRef.current?.open()
@@ -165,7 +169,7 @@ export default class ServicesAsClient extends Component {
             <Heading style={styles.paddingTitle}>Serviços que Contratei</Heading>
           </View>
           
-          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PagWeWo)</TextDescription2>
+          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PagWo)</TextDescription2>
 
           <View style={{alignItems:'center', marginTop:100}}>
             <LottieView source={bell} style={{width:100, height:100}} autoPlay loop />  
@@ -179,15 +183,15 @@ export default class ServicesAsClient extends Component {
           <Heading style={styles.paddingTitle}>Serviços que Contratei</Heading>
           </View>
           
-          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PagWeWo)</TextDescription2>
+          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PagWo)</TextDescription2>
 
           <FlatList
             keyExtractor={() => this.makeid(17)}
             data={this.state.notificationsActivies}
             renderItem={({item}) => 
             <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
-              <Image source={{uri: item.photoProfile}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
-              <Text  style={styles.titleMain}>{item.nome}</Text>
+              <Image source={{uri: item.photoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+              <Text  style={styles.titleMain}>{item.title}</Text>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {idLoggedUser: user.uid, idDonoDoAnuncio: item.idContratante, idNotification: item.idNot, valuePayment: item.valor, type: 'normalNotif'})} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/5, justifyContent:'center', alignItems:'center'}}>
                   <IconResponsive name="comment" size={24}/>
                 </TouchableOpacity>
@@ -213,7 +217,7 @@ export default class ServicesAsClient extends Component {
          
             <View style={{width: windowWidth/1.06, height:100, backgroundColor: '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
               <Image source={{uri: fotoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
-                <Text  style={styles.title}>{nameUser}</Text>
+              <Text  style={styles.title}>{nameUser}</Text>
             </View>
 
             <View style={{width: windowWidth/1.06, height:500, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10}}>
@@ -227,7 +231,7 @@ export default class ServicesAsClient extends Component {
                 }
 
                 {cepUser !== null &&
-                  <View style={{marginLeft: 30, marginTop:30, flexDirection:'row'}}>
+                  <View style={{marginLeft: 30, maxWidth: windowWidth/1.5, merginRight: 50, marginTop:30, flexDirection:'row'}}>
                     <IconResponsive name="map-marker" size={24}/>
                     <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{cepUser}</Title>
                   </View>
@@ -254,12 +258,17 @@ export default class ServicesAsClient extends Component {
                   <IconResponsive name="mobile" size={24}/>
                   <Title style={{marginLeft: 24, fontSize: 15, color: this.context.dark ? 'white' : 'white'}}>{telefoneUser}</Title>
                 </View>
-                
 
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: valueUser, idNotification: this.state.idNotification})} style={{marginHorizontal:130, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', borderRadius:50}}>
+                  <IconResponsiveNOBACK name="check" size={24}/>
+                  <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Pagar</Title>
+                </TouchableOpacity>
 
                 <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
                   <Title style={{marginRight: 20, textAlign:'center', fontSize: 15, marginTop:25, color: this.context.dark ? 'white' : 'white'}}>Este é um resumo do que você enviou ao contratado(a)</Title>
                 </View>
+
+
 
             </View>
           </View>

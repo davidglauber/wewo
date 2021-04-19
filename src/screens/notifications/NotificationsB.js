@@ -127,8 +127,8 @@ export default class NotificationsB extends Component {
 
 
   openModalize(userData) {
-    this.setState({nameUser: userData.nome})
-    this.setState({fotoUser: userData.photoProfile})
+    this.setState({nameUser: userData.title})
+    this.setState({fotoUser: userData.photoUser})
     this.setState({cepUser: userData.cep})
     this.setState({serviceUser: userData.service})
     this.setState({valueUser: userData.valor})
