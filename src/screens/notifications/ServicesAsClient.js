@@ -180,7 +180,7 @@ export default class ServicesAsClient extends Component {
 
         <View>
           <View style={{flexDirection:'row'}}>
-          <Heading style={styles.paddingTitle}>Serviços que Contratei</Heading>
+            <Heading style={styles.paddingTitle}>Serviços que Contratei</Heading>
           </View>
           
           <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PagWo)</TextDescription2>

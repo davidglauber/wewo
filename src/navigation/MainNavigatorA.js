@@ -50,6 +50,9 @@ import HomeNavigator from './HomeNavigatorA';
 
 import ServiceCadaster from '../screens/telasAnuncios/ServiceCadaster';
 
+
+import MLConfigAccount from '../screens/payment/MLConfigAccount';
+
 //screen of filter
 import HomeFiltro from '../screens/home/HomeFiltro';
 
@@ -322,6 +325,12 @@ function MainNavigatorA() {
         <Stack.Screen
           name="PixPayment"
           component={PixPayment}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="MLConfigAccount"
+          component={MLConfigAccount}
           options={{headerShown: false}}
         />
 

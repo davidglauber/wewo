@@ -57,6 +57,7 @@ const NOTIFICATION_ICON = IOS ? 'ios-notifications' : 'md-notifications';
 
 const ADDRESS_ICON = IOS ? 'ios-pin' : 'md-pin';
 const PAYMENT_ICON = IOS ? 'ios-card' : 'md-card';
+const DOLLAR_ICON = IOS ? 'logo-usd' : 'logo-usd';
 const ORDERS_ICON = IOS ? 'ios-list' : 'md-list';
 const VISIT_CARD = IOS ? 'ios-albums' : 'ios-albums';
 
@@ -330,11 +331,17 @@ export default function Configuracoes() {
           </TouchableItem>
 
 
-          <SectionHeader title="Planos" />
+          <SectionHeader title="Planos & Pagamentos" />
           <Setting
             onPress={() => navigation.navigate('PaymentMethod')}
             icon={PAYMENT_ICON}
             setting="Escolha o Seu Plano"
+          />
+
+          <Setting
+            onPress={() => navigation.navigate('MLConfigAccount')}
+            icon={DOLLAR_ICON}
+            setting="Configure sua conta de recebimento"
           />
 
           <SectionHeader title="Anúncios / Portifólios / Produtos" />

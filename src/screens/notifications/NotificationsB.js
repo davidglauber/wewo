@@ -90,7 +90,7 @@ export default class NotificationsB extends Component {
     if(user == null) {
       alert('Usuários não logados não tem notificações ativas')
     } else {
-      await firebase.firestore().collection('notifications').where("idContratante", "==", user.uid).onSnapshot(documentSnapshot => {
+      await firebase.firestore().collection('notifications').where("idContratante", "==", user.uid).where("confirmed", "==", false).onSnapshot(documentSnapshot => {
         let notifications = [];
         documentSnapshot.forEach(function(doc) {
           notifications.push({
