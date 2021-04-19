@@ -282,6 +282,7 @@ export default class TelaAnuncio extends Component {
           idAnuncio: doc.data().idAnuncio,
           nome: doc.data().nome,
           video: doc.data().videoPublish,
+          fotoUsuarioLogado: doc.data().fotoUsuarioLogado,
           photo: doc.data().photoPublish,
           photo2: doc.data().photoPublish2,
           photo3: doc.data().photoPublish3,
@@ -316,6 +317,7 @@ export default class TelaAnuncio extends Component {
           value: doc.data().valueServiceEstab,
           publishData: e.state.date,
           idAnuncio: doc.data().idAnuncio,
+          fotoUsuarioLogado: doc.data().fotoUsuarioLogado,
           video: doc.data().videoPublish,
           photo: doc.data().photoPublish,
           photo2: doc.data().photoPublish2,
@@ -588,26 +590,6 @@ export default class TelaAnuncio extends Component {
   }
 
 
-  openPhoneApp(phone) {
-    Linking.openURL(`tel:${phone}`)
-  }
-
-  openWhatsApp(phone) {
-    Linking.canOpenURL("whatsapp://send?text=oi").then(supported => {
-      if (supported) {
-        return Linking.openURL(
-          `whatsapp://send?phone=55${phone}&text=Olá, ${this.props.route.params.nomeToZap} te vi no WeWo e Tenho Interesse no Seu Trabalho`
-        );
-      } else {
-        return Linking.openURL(
-          `https://api.whatsapp.com/send?phone=55${phone}&text=Olá, ${this.props.route.params.nomeToZap} te vi no WeWo e Tenho Interesse no Seu Trabalho`
-        );
-      }
-    })
-  }
-
-
-
 
   async finishRating(idDoAnuncio, numberOfStar) {
     let currentUser = firebase.auth().currentUser;
@@ -651,7 +633,7 @@ export default class TelaAnuncio extends Component {
     }
   }
 
-  sendService(idDoContratado, service, value) {
+  sendService(idDoContratado, service, value, photoUser, titlePublish) {
     let userID = firebase.auth().currentUser;
 
     if(userID == null) {
@@ -668,6 +650,8 @@ export default class TelaAnuncio extends Component {
         servico: service,
         telefone: this.state.telefoneDoContratante,
         valor: value,
+        photoUser: photoUser,
+        titlePublish: titlePublish
       });
     }
   }
@@ -841,7 +825,7 @@ export default class TelaAnuncio extends Component {
                   </View>
 
 
-                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value)} style={{paddingHorizontal: 73, marginLeft:30, marginRight:30, marginTop:20, height:50, borderRadius:40,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title)} style={{paddingHorizontal: 73, marginLeft:30, marginRight:30, marginTop:20, height:50, borderRadius:40,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
                         <IconResponsive name="hands-helping" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Contratar</TextTheme>
                   </TouchableOpacity>
@@ -1355,12 +1339,6 @@ export default class TelaAnuncio extends Component {
                         :
                           <TextTheme style={{fontSize:15, marginLeft: 15, textAlign:'justify'}}>{item.local}</TextTheme>
                         }
-                  </View>
-
-
-                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
-                        <IconResponsiveNOBACK name="phone-square" size={30}/>
-                        <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.phone}</TextTheme>
                   </View>
 
                   <TouchableOpacity onPress={() => this.openModalizePortfolio()} style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>

@@ -196,7 +196,8 @@ export default class CriarAnuncio extends Component {
       arrayWordsEstab: [],
       daysWeek: [],
       errorMsg: null,
-      locationServiceEnabled: false
+      locationServiceEnabled: false,
+      fotoPerfil: null
     };
   }
 
@@ -276,6 +277,7 @@ export default class CriarAnuncio extends Component {
   async componentDidMount() {
     this.convertDate();
     let e = this;
+    let usuarioAtual = firebase.auth().currentUser.uid;
 
 
     if(Platform.OS === "android") {
@@ -300,6 +302,12 @@ export default class CriarAnuncio extends Component {
 
     console.log('state de categorias: ' + this.state.categorias)
     
+
+    //pegar a foto do usuario
+    await firebase.firestore().collection('usuarios').doc(usuarioAtual).onSnapshot(documentSnapshot => {
+      e.setState({fotoPerfil: documentSnapshot.data().photoProfile})
+    })
+
   }
   
   
@@ -750,6 +758,7 @@ export default class CriarAnuncio extends Component {
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
                                           UFEstab: e.state.UFEstab,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           phoneNumberEstab: e.state.phoneEstab,
                                           localEstab: e.state.enderecoEstab,
                                           categoryEstab: e.state.categoria,
@@ -774,6 +783,7 @@ export default class CriarAnuncio extends Component {
                                           valueServiceEstab: e.state.precoEstab,
                                           type: 'Estabelecimento',
                                           UFEstab: e.state.UFEstab,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
                                           phoneNumberEstab: e.state.phoneEstab,
@@ -824,6 +834,7 @@ export default class CriarAnuncio extends Component {
                                           descriptionAuto: e.state.descricaoAuto,
                                           valueServiceAuto: e.state.precoAuto,
                                           localAuto: e.state.enderecoAuto,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           type: 'Autonomo',
                                           UFAuto: e.state.UFAuto,
                                           verifiedPublish: true,
@@ -851,6 +862,7 @@ export default class CriarAnuncio extends Component {
                                           descriptionAuto: e.state.descricaoAuto,
                                           valueServiceAuto: e.state.precoAuto,
                                           localAuto: e.state.enderecoAuto,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           type: 'Autonomo',
                                           UFAuto: e.state.UFAuto,
                                           verifiedPublish: true,
@@ -942,6 +954,7 @@ export default class CriarAnuncio extends Component {
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
                                           UFEstab: e.state.UFEstab,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           phoneNumberEstab: e.state.phoneEstab,
                                           localEstab: e.state.enderecoEstab,
                                           categoryEstab: e.state.categoria,
@@ -966,6 +979,7 @@ export default class CriarAnuncio extends Component {
                                           valueServiceEstab: e.state.precoEstab,
                                           type: 'Estabelecimento',
                                           UFEstab: e.state.UFEstab,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
                                           phoneNumberEstab: e.state.phoneEstab,
@@ -1018,6 +1032,7 @@ export default class CriarAnuncio extends Component {
                                           localAuto: e.state.enderecoAuto,
                                           type: 'Autonomo',
                                           UFAuto: e.state.UFAuto,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
                                           phoneNumberAuto: e.state.phoneAuto,
@@ -1045,6 +1060,7 @@ export default class CriarAnuncio extends Component {
                                           localAuto: e.state.enderecoAuto,
                                           type: 'Autonomo',
                                           UFAuto: e.state.UFAuto,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
                                           phoneNumberAuto: e.state.phoneAuto,
@@ -1143,6 +1159,7 @@ export default class CriarAnuncio extends Component {
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
                                         type: 'Estabelecimento',
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
@@ -1168,6 +1185,7 @@ export default class CriarAnuncio extends Component {
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
                                         type: 'Estabelecimento',
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         phoneNumberEstab: e.state.phoneEstab,
@@ -1217,6 +1235,7 @@ export default class CriarAnuncio extends Component {
                                         nome: e.state.nomeAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1242,6 +1261,7 @@ export default class CriarAnuncio extends Component {
                                         nome: e.state.nomeAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1327,6 +1347,7 @@ export default class CriarAnuncio extends Component {
                                         media: 0,
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1352,6 +1373,7 @@ export default class CriarAnuncio extends Component {
                                         media: 0,
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1402,6 +1424,7 @@ export default class CriarAnuncio extends Component {
                                         nome: e.state.nomeAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1427,6 +1450,7 @@ export default class CriarAnuncio extends Component {
                                         nome: e.state.nomeAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,

@@ -61,6 +61,8 @@ export default class ServiceCadaster extends Component {
       servico:'',
       telefone:'',
       valor:'',
+      photoUser: '',
+      title: '',
       date: new Date(),
       hour: new Date(),
       showHour: false,
@@ -130,6 +132,8 @@ export default class ServiceCadaster extends Component {
     this.setState({servico: this.props.route.params.servico})
     this.setState({telefone: this.props.route.params.telefone})
     this.setState({valor: this.props.route.params.valor})
+    this.setState({photoUser: this.props.route.params.photoUser})
+    this.setState({title: this.props.route.params.titlePublish})
 
     //pede ao usuario para habilitar os serviços de localização
     this.CheckIfLocationEnabled();
@@ -222,6 +226,8 @@ export default class ServiceCadaster extends Component {
                 cep: e.state.cep,
                 horario: e.state.horario,
                 dataServico: dataAtual,
+                photoUser: e.state.photoUser,
+                titlePublish: e.state.title,
                 confirmed: false
             })
 

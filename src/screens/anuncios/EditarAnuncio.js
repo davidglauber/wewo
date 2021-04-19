@@ -194,7 +194,8 @@ export default class EditarAnuncio extends Component {
       usuarioComprou: false,
       daysWeek: [],
       errorMsg: null,
-      locationServiceEnabled: false
+      locationServiceEnabled: false,
+      fotoPerfil: null
     };
   }
 
@@ -270,6 +271,7 @@ export default class EditarAnuncio extends Component {
   async componentDidMount() {
     this.convertDate();
     let e = this;
+    let usuarioAtual = firebase.auth().currentUser.uid;
 
     //verifica se o usuario comprou a assinatura mensal
     if(Platform.OS === "android") {
@@ -450,6 +452,12 @@ export default class EditarAnuncio extends Component {
     console.log('state de categorias: ' + this.state.categorias)
     console.log('id do  anuncio: ' + this.props.route.params.idAnuncio)
     console.log('type do  anuncio: ' + this.props.route.params.type)
+    
+    
+    //pegar a foto do usuario
+    await firebase.firestore().collection('usuarios').doc(usuarioAtual).onSnapshot(documentSnapshot => {
+      e.setState({fotoPerfil: documentSnapshot.data().photoProfile})
+    })
 
   }
 
@@ -909,6 +917,7 @@ export default class EditarAnuncio extends Component {
                                           media: 0,
                                           descriptionEstab: e.state.descricaoEstab,
                                           valueServiceEstab: e.state.precoEstab,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           type: 'Estabelecimento',
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
@@ -935,6 +944,7 @@ export default class EditarAnuncio extends Component {
                                           media: 0,
                                           descriptionEstab: e.state.descricaoEstab,
                                           valueServiceEstab: e.state.precoEstab,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           type: 'Estabelecimento',
                                           UFEstab: e.state.UFEstab,
                                           verifiedPublish: true,
@@ -987,6 +997,7 @@ export default class EditarAnuncio extends Component {
                                           descriptionAuto: e.state.descricaoAuto,
                                           valueServiceAuto: e.state.precoAuto,
                                           localAuto: e.state.enderecoAuto,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           type: 'Autonomo',
                                           UFAuto: e.state.UFAuto,
                                           verifiedPublish: true,
@@ -1014,6 +1025,7 @@ export default class EditarAnuncio extends Component {
                                           descriptionAuto: e.state.descricaoAuto,
                                           valueServiceAuto: e.state.precoAuto,
                                           localAuto: e.state.enderecoAuto,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           type: 'Autonomo',
                                           UFAuto: e.state.UFAuto,
                                           verifiedPublish: true,
@@ -1101,6 +1113,7 @@ export default class EditarAnuncio extends Component {
                                           media: 0,
                                           descriptionEstab: e.state.descricaoEstab,
                                           valueServiceEstab: e.state.precoEstab,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           type: 'Estabelecimento',
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
@@ -1127,6 +1140,7 @@ export default class EditarAnuncio extends Component {
                                           media: 0,
                                           descriptionEstab: e.state.descricaoEstab,
                                           valueServiceEstab: e.state.precoEstab,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           type: 'Estabelecimento',
                                           UFEstab: e.state.UFEstab,
                                           verifiedPublish: true,
@@ -1179,6 +1193,7 @@ export default class EditarAnuncio extends Component {
                                           descriptionAuto: e.state.descricaoAuto,
                                           valueServiceAuto: e.state.precoAuto,
                                           localAuto: e.state.enderecoAuto,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           type: 'Autonomo',
                                           UFAuto: e.state.UFAuto,
                                           verifiedPublish: true,
@@ -1206,6 +1221,7 @@ export default class EditarAnuncio extends Component {
                                           descriptionAuto: e.state.descricaoAuto,
                                           valueServiceAuto: e.state.precoAuto,
                                           localAuto: e.state.enderecoAuto,
+                                          fotoUsuarioLogado: e.state.fotoPerfil,
                                           type: 'Autonomo',
                                           UFAuto: e.state.UFAuto,
                                           verifiedPublish: true,
@@ -1305,6 +1321,7 @@ export default class EditarAnuncio extends Component {
                                         media: 0,
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1330,6 +1347,7 @@ export default class EditarAnuncio extends Component {
                                         media: 0,
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1380,6 +1398,7 @@ export default class EditarAnuncio extends Component {
                                         nome: e.state.nomeAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1405,6 +1424,7 @@ export default class EditarAnuncio extends Component {
                                         nome: e.state.nomeAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1490,6 +1510,7 @@ export default class EditarAnuncio extends Component {
                                         media: 0,
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1515,6 +1536,7 @@ export default class EditarAnuncio extends Component {
                                         media: 0,
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1565,6 +1587,7 @@ export default class EditarAnuncio extends Component {
                                         nome: e.state.nomeAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1590,6 +1613,7 @@ export default class EditarAnuncio extends Component {
                                         nome: e.state.nomeAuto,
                                         descriptionAuto: e.state.descricaoAuto,
                                         valueServiceAuto: e.state.precoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,

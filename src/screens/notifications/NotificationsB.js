@@ -97,6 +97,8 @@ export default class NotificationsB extends Component {
             idContratante: doc.data().idContratante,
             idContratado: doc.data().idContratado,
             photoProfile: doc.data().photoProfile,
+            photoUser: doc.data().photoUser,
+            title: doc.data().titlePublish,
             nome: doc.data().nome,
             telefone: doc.data().telefone,
             service: doc.data().service,
@@ -246,8 +248,8 @@ export default class NotificationsB extends Component {
               data={this.state.notificationsActivies}
               renderItem={({item}) => 
               <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
-                <Image source={{uri: item.photoProfile}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
-                <Text  style={styles.titleMain}>{item.nome}</Text>
+                <Image source={{uri: item.photoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+                <Text  style={styles.titleMain}>{item.title}</Text>
                   <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {idLoggedUser: user.uid, idDonoDoAnuncio: item.idContratante, idNotification: item.idNot, valuePayment: item.valor, type: 'normalNotif'})} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/5, justifyContent:'center', alignItems:'center'}}>
                     <IconResponsive name="comment" size={24}/>
                   </TouchableOpacity>
