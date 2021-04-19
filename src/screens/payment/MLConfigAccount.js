@@ -75,7 +75,9 @@ export default class MLConfigAccount extends Component {
     super(props);
 
     this.state = {
-      modalizeRef: React.createRef(null)
+      modalizeRef: React.createRef(null),
+      webviewBoolean: false,
+      accessTokenMP: ""
     };
   }
 
@@ -95,6 +97,7 @@ export default class MLConfigAccount extends Component {
 
   mercadoPago() {
     alert('Você está sendo redirecionado para página de autorização')
+    this.setState({webviewBoolean: true})
   }
 
 
@@ -120,22 +123,53 @@ export default class MLConfigAccount extends Component {
   }
 
 
-  render() {
-    const endpointMP = this.state.endpointMP;
+  _onNavigationStateChange(webViewState){
+    let removeUrl = webViewState.url.replace('https://www.mercadopago.com/mp.php?code=', '');
+    this.setState({accessTokenMP: removeUrl})
+    this.setState({webviewBoolean: false})
 
+    fetch('https://api.mercadopago.com/oauth/token', {
+        method:'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          client_secret: "APP_USR-4801354026747963-040711-bd3c57cc909703918b030e1eeaa28c66-188576751",
+          grant_type:"authorization_code",
+          code: this.state.accessTokenMP,
+          redirect_uri:"https://www.mercadopago.com/mp.php"
+        })
+      })
+      .then((res) => res.json())
+      .then((json) => console.log('JSON DA RESPOSTA: ' + JSON.stringify(json)))
+      .catch(() => alert('erroo ao autenticar usuário mercado pago'))
+  }
+
+
+  render() {
     return (
       <SafeBackground>
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
-          <View style={{alignItems:'center'}}>
-            <Heading style={styles.paddingTitle}>Conectar Conta Mercado Pago</Heading>
-            <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Para que você consiga realizar transações pelos seus serviços, é necessário que você conecte a sua conta mercado pago para fazermos os repasses necessários</TextDescription2>
-              <TouchableOpacity style={{marginTop:40}} onPress={() => this.mercadoPago()}>
-                <Image source={require('../../../assets/MPlogo.png')} style={{width:248, height:64}}/>
-              </TouchableOpacity>
-          </View>
+
+        {this.state.webviewBoolean == false ?
+            <View style={{alignItems:'center'}}>
+                <Heading style={styles.paddingTitle}>Conectar Conta Mercado Pago</Heading>
+                <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Para que você consiga realizar transações pelos seus serviços e produtos, é necessário que você conecte a sua conta mercado pago para fazermos os repasses necessários.</TextDescription2>
+                <TouchableOpacity style={{marginTop:40}} onPress={() => this.mercadoPago()}>
+                    <Image source={require('../../../assets/MPlogo.png')} style={{width:248, height:64}}/>
+                </TouchableOpacity>
+            </View>
+
+          :
+          <WebView 
+            source={{ uri: 'https://auth.mercadopago.com.br/authorization?client_id=4801354026747963&response_type=code&platform_id=mp&redirect_uri=https://www.mercadopago.com/mp.php' }} 
+            onNavigationStateChange={this._onNavigationStateChange.bind(this)}  
+          />
+        }
 
           {/*Modalize dos comentários*/}
             <Modalize
