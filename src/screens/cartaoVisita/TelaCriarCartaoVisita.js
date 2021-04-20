@@ -188,7 +188,9 @@ export default class TelaCriarCartaoVisita extends Component {
       arrayWordsAuto: [],
       arrayWordsEstab: [],
       daysWeek: [],
-      locationServiceEnabled: false
+      locationServiceEnabled: false,
+      fotoPerfil: null,
+      tipoDeConta: ''
     };
   }
 
@@ -206,6 +208,7 @@ export default class TelaCriarCartaoVisita extends Component {
   async componentDidMount() {
     this.convertDate();
     let e = this;
+    let usuarioAtual = firebase.auth().currentUser.uid;
 
     if(Platform.OS === "android") {
       let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual');
@@ -227,6 +230,13 @@ export default class TelaCriarCartaoVisita extends Component {
 
     console.log('state de categorias: ' + this.state.categorias)
 
+
+    //pegar a foto do usuario
+    await firebase.firestore().collection('usuarios').doc(usuarioAtual).onSnapshot(documentSnapshot => {
+      e.setState({fotoPerfil: documentSnapshot.data().photoProfile})
+      e.setState({tipoDeConta: documentSnapshot.data().tipoDeConta})
+      e.setState({type: documentSnapshot.data().tipoDeConta})
+    })
   }
 
 
@@ -1467,7 +1477,29 @@ export default class TelaCriarCartaoVisita extends Component {
                         <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
                       </View>
                     </Modal>
-                        
+
+
+                    {this.state.tipoDeConta == 'Autonomo' &&
+                            <View>
+                              {this.state.type == 'Autonomo' ?     
+                                <View style={{flexDirection:'row', padding: 16}}>
+                                        <ChooseOption/>
+                                        <TouchableOpacity>
+                                            <Subtitle2Publish style={{fontWeight: 'bold'}}>Autônomo</Subtitle2Publish>
+                                        </TouchableOpacity>
+                                </View>
+                                :
+                                <View style={{flexDirection:'row', padding: 16}}>
+                                        <TouchableOpacity onPress={() => this.setState({type: 'Autonomo'})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
+                                        <TouchableOpacity onPress={() => this.setState({type: 'Autonomo'})}>
+                                            <Subtitle2Publish>Autônomo</Subtitle2Publish>
+                                        </TouchableOpacity>
+                                </View>
+                              }
+                            </View>   
+                    }
+
+                    {this.state.tipoDeConta == 'Estabelecimento' &&
                         <View style={{flexDirection:'row', alignItems:'center'}}>
                           { this.state.type == 'Estabelecimento' ?
                             <View style={{flexDirection:'row'}}>
@@ -1486,6 +1518,7 @@ export default class TelaCriarCartaoVisita extends Component {
                             </View>                         
                           }
                         </View>
+                    }
 
 
                         {this.state.image == null ?
@@ -1514,23 +1547,7 @@ export default class TelaCriarCartaoVisita extends Component {
                         }
               </View>
 
-                     {this.state.type == 'Autonomo' ?     
-                      <View style={{flexDirection:'row', padding: 16}}>
-                              <ChooseOption/>
-                                  <TouchableOpacity>
-                                      <Subtitle2Publish
-                                        style={{fontWeight: 'bold'}}>Autônomo</Subtitle2Publish>
-                                  </TouchableOpacity>
-                      </View>
-                      :
-                      <View style={{flexDirection:'row', padding: 16}}>
-                              <TouchableOpacity onPress={() => this.setState({type: 'Autonomo'})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
-                              <TouchableOpacity onPress={() => this.setState({type: 'Autonomo'})}>
-                                  <Subtitle2Publish>Autônomo</Subtitle2Publish>
-                              </TouchableOpacity>
-                      </View>
-                     }
-                    </View>
+            </View>
 
 
 

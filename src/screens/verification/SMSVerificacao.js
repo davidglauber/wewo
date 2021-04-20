@@ -113,6 +113,7 @@ export default function SMSVerificacao () {
   const getSenha = route.params.senha;
   const getTelefone = route.params.telefone;
   const getDataNascimento = route.params.dataNascimento;
+  const getTipoDeConta = route.params.tipoDeConta;
 
 
 
@@ -214,7 +215,8 @@ export default function SMSVerificacao () {
                       nome: getNome,
                       premium: false,
                       dataNascimento: getDataNascimento,
-                      telefone: getTelefone
+                      telefone: getTelefone,
+                      tipoDeConta: getTipoDeConta
                     })
                   AsyncStorage.setItem('emailUserSaved', getEmail)
                   navigation.navigate('HomeNavigator')

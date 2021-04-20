@@ -282,7 +282,8 @@ export default class Cadastro extends Component {
           email: this.state.emailUser,
           senha: this.state.password,
           telefone: this.state.phone,
-          dataNascimento: dataAtual
+          dataNascimento: dataAtual,
+          tipoDeConta: this.state.typeAccount
         });
     }
   };

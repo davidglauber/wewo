@@ -197,7 +197,8 @@ export default class CriarAnuncio extends Component {
       daysWeek: [],
       errorMsg: null,
       locationServiceEnabled: false,
-      fotoPerfil: null
+      fotoPerfil: null,
+      tipoDeConta: ''
     };
   }
 
@@ -306,6 +307,8 @@ export default class CriarAnuncio extends Component {
     //pegar a foto do usuario
     await firebase.firestore().collection('usuarios').doc(usuarioAtual).onSnapshot(documentSnapshot => {
       e.setState({fotoPerfil: documentSnapshot.data().photoProfile})
+      e.setState({tipoDeConta: documentSnapshot.data().tipoDeConta})
+      e.setState({type: documentSnapshot.data().tipoDeConta})
     })
 
   }
@@ -1601,25 +1604,46 @@ export default class CriarAnuncio extends Component {
                       </View>
                     </Modal>
                         
-                        <View style={{flexDirection:'row', alignItems:'center'}}>
-                          { this.state.type == 'Estabelecimento' ?
-                            <View style={{flexDirection:'row'}}>
-                                <ChooseOption/>
-                                <TouchableOpacity>
-                                    <Subtitle2Publish
-                                      style={{fontWeight: 'bold'}}>Estabelecimento</Subtitle2Publish>
-                                </TouchableOpacity>
-                            </View>
-                          :
-                            <View style={{flexDirection:'row'}}>
-                                <TouchableOpacity onPress={() => this.setState({type: 'Estabelecimento'})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
-                                  <TouchableOpacity onPress={() => this.setState({type: 'Estabelecimento'})}>
-                                      <Subtitle2Publish>Estabelecimento</Subtitle2Publish>
-                                  </TouchableOpacity>
-                            </View>                         
-                          }
-                        </View>
+                        {this.state.tipoDeConta == 'Autonomo' &&
+                            <View>
+                              {this.state.type == 'Autonomo' ?     
+                                <View style={{flexDirection:'row', padding: 16}}>
+                                        <ChooseOption/>
+                                        <TouchableOpacity>
+                                            <Subtitle2Publish style={{fontWeight: 'bold'}}>Autônomo</Subtitle2Publish>
+                                        </TouchableOpacity>
+                                </View>
+                                :
+                                <View style={{flexDirection:'row', padding: 16}}>
+                                        <TouchableOpacity onPress={() => this.setState({type: 'Autonomo'})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
+                                        <TouchableOpacity onPress={() => this.setState({type: 'Autonomo'})}>
+                                            <Subtitle2Publish>Autônomo</Subtitle2Publish>
+                                        </TouchableOpacity>
+                                </View>
+                              }
+                            </View>   
+                        }
 
+                        {this.state.tipoDeConta == 'Estabelecimento' &&
+                            <View style={{flexDirection:'row', alignItems:'center'}}>
+                              { this.state.type == 'Estabelecimento' ?
+                                <View style={{flexDirection:'row'}}>
+                                    <ChooseOption/>
+                                    <TouchableOpacity>
+                                        <Subtitle2Publish
+                                          style={{fontWeight: 'bold'}}>Estabelecimento</Subtitle2Publish>
+                                    </TouchableOpacity>
+                                </View>
+                              :
+                                <View style={{flexDirection:'row'}}>
+                                    <TouchableOpacity onPress={() => this.setState({type: 'Estabelecimento'})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
+                                      <TouchableOpacity onPress={() => this.setState({type: 'Estabelecimento'})}>
+                                          <Subtitle2Publish>Estabelecimento</Subtitle2Publish>
+                                      </TouchableOpacity>
+                                </View>                         
+                              }
+                            </View>
+                        }
 
                         {this.state.image == null ?
                           <View>
@@ -1652,22 +1676,6 @@ export default class CriarAnuncio extends Component {
                         }
               </View>
 
-                     {this.state.type == 'Autonomo' ?     
-                      <View style={{flexDirection:'row', padding: 16}}>
-                              <ChooseOption/>
-                                  <TouchableOpacity>
-                                      <Subtitle2Publish
-                                        style={{fontWeight: 'bold'}}>Autônomo</Subtitle2Publish>
-                                  </TouchableOpacity>
-                      </View>
-                      :
-                      <View style={{flexDirection:'row', padding: 16}}>
-                              <TouchableOpacity onPress={() => this.setState({type: 'Autonomo'})} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
-                              <TouchableOpacity onPress={() => this.setState({type: 'Autonomo'})}>
-                                  <Subtitle2Publish>Autônomo</Subtitle2Publish>
-                              </TouchableOpacity>
-                      </View>
-                     }
                     </View>
 
 
@@ -1755,7 +1763,7 @@ export default class CriarAnuncio extends Component {
 
                           <View style={{flexDirection:'row'}}>
                                 
-                                { this.state.segunda == '' ?
+                                {this.state.segunda == '' ?
                                     <View style={{flexDirection:'row'}}>
                                       <TouchableOpacity onPress={() => this.addingDaysOfWeek('segunda')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                                       <TextDays>Seg</TextDays>

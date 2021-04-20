@@ -108,6 +108,7 @@ export default class Verificação extends Component {
       data:'',
       telefone:'',
       senha:'',
+      tipoDeConta: ''
     };
     this.signInWithFacebook = this.signInWithFacebook.bind(this);
   }
@@ -127,6 +128,7 @@ export default class Verificação extends Component {
     let getSenha = this.props.route.params.senha;
     let getTelefone = this.props.route.params.telefone;
     let getDataNascimento = this.props.route.params.dataNascimento;
+    let getTipoDeConta = this.props.route.params.tipoDeConta;
 
 
 
@@ -135,14 +137,14 @@ export default class Verificação extends Component {
     this.setState({senha: getSenha})
     this.setState({telefone: getTelefone})
     this.setState({data: getDataNascimento})
-
+    this.setState({tipoDeConta: getTipoDeConta})
 
     console.log('email navigation: ' + getEmail)
     console.log('senha navigation: ' + getSenha)
     console.log('nome navigation: ' + getNome)
     console.log('Telefone navigation: ' + getTelefone)
     console.log('Data born navigation: ' + getDataNascimento)
-    
+    console.log('TIPO DE CONTA navigation: ' + getTipoDeConta)
   }
 
   navigateTo = (screen) => {
@@ -152,7 +154,8 @@ export default class Verificação extends Component {
       email: this.state.email,
       senha: this.state.senha,
       telefone: this.state.telefone,
-      dataNascimento: this.state.data
+      dataNascimento: this.state.data,
+      tipoDeConta: this.state.tipoDeConta
     });
   };
 
@@ -176,7 +179,8 @@ export default class Verificação extends Component {
                 nome: e.state.nome,
                 premium: false,
                 dataNascimento: e.state.data,
-                telefone: e.state.telefone
+                telefone: e.state.telefone,
+                tipoDeConta: e.state.tipoDeConta
               })
             AsyncStorage.setItem('emailUserSaved', result.user.email)
             this.props.navigation.navigate('HomeNavigator')
@@ -235,7 +239,8 @@ export default class Verificação extends Component {
                       nome: e.state.nome,
                       premium: false,
                       dataNascimento: e.state.data,
-                      telefone: e.state.telefone
+                      telefone: e.state.telefone,
+                      tipoDeConta: e.state.tipoDeConta
                     })
                   AsyncStorage.setItem('emailUserSaved', result.user.email)
                   this.props.navigation.navigate('HomeNavigator')
