@@ -13,8 +13,8 @@ import {
   StyleSheet,
   Dimensions,
   Button,
+  Alert,
   Platform,
-  KeyboardAvoidingView,
   ScrollView,
   Text,
   TouchableWithoutFeedback,
@@ -36,6 +36,7 @@ import Layout from '../../theme/layout';
 //input mask
 import { TextInputMask } from 'react-native-masked-text';
 
+import { TextDays, ChooseOption } from '../home/styles';
 
 //import icons
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -140,6 +141,7 @@ export default class Cadastro extends Component {
       passwordFocused: false,
       secureTextEntry: true,
       secureTextEntry2: true,
+      typeAccount: "Autonomo"
     };
   }
 
@@ -317,6 +319,18 @@ export default class Cadastro extends Component {
   }
 
 
+  typeAccountFunction(type) {
+    this.setState({typeAccount: type})
+    Alert.alert("Importante!", `Ao se cadastrar como ${type} não será possível alterar o tipo de conta novamente`, [
+      {
+          text: "Cancelar",
+          onPress: () => null,
+          style: "cancel"
+      },
+      { text: "Estou ciente", onPress: () => null }
+    ]);
+  }
+
 
   render() {
     const {
@@ -430,6 +444,32 @@ export default class Cadastro extends Component {
                   keyboardType={"phone-pad"}
                   placeholder="Número de Telefone"
                 />
+
+                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                  {this.state.typeAccount == 'Estabelecimento' ?
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.typeAccountFunction('Autonomo')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginTop:20}}/>
+                        <TextDays>Autônomo</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginTop:20}}/>
+                        <TextDays>Autônomo</TextDays>
+                      </View>
+                  }
+
+                  { this.state.typeAccount == 'Autonomo' ?
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.typeAccountFunction('Estabelecimento')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginTop:20}}/>
+                        <TextDays>Estabelecimento</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginTop:20}}/>
+                        <TextDays>Estabelecimento</TextDays>
+                      </View>
+                  }
+                  </View>
 
                   <TouchableOpacity style={{width:150, height: 55, alignItems:'center', justifyContent:'center', marginTop: 30, borderRadius:20}} onPress={() => this.setState({showDate: true})}>
                           <Text style={{color: '#DAA520', fontWeight: 'bold', fontSize:12}}>

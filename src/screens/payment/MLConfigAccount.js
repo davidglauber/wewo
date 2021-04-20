@@ -30,6 +30,12 @@ import { ThemeContext } from '../../../ThemeContext';
 
 import { WebView } from 'react-native-webview'
 
+import LottieView from 'lottie-react-native';
+
+
+
+const thumbsUp = require('../../../assets/thumbsup.json');
+
 
 //consts
 const windowWidth = Dimensions.get('window').width;
@@ -75,7 +81,8 @@ export default class MLConfigAccount extends Component {
       dateBorn: "",
       email: "",
       premium: null,
-      textPortfolio: ""
+      textPortfolio: "",
+      idMercadoPago: ""
     };
   }
 
@@ -97,6 +104,7 @@ export default class MLConfigAccount extends Component {
       this.setState({dateBorn: documentSnapshot.data().dataNascimento})
       this.setState({premium: documentSnapshot.data().premium})
       this.setState({textPortfolio: documentSnapshot.data().textPortfolio})
+      this.setState({idMercadoPago: documentSnapshot.data().idMP})
     })
   }
   
@@ -182,7 +190,7 @@ export default class MLConfigAccount extends Component {
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
 
-        {this.state.webviewBoolean == false ?
+        {this.state.webviewBoolean == false && this.state.idMercadoPago == '' &&
             <View style={{alignItems:'center'}}>
                 <Heading style={styles.paddingTitle}>Conectar Conta Mercado Pago</Heading>
                 <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Para que você consiga realizar transações pelos seus serviços e produtos, é necessário que você conecte a sua conta mercado pago para fazermos os repasses necessários.</TextDescription2>
@@ -191,23 +199,22 @@ export default class MLConfigAccount extends Component {
                 </TouchableOpacity>
             </View>
 
-          :
+        } 
+
+        {this.state.webviewBoolean == true &&
           <WebView 
-            source={{ uri: 'https://auth.mercadopago.com.br/authorization?client_id=4801354026747963&response_type=code&platform_id=mp&redirect_uri=https://www.mercadopago.com/mp.php' }} 
-            onNavigationStateChange={this._onNavigationStateChange.bind(this)}  
+          source={{ uri: 'https://auth.mercadopago.com.br/authorization?client_id=4801354026747963&response_type=code&platform_id=mp&redirect_uri=https://www.mercadopago.com/mp.php' }} 
+          onNavigationStateChange={this._onNavigationStateChange.bind(this)}  
           />
         }
 
-          {/*Modalize dos comentários*/}
-            <Modalize
-              ref={this.state.modalizeRef}
-              snapPoint={650}
-              modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
-            >
-            <View style={{alignItems:'center', marginTop:40}}>
-                <Text>HI</Text>
+        {this.state.webviewBoolean == false && this.state.idMercadoPago !== '' &&
+            <View style={{alignItems:'center'}}>
+              <Heading style={styles.paddingTitle}>Conectar Conta Mercado Pago</Heading>
+              <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Tudo certo, a sua conta já está conectada com o WeWo</TextDescription2>
+              <LottieView source={thumbsUp} style={{width:200, height:200, marginTop: windowHeight / 12}} autoPlay loop />
             </View>
-          </Modalize>
+        }
 
       </SafeBackground>
     );
