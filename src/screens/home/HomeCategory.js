@@ -93,7 +93,7 @@ async componentDidMount() {
    let titleNavCategory = this.props.route.params.titleOfCategory;
    
    if(Platform.OS === "android") {
-    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto')
   
     if(comprou == true) {
       this.setState({purchased: true})

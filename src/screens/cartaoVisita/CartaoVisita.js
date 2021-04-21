@@ -158,7 +158,7 @@ export default class CartaoVisita extends Component {
 
   async componentDidMount() {
     let e = this;
-    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto')
 
     if(comprou == true) {
       this.setState({purchased: true})

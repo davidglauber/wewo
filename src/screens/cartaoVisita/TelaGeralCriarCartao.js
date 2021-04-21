@@ -299,7 +299,7 @@ export default class TelaGeralCriarCartao extends Component {
 
   async verifyNumberOfPublises() {
     let currentUserUID = firebase.auth().currentUser.uid;
-    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual');
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
 
     firebase.firestore().collection(`usuarios/${currentUserUID}/cartoes`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
       let cartoesDidMount = []

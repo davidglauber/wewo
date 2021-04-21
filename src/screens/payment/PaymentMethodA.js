@@ -36,6 +36,8 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 //import firebase
 import firebase from '../../config/firebase';
 
+import LottieView from 'lottie-react-native';
+
 import { Subtitle2Publish, ChooseOption } from '../home/styles';
 //consts
 const windowWidth = Dimensions.get('window').width;
@@ -50,7 +52,7 @@ const SAVE_ICON = IOS ? 'ios-save' : 'md-save';
 const REMOVE_ICON = IOS ? 'ios-remove-circle' : 'md-remove-circle';
 const BOTTOM_SHEET_PB = IOS ? 16 : 0;
 
-
+const diamond = require('../../../assets/diamond.json');
 
 // PaymentMethodA Styles
 const styles = StyleSheet.create({
@@ -201,83 +203,88 @@ export default function PaymentMethodA() {
 
     return (
       <View style={{flex:1, padding:15, backgroundColor:'#fff'}}>
-        {plan == 'mensal' ?
-          <View style={{flexDirection:'row'}}>
-              <ChooseOption/>
-              <TouchableOpacity>
-                  <Subtitle2Publish
-                    style={{fontWeight: 'bold'}}>Mensal</Subtitle2Publish>
-              </TouchableOpacity>
-          </View>
-        :
-          <View style={{flexDirection:'row'}}>
-              <TouchableOpacity onPress={() => setPlan('mensal')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
-                <TouchableOpacity onPress={() => setPlan( 'mensal')}>
-                    <Subtitle2Publish>Mensal</Subtitle2Publish>
-                </TouchableOpacity>
-          </View>                         
-        }
-
-        {plan == 'anual' ?
-          <View style={{flexDirection:'row', marginTop:20}}>
-              <ChooseOption/>
-              <TouchableOpacity>
-                  <Subtitle2Publish
-                    style={{fontWeight: 'bold'}}>Anual</Subtitle2Publish>
-              </TouchableOpacity>
-          </View>
-        :
-          <View style={{flexDirection:'row', marginTop:20}}>
-              <TouchableOpacity onPress={() => setPlan('anual')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
-                <TouchableOpacity onPress={() => setPlan('anual')}>
-                    <Subtitle2Publish>Anual</Subtitle2Publish>
-                </TouchableOpacity>
-          </View>                         
-        }
 
 
         {plan == 'mensal' && tipoDeConta == 'Autonomo' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
-            <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
+            <LottieView source={diamond} style={{width:200, height:200}} autoPlay loop />
             <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 14,90</Text>
           </View>
         }
 
         {plan == 'mensal' && tipoDeConta == 'Estabelecimento' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
-            <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
+            <LottieView source={diamond} style={{width:200, height:200}} autoPlay loop />
             <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 19,90</Text>
           </View>
         }
 
         {plan == 'anual' && tipoDeConta == 'Autonomo' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
-            <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
+            <LottieView source={diamond} style={{width:200, height:200}} autoPlay loop />
             <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 170,00</Text>
           </View>
         }
 
         {plan == 'anual' && tipoDeConta == 'Estabelecimento' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
-            <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
+            <LottieView source={diamond} style={{width:200, height:200}} autoPlay loop />
             <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 220,00</Text>
           </View>
         }
 
+        <View style={{flexDirection:'row', marginHorizontal: windowWidth/4, justifyContent:'space-between'}}>
+          {plan == 'mensal' ?
+            <View style={{flexDirection:'row'}}>
+                <ChooseOption/>
+                <TouchableOpacity>
+                    <Subtitle2Publish
+                      style={{fontWeight: 'bold'}}>Mensal</Subtitle2Publish>
+                </TouchableOpacity>
+            </View>
+          :
+            <View style={{flexDirection:'row'}}>
+                <TouchableOpacity onPress={() => setPlan('mensal')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
+                  <TouchableOpacity onPress={() => setPlan( 'mensal')}>
+                      <Subtitle2Publish>Mensal</Subtitle2Publish>
+                  </TouchableOpacity>
+            </View>                         
+          }
+
+          {plan == 'anual' ?
+            <View style={{flexDirection:'row'}}>
+                <ChooseOption/>
+                <TouchableOpacity>
+                    <Subtitle2Publish
+                      style={{fontWeight: 'bold'}}>Anual</Subtitle2Publish>
+                </TouchableOpacity>
+            </View>
+          :
+            <View style={{flexDirection:'row'}}>
+                <TouchableOpacity onPress={() => setPlan('anual')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
+                  <TouchableOpacity onPress={() => setPlan('anual')}>
+                      <Subtitle2Publish>Anual</Subtitle2Publish>
+                  </TouchableOpacity>
+            </View>                         
+          }
+        </View>
+
         <ScrollView>
-          <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
-            <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
-            <Text style={{marginLeft:10}}>5 Anúncios e 5 Cartões Simultâneos</Text>
-          </View>
+          <View style={{backgroundColor:'#e3e3e3', borderRadius:40, padding:10, marginTop: windowHeight/12}}>
+            <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
+              <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
+              <Text style={{marginLeft:10}}>5 Anúncios e 5 Cartões Simultâneos</Text>
+            </View>
 
-          <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
-            <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
-            <Text style={{marginLeft:10}}>Maior Visibilidade</Text>
-          </View>
+            <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
+              <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
+              <Text style={{marginLeft:10}}>Maior Visibilidade</Text>
+            </View>
 
-          <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
-            <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
-            <Text style={{marginLeft:10}}>Sem Anúncios no App WeWo</Text>
+            <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
+              <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
+              <Text style={{marginLeft:10}}>Sem Anúncios no App WeWo</Text>
+            </View>
           </View>
         </ScrollView>
 
