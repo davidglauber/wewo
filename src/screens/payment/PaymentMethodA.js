@@ -33,6 +33,9 @@ import {purchased, fetchAvailableProducts,purchaseUpdateSubscription,requestPurc
 
 import { useRoute, useNavigation } from "@react-navigation/native";
 
+//import firebase
+import firebase from '../../config/firebase';
+
 import { Subtitle2Publish, ChooseOption } from '../home/styles';
 //consts
 const windowWidth = Dimensions.get('window').width;
@@ -128,11 +131,14 @@ export default function PaymentMethodA() {
   const navigation = useNavigation();
   const [plan, setPlan] = useState('mensal');
   const [verifySub, setVerifySub] = useState(false);
+  const [tipoDeConta, setTipoDeConta] = useState("");
   
   const itemSubs = Platform.select({
     android: [
       'wewo.gold.mensal',
-      'wewo_gold_anual'
+      'wewo_gold_anual',
+      'wewo_gold_anual_auto',
+      'wewo_gold_auto'
     ]
   })
 
@@ -156,10 +162,23 @@ export default function PaymentMethodA() {
     purchaseUpdateSubscription(itemSubs);
   }, [])
 
+  useEffect(() => {
+    async function user() {
+      let usuarioAtual = firebase.auth().currentUser.uid;
+  
+      //pegar a foto do usuario
+      await firebase.firestore().collection('usuarios').doc(usuarioAtual).onSnapshot(documentSnapshot => {
+        setTipoDeConta(documentSnapshot.data().tipoDeConta)
+      })
+    }
+
+    user();
+  }, [])
+
 
   useEffect(() => {
     async function isBought() {
-      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual')
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto')
   
       if(comprou == true) {
         setVerifySub(true)
@@ -217,18 +236,33 @@ export default function PaymentMethodA() {
         }
 
 
-        {plan == 'mensal' ?
+        {plan == 'mensal' && tipoDeConta == 'Autonomo' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
             <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
-            <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 14,99</Text>
-          </View>
-        :
-          <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
-            <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
-            <Text style={{fontSize:20, fontWeight:'bold'}}>Anual: R$ 160,00</Text>
+            <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 14,90</Text>
           </View>
         }
 
+        {plan == 'mensal' && tipoDeConta == 'Estabelecimento' &&
+          <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
+            <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
+            <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 19,90</Text>
+          </View>
+        }
+
+        {plan == 'anual' && tipoDeConta == 'Autonomo' &&
+          <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
+            <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
+            <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 170,00</Text>
+          </View>
+        }
+
+        {plan == 'anual' && tipoDeConta == 'Estabelecimento' &&
+          <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
+            <Image style={{width:200, height:200}} source={require("../../assets/img/star.gif")} />
+            <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 220,00</Text>
+          </View>
+        }
 
         <ScrollView>
           <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
@@ -248,7 +282,7 @@ export default function PaymentMethodA() {
         </ScrollView>
 
 
-        {plan == 'mensal' && verifySub == false &&
+        {plan == 'mensal' && tipoDeConta == 'Estabelecimento' && verifySub == false &&
           <View style={styles.buttonContainer}>
             <Button 
               onPress={() => signPremium('wewo.gold.mensal')}
@@ -257,10 +291,28 @@ export default function PaymentMethodA() {
           </View>
         }
 
-        {plan == 'anual' && verifySub == false &&
+        {plan == 'anual' && tipoDeConta == 'Estabelecimento' && verifySub == false &&
           <View style={styles.buttonContainer}>
             <Button
               onPress={() => signPremium('wewo_gold_anual')}
+              title="Assinar Premium"
+            />
+          </View>
+        }
+
+        {plan == 'mensal' && tipoDeConta == 'Autonomo' && verifySub == false &&
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={() => signPremium('wewo_gold_auto')}
+              title="Assinar Premium"
+            />
+          </View>
+        }
+
+        {plan == 'anual' && tipoDeConta == 'Autonomo' && verifySub == false &&
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={() => signPremium('wewo_gold_anual_auto')}
               title="Assinar Premium"
             />
           </View>
