@@ -270,22 +270,43 @@ export default function PaymentMethodA() {
         </View>
 
         <ScrollView>
-          <View style={{backgroundColor:'#e3e3e3', borderRadius:40, padding:10, marginTop: windowHeight/12}}>
-            <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
-              <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
-              <Text style={{marginLeft:10}}>5 Anúncios e 5 Cartões Simultâneos</Text>
-            </View>
+          {tipoDeConta == 'Autonomo' && 
+            <View style={{backgroundColor:'#e3e3e3', borderRadius:40, padding:10, marginTop: windowHeight/12}}>
+              <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
+                <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
+                <Text style={{marginLeft:10}}>15 Anúncios e Portfólios Ilimitados</Text>
+              </View>
 
-            <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
-              <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
-              <Text style={{marginLeft:10}}>Maior Visibilidade</Text>
-            </View>
+              <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
+                <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
+                <Text style={{marginLeft:10}}>Maior Visibilidade</Text>
+              </View>
 
-            <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
-              <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
-              <Text style={{marginLeft:10}}>Sem Anúncios no App WeWo</Text>
+              <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
+                <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
+                <Text style={{marginLeft:10}}>Sem Anúncios no App WeWo</Text>
+              </View>
             </View>
-          </View>
+          }
+
+          {tipoDeConta == 'Estabelecimento' &&
+            <View style={{backgroundColor:'#e3e3e3', borderRadius:40, padding:10, marginTop: windowHeight/12}}>
+              <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
+                <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
+                <Text style={{marginLeft:10}}>15 Anúncios e Produtos Ilimitados</Text>
+              </View>
+
+              <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
+                <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
+                <Text style={{marginLeft:10}}>Maior Visibilidade</Text>
+              </View>
+
+              <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
+                <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
+                <Text style={{marginLeft:10}}>Sem Anúncios no App WeWo</Text>
+              </View>
+            </View>
+          }
         </ScrollView>
 
 
@@ -325,7 +346,11 @@ export default function PaymentMethodA() {
           </View>
         }
 
-        {plan == 'mensal' && verifySub == true &&
+
+
+
+
+        {plan == 'mensal' && tipoDeConta == 'Estabelecimento' && verifySub == true &&
           <View style={styles.buttonContainer}>
             <Button
               onPress={() => Linking.openURL('https://play.google.com/store/account/subscriptions?package=com.zubito.wewo&sku=wewo.gold.mensal')}
@@ -334,10 +359,28 @@ export default function PaymentMethodA() {
           </View>
         }
 
-        {plan == 'anual' && verifySub == true &&
+        {plan == 'mensal' && tipoDeConta == 'Autonomo' && verifySub == true &&
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={() => Linking.openURL('https://play.google.com/store/account/subscriptions?package=com.zubito.wewo&sku=wewo_gold_auto')}
+              title="Cancelar Plano Mensal"
+            />
+          </View>
+        }
+
+        {plan == 'anual' && tipoDeConta == 'Estabelecimento' && verifySub == true &&
           <View style={styles.buttonContainer}>
             <Button
               onPress={() => Linking.openURL('https://play.google.com/store/account/subscriptions?package=com.zubito.wewo&sku=wewo_gold_anual')}
+              title="Cancelar Plano Anual"
+            />
+          </View>
+        }
+
+        {plan == 'anual' && tipoDeConta == 'Autonomo' && verifySub == true &&
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={() => Linking.openURL('https://play.google.com/store/account/subscriptions?package=com.zubito.wewo&sku=wewo_gold_anual_auto')}
               title="Cancelar Plano Anual"
             />
           </View>
