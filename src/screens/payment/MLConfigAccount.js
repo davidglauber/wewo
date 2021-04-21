@@ -104,7 +104,10 @@ export default class MLConfigAccount extends Component {
       this.setState({dateBorn: documentSnapshot.data().dataNascimento})
       this.setState({premium: documentSnapshot.data().premium})
       this.setState({textPortfolio: documentSnapshot.data().textPortfolio})
-      this.setState({idMercadoPago: documentSnapshot.data().idMP})
+
+      if(documentSnapshot.data().idMP) {
+        this.setState({idMercadoPago: documentSnapshot.data().idMP})
+      }
     })
   }
   
@@ -143,10 +146,10 @@ export default class MLConfigAccount extends Component {
     return result;
   }
 
-  firebaseSetIDMP(json) {
+  async firebaseSetIDMP(json, webPage) {
     let e = this;
     let currentUser = firebase.auth().currentUser.uid;
-    firebase.firestore().collection('usuarios').doc(currentUser).set({
+    await firebase.firestore().collection('usuarios').doc(currentUser).set({
       dataNascimento: e.state.dateBorn,
       email: e.state.email,
       nome: e.state.name,
@@ -155,15 +158,20 @@ export default class MLConfigAccount extends Component {
       telefone: e.state.phone,
       textPortfolio: e.state.textPortfolio,
       idMP: json.user_id
+    }).then(() => {
+      if(webPage.includes('https://www.mercadopago.com/mp.php?code=')){
+        this.setState({webviewBoolean: false})
+      }
     })
+
   }
 
   _onNavigationStateChange(webViewState){
-    let removeUrl = webViewState.url.replace('https://www.mercadopago.com/mp.php?code=', '');
-    this.setState({accessTokenMP: removeUrl})
-    this.setState({webviewBoolean: false})
-
-    fetch('https://api.mercadopago.com/oauth/token', {
+    if(webViewState.url.includes('https://www.mercadopago.com/mp.php')) {
+      let removeUrl = webViewState.url.replace('https://www.mercadopago.com/mp.php?code=', '');
+      this.setState({accessTokenMP: removeUrl})
+      
+      fetch('https://api.mercadopago.com/oauth/token', {
         method:'POST',
         mode: 'no-cors',
         headers: {
@@ -177,8 +185,10 @@ export default class MLConfigAccount extends Component {
         })
       })
       .then((res) => res.json())
-      .then((json) => this.firebaseSetIDMP(json)) 
+      .then((json) => this.firebaseSetIDMP(json, webViewState.url)) 
       .catch(() => alert('erro ao autenticar usuário mercado pago, tente novamente'))
+      
+    }
   }
 
 
@@ -190,7 +200,7 @@ export default class MLConfigAccount extends Component {
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
 
-        {this.state.webviewBoolean == false && this.state.idMercadoPago == '' &&
+        {this.state.webviewBoolean == false && this.state.idMercadoPago == "" &&
             <View style={{alignItems:'center'}}>
                 <Heading style={styles.paddingTitle}>Conectar Conta Mercado Pago</Heading>
                 <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Para que você consiga realizar transações pelos seus serviços e produtos, é necessário que você conecte a sua conta mercado pago para fazermos os repasses necessários.</TextDescription2>
@@ -208,10 +218,10 @@ export default class MLConfigAccount extends Component {
           />
         }
 
-        {this.state.webviewBoolean == false && this.state.idMercadoPago !== '' &&
+        {this.state.webviewBoolean == false && this.state.idMercadoPago !== "" &&
             <View style={{alignItems:'center'}}>
-              <Heading style={styles.paddingTitle}>Conectar Conta Mercado Pago</Heading>
-              <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Tudo certo, a sua conta já está conectada com o WeWo</TextDescription2>
+              <Heading style={styles.paddingTitle}>Parabéns</Heading>
+              <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Tudo certo, a sua conta Mercado Pago já está conectada com o WeWo</TextDescription2>
               <LottieView source={thumbsUp} style={{width:200, height:200, marginTop: windowHeight / 12}} autoPlay loop />
             </View>
         }
