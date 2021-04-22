@@ -82,7 +82,8 @@ export default class MLConfigAccount extends Component {
       email: "",
       premium: null,
       textPortfolio: "",
-      idMercadoPago: ""
+      idMercadoPago: "",
+      tipoDeConta: ""
     };
   }
 
@@ -104,6 +105,7 @@ export default class MLConfigAccount extends Component {
       this.setState({dateBorn: documentSnapshot.data().dataNascimento})
       this.setState({premium: documentSnapshot.data().premium})
       this.setState({textPortfolio: documentSnapshot.data().textPortfolio})
+      this.setState({tipoDeConta: documentSnapshot.data().tipoDeConta})
 
       if(documentSnapshot.data().idMP) {
         this.setState({idMercadoPago: documentSnapshot.data().idMP})
@@ -157,7 +159,8 @@ export default class MLConfigAccount extends Component {
       premium: e.state.premium,
       telefone: e.state.phone,
       textPortfolio: e.state.textPortfolio,
-      idMP: json.user_id
+      idMP: json.user_id,
+      tipoDeConta: e.state.tipoDeConta
     }).then(() => {
       if(webPage.includes('https://www.mercadopago.com/mp.php?code=')){
         this.setState({webviewBoolean: false})

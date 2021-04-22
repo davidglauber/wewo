@@ -270,11 +270,11 @@ export default class NotificationsA extends Component {
               keyExtractor={() => this.makeid(17)}
               data={this.state.notificationsActivies}
               renderItem={({item}) => 
-              <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
+              <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:60, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
                 <Image source={{uri: item.photoProfile}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
                 <Text  style={styles.titleMain}>{item.nome}</Text>
                   <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {idLoggedUser: user.uid, idDonoDoAnuncio: item.idContratante, idNotification: item.idNot, valuePayment: item.valor, type: 'normalNotif'})} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/5, justifyContent:'center', alignItems:'center'}}>
-                    <IconResponsive name="comment" size={24}/>
+                    <IconResponsive name="comment-alt" size={24}/>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => this.openModalize(item)} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
                     <IconResponsiveNOBACK name="at" size={24}/>
@@ -296,7 +296,7 @@ export default class NotificationsA extends Component {
           >
 
          
-            <View style={{width: windowWidth/1.06, height:100, backgroundColor: '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
+            <View style={{width: windowWidth/1.06, height:100, backgroundColor: '#d98b0d', flexDirection:'row', borderRadius:60, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
               <Image source={{uri: fotoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
                 <Text  style={styles.title}>{nameUser}</Text>
                 <TouchableOpacity onPress={() => this.deleteService(itemData)} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
@@ -304,43 +304,58 @@ export default class NotificationsA extends Component {
                 </TouchableOpacity>
             </View>
 
-          <View style={{width: windowWidth/1.06, height:500, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:10, marginTop:20, marginLeft:10, marginRight:10}}>
-              <View style={{marginTop:20}}>
+          <View style={{width: windowWidth/1.06, height:550, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:60, marginTop:20, marginLeft:10, marginRight:10}}>
+              <View style={{marginTop:20, maxWidth: windowWidth/1.05}}>
                 
                 {cepUser == null &&
-                  <View style={{marginLeft: 30, marginTop:30, flexDirection:'row'}}>
+                  <View style={{marginLeft: 30, marginTop:30, flexDirection:'row', marginLeft: windowWidth/3.2}}>
                     <IconResponsive name="laptop-house" size={24}/>
                     <Title style={{marginLeft: 20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>Remoto</Title>
                   </View>
                 }
 
                 {cepUser !== null &&
-                  <View style={{marginLeft: 30, marginTop:30, flexDirection:'row', maxWidth:250}}>
-                    <IconResponsive name="map-marker" size={24}/>
+                  <View style={{marginLeft: 30, marginTop:30, flexDirection:'row', maxWidth:260}}>
                     <Title style={{marginLeft: 10, fontSize: 15, marginTop:5, textAlign:'center', color: this.context.dark ? 'white' : 'white'}}>{cepUser}</Title>
                   </View>
                 }
 
-                <View style={{marginLeft: 30, marginTop:30, flexDirection:'row'}}>
-                  <IconResponsive name="tools" size={24}/>
-                  <Title style={{marginLeft: 20, marginRight:20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{serviceUser}</Title>
+                <View style={{marginTop:30, flexDirection:'column', paddingHorizontal:30, justifyContent:"space-between"}}>
+                  <View style={{backgroundColor:'#3f3f3f', maxWidth: windowWidth/1.06, flexDirection:'row', padding:15, borderRadius:20}}>
+                    <IconResponsive style={{marginLeft:10}} name="tools" size={20}/>
+                    <Title style={{marginLeft: 20, marginRight:20, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{serviceUser}</Title>
+                  </View>
                   
-                  <IconResponsive name="dollar-sign" size={24}/>
-                  <Title style={{marginLeft: 10, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{valueUser}</Title>
-                </View>
-
-                <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
-                  <IconResponsive name="calendar-week" size={24}/>
-                  <Title style={{marginLeft: 20, marginRight:45, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{dataUser}</Title>
-                  
-                  <IconResponsive name="clock" size={24}/>
-                  <Title style={{marginLeft: 10, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{horarioUser}</Title>
+                  <View style={{backgroundColor:'#3f3f3f', maxWidth: windowWidth/1.06, marginTop: 15, flexDirection:'row', padding:15, borderRadius:20}}>
+                    <IconResponsive style={{marginLeft:10}} name="dollar-sign" size={20}/>
+                    <Title style={{marginLeft: 10, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{valueUser}</Title>
+                  </View>
                 </View>
 
 
-                <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
-                  <IconResponsive name="mobile" size={24}/>
-                  <Title style={{marginLeft: 24, fontSize: 15, color: this.context.dark ? 'white' : 'white'}}>{telefoneUser}</Title>
+
+
+
+                <View style={{marginTop:10, flexDirection:'column', paddingHorizontal:30, justifyContent:"space-between"}}>
+                  <View style={{backgroundColor:'#3f3f3f', maxWidth: windowWidth/1.06, flexDirection:'row', padding:15, borderRadius:20}}>
+                    <IconResponsive style={{marginLeft:10}} name="calendar-week" size={20}/>
+                    <Title style={{marginLeft: 20, marginRight:45, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{dataUser}</Title>
+                  </View>
+                  
+                  <View style={{backgroundColor:'#3f3f3f', maxWidth: windowWidth/1.06, marginTop: 15, flexDirection:'row', padding:15, borderRadius:20}}>
+                    <IconResponsive style={{marginLeft:10}} name="clock" size={20}/>
+                    <Title style={{marginLeft: 10, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{horarioUser}</Title>
+                  </View>
+                </View>
+
+
+
+
+                <View style={{marginTop:10, flexDirection:'column', paddingHorizontal:30, justifyContent:"space-between"}}>
+                  <View style={{backgroundColor:'#3f3f3f', maxWidth: windowWidth/1.06, flexDirection:'row', padding:15, borderRadius:20}}>
+                    <IconResponsive style={{marginLeft:10}} name="mobile" size={20}/>
+                    <Title style={{marginLeft: 24, fontSize: 15, color: this.context.dark ? 'white' : 'white'}}>{telefoneUser}</Title>
+                  </View>
                 </View>
                 
 
