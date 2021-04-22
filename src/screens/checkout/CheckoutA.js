@@ -1,47 +1,54 @@
-/**
- * Food Delivery - React Native Template
- *
- * @format
- * @flow
- */
 
 // import dependencies
 import React, {Component} from 'react';
 import {
-  I18nManager,
-  Platform,
-  SafeAreaView,
+  FlatList,
+  Alert,
+  ScrollView,
   StatusBar,
   StyleSheet,
+  Modal,
+  Dimensions,
+  Text,
+  Image,
   View,
+  TouchableOpacity,
 } from 'react-native';
 import Color from 'color';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Swiper from 'react-native-swiper';
 
-// import components
-import Button from '../../components/buttons/Button';
-import CreditCard from '../../components/creditcard/CreditCard';
-import InfoModal from '../../components/modals/InfoModal';
-import LinkButton from '../../components/buttons/LinkButton';
-import {Caption, Subtitle1, Subtitle2} from '../../components/text/CustomText';
-import UnderlineTextInput from '../../components/textinputs/UnderlineTextInput';
 
-// import colors, layout
+
+// import colors
 import Colors from '../../theme/colors';
-import Layout from '../../theme/layout';
 
-// CheckoutA Config
-const isRTL = I18nManager.isRTL;
-const INPUT_FOCUSED_BORDER_COLOR = Colors.primaryColor;
-const CHECKMARK_ICON =
-  Platform.OS === 'ios'
-    ? 'ios-checkmark-circle-outline'
-    : 'md-checkmark-circle-outline';
+import firebase from '../../config/firebase'; 
 
-// CheckoutA Styles
+import { PulseIndicator } from 'react-native-indicators';
+
+
+import { SafeBackground, Title, AnuncioContainer, PlusContainer, PlusIcon, Description, IconResponsiveNOBACK, TouchableDetails, TextDetails, IconResponsive, Heading } from '../home/styles';
+
+import LottieView from 'lottie-react-native';
+
+import loading from '../../../assets/loading.json';
+
+//RESPONSIVE FONT 
+import { RFValue } from 'react-native-responsive-fontsize';
+
+import { ThemeContext } from '../../../ThemeContext';
+
+//MODULE IAP
+import {purchased} from '../../config/purchase';
+
+import { Video } from 'expo-av';
+
+//consts
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
+
+// HomeA Styles
 const styles = StyleSheet.create({
-  pt16: {paddingTop: 16},
   screenContainer: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -49,448 +56,328 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  headerContainer: {
-    backgroundColor: Colors.background,
-    elevation: 1,
-    ...Platform.select({
-      ios: {
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#a7a7aa',
-      },
-    }),
+  categoriesContainer: {
+    paddingBottom: 16,
   },
-  stepIndicator: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 48,
-  },
-  stepContainer: {
-    width: 70,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  activeStepText: {
-    color: Colors.primaryColor,
-  },
-  activeLine: {
-    backgroundColor: Colors.primaryColor,
-  },
-  swiperContainer: {
-    flex: 1,
-    ...Platform.select({
-      android: {
-        minHeight: Layout.SCREEN_HEIGHT - 3 * 56,
-      },
-    }),
-  },
-  formContainer: {
-    flex: 1,
-  },
-  form: {
-    paddingVertical: 24,
-    paddingHorizontal: 20,
-  },
-  overline: {
-    color: "#fff",
-    textAlign: 'left',
-  },
-  inputContainerStyle: {
-    marginTop: 0,
-    marginBottom: 18,
-    paddingVertical: 0,
-    paddingHorizontal: 0,
-  },
-  actionButton: {
-    color: Colors.accentColor,
-    textAlign: 'center',
-  },
-  buttonContainer: {
-    paddingTop: 16,
-    paddingHorizontal: 24,
-    paddingBottom: 24,
-    backgroundColor: Colors.background,
-  },
-  linkButtonContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 16,
-  },
-  linkButton: {
-    color: Colors.black,
-  },
-  orderInfo: {
-    paddingVertical: 8,
-    textAlign: 'left',
-  },
-  row: {
+  titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingTop: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 12,
   },
-  amount: {
-    fontWeight: '500',
-    fontSize: 20,
-    lineHeight: 24,
+  titleText: {
+    fontWeight: '700',
+    marginRight:30
+  },
+  viewAllText: {
+    color: Colors.primaryColor,
+  },
+  categoriesList: {
+    paddingTop: 4,
+    paddingRight: 16,
+    paddingLeft: 8,
+  },
+  cardImg: {borderRadius: 4},
+  card: {
+    marginLeft: 8,
+    width: 104,
+    height: 72,
+    resizeMode: 'cover',
+  },
+  cardContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  productsList: {
+    paddingBottom: 16,
+    // spacing = paddingHorizontal + ActionProductCard margin = 12 + 4 = 16
+    paddingHorizontal: 12,
+  },
+  popularProductsList: {
+    // spacing = paddingHorizontal + ActionProductCardHorizontal margin = 12 + 4 = 16
+    paddingHorizontal: 12,
+    paddingBottom: 16,
   },
 });
 
-// CheckoutA
 export default class CheckoutA extends Component {
+  static contextType = ThemeContext
+
+
   constructor(props) {
     super(props);
 
     this.state = {
-      activeIndex: 0,
-      address: '455 Larkspur Dr.',
-      city: 'Baviera',
-      zip: '92908',
-      addressFocused: false,
-      cityFocused: false,
-      zipFocused: false,
-      infoModalVisible: false,
+      anunciosEstab: [],
+      anunciosAuto:[],
+      isFetchedPublish: false,
+      modalVisible: true
     };
   }
 
-  navigateTo = (screen) => () => {
+
+
+  //sleep function
+  sleep = (time) => {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+
+
+  async componentDidMount() {
+    let e = this;
+    let currentUserUID = firebase.auth().currentUser.uid;
+
+    await firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("type", "==", "Autonomo").where("verifiedPublish", "==", true).onSnapshot(documentSnapshot => {
+      let anunciosAutoDidMount = []
+      documentSnapshot.forEach(function(doc) {
+        anunciosAutoDidMount.push({
+          idUser: doc.data().idUser,
+          nome: doc.data().nome,
+          idAnuncio: doc.data().idAnuncio,
+          video: doc.data().videoPublish,
+          photo: doc.data().photoPublish,
+          title: doc.data().titleAuto,
+          description: doc.data().descriptionAuto,
+          type: doc.data().type,
+          phone: doc.data().phoneNumberAuto,
+          verified: doc.data().verifiedPublish
+        })
+      })
+      e.setState({anunciosAuto: anunciosAutoDidMount})
+      this.setModalVisible(false)
+
+      this.sleep(1000).then(() => { 
+        e.setState({isFetchedPublish: true})
+      })
+    })
+
+    await firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).onSnapshot(documentSnapshot => {
+      let anunciosEstabDidMount = []
+      documentSnapshot.forEach(function(doc) {
+        anunciosEstabDidMount.push({
+          idUser: doc.data().idUser,
+          photo: doc.data().photoPublish,
+          video: doc.data().videoPublish,
+          idAnuncio: doc.data().idAnuncio,
+          title: doc.data().titleEstab,
+          description: doc.data().descriptionEstab,
+          phone: doc.data().phoneNumberEstab,
+          type: doc.data().type,
+          verified: doc.data().verifiedPublish
+        })
+      })
+      e.setState({anunciosEstab: anunciosEstabDidMount})
+      this.setModalVisible(false)
+
+      this.sleep(1000).then(() => { 
+        e.setState({isFetchedPublish: true})
+      })
+    })
+
+    
+  }
+
+
+
+
+  makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
+  setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible });
+  }
+
+  navigateTo = screen => () => {
     const {navigation} = this.props;
     navigation.navigate(screen);
   };
 
-  goBack = () => {
-    const {navigation} = this.props;
-    navigation.goBack();
-  };
 
-  clearInputs = () => {
-    this.address.clear();
-    this.city.clear();
-    this.zip.clear();
-  };
+  async verifyNumberOfPublises() {
+    let currentUserUID = firebase.auth().currentUser.uid;
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
 
-  addressChange = (text) => {
-    this.setState({
-      address: text,
-    });
-  };
+    firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
+      let anunciosDidMount = []
+      documentSnapshot.forEach(function(doc) {
+        anunciosDidMount.push({
+          idUser: doc.data().idUser,
+          nome: doc.data().nome,
+          idAnuncio: doc.data().idAnuncio,
+          photo: doc.data().photoPublish,
+          title: doc.data().titleAuto,
+          description: doc.data().descriptionAuto,
+          type: doc.data().type,
+          phone: doc.data().phoneNumberAuto,
+          verified: doc.data().verifiedPublish
+        })
+      })
+      
 
-  addressFocus = () => {
-    this.setState({
-      addressFocused: true,
-      cityFocused: false,
-      zipFocused: false,
-    });
-  };
+      if(anunciosDidMount.length  < 3) {
+        this.props.navigation.navigate('Orders')
+      }
 
-  cityChange = (text) => {
-    this.setState({
-      city: text,
-    });
-  };
 
-  cityFocus = () => {
-    this.setState({
-      addressFocused: false,
-      cityFocused: true,
-      zipFocused: false,
-    });
-  };
+      if(comprou == true) {
+        if(anunciosDidMount.length <= 15) {
+          this.props.navigation.navigate('Orders')
+        }
+      } 
 
-  zipChange = (text) => {
-    this.setState({
-      zip: text,
-    });
-  };
+      if(comprou == false) {
+        if(anunciosDidMount.length >= 3) {
+          alert('A conta Free permite até 3 anúncios, consulte a tela de PLANOS para mais informações')
+        }
 
-  zipFocus = () => {
-    this.setState({
-      addressFocused: false,
-      cityFocused: false,
-      zipFocused: true,
-    });
-  };
+        if(anunciosDidMount.length  < 3) {
+          this.props.navigation.navigate('Orders')
+        }
+      }
+      console.log('TAMANHO DA LISTA DE ANUNCIOS:> ' + anunciosDidMount)
+    })
 
-  focusOn = (nextFiled) => () => {
-    if (nextFiled) {
-      nextFiled.focus();
-    }
-  };
+  }
 
-  onIndexChanged = (index) => {
-    let activeIndex;
-    if (isRTL) {
-      activeIndex = 2 - index; // 2 = 3 steps - 1
+  cutDescription(text) {
+    if(text.length > 40) {
+      let shortDescription = text.substr(0, 40)
+
+      return(
+        <View style={{justifyContent: 'center', alignItems: 'center',}}>
+          <Description>{shortDescription} ...</Description>
+        </View>
+      );
     } else {
-      activeIndex = index;
+      return(
+        <View style={{justifyContent: 'center', alignItems: 'center',}}>
+          <Description>{text}</Description>
+        </View>
+      );
     }
-    this.setState({
-      activeIndex: activeIndex,
-    });
-  };
+  }
 
-  nextStep = () => {
-    this.swiper.scrollBy(1, true);
-  };
+  deletePublishOfMainRoute(itemToBeDeletedFunction){
+    let userUID = firebase.auth().currentUser.uid;
+    firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').where("idAnuncio", "==", itemToBeDeletedFunction).get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc){
+        doc.ref.delete();
+      })
+    })
 
-  previousStep = () => {
-    this.swiper.scrollBy(-1, true);
-  };
+    firebase.firestore().collection('anuncios').where("idAnuncio", "==", itemToBeDeletedFunction).get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc){
+        doc.ref.delete();
+      })
+    })
+  }
 
-  showInfoModal = (value) => () => {
-    this.setState({
-      infoModalVisible: value,
-    });
-  };
 
-  closeInfoModal = (value) => () => {
-    this.setState(
-      {
-        infoModalVisible: value,
-      },
-      () => {
-        this.goBack();
-      },
-    );
-  };
+  deletePublish(itemToBeDeleted) {
+    let userUID = firebase.auth().currentUser.uid;
+    Alert.alert(
+      'Atenção!!!',
+      'Você tem certeza que quer deletar este anúncio?',
+      [
+        {text: 'Não', onPress: () => {}},
+        {text: 'Sim', onPress: () => this.deletePublishOfMainRoute(itemToBeDeleted)}
+      ]
+    )
+  }
 
+
+  responsibleFont() {
+    let Height = Dimensions.get('window').height
+
+    return RFValue(15, Height);
+  }
+
+
+ 
   render() {
-    const {
-      activeIndex,
-      address,
-      addressFocused,
-      city,
-      cityFocused,
-      zip,
-      zipFocused,
-      infoModalVisible,
-    } = this.state;
+    const {anunciosEstab, anunciosAuto, isFetchedPublish} = this.state;
 
     return (
-      <SafeAreaView style={styles.screenContainer}>
+      <SafeBackground>
         <StatusBar
-          backgroundColor={Colors.statusBarColor}
-          barStyle="dark-content"
+          backgroundColor={this.context.dark ? '#121212' : 'white'}
+          barStyle={this.context.dark ? "light-content" : "dark-content"}
         />
 
         <View style={styles.container}>
-          <View style={styles.headerContainer}>
-            <View style={styles.stepIndicator}>
-              <View style={styles.stepContainer}>
-                <Caption
-                  style={[
-                    
-                    activeIndex === 0 && styles.activeStepText,
-                  ]}>
-                  Delivery
-                </Caption>
-                <Caption
-                  style={[
-                    activeIndex === 0 && styles.activeStepText,
-                  ]}>
-                  address
-                </Caption>
-              </View>
 
-              <View
-                style={[styles.line, activeIndex > 0 && styles.activeLine]}
-              />
-
-              <View style={styles.stepContainer}>
-                <Caption
-                  style={[
-                    activeIndex === 1 && styles.activeStepText,
-                  ]}>
-                  Payment
-                </Caption>
-                <Caption
-                  style={[
-                    activeIndex === 1 && styles.activeStepText,
-                  ]}>
-                  method
-                </Caption>
-              </View>
-
-              <View
-                style={[styles.line, activeIndex > 1 && styles.activeLine]}
-              />
-
-              <View style={styles.stepContainer}>
-                <Caption
-                  style={[
-                    activeIndex === 2 && styles.activeStepText,
-                  ]}>
-                  Place
-                </Caption>
-                <Caption
-                  style={[
-                    activeIndex === 2 && styles.activeStepText,
-                  ]}>
-                  order
-                </Caption>
-              </View>
-            </View>
-          </View>
-
-          <KeyboardAwareScrollView
-            contentContainerStyle={styles.swiperContainer}>
-            <Swiper
-              ref={(r) => {
-                this.swiper = r;
+          <Modal
+              animationType="slide"
+              transparent={true}
+              visible={this.state.modalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
               }}
-              index={isRTL ? 2 : 0}
-              onIndexChanged={this.onIndexChanged}
-              loop={false}
-              showsPagination={false}
-              // scrollEnabled={false}
             >
-              {/* STEP 1 */}
-              <View style={styles.formContainer}>
-                <View style={styles.form}>
-                  <Subtitle2 style={styles.overline}>Address</Subtitle2>
-                  <UnderlineTextInput
-                    onRef={(r) => {
-                      this.address = r;
-                    }}
-                    value={address}
-                    onChangeText={this.addressChange}
-                    onFocus={this.addressFocus}
-                    inputFocused={addressFocused}
-                    onSubmitEditing={this.focusOn(this.city)}
-                    returnKeyType="next"
-                    focusedBorderColor={INPUT_FOCUSED_BORDER_COLOR}
-                    inputContainerStyle={styles.inputContainerStyle}
-                  />
-
-                  <Subtitle2 style={styles.overline}>City</Subtitle2>
-                  <UnderlineTextInput
-                    onRef={(r) => {
-                      this.city = r;
-                    }}
-                    value={city}
-                    onChangeText={this.cityChange}
-                    onFocus={this.cityFocus}
-                    inputFocused={cityFocused}
-                    onSubmitEditing={this.focusOn(this.zip)}
-                    returnKeyType="next"
-                    focusedBorderColor={INPUT_FOCUSED_BORDER_COLOR}
-                    inputContainerStyle={styles.inputContainerStyle}
-                  />
-
-                  <Subtitle2 style={styles.overline}>ZIP Code</Subtitle2>
-                  <UnderlineTextInput
-                    onRef={(r) => {
-                      this.zip = r;
-                    }}
-                    value={zip}
-                    onChangeText={this.zipChange}
-                    onFocus={this.zipFocus}
-                    inputFocused={zipFocused}
-                    focusedBorderColor={INPUT_FOCUSED_BORDER_COLOR}
-                    inputContainerStyle={styles.inputContainerStyle}
-                  />
-
-                  <View>
-                    <LinkButton
-                      onPress={this.clearInputs}
-                      title="Clear"
-                      titleStyle={styles.actionButton}
-                    />
-                  </View>
-                </View>
-              </View>
-
-              {/* STEP 2 */}
-              <View>
-                <CreditCard
-                  colors={['#784BA0', '#2B86C5']}
-                  brand="visa"
-                  last4Digits="3456"
-                  cardHolder="Kristin Evans"
-                  expiry="09 / 21"
-                />
-
-                <View>
-                  <LinkButton
-                    onPress={this.navigateTo('PaymentMethod')}
-                    title="Edit details"
-                    titleStyle={styles.actionButton}
-                  />
-                </View>
-              </View>
-
-              <View style={styles.form}>
-                <Subtitle2 style={styles.overline}>Delivery Address</Subtitle2>
-                <Subtitle1
-                  style={
-                    styles.orderInfo
-                  }>{`${address}, ${city}, ${zip}`}</Subtitle1>
-
-                <Subtitle2 style={[styles.overline, styles.pt16]}>
-                  Payment Method
-                </Subtitle2>
-                <Subtitle1 style={styles.orderInfo}>
-                  XXXX XXXX XXXX 3456
-                </Subtitle1>
-
-                <Subtitle2 style={[styles.overline, styles.pt16]}>
-                  Your Order
-                </Subtitle2>
-                <View style={styles.row}>
-                  <Subtitle1 style={styles.orderInfo}>Total amount</Subtitle1>
-                  <Subtitle1 style={styles.amount}>$ 75.40</Subtitle1>
-                </View>
-              </View>
-            </Swiper>
-
-            <View style={styles.buttonContainer}>
-              {activeIndex < 2 && (
-                <Button
-                  onPress={isRTL ? this.previousStep : this.nextStep}
-                  title="Next"
-                />
-              )}
-
-              {activeIndex === 2 && (
-                <Button
-                  onPress={this.showInfoModal(true)}
-                  title="Place Order"
-                />
-              )}
-
-              {activeIndex === 0 && (
-                <View style={styles.linkButtonContainer}>
-                  <LinkButton
-                    onPress={this.goBack}
-                    title="Cancel"
-                    titleStyle={styles.linkButton}
-                  />
-                </View>
-              )}
-
-              {activeIndex > 0 && (
-                <View style={styles.linkButtonContainer}>
-                  <LinkButton
-                    onPress={isRTL ? this.nextStep : this.previousStep}
-                    title="Back"
-                    titleStyle={styles.linkButton}
-                  />
-                </View>
-              )}
+            <View style={{flex:1, alignItems:'center', paddingLeft: windowWidth / 2, paddingTop: windowHeight / 2, width: 100}}>
+                <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
             </View>
-          </KeyboardAwareScrollView>
+          </Modal>
+          
+          <ScrollView>
+            <View style={styles.categoriesContainer}>
+              <View style={styles.titleContainer}>
+                <View style={styles.titleContainer}>
+                  <Heading style={styles.titleText}>Produtos no Carrinho</Heading>
+                </View>
+              </View>
+            </View>
 
-          <InfoModal
-            iconName={CHECKMARK_ICON}
-            iconColor={Colors.primaryColor}
-            title={'Success!'.toUpperCase()}
-            message="Order placed successfully. For more details check your orders."
-            buttonTitle="Back to shopping"
-            onButtonPress={this.closeInfoModal(false)}
-            onRequestClose={this.closeInfoModal(false)}
-            visible={infoModalVisible}
-          />
+                {anunciosEstab.length == 0 && anunciosAuto.length == 0 &&
+                    <View style={{flex:1, alignItems:'center', paddingTop: 75}}>
+                        <View>
+                          <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
+                          <Text style={{fontWeight:'bold'}}>Nenhum Produto Foi Encontrado</Text>
+                        </View>
+                    </View>
+                }
+
+
+            <View style={{paddingHorizontal:30, flexDirection:'row', maxWidth: windowWidth/1.5}}>
+              <Image style={{width:160, height:140, borderRadius:20}} source={{uri:"https://tecnoblog.net/wp-content/uploads/2019/03/mechanical-keyboard-3196030_1280-700x467.jpg"}}/>
+              <View style={{flexDirection:"column"}}>
+                <View style={{flexDirection:'row'}}>
+                  <Image style={{width:30, height:30, borderRadius:40, marginLeft:20}} source={{uri:"https://cdnsjengenhariae.nuneshost.com/wp-content/uploads/2020/12/elon-musk-.jpg"}}/>
+                  <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>Elon Muskerin</Text>
+                </View>
+                
+                <Text style={{marginLeft: 40, marginBottom:20, color: this.context.dark ? '#fff' : '#000'}}>Teclado Mecânico HyperXXX</Text>
+                <Text style={{marginLeft: 40, fontWeight:'bold', color:'#d98b0d', marginBottom:30, fontSize:20}}>R$ 408</Text>
+
+              </View>
+            </View>
+
+            <View style={{paddingHorizontal:30, flexDirection:'row', maxWidth: windowWidth/1.5, marginTop:20}}>
+              <Image style={{width:160, height:140, borderRadius:20}} source={{uri:"https://static.zoom.com.br/content/Image/pneu-michelin-vs-bridgestone.png"}}/>
+              <View style={{flexDirection:"column"}}>
+                <View style={{flexDirection:'row'}}>
+                  <Image style={{width:30, height:30, borderRadius:40, marginLeft:20}} source={{uri:"https://s2.glbimg.com/u95b6WzejuNoHdCQd4_rPMZE7s0=/620x430/e.glbimg.com/og/ed/f/original/2020/02/17/gettyimages-1032942366.jpg"}}/>
+                  <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>Joeffi Bezerros</Text>
+                </View>
+                
+                <Text style={{marginLeft: 40, marginBottom:20, color: this.context.dark ? '#fff' : '#000'}}>Pneu Michelin Aro 24'5</Text>
+                <Text style={{marginLeft: 40, fontWeight:'bold', color:'#d98b0d', marginBottom:30, fontSize:20}}>R$ 2044</Text>
+
+              </View>
+            </View>
+          </ScrollView>
         </View>
-      </SafeAreaView>
+      </SafeBackground>
     );
   }
 }

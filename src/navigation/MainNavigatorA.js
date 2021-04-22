@@ -490,11 +490,9 @@ function MainNavigatorA() {
           name="Checkout"
           component={Checkout}
           options={{
-            title: 'Checkout',
-            headerStyle: {
-              elevation: 0,
-              shadowOpacity: 0,
-            },
+            title: 'Carrinho',
+            headerStyle: { backgroundColor: dark ? '#121212' : 'white' },
+            headerTitleStyle: { color: dark ? '#FFD700' : 'black' },
           }}
         />
         
