@@ -122,6 +122,7 @@ export default class TelaGeralCriarCartao extends Component {
       text:'',
       premium: false,
       telefone:'',
+      tipoDeConta:"",
       isFetchedPublish: false,
       modalVisible: true,
       modalizeRef: React.createRef(null)
@@ -198,6 +199,7 @@ export default class TelaGeralCriarCartao extends Component {
       e.setState({premium: documentSnapshot.data().premium})
       e.setState({telefone: documentSnapshot.data().telefone})
       e.setState({text: documentSnapshot.data().textPortfolio})
+      e.setState({tipoDeConta: documentSnapshot.data().tipoDeConta})
     })
 
   }
@@ -395,7 +397,13 @@ export default class TelaGeralCriarCartao extends Component {
           <ScrollView>
             <View style={styles.categoriesContainer}>
               <View style={styles.titleContainer}>
-                    <Heading style={{marginLeft: 30, marginRight: 34}}>Portfólios Ativos</Heading>
+                {this.state.tipoDeConta == 'Autonomo' &&
+                  <Heading style={{marginLeft: 30, marginRight: 34}}>Portfólios Ativos</Heading>
+                }
+
+                {this.state.tipoDeConta == 'Estabelecimento' &&
+                  <Heading style={{marginLeft: 30, marginRight: 34}}>Produtos Ativos</Heading>
+                }
 
                 <PlusContainer onPress={() => this.verifyNumberOfPublises()}>
                         <PlusIcon  name="plus" size={19}/>

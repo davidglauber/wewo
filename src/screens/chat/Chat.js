@@ -26,7 +26,7 @@ import {
 //import firebase
 import firebase from '../../config/firebase';
 
-import { SafeAnuncioView, Heading, InputChat, IconResponsiveNOBACK, TextDescription2, InputFormMask} from '../home/styles';
+import { SafeAnuncioView, Heading, InputChat, IconResponsiveNOBACK, IconResponsive, TextDescription2, InputFormMask} from '../home/styles';
 
 import { ThemeContext } from '../../../ThemeContext';
 
@@ -44,7 +44,10 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   moneyCard: {
     position:'absolute',
-    left:windowWidth/1.2
+    left:windowWidth/1.2,
+    backgroundColor:'#d98b0d',
+    padding:7,
+    borderRadius:10
   }
 })
 export default class Chat extends Component {
@@ -161,7 +164,7 @@ export default class Chat extends Component {
             
             {this.state.type == 'confirmedNotif' &&
               <TouchableOpacity style={styles.moneyCard} onPress={() => this.openModalize()}>
-                <IconResponsiveNOBACK name="money-bill-alt" size={24}/>
+                <IconResponsive name="money-bill-alt" size={24}/>
               </TouchableOpacity>
             }
 
@@ -177,7 +180,7 @@ export default class Chat extends Component {
                 }
 
                 {currentUserId !== item.idContratado &&
-                  <View style={{marginTop:10, marginRight:50, backgroundColor:'#d4cccb', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
+                  <View style={{marginTop:30, marginRight:50, backgroundColor:'#d4cccb', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
                     <Text style={{color:'black'}}>{item.texto}</Text>
                   </View>
                 }
