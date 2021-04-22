@@ -199,6 +199,7 @@ export default function Configuracoes() {
   const [status, setStatus] = React.useState(null);
   const [emailUser, setEmailUser] = React.useState('');
   const [nomeUser, setNomeUser] = React.useState('');
+  const [tipoDeConta, setTipoDeConta] = React.useState('');
   const [dataNascimento, setDataNascimento] = React.useState('');
   const [fotoPerfil, setFotoPerfil] = React.useState('');
   const [value, setValue] = React.useState(false);
@@ -218,6 +219,7 @@ export default function Configuracoes() {
             setNomeUser(documentSnapshot.data().nome)
             setDataNascimento(documentSnapshot.data().dataNascimento)
             setFotoPerfil(documentSnapshot.data().photoProfile)
+            setTipoDeConta(documentSnapshot.data().tipoDeConta)
 
             setModalVisible(false)
           })
@@ -350,11 +352,22 @@ export default function Configuracoes() {
             icon={ORDERS_ICON}
             setting="Meus Anúncios"
           />
-          <Setting
-            onPress={() => navigation.navigate('TelaGeralCriarCartao')}
-            icon={VISIT_CARD}
-            setting="Meus Portfólios/Produtos"
-          />
+
+          {tipoDeConta == 'Autonomo' &&
+            <Setting
+              onPress={() => navigation.navigate('TelaGeralCriarCartao')}
+              icon={VISIT_CARD}
+              setting="Meus Portfólios"
+            />
+          }
+            
+          {tipoDeConta == 'Estabelecimento' &&
+            <Setting
+              onPress={() => navigation.navigate('TelaGeralCriarCartao')}
+              icon={VISIT_CARD}
+              setting="Meus Produtos"
+            />
+          }
 
           <SectionHeader title="Sobre" />
           <Setting

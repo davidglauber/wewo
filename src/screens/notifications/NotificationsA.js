@@ -359,7 +359,7 @@ export default class NotificationsA extends Component {
                 </View>
                 
 
-                <View style={{flexDirection:'row'}}>
+                <View style={{flexDirection:'row', marginLeft:15}}>
                   <TouchableOpacity onPress={() => this.confirmButton(this.state.idNotification)} style={{marginLeft: 30, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:20, borderRadius:50}}>
                     <IconResponsiveNOBACK name="check" size={24}/>
                     <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Confirmar</Title>
