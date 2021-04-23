@@ -241,7 +241,8 @@ export default class MostrarCartao extends Component {
       phoneNavigator: this.props.route.params.phoneNumberNavigator,
       dateAuto:'',
       dateEstab:'',
-      isFetched: false
+      isFetched: false,
+      qtd: 0
     };
   }
 
@@ -486,7 +487,7 @@ export default class MostrarCartao extends Component {
     modalizeRefDisponibilidade.current?.open()
   }
 
-
+/*
   openPhoneApp(phone) {
     Linking.openURL(`tel:${phone}`)
   }
@@ -505,6 +506,7 @@ export default class MostrarCartao extends Component {
     })
   }
 
+*/
 
   async finishRating(idCartao, numberOfStar) {
     let currentUser = firebase.auth().currentUser;
@@ -549,8 +551,50 @@ export default class MostrarCartao extends Component {
   }
 
 
+  setValueToQtd(operation) {
+    if(operation == 'sum') {
+      this.setState({qtd: this.state.qtd + 1})
+    }
+
+    if(operation == 'sub') {
+      this.setState({qtd: this.state.qtd - 1})
+    }
+
+    if(operation == 'sub' && this.state.qtd <= 0) {
+      this.setState({qtd: 0})
+    }
+  }
+
+
+
+  async saveProductInFirebase(item) {
+    let e = this;
+    let idProduct = e.makeid(17);
+    let currentUser = firebase.auth().currentUser;
+
+    console.log('ITEM: ' + item)
+    if(currentUser !== null) {
+      e.setModalVisible(true)
+      await firebase.firestore().collection('products').doc(idProduct).set({
+        idDonoDoProduto: item.idUser,
+        idComprador: currentUser.uid,
+        fotoUsuarioLogado: item.fotoUsuarioLogado,
+        fotoProduto: item.photo2,
+        quantidade: e.state.qtd,
+        valorProduto: item.value,
+        tituloProduto: item.title,
+        nomeUsuario: e.state.nomeUser
+      })
+        e.setModalVisible(false)
+        alert('O produto foi adicionado ao carrinho')
+        e.props.navigation.navigate('Checkout')
+    } else {
+      alert('Você precisa estar logado para comprar um produto')
+    }
+  }
+
   render() {
-    const {product, favorite, cartaoAuto, cartaoEstab, isFetched} = this.state;
+    const {product, favorite, cartaoAuto, cartaoEstab, isFetched, qtd} = this.state;
     const {
       images,
     } = product;
@@ -1081,6 +1125,25 @@ export default class MostrarCartao extends Component {
                   <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                         <IconResponsiveNOBACK name="list-alt" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
+                  </View>
+                  
+                  <View style={{paddingHorizontal: 16, marginTop:50, flexDirection:'row', alignItems: 'center'}}>
+                    <View style={{flexDirection:'column', marginRight:30}}>
+                      <TouchableOpacity onPress={() => this.setValueToQtd('sum')} style={{backgroundColor:"#d98b0d", width:40, height:40, borderRadius:40, alignItems:"center", justifyContent:'center', elevation:10}}>
+                        <IconResponsive name="plus" size={20}/>
+                      </TouchableOpacity>
+
+                      <TextTheme style={{fontSize:15, marginLeft: 15, marginTop:10}}>{qtd}</TextTheme>
+                      
+                      <TouchableOpacity onPress={() => this.setValueToQtd('sub')} style={{backgroundColor:"#d98b0d", marginTop:10, width:40, height:40, borderRadius:40, alignItems:"center", justifyContent:'center', elevation:10}}>
+                        <IconResponsive name="minus" size={20}/>
+                      </TouchableOpacity>
+                    </View>
+
+                    <TouchableOpacity onPress={() => this.saveProductInFirebase(item)} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                          <IconResponsive name="shopping-cart" size={30}/>
+                          <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao carrinho</TextTheme>
+                    </TouchableOpacity>
                   </View>
           
                   <ViewComment>

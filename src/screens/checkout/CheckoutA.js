@@ -111,10 +111,8 @@ export default class CheckoutA extends Component {
     super(props);
 
     this.state = {
-      anunciosEstab: [],
-      anunciosAuto:[],
-      isFetchedPublish: false,
-      modalVisible: true
+      modalVisible: true,
+      products:[]
     };
   }
 
@@ -128,55 +126,29 @@ export default class CheckoutA extends Component {
 
   async componentDidMount() {
     let e = this;
-    let currentUserUID = firebase.auth().currentUser.uid;
+    let currentUser = firebase.auth().currentUser;
 
-    await firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("type", "==", "Autonomo").where("verifiedPublish", "==", true).onSnapshot(documentSnapshot => {
-      let anunciosAutoDidMount = []
-      documentSnapshot.forEach(function(doc) {
-        anunciosAutoDidMount.push({
-          idUser: doc.data().idUser,
-          nome: doc.data().nome,
-          idAnuncio: doc.data().idAnuncio,
-          video: doc.data().videoPublish,
-          photo: doc.data().photoPublish,
-          title: doc.data().titleAuto,
-          description: doc.data().descriptionAuto,
-          type: doc.data().type,
-          phone: doc.data().phoneNumberAuto,
-          verified: doc.data().verifiedPublish
+    if(currentUser !== null) {
+      await firebase.firestore().collection('products').where('idComprador', '==', currentUser.uid).get().then(function(querySnapshot){
+        let productsArray = []
+        querySnapshot.forEach(function(doc) {
+          productsArray.push({
+            idDonoDoProduto: doc.data().idDonoDoProduto,
+            idComprador: doc.data().idComprador,
+            fotoUsuarioLogado: doc.data().fotoUsuarioLogado,
+            fotoProduto: doc.data().fotoProduto,
+            quantidade: doc.data().quantidade,
+            valorProduto: doc.data().valorProduto,
+            tituloProduto: doc.data().tituloProduto,
+            nomeUsuario: doc.data().nomeUsuario
+          })
         })
+        e.setState({products: productsArray})
+        e.setModalVisible(false)
       })
-      e.setState({anunciosAuto: anunciosAutoDidMount})
-      this.setModalVisible(false)
-
-      this.sleep(1000).then(() => { 
-        e.setState({isFetchedPublish: true})
-      })
-    })
-
-    await firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).onSnapshot(documentSnapshot => {
-      let anunciosEstabDidMount = []
-      documentSnapshot.forEach(function(doc) {
-        anunciosEstabDidMount.push({
-          idUser: doc.data().idUser,
-          photo: doc.data().photoPublish,
-          video: doc.data().videoPublish,
-          idAnuncio: doc.data().idAnuncio,
-          title: doc.data().titleEstab,
-          description: doc.data().descriptionEstab,
-          phone: doc.data().phoneNumberEstab,
-          type: doc.data().type,
-          verified: doc.data().verifiedPublish
-        })
-      })
-      e.setState({anunciosEstab: anunciosEstabDidMount})
-      this.setModalVisible(false)
-
-      this.sleep(1000).then(() => { 
-        e.setState({isFetchedPublish: true})
-      })
-    })
-
+    } else {
+      alert('Você precisa estar logado para adicionar produtos no carrinho')
+    }
     
   }
 
@@ -203,52 +175,6 @@ export default class CheckoutA extends Component {
   };
 
 
-  async verifyNumberOfPublises() {
-    let currentUserUID = firebase.auth().currentUser.uid;
-    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
-
-    firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
-      let anunciosDidMount = []
-      documentSnapshot.forEach(function(doc) {
-        anunciosDidMount.push({
-          idUser: doc.data().idUser,
-          nome: doc.data().nome,
-          idAnuncio: doc.data().idAnuncio,
-          photo: doc.data().photoPublish,
-          title: doc.data().titleAuto,
-          description: doc.data().descriptionAuto,
-          type: doc.data().type,
-          phone: doc.data().phoneNumberAuto,
-          verified: doc.data().verifiedPublish
-        })
-      })
-      
-
-      if(anunciosDidMount.length  < 3) {
-        this.props.navigation.navigate('Orders')
-      }
-
-
-      if(comprou == true) {
-        if(anunciosDidMount.length <= 15) {
-          this.props.navigation.navigate('Orders')
-        }
-      } 
-
-      if(comprou == false) {
-        if(anunciosDidMount.length >= 3) {
-          alert('A conta Free permite até 3 anúncios, consulte a tela de PLANOS para mais informações')
-        }
-
-        if(anunciosDidMount.length  < 3) {
-          this.props.navigation.navigate('Orders')
-        }
-      }
-      console.log('TAMANHO DA LISTA DE ANUNCIOS:> ' + anunciosDidMount)
-    })
-
-  }
-
   cutDescription(text) {
     if(text.length > 40) {
       let shortDescription = text.substr(0, 40)
@@ -267,34 +193,6 @@ export default class CheckoutA extends Component {
     }
   }
 
-  deletePublishOfMainRoute(itemToBeDeletedFunction){
-    let userUID = firebase.auth().currentUser.uid;
-    firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').where("idAnuncio", "==", itemToBeDeletedFunction).get().then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc){
-        doc.ref.delete();
-      })
-    })
-
-    firebase.firestore().collection('anuncios').where("idAnuncio", "==", itemToBeDeletedFunction).get().then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc){
-        doc.ref.delete();
-      })
-    })
-  }
-
-
-  deletePublish(itemToBeDeleted) {
-    let userUID = firebase.auth().currentUser.uid;
-    Alert.alert(
-      'Atenção!!!',
-      'Você tem certeza que quer deletar este anúncio?',
-      [
-        {text: 'Não', onPress: () => {}},
-        {text: 'Sim', onPress: () => this.deletePublishOfMainRoute(itemToBeDeleted)}
-      ]
-    )
-  }
-
 
   responsibleFont() {
     let Height = Dimensions.get('window').height
@@ -305,8 +203,6 @@ export default class CheckoutA extends Component {
 
  
   render() {
-    const {anunciosEstab, anunciosAuto, isFetchedPublish} = this.state;
-
     return (
       <SafeBackground>
         <StatusBar
@@ -338,43 +234,36 @@ export default class CheckoutA extends Component {
               </View>
             </View>
 
-                {anunciosEstab.length == 0 && anunciosAuto.length == 0 &&
-                    <View style={{flex:1, alignItems:'center', paddingTop: 75}}>
-                        <View>
-                          <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
-                          <Text style={{fontWeight:'bold'}}>Nenhum Produto Foi Encontrado</Text>
-                        </View>
+            {this.state.products.length == 0 &&
+                <View style={{flex:1, alignItems:'center', paddingTop: 75}}>
+                    <View>
+                      <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
                     </View>
-                }
-
-
-            <View style={{paddingHorizontal:30, flexDirection:'row', maxWidth: windowWidth/1.5}}>
-              <Image style={{width:160, height:140, borderRadius:20}} source={{uri:"https://tecnoblog.net/wp-content/uploads/2019/03/mechanical-keyboard-3196030_1280-700x467.jpg"}}/>
-              <View style={{flexDirection:"column"}}>
-                <View style={{flexDirection:'row'}}>
-                  <Image style={{width:30, height:30, borderRadius:40, marginLeft:20}} source={{uri:"https://cdnsjengenhariae.nuneshost.com/wp-content/uploads/2020/12/elon-musk-.jpg"}}/>
-                  <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>Elon Muskerin</Text>
                 </View>
-                
-                <Text style={{marginLeft: 40, marginBottom:20, color: this.context.dark ? '#fff' : '#000'}}>Teclado Mecânico HyperXXX</Text>
-                <Text style={{marginLeft: 40, fontWeight:'bold', color:'#d98b0d', marginBottom:30, fontSize:20}}>R$ 408</Text>
+            }
 
-              </View>
-            </View>
 
-            <View style={{paddingHorizontal:30, flexDirection:'row', maxWidth: windowWidth/1.5, marginTop:20}}>
-              <Image style={{width:160, height:140, borderRadius:20}} source={{uri:"https://static.zoom.com.br/content/Image/pneu-michelin-vs-bridgestone.png"}}/>
-              <View style={{flexDirection:"column"}}>
-                <View style={{flexDirection:'row'}}>
-                  <Image style={{width:30, height:30, borderRadius:40, marginLeft:20}} source={{uri:"https://s2.glbimg.com/u95b6WzejuNoHdCQd4_rPMZE7s0=/620x430/e.glbimg.com/og/ed/f/original/2020/02/17/gettyimages-1032942366.jpg"}}/>
-                  <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>Joeffi Bezerros</Text>
+            <FlatList
+              keyExtractor={() => this.makeid(17)}
+              data={this.state.products}
+              renderItem={({item}) => 
+                <View style={{paddingHorizontal:30, flexDirection:'row', maxWidth: windowWidth/1.5}}>
+                  <Image style={{width:160, height:140, borderRadius:20}} source={{uri: item.fotoProduto}}/>
+                  <View style={{flexDirection:"column"}}>
+                    <View style={{flexDirection:'row'}}>
+                      <Image style={{width:30, height:30, borderRadius:40, marginLeft:20}} source={{uri: item.fotoUsuarioLogado}}/>
+                      <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>{item.nomeUsuario}</Text>
+                    </View>
+                    
+                    <Text style={{marginLeft: 40, marginBottom:20, color: this.context.dark ? '#fff' : '#000'}}>{item.tituloProduto}</Text>
+                    <Text style={{marginLeft: 40, fontWeight:'bold', color:'#d98b0d', marginBottom:30, fontSize:20}}>{item.valorProduto}</Text>
+
+                  </View>
                 </View>
-                
-                <Text style={{marginLeft: 40, marginBottom:20, color: this.context.dark ? '#fff' : '#000'}}>Pneu Michelin Aro 24'5</Text>
-                <Text style={{marginLeft: 40, fontWeight:'bold', color:'#d98b0d', marginBottom:30, fontSize:20}}>R$ 2044</Text>
+              }
+            />
 
-              </View>
-            </View>
+
           </ScrollView>
         </View>
       </SafeBackground>
