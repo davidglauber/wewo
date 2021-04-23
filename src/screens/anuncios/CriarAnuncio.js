@@ -1510,7 +1510,6 @@ export default class CriarAnuncio extends Component {
 
   searchCEPAuto(cepuser) {
     fetch(`https://viacep.com.br/ws/${cepuser}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({UFAuto: obj.uf})).catch(err => alert('Ocorreu um erro ao consultar o estado!'))
-  
   }
 
 
