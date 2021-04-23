@@ -25,8 +25,10 @@ import firebase from '../../config/firebase';
 
 import { PulseIndicator } from 'react-native-indicators';
 
+// import components
+import {SmallText} from '../../components/text/CustomText';
 
-import { SafeBackground, Title, AnuncioContainer, PlusContainer, PlusIcon, Description, IconResponsiveNOBACK, TouchableDetails, TextDetails, IconResponsive, Heading } from '../home/styles';
+import { SafeBackground, SwipeLeft, Description, Heading, IconResponsiveNOBACK, Favorite } from '../home/styles';
 
 import LottieView from 'lottie-react-native';
 
@@ -36,6 +38,11 @@ import loading from '../../../assets/loading.json';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 import { ThemeContext } from '../../../ThemeContext';
+
+
+//import GestureHandler
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 //MODULE IAP
 import {purchased} from '../../config/purchase';
@@ -129,9 +136,9 @@ export default class CheckoutA extends Component {
     let currentUser = firebase.auth().currentUser;
 
     if(currentUser !== null) {
-      await firebase.firestore().collection('products').where('idComprador', '==', currentUser.uid).get().then(function(querySnapshot){
+      await firebase.firestore().collection('products').where('idComprador', '==', currentUser.uid).onSnapshot(documentSnapshot => {
         let productsArray = []
-        querySnapshot.forEach(function(doc) {
+        documentSnapshot.forEach(function(doc) {
           productsArray.push({
             idDonoDoProduto: doc.data().idDonoDoProduto,
             idComprador: doc.data().idComprador,
@@ -201,6 +208,24 @@ export default class CheckoutA extends Component {
   }
 
 
+  RightAction() {
+    return(
+      <TouchableWithoutFeedback style={{width: 336, height: 170, flexDirection:'row', justifyContent:'center', alignItems:'center', marginBottom:5, marginTop: 10, borderRadius: 10, opacity:0.5}}>
+          <IconResponsiveNOBACK style={{marginRight:40}} name="trash-alt" size={24}/>
+          <Favorite>Deletado</Favorite>
+      </TouchableWithoutFeedback>
+    );
+  }
+
+
+  RemoveFav(id) {
+    firebase.firestore().collection('products').where('idComprador', '==', id).get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc){
+        doc.ref.delete();
+      })
+    })
+  }
+
  
   render() {
     return (
@@ -247,24 +272,37 @@ export default class CheckoutA extends Component {
               keyExtractor={() => this.makeid(17)}
               data={this.state.products}
               renderItem={({item}) => 
-                <View style={{paddingHorizontal:30, flexDirection:'row', maxWidth: windowWidth/1.5}}>
-                  <Image style={{width:160, height:140, borderRadius:20}} source={{uri: item.fotoProduto}}/>
-                  <View style={{flexDirection:"column"}}>
-                    <View style={{flexDirection:'row'}}>
-                      <Image style={{width:30, height:30, borderRadius:40, marginLeft:20}} source={{uri: item.fotoUsuarioLogado}}/>
-                      <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>{item.nomeUsuario}</Text>
+                <Swipeable
+                  renderLeftActions={this.RightAction}
+                  onSwipeableLeftOpen={() => this.RemoveFav(item.idComprador)}
+                > 
+                  <View style={{paddingHorizontal:30, flexDirection:'row', maxWidth: windowWidth/1.5}}>
+                    <Image style={{width:160, height:140, borderRadius:20}} source={{uri: item.fotoProduto}}/>
+                    <View style={{flexDirection:"column"}}>
+                      <View style={{flexDirection:'row'}}>
+                        <Image style={{width:30, height:30, borderRadius:40, marginLeft:20}} source={{uri: item.fotoUsuarioLogado}}/>
+                        <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>{item.nomeUsuario}</Text>
+                      </View>
+                      
+                      <Text style={{marginLeft: 40, marginBottom:20, color: this.context.dark ? '#fff' : '#000'}}>{item.tituloProduto}</Text>
+                      <Text style={{marginLeft: 40, fontWeight:'bold', color:'#d98b0d', marginBottom:10, fontSize:20}}>{item.valorProduto}</Text>
+                      <Text style={{marginLeft: 40, fontWeight:'bold', color:'#d98b0d', marginBottom:30, fontSize:14}}>Quantidade: {item.quantidade}</Text>
                     </View>
-                    
-                    <Text style={{marginLeft: 40, marginBottom:20, color: this.context.dark ? '#fff' : '#000'}}>{item.tituloProduto}</Text>
-                    <Text style={{marginLeft: 40, fontWeight:'bold', color:'#d98b0d', marginBottom:30, fontSize:20}}>{item.valorProduto}</Text>
-
                   </View>
-                </View>
+                </Swipeable>
               }
             />
 
 
           </ScrollView>
+
+          <View style={{justifyContent: 'center',alignItems: 'center', padding: 8}}>
+            <SwipeLeft>
+                <SmallText>
+                      {`Deslize para a direita para excluir`}
+                </SmallText>
+            </SwipeLeft>
+          </View>
         </View>
       </SafeBackground>
     );

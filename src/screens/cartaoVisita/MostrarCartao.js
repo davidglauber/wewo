@@ -574,20 +574,24 @@ export default class MostrarCartao extends Component {
 
     console.log('ITEM: ' + item)
     if(currentUser !== null) {
-      e.setModalVisible(true)
-      await firebase.firestore().collection('products').doc(idProduct).set({
-        idDonoDoProduto: item.idUser,
-        idComprador: currentUser.uid,
-        fotoUsuarioLogado: item.fotoUsuarioLogado,
-        fotoProduto: item.photo2,
-        quantidade: e.state.qtd,
-        valorProduto: item.value,
-        tituloProduto: item.title,
-        nomeUsuario: e.state.nomeUser
-      })
-        e.setModalVisible(false)
-        alert('O produto foi adicionado ao carrinho')
-        e.props.navigation.navigate('Checkout')
+      if(this.state.qtd > 0){
+        e.setModalVisible(true)
+        await firebase.firestore().collection('products').doc(idProduct).set({
+          idDonoDoProduto: item.idUser,
+          idComprador: currentUser.uid,
+          fotoUsuarioLogado: item.fotoUsuarioLogado,
+          fotoProduto: item.photo2,
+          quantidade: e.state.qtd,
+          valorProduto: item.value,
+          tituloProduto: item.title,
+          nomeUsuario: e.state.nomeUser
+        })
+          e.setModalVisible(false)
+          alert('O produto foi adicionado ao carrinho')
+          e.props.navigation.navigate('Checkout')
+      } else {
+        alert('Você não pode comprar 0 quantidades de algo ;)')
+      }
     } else {
       alert('Você precisa estar logado para comprar um produto')
     }
