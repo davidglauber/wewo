@@ -137,21 +137,18 @@ export default class EditarCartao extends Component {
       categoria:'',
       horarioOpen:'',
       horarioClose:'',
-      phoneAuto:'',
       phoneEstab:'',
       nomeAuto:'',
       tituloEstab:'',
       descricaoAuto:'',
       descricaoEstab:'',
       enderecoEstab: null,
-      enderecoAuto: null,
       cepEstab: '',
       cepAuto: '',
       precoEstab:'',
       enderecoCepEstab: [],
       enderecoCepAuto: [],
       UFEstab: '',
-      UFAuto:'',
       segunda:'',
       terca:'', 
       quarta:'',
@@ -168,7 +165,6 @@ export default class EditarCartao extends Component {
       modalizePhotos: React.createRef(null),
       modalizeVideoAndPhoto: React.createRef(null),
       modalizeLocationEstab: React.createRef(null),
-      modalizeLocationAuto: React.createRef(null),
       image:null,
       image2:null,
       image3:null,
@@ -189,7 +185,8 @@ export default class EditarCartao extends Component {
       subcategoria:'',
       usuarioComprou: false,
       daysWeek: [],
-      locationServiceEnabled: false
+      locationServiceEnabled: false,
+      fotoPerfil: null
     };
   }
 
@@ -207,6 +204,7 @@ export default class EditarCartao extends Component {
   async componentDidMount() {
     this.convertDate();
     let e = this;
+    let usuarioAtual = firebase.auth().currentUser.uid;
 
     //verifica se o usuario comprou a assinatura mensal
     if(Platform.OS === "android") {
@@ -255,7 +253,6 @@ export default class EditarCartao extends Component {
             let type = ''
             let verificado = false
             let location = ''
-            let ufauto = ''
             let arrayAuto = []
 
             querySnapshot.forEach(function(doc) {
@@ -267,25 +264,20 @@ export default class EditarCartao extends Component {
                 descricao = doc.data().descriptionAuto,
                 location = doc.data().localAuto,
                 nome = doc.data().nome,
-                telefone = doc.data().phoneNumberAuto,
                 imagem = doc.data().photoPublish,
                 imagem2 = doc.data().photoPublish2,
                 imagem3 = doc.data().photoPublish3,
                 video = doc.data().videoPublish,
                 type = doc.data().type,
-                verificado = false,
-                ufauto = doc.data().UFAuto
+                verificado = false
             })
 
             e.setState({idCartao: idCartao})
             e.setState({arrayWordsAuto: arrayAuto})
             e.setState({categoria: categoria})
-            e.setState({enderecoAuto: location})
             e.setState({subcategoria: subcategoria})
             e.setState({descricaoAuto: descricao})
             e.setState({nomeAuto: nome})
-            e.setState({UFAuto: ufauto})
-            e.setState({phoneAuto: telefone})
             e.setState({image: imagem})
             e.setState({image2: imagem2})
             e.setState({image3: imagem3})
@@ -367,6 +359,11 @@ export default class EditarCartao extends Component {
 
     console.log('state de categorias: ' + this.state.categorias)
 
+
+    //pegar a foto do usuario
+    await firebase.firestore().collection('usuarios').doc(usuarioAtual).onSnapshot(documentSnapshot => {
+      e.setState({fotoPerfil: documentSnapshot.data().photoProfile})
+    })
   }
 
 
@@ -430,11 +427,6 @@ export default class EditarCartao extends Component {
 
   keyExtractor = item => item.orderNumber.toString();
 
-  onChangePhoneAuto(text) {
-    this.setState({phoneAuto: text})
-    console.log('auto phone: '  + this.state.phoneAuto)
-  }
-
   onChangePhoneEstab(text) {
     this.setState({phoneEstab: text})
     console.log('estab phone: '  + this.state.phoneEstab)
@@ -481,11 +473,6 @@ export default class EditarCartao extends Component {
   onChangeEnderecoEstab(text) {
     this.setState({enderecoEstab: text})
     console.log('endereco estab'  + this.state.enderecoEstab)
-  }
-
-  onChangeEnderecoAuto(text) {
-    this.setState({enderecoAuto: text})
-    console.log('endereco estab'  + this.state.enderecoAuto)
   }
 
   onChangePrecoEstab(text) {
@@ -558,12 +545,6 @@ export default class EditarCartao extends Component {
   }
 
 
-  openModalizeLocationAuto() {
-    const modalizeLocationAuto = this.state.modalizeLocationAuto;
-
-    modalizeLocationAuto.current?.open()
-  }
-
   
   closeDescriptionModal(){
     const modalizeRefDescription = this.state.modalizeRefDescription;
@@ -585,16 +566,6 @@ export default class EditarCartao extends Component {
     this.setState({enderecoEstab: sumLocation})
     this.setState({UFEstab: estado})
     modalizeLocationEstab.current?.close()
-  }
-
-  closeLocationModalAuto(estado, local, lograd) {
-    const modalizeLocationAuto = this.state.modalizeLocationAuto;
-
-    const sumLocation = `${lograd}, ${local}, ${estado}`;
-
-    this.setState({enderecoAuto: sumLocation})
-    this.setState({UFAuto: estado})
-    modalizeLocationAuto.current?.close()
   }
 
 
@@ -710,12 +681,6 @@ export default class EditarCartao extends Component {
       for (let item of response) {
         let address = `${item.region}, ${item.subregion}, ${item.district}, ${item.street} (${item.postalCode})`;
   
-        
-        if(type == 'Autonomo') {
-          this.setState({enderecoAuto: address})
-          this.searchCEPAuto(item.postalCode.replace('-', ''))
-        }
-
         if(type == 'Estabelecimento') {
           this.setState({enderecoEstab: address})
           this.searchCEPEstab(item.postalCode.replace('-', ''))
@@ -962,6 +927,7 @@ export default class EditarCartao extends Component {
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -988,6 +954,7 @@ export default class EditarCartao extends Component {
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1020,7 +987,7 @@ export default class EditarCartao extends Component {
                       
                       
                           if(type == 'Autonomo') {
-                            if(this.state.descricaoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.enderecoAuto !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
+                            if(this.state.descricaoAuto !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
@@ -1033,11 +1000,9 @@ export default class EditarCartao extends Component {
                                         media: 0,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1055,11 +1020,9 @@ export default class EditarCartao extends Component {
                                         media: 0,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1132,6 +1095,7 @@ export default class EditarCartao extends Component {
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1158,6 +1122,7 @@ export default class EditarCartao extends Component {
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1190,7 +1155,7 @@ export default class EditarCartao extends Component {
                       
                       
                           if(type == 'Autonomo') {
-                            if(this.state.descricaoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.enderecoAuto !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
+                            if(this.state.descricaoAuto !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
@@ -1203,11 +1168,9 @@ export default class EditarCartao extends Component {
                                         media: 0,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1225,11 +1188,9 @@ export default class EditarCartao extends Component {
                                         media: 0,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1267,7 +1228,7 @@ export default class EditarCartao extends Component {
 
 
     if(typePublish === 'Autonomo') {
-      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.nomeAuto !== '' && this.state.descricaoAuto !== '' && this.state.enderecoAuto !== '' && this.state.phoneAuto !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.nomeAuto !== '' && this.state.descricaoAuto !== '' && this.state.phoneAuto !== '') {
         this.setModalVisible(true)
 
         if(this.state.video !== null){
@@ -1314,6 +1275,7 @@ export default class EditarCartao extends Component {
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1340,6 +1302,7 @@ export default class EditarCartao extends Component {
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
@@ -1372,7 +1335,7 @@ export default class EditarCartao extends Component {
                       
                       
                           if(type == 'Autonomo') {
-                            if(this.state.descricaoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.enderecoAuto !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
+                            if(this.state.descricaoAuto !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
@@ -1385,11 +1348,9 @@ export default class EditarCartao extends Component {
                                         media: 0,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1407,11 +1368,9 @@ export default class EditarCartao extends Component {
                                         media: 0,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1484,6 +1443,7 @@ export default class EditarCartao extends Component {
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
@@ -1510,6 +1470,7 @@ export default class EditarCartao extends Component {
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
@@ -1542,7 +1503,7 @@ export default class EditarCartao extends Component {
                       
                       
                           if(type == 'Autonomo') {
-                            if(this.state.descricaoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.enderecoAuto !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
+                            if(this.state.descricaoAuto !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
@@ -1555,11 +1516,9 @@ export default class EditarCartao extends Component {
                                         media: 0,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1577,11 +1536,9 @@ export default class EditarCartao extends Component {
                                         media: 0,
                                         descriptionAuto: e.state.descricaoAuto,
                                         type: 'Autonomo',
-                                        UFAuto: e.state.UFAuto,
-                                        localAuto: e.state.enderecoAuto,
+                                        fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1621,10 +1578,6 @@ export default class EditarCartao extends Component {
 
   searchCEPEstab(cepuser) {
     fetch(`https://viacep.com.br/ws/${cepuser}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({UFEstab: obj.uf})).catch(err => alert('Ocorreu um erro ao consultar o estado!'))
-  }
-
-  searchCEPAuto(cepuser) {
-    fetch(`https://viacep.com.br/ws/${cepuser}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({UFAuto: obj.uf})).catch(err => alert('Ocorreu um erro ao consultar o estado!'))
   }
 
 
@@ -1714,8 +1667,17 @@ export default class EditarCartao extends Component {
                                 </TouchableOpacity>
                             </View>
                           }
-                        </View>
 
+                          {this.state.type == 'Autonomo' &&  
+                          <View style={{flexDirection:'row', padding: 16}}>
+                                  <ChooseOption/>
+                                      <TouchableOpacity>
+                                          <Subtitle2Publish
+                                            style={{fontWeight: 'bold'}}>Autônomo</Subtitle2Publish>
+                                      </TouchableOpacity>
+                          </View>
+                          }
+                        </View>
 
                         {this.state.image == null ?
                           <View>
@@ -1731,32 +1693,15 @@ export default class EditarCartao extends Component {
                           </View>
                         }
 
-                        {this.state.type == 'Estabelecimento' ?
-                        <View>
-                          <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
-                              <FontAwesome5 name="map-marker-alt" size={24} color={'#9A9A9A'}/>
-                          </TouchableOpacity>
-                        </View> 
-                        
-                        :
-
-                        <View>
-                          <TouchableOpacity onPress={() => this.openModalizeLocationAuto()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
-                            <FontAwesome5 name="map-marker-alt" size={24} color={'#9A9A9A'}/>
-                          </TouchableOpacity>
-                        </View>
+                        {this.state.type == 'Estabelecimento' &&
+                          <View>
+                            <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                                <FontAwesome5 name="map-marker-alt" size={24} color={'#9A9A9A'}/>
+                            </TouchableOpacity>
+                          </View> 
                         }
               </View>
 
-                     {this.state.type == 'Autonomo' &&  
-                      <View style={{flexDirection:'row', padding: 16}}>
-                              <ChooseOption/>
-                                  <TouchableOpacity>
-                                      <Subtitle2Publish
-                                        style={{fontWeight: 'bold'}}>Autônomo</Subtitle2Publish>
-                                  </TouchableOpacity>
-                      </View>
-                     }
                     </View>
 
 
@@ -1784,16 +1729,6 @@ export default class EditarCartao extends Component {
                               />
                           </View>
 
-                          <TouchableOpacity onPress={() => this.openModalizeLocationAuto()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputForm
-                                value={this.state.enderecoAuto}
-                                onChangeText={text => this.onChangeEnderecoAuto(text)}
-                                keyboardType={"default"}
-                                editable={false}
-                                placeholder="Endereço do Autônomo                                                   "
-                              />
-                          </TouchableOpacity>
-
                           <TouchableOpacity onPress={() => this.openModalizeDescricao()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
                               <InputForm
                                 editable={false}
@@ -1803,16 +1738,6 @@ export default class EditarCartao extends Component {
                               />
                           </TouchableOpacity>
 
-                          <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputFormMask
-                                type={'cel-phone'}
-                                keyboardType={"phone-pad"}
-                                maxLength={17}
-                                value={this.state.phoneAuto}
-                                onChangeText={text => this.onChangePhoneAuto(text)}
-                                placeholder="Número de Telefone                                                   "
-                              />
-                          </View>
 
                           <View style={{flexDirection:'row', paddingTop:50, paddingBottom:10, alignItems:'center', justifyContent:'center'}}>                          
                             <View style={{marginRight:70}}>
@@ -2282,52 +2207,6 @@ export default class EditarCartao extends Component {
           </Modalize>
 
 
-
-          {/*Modalize do CEP Auto*/}
-          <Modalize
-            ref={this.state.modalizeLocationAuto}
-            snapPoint={500}
-            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
-            >
-            <View style={{flex:1,alignItems:'center', flexDirection:'row'}}>
-                <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff'} : {fontWeight: 'bold', padding:15,color:'#000'}}>Insira seu CEP</Text>  
-
-                  <View style={{marginRight:20}}>
-                    <InputForm
-                      value={this.state.cepAuto}
-                      maxLength={8}
-                      minLength={8}
-                      onChangeText={text => this.onChangeCEPAuto(text)}
-                      keyboardType={"numeric"}
-                      placeholder="O CEP NÃO PODE TER (-)"
-                    />
-
-                  </View> 
-                  <TouchableOpacity onPress={() => this.searchCEPAuto()} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:10}}>
-                    <FontAwesome5 name="search-location" size={24} color={'#9A9A9A'}/>
-                  </TouchableOpacity>
-
-            </View>
-
-            <View>
-              <Text style={this.context.dark ?{fontWeight: 'bold', padding:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', padding:15, marginTop: 10, color:'#000'}}>Estado: {this.state.enderecoCepAuto.uf}</Text>
-              <Text style={this.context.dark ?{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#000'}}>Cidade: {this.state.enderecoCepAuto.localidade}</Text>
-              <Text style={this.context.dark ?{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#fff'}:{fontWeight: 'bold', paddingLeft:15, marginTop: 10, color:'#000'}}>Logradouro: {this.state.enderecoCepAuto.logradouro}</Text>
-                
-
-              <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#fff'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000'}}>Por favor, verifique se as informações conferem, caso sim, confirme e termine o cadastro</Text>
-              
-              <View style={{alignItems: 'center', justifyContent:'center'}}>
-                <TouchableOpacity
-                  onPress={() => this.closeLocationModalAuto(this.state.enderecoCepAuto.uf, this.state.enderecoCepAuto.localidade, this.state.enderecoCepAuto.logradouro)}
-                  style={{borderRadius:30, alignItems:'center', justifyContent:'center', backgroundColor:'#DAA520', height: 40, width: 40, marginBottom:40}}
-                  >
-                  <FontAwesome5 name="check-circle" size={24} color={'white'}/>
-                </TouchableOpacity>
-              </View>
-                
-            </View>
-          </Modalize>
 
           {/*Modalize da descrição Autonomo*/}
           <Modalize
