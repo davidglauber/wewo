@@ -807,7 +807,7 @@ export default class TelaAnuncio extends Component {
 
                   <TouchableOpacity onPress={() => this.openModalizePortfolio()} style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                       <IconResponsiveNOBACK name="user-tie" size={25}/>
-                      <TextTheme style={{fontSize:15, marginLeft: 15, marginRight: windowWidth/3}}>{item.nome}</TextTheme>
+                      <TextTheme style={{fontSize:15, marginLeft: 20, marginRight: windowWidth/3}}>{item.nome}</TextTheme>
                   </TouchableOpacity>
 
                   <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center', maxWidth:300}}>
@@ -825,11 +825,10 @@ export default class TelaAnuncio extends Component {
                   </View>
 
 
-                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title)} style={{paddingHorizontal: 73, marginLeft:30, marginRight:30, marginTop:20, height:50, borderRadius:40,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title)} style={{paddingHorizontal: 13, marginLeft:120, marginRight:120, marginTop:20, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
                         <IconResponsive name="hands-helping" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Contratar</TextTheme>
                   </TouchableOpacity>
-
 
 
                   <ViewComment>
@@ -967,7 +966,7 @@ export default class TelaAnuncio extends Component {
               <Image source={{uri: this.state.fotoUser}} style={{width:60, height:60, borderRadius:50}}/>
               
               <Text style={this.context.dark ? {color:'#fff', padding:10, fontWeight:'bold', fontSize:20} : {color:'#000', padding:10, fontWeight:'bold', fontSize:20}}>{this.state.nomeUser}</Text>
-              <Text style={this.context.dark ? {color:'#fff', paddingLeft:40, paddingRight:40} : {color:'#000', paddingLeft:40, paddingRight:40}}>{this.state.textPortfolio}</Text>
+              <Text style={this.context.dark ? {color:'#fff', paddingLeft:70, paddingRight:40} : {color:'#000', paddingLeft:70, paddingRight:40}}>{this.state.textPortfolio}</Text>
               
               <Heading6 style={this.context.dark ? {fontWeight:'bold', marginTop: 50, color:'#d98b0d'} : {fontWeight:'bold', marginTop:50, color:'#000'}}>Mais detalhes</Heading6>
               

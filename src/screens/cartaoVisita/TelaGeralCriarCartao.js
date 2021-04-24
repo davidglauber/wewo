@@ -286,7 +286,8 @@ export default class TelaGeralCriarCartao extends Component {
       premium: e.state.premium,
       telefone: e.state.telefone,
       nome: e.state.nome,
-      textPortfolio: e.state.text
+      textPortfolio: e.state.text,
+      tipoDeConta: e.state.tipoDeConta
     })
     
     const modalizeRef = this.state.modalizeRef;
@@ -535,7 +536,7 @@ export default class TelaGeralCriarCartao extends Component {
           {/*Modalize do resumo de portfólio*/}
           <Modalize
             ref={this.state.modalizeRef}
-            snapPoint={500}
+            snapPoint={700}
             onClose={() => this.closeDescription()}
           >
             <View>
