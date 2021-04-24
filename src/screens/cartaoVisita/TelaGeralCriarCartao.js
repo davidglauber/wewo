@@ -125,7 +125,8 @@ export default class TelaGeralCriarCartao extends Component {
       tipoDeConta:"",
       isFetchedPublish: false,
       modalVisible: true,
-      modalizeRef: React.createRef(null)
+      modalizeRef: React.createRef(null),
+      idMP: ''
     };
   }
 
@@ -200,6 +201,7 @@ export default class TelaGeralCriarCartao extends Component {
       e.setState({telefone: documentSnapshot.data().telefone})
       e.setState({text: documentSnapshot.data().textPortfolio})
       e.setState({tipoDeConta: documentSnapshot.data().tipoDeConta})
+      e.setState({idMP: documentSnapshot.data().idMP})
     })
 
   }
@@ -287,7 +289,8 @@ export default class TelaGeralCriarCartao extends Component {
       telefone: e.state.telefone,
       nome: e.state.nome,
       textPortfolio: e.state.text,
-      tipoDeConta: e.state.tipoDeConta
+      tipoDeConta: e.state.tipoDeConta,
+      idMP: e.state.idMP
     })
     
     const modalizeRef = this.state.modalizeRef;

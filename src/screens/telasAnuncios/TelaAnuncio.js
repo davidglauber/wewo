@@ -491,7 +491,8 @@ export default class TelaAnuncio extends Component {
           type: doc.data().type,
           verified: doc.data().verifiedPublish,
           categoria: doc.data().categoryEstab,
-          workDays: doc.data().workDays
+          workDays: doc.data().workDays,
+          valueServiceEstab: doc.data().valueServiceEstab
         })
       })
       e.setState({cartoesEstab: cartoesEstabDidMount})
@@ -825,7 +826,7 @@ export default class TelaAnuncio extends Component {
                   </View>
 
 
-                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title)} style={{paddingHorizontal: 13, marginLeft:120, marginRight:120, marginTop:20, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title)} style={{paddingHorizontal: 13, marginLeft:120, marginRight:120, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
                         <IconResponsive name="hands-helping" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Contratar</TextTheme>
                   </TouchableOpacity>
@@ -1348,11 +1349,14 @@ export default class TelaAnuncio extends Component {
 
                   <FlatList keyExtractor={() => this.makeid(17)} data={this.state.cartoesEstab} horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20}} 
                     renderItem={({item}) => 
-                      <View style={{paddingHorizontal:43}}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{backgroundColor:'#d98b0d', borderRadius:20, width: windowWidth/1.3, height:130, alignItems:'center', paddingTop:20, justifyContent:'center', paddingBottom:30}}>
-                          <Text>Produto</Text>
-                          <Image source={{uri: item.photo}} style={{width:100, height:50, borderRadius:30}}/>
-                          <Text style={{fontWeight:'bold'}}>{item.title}</Text>
+                      <View style={{paddingHorizontal: windowWidth/6}}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{flexDirection:'row', backgroundColor:'#d98b0d', borderRadius:40, width: windowWidth/1.5, height:130, alignItems:'center', paddingTop:20, justifyContent:'center', paddingBottom:30}}>
+                          <Image source={{uri: item.photo}} style={{width:80, height:80, borderRadius:30}}/>
+                          <View style={{flexDirection:"column", padding:10}}>
+                            <Text>Produto</Text>
+                            <Text style={{fontWeight:'bold'}}>{item.title}</Text>
+                            <Text>{item.valueServiceEstab}</Text>
+                          </View>
                         </TouchableOpacity>
                       </View>
                   }
