@@ -66,9 +66,6 @@ import loading from '../../../assets/loading.json';
 import {purchased} from '../../config/purchase';
 
 
-//import ADS
-import { AdMobBanner} from 'expo-ads-admob';
-
 import { Video } from 'expo-av';
 
 
@@ -863,28 +860,9 @@ export default class TelaAnuncio extends Component {
                   }
 
 
-              { this.state.purchased == false && Platform.OS === "android" &&
-                <AdMobBanner
-                  style={{marginLeft: 20}}
-                  bannerSize="leaderboard"
-                  adUnitID="ca-app-pub-1397640114399871/3366763355"
-                  servePersonalizedAds
-                  onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                /> 
-              }
 
               { this.state.purchased == true && Platform.OS === "android" &&
                 null
-              }
-
-              { this.state.purchased == false && Platform.OS === "ios" &&
-                <AdMobBanner
-                  style={{marginLeft: 20}}
-                  bannerSize="leaderboard"
-                  adUnitID="ca-app-pub-1397640114399871/5484416301"
-                  servePersonalizedAds
-                  onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                /> 
               }
 
               { this.state.purchased == true && Platform.OS === "ios" &&
@@ -1350,7 +1328,7 @@ export default class TelaAnuncio extends Component {
                   <FlatList keyExtractor={() => this.makeid(17)} data={this.state.cartoesEstab} horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20}} 
                     renderItem={({item}) => 
                       <View style={{paddingHorizontal: windowWidth/6}}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{flexDirection:'row', backgroundColor:'#d98b0d', borderRadius:40, width: windowWidth/1.5, height:130, alignItems:'center', paddingTop:20, justifyContent:'center', paddingBottom:30}}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{flexDirection:'row', backgroundColor:'#d98b0d', borderRadius:40, width: windowWidth/1.5, height:130, alignItems:'center', paddingTop:20, marginTop:40, justifyContent:'center', paddingBottom:30}}>
                           <Image source={{uri: item.photo}} style={{width:80, height:80, borderRadius:30}}/>
                           <View style={{flexDirection:"column", padding:10}}>
                             <Text>Produto</Text>
@@ -1395,28 +1373,9 @@ export default class TelaAnuncio extends Component {
 
 
 
-              { this.state.purchased == false && Platform.OS === "android" &&
-                <AdMobBanner
-                  style={{marginLeft: 20}}
-                  bannerSize="leaderboard"
-                  adUnitID="ca-app-pub-1397640114399871/3366763355"
-                  servePersonalizedAds
-                  onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                /> 
-              }
 
               { this.state.purchased == true && Platform.OS === "android" &&
                 null
-              }
-
-              { this.state.purchased == false && Platform.OS === "ios" &&
-                <AdMobBanner
-                  style={{marginLeft: 20}}
-                  bannerSize="leaderboard"
-                  adUnitID="ca-app-pub-1397640114399871/5484416301"
-                  servePersonalizedAds
-                  onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                /> 
               }
 
               { this.state.purchased == true && Platform.OS === "ios" &&

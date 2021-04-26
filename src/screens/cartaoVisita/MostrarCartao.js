@@ -748,15 +748,7 @@ export default class MostrarCartao extends Component {
                   }
 
 
-                { this.state.purchased == false ?
-                  <AdMobBanner
-                    style={{marginLeft: 20}}
-                    bannerSize="leaderboard"
-                    adUnitID="ca-app-pub-1397640114399871/3366763355"
-                    servePersonalizedAds
-                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                  /> 
-                  :
+                { this.state.purchased == true &&
                   null
                 }
                 </View>
@@ -1180,15 +1172,7 @@ export default class MostrarCartao extends Component {
                       </View>
                   }
 
-                { this.state.purchased == false ?
-                  <AdMobBanner
-                    style={{marginLeft: 20}}
-                    bannerSize="leaderboard"
-                    adUnitID="ca-app-pub-1397640114399871/3366763355"
-                    servePersonalizedAds
-                    onDidFailToReceiveAdWithError={(err) => console.log(err)} 
-                  /> 
-                  :
+                { this.state.purchased == true &&
                   null
                 }
             </View>

@@ -104,8 +104,10 @@ export default class PaymentServices extends Component {
     
     let replace = valueRoute.replace('R$', '');
     let replacePoint = replace.replace(',','.');
+    let replacePoint2 = replacePoint.replace('.','')
 
-    this.setState({value: replacePoint})
+    this.setState({value: replacePoint2})
+    console.log(`REPLACE VALUE: ${replacePoint2}`)
   }
 
 
@@ -217,19 +219,19 @@ export default class PaymentServices extends Component {
     let value = this.state.value;
     let newNumber = new Number(value);
 
-    let percentToWeWo = ((newNumber / 100) * 5).toFixed(2);
+    let percentToWeWo = ((newNumber / 100) * 15).toFixed(2);
     let percentToWeWoNumberInt = new Number(percentToWeWo);
     
     this.setState({brCodeValue:'loaded'});
     
-      fetch('https://api.mercadopago.com/checkout/preferences?access_token=APP_USR-4801354026747963-040711-bd3c57cc909703918b030e1eeaa28c66-188576751', {
+      fetch('https://api.mercadopago.com/checkout/preferences', {
         method:'POST',
         mode: 'no-cors',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer APP_USR-4801354026747963-040711-bd3c57cc909703918b030e1eeaa28c66-188576751'
         },
         body: JSON.stringify({
-          external_reference:"test_user_7106258@testuser.com",
           items: [
             {
               title:"Pagamento de Serviço",
@@ -243,7 +245,7 @@ export default class PaymentServices extends Component {
       })
       .then((res) => res.json())
       .then((json) => this.setState({endpointMP: json.sandbox_init_point}))
-      .catch(() => alert('erroo ao requisitar o mercado pago'))
+      .catch((e) => alert('erroo ao requisitar o mercado pago: ' + e))
   }
 
 
