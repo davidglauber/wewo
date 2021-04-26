@@ -103,11 +103,21 @@ export default class PaymentServices extends Component {
     this.setState({valueService: valueRoute})
     
     let replace = valueRoute.replace('R$', '');
-    let replacePoint = replace.replace(',','.');
-    let replacePoint2 = replacePoint.replace('.','')
 
-    this.setState({value: replacePoint2})
-    console.log(`REPLACE VALUE: ${replacePoint2}`)
+    if(replace.includes(',00')){
+      let replacePoint = replace.replace(',00','');
+      let replacePoint2 = replacePoint.replace('.','')
+
+      this.setState({value: replacePoint2})
+      console.log(`REPLACE VALUE: ${replacePoint2}`)
+    } else {
+      let replacePoint = replace.replace(',','.');
+      let replacePoint2 = replacePoint.replace('.','')
+      
+      this.setState({value: replacePoint2})
+      console.log(`REPLACE VALUE2: ${replacePoint2}`)
+    }
+
   }
 
 
@@ -221,6 +231,9 @@ export default class PaymentServices extends Component {
 
     let percentToWeWo = ((newNumber / 100) * 15).toFixed(2);
     let percentToWeWoNumberInt = new Number(percentToWeWo);
+
+    let percentToUser = ((newNumber / 100) * 85).toFixed(2);
+    let percentToUserNumberInt = new Number(percentToUser);
     
     this.setState({brCodeValue:'loaded'});
     
@@ -237,10 +250,11 @@ export default class PaymentServices extends Component {
               title:"Pagamento de Serviço",
               quantity: 1,
               currency_id:"BRL",
-              unit_price: percentToWeWoNumberInt,
+              unit_price: percentToUserNumberInt,
               picture_url: "https://a-static.mlcdn.com.br/618x463/lapis-simples-com-borracha-preto-art-school/sakurashop/5093/0223ea02b0d96a9172d018a598d8fa32.jpg"
             }
-          ]
+          ],
+          marketplace_fee: percentToWeWoNumberInt
         })
       })
       .then((res) => res.json())
