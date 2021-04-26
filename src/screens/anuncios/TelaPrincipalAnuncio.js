@@ -114,7 +114,8 @@ export default class TelaPrincipalAnuncio extends Component {
       anunciosEstab: [],
       anunciosAuto:[],
       isFetchedPublish: false,
-      modalVisible: true
+      modalVisible: true,
+      idMPState: ''
     };
   }
 
@@ -177,6 +178,15 @@ export default class TelaPrincipalAnuncio extends Component {
       })
     })
 
+
+    //pegar o id mp do usuario
+    await firebase.firestore().collection('usuarios').doc(currentUserUID).onSnapshot(documentSnapshot => {
+      if(documentSnapshot.data().idMP) {
+        this.setState({idMPState: documentSnapshot.data().idMP})
+      } else {
+        return null
+      }
+    })
     
   }
 
@@ -224,23 +234,28 @@ export default class TelaPrincipalAnuncio extends Component {
       })
       
 
-      if(anunciosDidMount.length  < 3) {
+      if(this.state.idMPState == '') {
+        alert('Você precisa vincular sua conta Mercado Pago para receber pagamentos')
+        this.props.navigation.navigate('MLConfigAccount')
+      }
+
+      if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
         this.props.navigation.navigate('Orders')
       }
 
 
       if(comprou == true) {
-        if(anunciosDidMount.length <= 15) {
+        if(anunciosDidMount.length <= 15 && this.state.idMPState !== '') {
           this.props.navigation.navigate('Orders')
         }
       } 
 
       if(comprou == false) {
-        if(anunciosDidMount.length >= 3) {
+        if(anunciosDidMount.length >= 3 && this.state.idMPState !== '') {
           alert('A conta Free permite até 3 anúncios, consulte a tela de PLANOS para mais informações')
         }
 
-        if(anunciosDidMount.length  < 3) {
+        if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
           this.props.navigation.navigate('Orders')
         }
       }

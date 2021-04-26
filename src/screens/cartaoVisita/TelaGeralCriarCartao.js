@@ -323,24 +323,28 @@ export default class TelaGeralCriarCartao extends Component {
       })
 
 
+      if(this.state.idMP == '') {
+        alert('Você precisa vincular sua conta Mercado Pago para receber pagamentos')
+        this.props.navigation.navigate('MLConfigAccount')
+      }
 
-      if(cartoesDidMount.length  < 7) {
+      if(cartoesDidMount.length  < 7 && this.state.idMP !== '') {
         this.props.navigation.navigate('TelaCriarCartaoVisita')
       }
 
 
       if(comprou == true) {
-        if(cartoesDidMount.length <= 100) {
+        if(cartoesDidMount.length <= 100 && this.state.idMP !== '') {
           this.props.navigation.navigate('TelaCriarCartaoVisita')
         }
       } 
 
       if(comprou == false) {
-        if(cartoesDidMount.length >= 7) {
+        if(cartoesDidMount.length >= 7 && this.state.idMP !== '') {
           alert('A conta free permite até 7 Portfólios/Produtos, consulte a tela de PLANOS para mais informações')
         }
 
-        if(cartoesDidMount.length  < 7) {
+        if(cartoesDidMount.length  < 7 && this.state.idMP !== '') {
           this.props.navigation.navigate('TelaCriarCartaoVisita')
         }
       }

@@ -264,7 +264,7 @@ export default class PaymentServices extends Component {
         })
       })
       .then((res) => res.json())
-      .then((json) => this.mpTaxAndPayment(json.sandbox_init_point, percentToWeWoNumberInt, percentToUserNumberInt, percentToUserNumberInt2))
+      .then((json) => this.mpTaxAndPayment(json.init_point, percentToWeWoNumberInt, percentToUserNumberInt, percentToUserNumberInt2))
       .catch((e) => alert('erroo ao requisitar o mercado pago: ' + e))
   }
 
