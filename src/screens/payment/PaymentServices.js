@@ -182,7 +182,6 @@ export default class PaymentServices extends Component {
   }
 
 
-
   pixQRCODE() {
     let value = this.state.value;
     let newNumber = new Number(value);
@@ -220,7 +219,11 @@ export default class PaymentServices extends Component {
 
 
 
+  mpTaxAndPayment(data, taxWeWo, taxUser, fullValue) {
+    alert(`Valor total: ${fullValue}\n\n\nTaxa do WeWo (15%): ${taxWeWo}\nValor do anunciante: ${taxUser}`)
 
+    this.setState({endpointMP: data})
+  }
 
 
 
@@ -234,6 +237,9 @@ export default class PaymentServices extends Component {
 
     let percentToUser = ((newNumber / 100) * 85).toFixed(2);
     let percentToUserNumberInt = new Number(percentToUser);
+
+    let percentToUser2 = ((newNumber / 100) * 100).toFixed(2);
+    let percentToUserNumberInt2 = new Number(percentToUser2);
     
     this.setState({brCodeValue:'loaded'});
     
@@ -250,7 +256,7 @@ export default class PaymentServices extends Component {
               title:"Pagamento de Serviço",
               quantity: 1,
               currency_id:"BRL",
-              unit_price: percentToUserNumberInt,
+              unit_price: percentToUserNumberInt2,
               picture_url: "https://a-static.mlcdn.com.br/618x463/lapis-simples-com-borracha-preto-art-school/sakurashop/5093/0223ea02b0d96a9172d018a598d8fa32.jpg"
             }
           ],
@@ -258,7 +264,7 @@ export default class PaymentServices extends Component {
         })
       })
       .then((res) => res.json())
-      .then((json) => this.setState({endpointMP: json.sandbox_init_point}))
+      .then((json) => this.mpTaxAndPayment(json.sandbox_init_point, percentToWeWoNumberInt, percentToUserNumberInt, percentToUserNumberInt2))
       .catch((e) => alert('erroo ao requisitar o mercado pago: ' + e))
   }
 
