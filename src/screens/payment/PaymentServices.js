@@ -83,7 +83,8 @@ export default class PaymentServices extends Component {
       paymentStatus:'',
       idTransaction:'',
       idNot: '',
-      modalizeRef: React.createRef(null)
+      modalizeRef: React.createRef(null),
+      accTK:''
     };
   }
 
@@ -93,10 +94,19 @@ export default class PaymentServices extends Component {
   }
   
   
-  componentDidMount() {
+  async componentDidMount() {
+    let e = this;
     let valueRoute = ''
     valueRoute =  this.props.route.params.valuePayment;
     let idNotifyRoute = this.props.route.params.idNotification;
+    let idContratado = this.props.route.params.idContratado;
+
+
+    await firebase.firestore().collection('usuarios').doc(idContratado).onSnapshot(documentSnapshot => {
+      this.setState({accTK: documentSnapshot.data().accessTK})
+    })
+
+
 
     this.setState({idNot: idNotifyRoute})
 
@@ -139,6 +149,9 @@ export default class PaymentServices extends Component {
       }
       
     }
+
+
+
 
   }
 
@@ -251,6 +264,7 @@ export default class PaymentServices extends Component {
 
 
   mercadoPago() {
+    console.log('TOKEN DO USUARIO: ' +  this.state.accTK)
     let value = this.state.value;
     let newNumber = new Number(value);
 
@@ -270,7 +284,7 @@ export default class PaymentServices extends Component {
         mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer APP_USR-6750007878892152-042620-c064296b7bfe5933f09885a0254c5dec-749886689'
+          'Authorization': `Bearer ${this.state.accTK}`
         },
         body: JSON.stringify({
           items: [

@@ -220,7 +220,7 @@ export default class Chat extends Component {
 
 
                 {currentUserId !== item.idContratado && item.valorCombinado !== null && item.boolean == true &&
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: item.valorCombinado, idNotification: this.props.route.params.idNotification})} style={{marginTop:15, marginRight:50, backgroundColor:'#d4cccb', borderWidth:2, borderColor:"#d98b0d", padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: item.valorCombinado, idNotification: this.props.route.params.idNotification, idContratado: item.idContratado})} style={{marginTop:15, marginRight:50, backgroundColor:'#d4cccb', borderWidth:2, borderColor:"#d98b0d", padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
                     <Text style={{color:'black', fontSize:17}}>{item.texto}</Text>
                   </TouchableOpacity>
                 }
