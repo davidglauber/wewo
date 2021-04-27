@@ -126,7 +126,7 @@ export default class TelaGeralCriarCartao extends Component {
       isFetchedPublish: false,
       modalVisible: true,
       modalizeRef: React.createRef(null),
-      State: '',
+      idMPState: '',
       accTK: ''
     };
   }
@@ -203,8 +203,8 @@ export default class TelaGeralCriarCartao extends Component {
       e.setState({text: documentSnapshot.data().textPortfolio})
       e.setState({tipoDeConta: documentSnapshot.data().tipoDeConta})
       
-      if(documentSnapshot.data().) {
-        e.setState({State: documentSnapshot.data().})
+      if(documentSnapshot.data().idMP) {
+        e.setState({idMPState: documentSnapshot.data().idMP})
       } else {
         return null
       }
@@ -302,7 +302,7 @@ export default class TelaGeralCriarCartao extends Component {
       nome: e.state.nome,
       textPortfolio: e.state.text,
       tipoDeConta: e.state.tipoDeConta,
-      : e.state.State,
+      idMP: e.state.idMPState,
       accessTK: e.state.accTK
     })
     
@@ -336,28 +336,28 @@ export default class TelaGeralCriarCartao extends Component {
       })
 
 
-      if(this.state.State == '') {
+      if(this.state.idMPState == '') {
         alert('Você precisa vincular sua conta Mercado Pago para receber pagamentos')
         this.props.navigation.navigate('MLConfigAccount')
       }
 
-      if(cartoesDidMount.length  < 7 && this.state.State !== '') {
+      if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {
         this.props.navigation.navigate('TelaCriarCartaoVisita')
       }
 
 
       if(comprou == true) {
-        if(cartoesDidMount.length <= 100 && this.state.State !== '') {
+        if(cartoesDidMount.length <= 100 && this.state.idMPState !== '') {
           this.props.navigation.navigate('TelaCriarCartaoVisita')
         }
       } 
 
       if(comprou == false) {
-        if(cartoesDidMount.length >= 7 && this.state.State !== '') {
+        if(cartoesDidMount.length >= 7 && this.state.idMPState !== '') {
           alert('A conta free permite até 7 Portfólios/Produtos, consulte a tela de PLANOS para mais informações')
         }
 
-        if(cartoesDidMount.length  < 7 && this.state.State !== '') {
+        if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {
           this.props.navigation.navigate('TelaCriarCartaoVisita')
         }
       }
