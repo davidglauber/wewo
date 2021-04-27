@@ -86,6 +86,8 @@ export default class Chat extends Component {
         chatContent2.push({
           idContratado: doc.data().idUsuarioQueEnviou,
           idContratante: doc.data().idUsuarioQueRecebeu,
+          valorCombinado: doc.data().valorCombinado,
+          boolean: doc.data().boolean,
           texto: doc.data().texto,
           time: doc.data().time
         })
@@ -102,6 +104,13 @@ export default class Chat extends Component {
     modalizeRef.current?.open()
   }
 
+
+  closeModalize(){
+    const modalizeRef = this.state.modalizeRef;
+
+    modalizeRef.current?.close()
+  }
+
   makeid(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -112,7 +121,7 @@ export default class Chat extends Component {
     return result;
   }
 
-  uploadChatToFirebase() {
+  uploadChatToFirebase(linkToPaymentScreen) {
     let currentTime = new Date().getTime();
 
     let textChat = this.state.textChat;
@@ -120,12 +129,26 @@ export default class Chat extends Component {
     let currentUser = firebase.auth().currentUser;
     let e = this;
 
+    if(linkToPaymentScreen == false){
       firebase.firestore().collection('notifications').doc(this.props.route.params.idNotification).collection('chat').doc().set({
         idUsuarioQueEnviou: currentUser.uid,
         idUsuarioQueRecebeu: e.state.idUserDonoDoAnuncio,
         texto: textChat,
+        boolean: false,
         time: currentTime
       })
+    } else {
+      firebase.firestore().collection('notifications').doc(this.props.route.params.idNotification).collection('chat').doc().set({
+        idUsuarioQueEnviou: currentUser.uid,
+        idUsuarioQueRecebeu: e.state.idUserDonoDoAnuncio,
+        texto: `Valor combinado: ${e.state.valueUser}. Clique aqui para ser redirecionado para a tela de pagamento (somente usuário pagador)`,
+        valorCombinado: e.state.valueUser,
+        boolean: true,
+        time: currentTime
+      })
+
+      e.closeModalize()
+    }
 
     e.setState({textChat: ''})
 
@@ -173,16 +196,33 @@ export default class Chat extends Component {
               data={this.state.chatFromFirebase}
               renderItem={({item}) => 
               <View>
-                {currentUserId == item.idContratado &&
-                  <View style={{marginTop:10, marginLeft:50, backgroundColor:'#d98b0d', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
+                {/*USUARIO QUE ENVIOU A MENSAGEM*/}
+                {currentUserId == item.idContratado && item.valorCombinado !== null && item.boolean == true  &&
+                  <View style={{marginTop:30, marginLeft:50, backgroundColor:'#d98b0d', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
                     <Text style={{color:'white'}}>{item.texto}</Text>
                   </View>
                 }
 
-                {currentUserId !== item.idContratado &&
-                  <View style={{marginTop:30, marginRight:50, backgroundColor:'#d4cccb', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
+
+
+                {currentUserId == item.idContratado && item.valorCombinado == null && item.boolean == false &&
+                  <View style={{marginTop:20, marginLeft:50, backgroundColor:'#d98b0d', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
+                    <Text style={{color:'white'}}>{item.texto}</Text>
+                  </View>
+                }
+
+
+                {currentUserId !== item.idContratado && item.valorCombinado == null && item.boolean == false &&
+                  <View onPress={() => alert('oi')} style={{marginTop:15, marginRight:50, backgroundColor:'#d4cccb', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
                     <Text style={{color:'black'}}>{item.texto}</Text>
                   </View>
+                }
+
+
+                {currentUserId !== item.idContratado && item.valorCombinado !== null && item.boolean == true &&
+                  <TouchableOpacity onPress={() => alert('oi')} style={{marginTop:15, marginRight:50, backgroundColor:'#d4cccb', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
+                    <Text style={{color:'black'}}>{item.texto}</Text>
+                  </TouchableOpacity>
                 }
                 
               </View>
@@ -211,7 +251,7 @@ export default class Chat extends Component {
                   placeholder="Digite o valor definitivo do serviço...                                                          "
                 />
 
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: valueUser, idNotification: this.props.route.params.idNotification})} style={{marginTop:30, paddingHorizontal:20}}>
+            <TouchableOpacity onPress={() => this.uploadChatToFirebase(true)} style={{marginTop:30, paddingHorizontal:20}}>
                 <IconResponsiveNOBACK name="telegram-plane" size={35}/>
             </TouchableOpacity>
             </View>
@@ -229,7 +269,7 @@ export default class Chat extends Component {
                 placeholderTextColor={this.context.dark ? "#fff" : "#000"}
                 placeholder="Digite sua mensagem...                                                                       "
             />
-            <TouchableOpacity onPress={() => this.uploadChatToFirebase()} style={{paddingHorizontal:20, marginLeft: windowWidth/1.45, marginBottom: windowHeight/20}}>
+            <TouchableOpacity onPress={() => this.uploadChatToFirebase(false)} style={{paddingHorizontal:20, marginLeft: windowWidth/1.45, marginBottom: windowHeight/20}}>
                 <IconResponsiveNOBACK name="telegram-plane" size={27}/>
             </TouchableOpacity>
         </View>

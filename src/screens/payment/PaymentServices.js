@@ -173,7 +173,7 @@ export default class PaymentServices extends Component {
     fetch(`https://api.mercadopago.com/v1/payments/search?status=approved&id=${id}`, {
       method:'GET',
       headers: {
-        'Authorization': 'Bearer APP_USR-4801354026747963-040711-bd3c57cc909703918b030e1eeaa28c66-188576751'
+        'Authorization': 'Bearer APP_USR-6750007878892152-042620-c064296b7bfe5933f09885a0254c5dec-749886689'
       }
     })
     .then((res) => res.json())
@@ -196,7 +196,7 @@ export default class PaymentServices extends Component {
         method:'POST',
         mode: 'no-cors',
         headers: {
-          'Authorization': 'Bearer APP_USR-4801354026747963-040711-bd3c57cc909703918b030e1eeaa28c66-188576751', 
+          'Authorization': 'Bearer APP_USR-6750007878892152-042620-c064296b7bfe5933f09885a0254c5dec-749886689', 
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -248,7 +248,7 @@ export default class PaymentServices extends Component {
         mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer APP_USR-4801354026747963-040711-bd3c57cc909703918b030e1eeaa28c66-188576751'
+          'Authorization': 'Bearer APP_USR-6750007878892152-042620-c064296b7bfe5933f09885a0254c5dec-749886689'
         },
         body: JSON.stringify({
           items: [

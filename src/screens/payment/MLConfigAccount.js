@@ -181,7 +181,7 @@ export default class MLConfigAccount extends Component {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          client_secret: "APP_USR-4801354026747963-040711-bd3c57cc909703918b030e1eeaa28c66-188576751",
+          client_secret: "APP_USR-6750007878892152-042620-c064296b7bfe5933f09885a0254c5dec-749886689",
           grant_type:"authorization_code",
           code: this.state.accessTokenMP,
           redirect_uri:"https://www.mercadopago.com/mp.php"
@@ -216,7 +216,7 @@ export default class MLConfigAccount extends Component {
 
         {this.state.webviewBoolean == true &&
           <WebView 
-          source={{ uri: 'https://auth.mercadopago.com.br/authorization?client_id=4801354026747963&response_type=code&platform_id=mp&redirect_uri=https://www.mercadopago.com/mp.php' }} 
+          source={{ uri: 'https://auth.mercadopago.com.br/authorization?client_id=6750007878892152&response_type=code&platform_id=mp&redirect_uri=https://www.mercadopago.com/mp.php' }} 
           onNavigationStateChange={this._onNavigationStateChange.bind(this)}  
           />
         }
