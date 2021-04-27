@@ -105,17 +105,39 @@ export default class PaymentServices extends Component {
     let replace = valueRoute.replace('R$', '');
 
     if(replace.includes(',00')){
-      let replacePoint = replace.replace(',00','');
-      let replacePoint2 = replacePoint.replace('.','')
+      let knowLength = replace.length;
 
-      this.setState({value: replacePoint2})
-      console.log(`REPLACE VALUE: ${replacePoint2}`)
-    } else {
-      let replacePoint = replace.replace(',','.');
-      let replacePoint2 = replacePoint.replace('.','')
+      if(knowLength > 10) {
+        let replacePoint = replace.replace('.','');
+        let replacePointTWO = replacePoint.replace('.','');
+        let replacePointTHREE = replacePointTWO.replace(',','.');
+        this.setState({value: replacePointTHREE})
+
+      }
+
+      if(knowLength <= 10) {
+        let replacePoint = replace.replace(',00','');
+        let replacePoint2 = replacePoint.replace('.','')
+  
+        this.setState({value: replacePoint2})
+      }
+
       
-      this.setState({value: replacePoint2})
-      console.log(`REPLACE VALUE2: ${replacePoint2}`)
+    } else {
+      let knowLength = replace.length;
+
+      if(knowLength <= 6) {
+        let replacePoint = replace.replace(',','.');
+        this.setState({value: replacePoint})
+      }
+
+      if(knowLength > 6) {
+        let replacePointOne = replace.replace(',','.');
+        let replacePoint2 = replacePointOne.replace('.','')
+        this.setState({value: replacePoint2})
+
+      }
+      
     }
 
   }
