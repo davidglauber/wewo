@@ -151,6 +151,8 @@ export default class MLConfigAccount extends Component {
   async firebaseSetIDMP(json, webPage) {
     let e = this;
     let currentUser = firebase.auth().currentUser.uid;
+     
+    console.log('JSON DO CLIENTE: ' + JSON.stringify(json))
     await firebase.firestore().collection('usuarios').doc(currentUser).set({
       dataNascimento: e.state.dateBorn,
       email: e.state.email,
@@ -160,6 +162,7 @@ export default class MLConfigAccount extends Component {
       telefone: e.state.phone,
       textPortfolio: e.state.textPortfolio,
       idMP: json.user_id,
+      accessTK: json.access_token,
       tipoDeConta: e.state.tipoDeConta
     }).then(() => {
       if(webPage.includes('https://www.mercadopago.com/mp.php?code=')){
@@ -184,7 +187,8 @@ export default class MLConfigAccount extends Component {
           client_secret: "APP_USR-6750007878892152-042620-c064296b7bfe5933f09885a0254c5dec-749886689",
           grant_type:"authorization_code",
           code: this.state.accessTokenMP,
-          redirect_uri:"https://www.mercadopago.com/mp.php"
+          redirect_uri:"https://www.mercadopago.com/mp.php",
+          refresh_token: this.state.accessTokenMP
         })
       })
       .then((res) => res.json())

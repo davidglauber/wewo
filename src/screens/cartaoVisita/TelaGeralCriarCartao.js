@@ -126,7 +126,8 @@ export default class TelaGeralCriarCartao extends Component {
       isFetchedPublish: false,
       modalVisible: true,
       modalizeRef: React.createRef(null),
-      idMPState: ''
+      State: '',
+      accTK: ''
     };
   }
 
@@ -202,8 +203,14 @@ export default class TelaGeralCriarCartao extends Component {
       e.setState({text: documentSnapshot.data().textPortfolio})
       e.setState({tipoDeConta: documentSnapshot.data().tipoDeConta})
       
-      if(documentSnapshot.data().idMP) {
-        e.setState({idMPState: documentSnapshot.data().idMP})
+      if(documentSnapshot.data().) {
+        e.setState({State: documentSnapshot.data().})
+      } else {
+        return null
+      }
+
+      if(documentSnapshot.data().accessTK) {
+        e.setState({accTK: documentSnapshot.data().accessTK})
       } else {
         return null
       }
@@ -295,7 +302,8 @@ export default class TelaGeralCriarCartao extends Component {
       nome: e.state.nome,
       textPortfolio: e.state.text,
       tipoDeConta: e.state.tipoDeConta,
-      idMP: e.state.idMPState
+      : e.state.State,
+      accessTK: e.state.accTK
     })
     
     const modalizeRef = this.state.modalizeRef;
@@ -328,28 +336,28 @@ export default class TelaGeralCriarCartao extends Component {
       })
 
 
-      if(this.state.idMPState == '') {
+      if(this.state.State == '') {
         alert('Você precisa vincular sua conta Mercado Pago para receber pagamentos')
         this.props.navigation.navigate('MLConfigAccount')
       }
 
-      if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {
+      if(cartoesDidMount.length  < 7 && this.state.State !== '') {
         this.props.navigation.navigate('TelaCriarCartaoVisita')
       }
 
 
       if(comprou == true) {
-        if(cartoesDidMount.length <= 100 && this.state.idMPState !== '') {
+        if(cartoesDidMount.length <= 100 && this.state.State !== '') {
           this.props.navigation.navigate('TelaCriarCartaoVisita')
         }
       } 
 
       if(comprou == false) {
-        if(cartoesDidMount.length >= 7 && this.state.idMPState !== '') {
+        if(cartoesDidMount.length >= 7 && this.state.State !== '') {
           alert('A conta free permite até 7 Portfólios/Produtos, consulte a tela de PLANOS para mais informações')
         }
 
-        if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {
+        if(cartoesDidMount.length  < 7 && this.state.State !== '') {
           this.props.navigation.navigate('TelaCriarCartaoVisita')
         }
       }

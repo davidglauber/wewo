@@ -115,7 +115,8 @@ export default class TelaPrincipalAnuncio extends Component {
       anunciosAuto:[],
       isFetchedPublish: false,
       modalVisible: true,
-      idMPState: ''
+      idMPState: '',
+      accTK: ''
     };
   }
 
@@ -183,6 +184,12 @@ export default class TelaPrincipalAnuncio extends Component {
     await firebase.firestore().collection('usuarios').doc(currentUserUID).onSnapshot(documentSnapshot => {
       if(documentSnapshot.data().idMP) {
         this.setState({idMPState: documentSnapshot.data().idMP})
+      } else {
+        return null
+      }
+
+      if(documentSnapshot.data().accessTK) {
+        this.setState({accTK: documentSnapshot.data().accessTK})
       } else {
         return null
       }
