@@ -101,11 +101,14 @@ export default class PaymentServices extends Component {
     valueRoute =  this.props.route.params.valuePayment;
     let idNotifyRoute = this.props.route.params.idNotification;
     let idContratado = this.props.route.params.idContratado;
-
+    let currentUser = firebase.auth().currentUser;
 
     if(idContratado !== null) {
       await firebase.firestore().collection('usuarios').doc(idContratado).onSnapshot(documentSnapshot => {
         e.setState({accTK: documentSnapshot.data().accessTK})
+      })
+
+      await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
         e.setState({fotoUser: documentSnapshot.data().photoProfile})
       })
     } else {
