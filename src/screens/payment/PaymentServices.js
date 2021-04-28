@@ -84,7 +84,8 @@ export default class PaymentServices extends Component {
       idTransaction:'',
       idNot: '',
       modalizeRef: React.createRef(null),
-      accTK:''
+      accTK:'',
+      fotoUser:''
     };
   }
 
@@ -102,9 +103,14 @@ export default class PaymentServices extends Component {
     let idContratado = this.props.route.params.idContratado;
 
 
-    await firebase.firestore().collection('usuarios').doc(idContratado).onSnapshot(documentSnapshot => {
-      this.setState({accTK: documentSnapshot.data().accessTK})
-    })
+    if(idContratado !== null) {
+      await firebase.firestore().collection('usuarios').doc(idContratado).onSnapshot(documentSnapshot => {
+        e.setState({accTK: documentSnapshot.data().accessTK})
+        e.setState({fotoUser: documentSnapshot.data().photoProfile})
+      })
+    } else {
+      return null
+    }
 
 
 
@@ -289,11 +295,11 @@ export default class PaymentServices extends Component {
         body: JSON.stringify({
           items: [
             {
-              title:"Pagamento de Serviço",
+              title:"Pagamento de Serviço WeWo",
               quantity: 1,
               currency_id:"BRL",
               unit_price: percentToUserNumberInt2,
-              picture_url: "https://a-static.mlcdn.com.br/618x463/lapis-simples-com-borracha-preto-art-school/sakurashop/5093/0223ea02b0d96a9172d018a598d8fa32.jpg"
+              picture_url: this.state.fotoUser
             }
           ],
           marketplace_fee: percentToWeWoNumberInt

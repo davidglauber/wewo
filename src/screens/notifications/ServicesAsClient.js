@@ -79,7 +79,8 @@ export default class ServicesAsClient extends Component {
       telefoneUser:'',
       dataUser:'',
       horarioUser:'',
-      idNotification: ''    
+      idNotification: '',
+      idContratado: ''
     };
   }
 
@@ -132,6 +133,7 @@ export default class ServicesAsClient extends Component {
     this.setState({cepUser: userData.cep})
     this.setState({serviceUser: userData.service})
     this.setState({valueUser: userData.valor})
+    this.setState({idContratado: userData.idContratado})
     this.setState({telefoneUser: userData.telefone})
     this.setState({dataUser: userData.dataServico})
     this.setState({horarioUser: userData.horario})
@@ -153,7 +155,7 @@ export default class ServicesAsClient extends Component {
   }
 
   render() {
-    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser, horarioUser} = this.state;
+    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser, horarioUser, idContratado} = this.state;
     const user = firebase.auth().currentUser;
     return (
       <SafeBackground>
@@ -283,7 +285,7 @@ export default class ServicesAsClient extends Component {
 
 
 
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: valueUser, idNotification: this.state.idNotification})} style={{marginHorizontal:130, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', borderRadius:50}}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: valueUser, idNotification: this.state.idNotification, idContratado: idContratado})} style={{marginHorizontal:130, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', borderRadius:50}}>
                   <IconResponsiveNOBACK name="check" size={24}/>
                   <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Pagar</Title>
                 </TouchableOpacity>
