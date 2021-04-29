@@ -288,7 +288,7 @@ export default class ServicesAsClient extends Component {
 
 
 
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: valueUser, idNotification: this.state.idNotification, idContratado: idContratado, idDoAnuncio: item.idAnuncio})} style={{marginHorizontal:130, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', borderRadius:50}}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: valueUser, idNotification: this.state.idNotification, idContratado: idContratado, idDoAnuncio: this.state.idAnuncio})} style={{marginHorizontal:130, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', borderRadius:50}}>
                   <IconResponsiveNOBACK name="check" size={24}/>
                   <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Pagar</Title>
                 </TouchableOpacity>
