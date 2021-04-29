@@ -80,7 +80,8 @@ export default class ServicesAsClient extends Component {
       dataUser:'',
       horarioUser:'',
       idNotification: '',
-      idContratado: ''
+      idContratado: '',
+      idAnuncio: ''
     };
   }
 
@@ -97,6 +98,7 @@ export default class ServicesAsClient extends Component {
           notifications.push({
             idContratante: doc.data().idContratante,
             idContratado: doc.data().idContratado,
+            idAnuncio: doc.data().idAnuncio,
             photoProfile: doc.data().photoProfile,
             photoUser: doc.data().photoUser,
             title: doc.data().titlePublish,
@@ -134,6 +136,7 @@ export default class ServicesAsClient extends Component {
     this.setState({serviceUser: userData.service})
     this.setState({valueUser: userData.valor})
     this.setState({idContratado: userData.idContratado})
+    this.setState({idAnuncio: userData.idAnuncio})
     this.setState({telefoneUser: userData.telefone})
     this.setState({dataUser: userData.dataServico})
     this.setState({horarioUser: userData.horario})
@@ -194,7 +197,7 @@ export default class ServicesAsClient extends Component {
             <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:60, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
               <Image source={{uri: item.photoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
               <Text  style={styles.titleMain}>{item.title}</Text>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {idLoggedUser: user.uid, idDonoDoAnuncio: item.idContratante, idNotification: item.idNot, valuePayment: item.valor, type: 'normalNotif'})} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/5, justifyContent:'center', alignItems:'center'}}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {idLoggedUser: user.uid, idDonoDoAnuncio: item.idContratante, idNotification: item.idNot, valuePayment: item.valor, type: 'normalNotif', idDoAnuncio: item.idAnuncio})} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/5, justifyContent:'center', alignItems:'center'}}>
                   <IconResponsive name="comment-alt" size={24}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.openModalize(item)} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
@@ -285,7 +288,7 @@ export default class ServicesAsClient extends Component {
 
 
 
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: valueUser, idNotification: this.state.idNotification, idContratado: idContratado})} style={{marginHorizontal:130, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', borderRadius:50}}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: valueUser, idNotification: this.state.idNotification, idContratado: idContratado, idDoAnuncio: item.idAnuncio})} style={{marginHorizontal:130, marginTop:60, flexDirection:'row', padding:10, backgroundColor: 'white', borderRadius:50}}>
                   <IconResponsiveNOBACK name="check" size={24}/>
                   <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Pagar</Title>
                 </TouchableOpacity>

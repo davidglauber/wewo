@@ -66,7 +66,8 @@ export default class Chat extends Component {
       chatFromFirebase: [],
       idUserRespondedorDaMensagem: '',
       valueUser:'',
-      type: ''
+      type: '',
+      idAnuncioUser: ''
     };
   }
 
@@ -76,6 +77,7 @@ export default class Chat extends Component {
     this.setState({idUserDonoDoAnuncio: this.props.route.params.idDonoDoAnuncio})
     this.setState({valueUser: this.props.route.params.valuePayment})
     this.setState({type: this.props.route.params.type})
+    this.setState({idAnuncioUser: this.props.route.params.idDoAnuncio})
 
     console.log('USUARIO DONO DO ANUNCIO: ' + this.props.route.params.idDonoDoAnuncio)
     console.log('Valor do SERVIÇO: ' + this.props.route.params.valuePayment)
@@ -148,6 +150,7 @@ export default class Chat extends Component {
       })
 
       e.closeModalize()
+      e.props.navigation.navigate('AwaitPayment')
     }
 
     e.setState({textChat: ''})
@@ -220,7 +223,7 @@ export default class Chat extends Component {
 
 
                 {currentUserId !== item.idContratado && item.valorCombinado !== null && item.boolean == true &&
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: item.valorCombinado, idNotification: this.props.route.params.idNotification, idContratado: item.idContratado})} style={{marginTop:15, marginRight:50, backgroundColor:'#d4cccb', borderWidth:2, borderColor:"#d98b0d", padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: item.valorCombinado, idNotification: this.props.route.params.idNotification, idContratado: item.idContratado, idDoAnuncio: this.state.idAnuncioUser})} style={{marginTop:15, marginRight:50, backgroundColor:'#d4cccb', borderWidth:2, borderColor:"#d98b0d", padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
                     <Text style={{color:'black', fontSize:17}}>{item.texto}</Text>
                   </TouchableOpacity>
                 }

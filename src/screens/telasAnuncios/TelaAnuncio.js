@@ -631,7 +631,7 @@ export default class TelaAnuncio extends Component {
     }
   }
 
-  sendService(idDoContratado, service, value, photoUser, titlePublish) {
+  sendService(idDoContratado, service, value, photoUser, titlePublish, idAnuncio) {
     let userID = firebase.auth().currentUser;
 
     if(userID == null) {
@@ -649,7 +649,8 @@ export default class TelaAnuncio extends Component {
         telefone: this.state.telefoneDoContratante,
         valor: value,
         photoUser: photoUser,
-        titlePublish: titlePublish
+        titlePublish: titlePublish,
+        idAnuncio: idAnuncio
       });
     }
   }
@@ -823,7 +824,7 @@ export default class TelaAnuncio extends Component {
                   </View>
 
 
-                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title)} style={{paddingHorizontal: 13, marginLeft:120, marginRight:120, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio)} style={{paddingHorizontal: 13, marginLeft:120, marginRight:120, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
                         <IconResponsive name="hands-helping" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Contratar</TextTheme>
                   </TouchableOpacity>

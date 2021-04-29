@@ -9,6 +9,7 @@
 import React, { Component } from "react";
 import {
   FlatList,
+  Alert,
   StatusBar,
   Image,
   Dimensions,
@@ -85,7 +86,8 @@ export default class PaymentServices extends Component {
       idNot: '',
       modalizeRef: React.createRef(null),
       accTK:'',
-      fotoUser:''
+      fotoUser:'',
+      idAnuncio: ''
     };
   }
 
@@ -101,6 +103,9 @@ export default class PaymentServices extends Component {
     valueRoute =  this.props.route.params.valuePayment;
     let idNotifyRoute = this.props.route.params.idNotification;
     let idContratado = this.props.route.params.idContratado;
+    let idAnuncioUser = this.props.route.params.idDoAnuncio;
+        this.setState({idAnuncio: idAnuncioUser})
+
     let currentUser = firebase.auth().currentUser;
 
     if(idContratado !== null) {
@@ -269,6 +274,18 @@ export default class PaymentServices extends Component {
     this.setState({endpointMP: data})
   }
 
+  _onNavigationStateChange(webViewState){
+    if(webViewState.url.includes('https://www.mercadopago.com/mp.php')) {
+      Alert.alert("Atenção", "O pagamento foi aprovado! Avalie o serviço para ajudar mais pessoas a encontrarem o profissional!", [
+        {
+            text: "OK",
+            onPress: () => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: this.state.idAnuncio}),
+            style: "cancel"
+        },
+        { text: "Vou avaliar", onPress: () => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: this.state.idAnuncio}) }
+      ]);
+    }
+  }
 
 
 
@@ -305,12 +322,15 @@ export default class PaymentServices extends Component {
               picture_url: this.state.fotoUser
             }
           ],
-          marketplace_fee: percentToWeWoNumberInt
+          marketplace_fee: percentToWeWoNumberInt,
+          back_urls: {
+            success: "https://www.mercadopago.com/mp.php"
+          }
         })
       })
       .then((res) => res.json())
       .then((json) => this.mpTaxAndPayment(json.init_point, percentToWeWoNumberInt, percentToUserNumberInt, percentToUserNumberInt2))
-      .catch((e) => alert('erroo ao requisitar o mercado pago: ' + e))
+      .catch((e) => alert('erro ao requisitar o mercado pago: ' + e))
   }
 
 
@@ -337,7 +357,10 @@ export default class PaymentServices extends Component {
               <TextDescription2 style={{paddingHorizontal:60, marginTop:10, fontSize:10, textAlign:'center'}}>(Conta Mercado Pago, Cartão de Crédito ou Débito, Pix, Boleto, Cartão Virtual Caixa, Lotérica e PayPal)</TextDescription2>
           </View>
         :
-          <WebView source={{ uri: endpointMP }} />
+          <WebView 
+            source={{ uri: endpointMP }} 
+            onNavigationStateChange={this._onNavigationStateChange.bind(this)}
+            />
         }
 
           {/*Modalize dos comentários*/}

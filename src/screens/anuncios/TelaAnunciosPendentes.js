@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class TelaAnunciosPendentes extends Component {
+export default class sPendentes extends Component {
   static contextType = ThemeContext
 
   constructor(props) {
@@ -268,7 +268,7 @@ export default class TelaAnunciosPendentes extends Component {
                               </View>  
 
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                  <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                                  <TouchableDetails onPress={() => this.props.navigation.navigate('', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
                                       <TextDetails>Ver Detalhes</TextDetails>
                                   </TouchableDetails>
 
@@ -309,7 +309,7 @@ export default class TelaAnunciosPendentes extends Component {
                                 </View>  
 
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                    <TouchableDetails onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                                    <TouchableDetails onPress={() => this.props.navigation.navigate('', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
                                         <TextDetails>Ver Detalhes</TextDetails>
                                     </TouchableDetails>
 

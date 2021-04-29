@@ -70,6 +70,7 @@ export default class ServiceCadaster extends Component {
       mode:'date',
       showDate: false,
       cep: null,
+      idAnuncio: '',
       locationServiceEnabled: false,
       modalVisible: false,
       modalizeLocation: React.createRef(null)
@@ -134,6 +135,7 @@ export default class ServiceCadaster extends Component {
     this.setState({valor: this.props.route.params.valor})
     this.setState({photoUser: this.props.route.params.photoUser})
     this.setState({title: this.props.route.params.titlePublish})
+    this.setState({idAnuncio: this.props.route.params.idAnuncio})
 
     //pede ao usuario para habilitar os serviços de localização
     this.CheckIfLocationEnabled();
@@ -218,6 +220,7 @@ export default class ServiceCadaster extends Component {
                 idContratante: e.state.idContratante,
                 idNot: idRandom,
                 idContratado: e.state.id,
+                idAnuncio: e.state.idAnuncio,
                 photoProfile: e.state.foto,
                 nome: e.state.nome,
                 telefone: e.state.telefone,

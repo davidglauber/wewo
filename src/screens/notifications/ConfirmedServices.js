@@ -242,8 +242,8 @@ export default class ConfirmedServices extends Component {
             <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#0f0f0f' : '#d98b0d', flexDirection:'row', borderRadius:60, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
               <Image source={{uri: fotoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
                 <Text  style={styles.title}>{nameUser}</Text>
-                <TouchableOpacity style={styles.moneyCard} onPress={() => {}}>
-                  <IconResponsive name="money-check-alt" size={24}/>
+                <TouchableOpacity style={styles.moneyCard} onPress={() => this.props.navigation.navigate('AwaitPayment')}>
+                  <IconResponsive name="money-bill-wave" size={24}/>
                 </TouchableOpacity>
             </View>
 
