@@ -279,10 +279,10 @@ export default class PaymentServices extends Component {
       Alert.alert("Atenção", "O pagamento foi aprovado! Avalie o serviço para ajudar mais pessoas a encontrarem o profissional!", [
         {
             text: "OK",
-            onPress: () => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: this.state.idAnuncio}),
+            onPress: () => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: this.state.idAnuncio, idUserCartao: this.props.route.params.idContratado}),
             style: "cancel"
         },
-        { text: "Vou avaliar", onPress: () => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: this.state.idAnuncio}) }
+        { text: "Vou avaliar", onPress: () => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: this.state.idAnuncio, idUserCartao: this.props.route.params.idContratado}) }
       ]);
     }
   }

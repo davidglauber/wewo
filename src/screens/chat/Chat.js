@@ -150,7 +150,9 @@ export default class Chat extends Component {
       })
 
       e.closeModalize()
-      e.props.navigation.navigate('AwaitPayment')
+      e.props.navigation.navigate('AwaitPayment', {
+        idNotification: this.props.route.params.idNotification
+      })
     }
 
     e.setState({textChat: ''})

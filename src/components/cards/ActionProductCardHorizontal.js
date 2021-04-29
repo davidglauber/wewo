@@ -35,7 +35,7 @@ const isRTL = I18nManager.isRTL;
 const IOS = Platform.OS === 'ios';
 const MINUS_ICON = IOS ? 'ios-remove' : 'md-remove';
 const PLUS_ICON = IOS ? 'ios-add' : 'md-add';
-const DELETE_ICON = IOS ? 'ios-close' : 'md-close';
+const _ICON = IOS ? 'ios-close' : 'md-close';
 
 // ActionProductCardHorizontal Styles
 const styles = StyleSheet.create({
@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: "#fff",
   },
-  deleteButtonContainer: {
+  ButtonContainer: {
     borderBottomRightRadius: 4,
     borderTopRightRadius: 4,
     width: 88,
     overflow: 'hidden',
   },
-  deleteButton: {
+  Button: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -167,11 +167,11 @@ const styles = StyleSheet.create({
   },
 });
 
-// ActionProductCardHorizontal DeleteButton
-const DeleteButton = ({onPress}) => (
-  <View style={styles.deleteButtonContainer}>
-    <TouchableItem onPress={onPress} style={styles.deleteButton}>
-      <Icon name={DELETE_ICON} size={26} color={Colors.error} />
+// ActionProductCardHorizontal Button
+const Button = ({onPress}) => (
+  <View style={styles.ButtonContainer}>
+    <TouchableItem onPress={onPress} style={styles.Button}>
+      <Icon name={_ICON} size={26} color={Colors.error} />
     </TouchableItem>
   </View>
 );
@@ -252,7 +252,7 @@ export default class ActionProductCardHorizontal extends Component<
           leftOpenValue={isRTL ? 88 : 0}
           style={styles.swipeRow}>
           <View style={styles.cardBack}>
-            <DeleteButton onPress={swipeoutOnPressRemove} />
+            <Button onPress={swipeoutOnPressRemove} />
           </View>
 
           {/* FIX ME:
