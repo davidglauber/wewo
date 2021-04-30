@@ -127,7 +127,9 @@ export default class TelaGeralCriarCartao extends Component {
       modalVisible: true,
       modalizeRef: React.createRef(null),
       idMPState: '',
-      accTK: ''
+      accTK: '',
+      mesCriacaoTokenFirebase: null,
+      mesAtual: new Date()
     };
   }
 
@@ -211,6 +213,12 @@ export default class TelaGeralCriarCartao extends Component {
 
       if(documentSnapshot.data().accessTK) {
         e.setState({accTK: documentSnapshot.data().accessTK})
+      } else {
+        return null
+      }
+
+      if(documentSnapshot.data().mesCriacaoToken) {
+        e.setState({mesCriacaoTokenFirebase: documentSnapshot.data().mesCriacaoToken})
       } else {
         return null
       }
@@ -303,7 +311,8 @@ export default class TelaGeralCriarCartao extends Component {
       textPortfolio: e.state.text,
       tipoDeConta: e.state.tipoDeConta,
       idMP: e.state.idMPState,
-      accessTK: e.state.accTK
+      accessTK: e.state.accTK,
+      mesCriacaoToken: e.state.mesCriacaoTokenFirebase
     })
     
     const modalizeRef = this.state.modalizeRef;
@@ -318,6 +327,7 @@ export default class TelaGeralCriarCartao extends Component {
 
   async verifyNumberOfPublises() {
     let currentUserUID = firebase.auth().currentUser.uid;
+    let currentMonth = this.state.mesAtual.getMonth() + 1;
     let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
 
     firebase.firestore().collection(`usuarios/${currentUserUID}/cartoes`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
@@ -339,6 +349,16 @@ export default class TelaGeralCriarCartao extends Component {
       if(this.state.idMPState == '') {
         alert('Você precisa vincular sua conta Mercado Pago para receber pagamentos')
         this.props.navigation.navigate('MLConfigAccount')
+      }
+
+      if(currentMonth - this.state.mesCriacaoTokenFirebase >= 5) {
+        firebase.firestore().collection('usuarios').doc(currentUserUID).update({
+          idMP: firebase.firestore.FieldValue.delete(),
+          accessTK: firebase.firestore.FieldValue.delete()
+        }).then(() => {
+          alert('Você precisa vincular sua conta Mercado Pago para receber pagamentos')
+          this.props.navigation.navigate('MLConfigAccount')
+        })
       }
 
       if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {

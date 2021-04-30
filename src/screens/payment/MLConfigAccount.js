@@ -83,7 +83,10 @@ export default class MLConfigAccount extends Component {
       premium: null,
       textPortfolio: "",
       idMercadoPago: "",
-      tipoDeConta: ""
+      tipoDeConta: "",
+      mesCriacaoToken: new Date(),
+      mesCriacaoTokenFirebase: null,
+      mesAtual: new Date()
     };
   }
 
@@ -96,6 +99,9 @@ export default class MLConfigAccount extends Component {
   
   async componentDidMount() {
     let currentUser = firebase.auth().currentUser.uid;
+    this.setState({mesCriacaoToken: this.state.mesCriacaoToken.getMonth() + 1});
+    this.setState({mesAtual: this.state.mesAtual.getMonth() + 1});
+
     await firebase.firestore().collection('usuarios').doc(currentUser).onSnapshot(documentSnapshot => {
       console.log('User data: ', documentSnapshot.data());
       this.setState({name: documentSnapshot.data().nome})
@@ -107,10 +113,22 @@ export default class MLConfigAccount extends Component {
       this.setState({textPortfolio: documentSnapshot.data().textPortfolio})
       this.setState({tipoDeConta: documentSnapshot.data().tipoDeConta})
 
+      if(documentSnapshot.data().mesCriacaoTokenFirebase) {
+        this.setState({mesCriacaoTokenFirebase: documentSnapshot.data().mesCriacaoToken})
+      }
+
       if(documentSnapshot.data().idMP) {
         this.setState({idMercadoPago: documentSnapshot.data().idMP})
       }
     })
+
+    if(this.state.mesAtual - this.state.mesCriacaoTokenFirebase >= 5) {
+      await firebase.firestore().collection('usuarios').doc(currentUser).update({
+         idMP: firebase.firestore.FieldValue.delete(),
+         accessTK: firebase.firestore.FieldValue.delete()
+      })
+    }
+
   }
   
 
@@ -163,6 +181,7 @@ export default class MLConfigAccount extends Component {
       textPortfolio: e.state.textPortfolio,
       idMP: json.user_id,
       accessTK: json.access_token,
+      mesCriacaoToken: e.state.mesCriacaoToken,
       tipoDeConta: e.state.tipoDeConta
     }).then(() => {
       if(webPage.includes('https://www.mercadopago.com/mp.php?code=')){

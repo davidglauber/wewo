@@ -116,7 +116,9 @@ export default class TelaPrincipalAnuncio extends Component {
       isFetchedPublish: false,
       modalVisible: true,
       idMPState: '',
-      accTK: ''
+      accTK: '',
+      mesCriacaoTokenFirebase: null,
+      mesAtual: new Date()
     };
   }
 
@@ -193,6 +195,12 @@ export default class TelaPrincipalAnuncio extends Component {
       } else {
         return null
       }
+
+      if(documentSnapshot.data().mesCriacaoToken) {
+        this.setState({mesCriacaoTokenFirebase: documentSnapshot.data().mesCriacaoToken})
+      } else {
+        return null
+      }
     })
     
   }
@@ -222,6 +230,7 @@ export default class TelaPrincipalAnuncio extends Component {
 
   async verifyNumberOfPublises() {
     let currentUserUID = firebase.auth().currentUser.uid;
+    let currentMonth = this.state.mesAtual.getMonth() + 1;
     let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
 
     firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
@@ -244,6 +253,16 @@ export default class TelaPrincipalAnuncio extends Component {
       if(this.state.idMPState == '') {
         alert('Você precisa vincular sua conta Mercado Pago para receber pagamentos')
         this.props.navigation.navigate('MLConfigAccount')
+      }
+
+      if(currentMonth - this.state.mesCriacaoTokenFirebase >= 5) {
+        firebase.firestore().collection('usuarios').doc(currentUserUID).update({
+          idMP: firebase.firestore.FieldValue.delete(),
+          accessTK: firebase.firestore.FieldValue.delete()
+        }).then(() => {
+          alert('Você precisa vincular sua conta Mercado Pago para receber pagamentos')
+          this.props.navigation.navigate('MLConfigAccount')
+        })
       }
 
       if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
