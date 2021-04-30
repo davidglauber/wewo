@@ -631,7 +631,7 @@ export default class TelaAnuncio extends Component {
     }
   }
 
-  sendService(idDoContratado, service, value, photoUser, titlePublish, idAnuncio) {
+  sendService(idDoContratado, service, value, photoUser, titlePublish, idAnuncio, type) {
     let userID = firebase.auth().currentUser;
 
     if(userID == null) {
@@ -650,7 +650,8 @@ export default class TelaAnuncio extends Component {
         valor: value,
         photoUser: photoUser,
         titlePublish: titlePublish,
-        idAnuncio: idAnuncio
+        idAnuncio: idAnuncio,
+        type: type
       });
     }
   }
@@ -824,7 +825,7 @@ export default class TelaAnuncio extends Component {
                   </View>
 
 
-                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio)} style={{paddingHorizontal: 13, marginLeft:120, marginRight:120, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft:120, marginRight:120, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
                         <IconResponsive name="hands-helping" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Contratar</TextTheme>
                   </TouchableOpacity>
@@ -1323,6 +1324,11 @@ export default class TelaAnuncio extends Component {
                   <TouchableOpacity onPress={() => this.openModalizePortfolio()} style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                         <IconResponsiveNOBACK name="list-alt" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Estabelecimento')} style={{paddingHorizontal: 13, marginLeft:120, marginRight:120, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                        <IconResponsive name="hands-helping" size={30}/>
+                        <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Contratar</TextTheme>
                   </TouchableOpacity>
 
 

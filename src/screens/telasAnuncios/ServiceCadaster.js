@@ -68,12 +68,14 @@ export default class ServiceCadaster extends Component {
       showHour: false,
       horario:'',
       mode:'date',
+      type:'',
       showDate: false,
       cep: null,
       idAnuncio: '',
       locationServiceEnabled: false,
       modalVisible: false,
-      modalizeLocation: React.createRef(null)
+      modalizeLocation: React.createRef(null),
+      boolean: false
     };
   }
 
@@ -136,6 +138,7 @@ export default class ServiceCadaster extends Component {
     this.setState({photoUser: this.props.route.params.photoUser})
     this.setState({title: this.props.route.params.titlePublish})
     this.setState({idAnuncio: this.props.route.params.idAnuncio})
+    this.setState({type: this.props.route.params.type})
 
     //pede ao usuario para habilitar os serviços de localização
     this.CheckIfLocationEnabled();
@@ -147,11 +150,13 @@ export default class ServiceCadaster extends Component {
     const currentDate = selectedDate || this.state.date;
     this.setState({date: currentDate});
     this.setState({showHour: true})
+    this.setState({boolean: true})
     console.log('data selecionada: ' + currentDate)
   };
 
   onChangeHour = (event, selectedHour) => {
     this.setState({showHour: false})
+    this.setState({boolean: true})
 
     let hourComplete = selectedHour.getHours();
     let minutesComplete = selectedHour.getMinutes();
@@ -213,30 +218,35 @@ export default class ServiceCadaster extends Component {
     let dataAtual = this.convertDate();
     let userUID = firebase.auth().currentUser.uid;
     let idRandom = this.makeid(25);
-    e.setModalVisible(true)
-
-    this.sleep(2000).then(() => { 
-            firebase.firestore().collection('notifications').doc(idRandom).set({
-                idContratante: e.state.idContratante,
-                idNot: idRandom,
-                idContratado: e.state.id,
-                idAnuncio: e.state.idAnuncio,
-                photoProfile: e.state.foto,
-                nome: e.state.nome,
-                telefone: e.state.telefone,
-                service: e.state.servico,
-                valor: e.state.valor,
-                cep: e.state.cep,
-                horario: e.state.horario,
-                dataServico: dataAtual,
-                photoUser: e.state.photoUser,
-                titlePublish: e.state.title,
-                confirmed: false
-            })
-
-            e.setModalVisible(false)
-            e.props.navigation.navigate('Home')
-    })
+    
+    if(this.state.boolean !== false) {
+      e.setModalVisible(true)
+      this.sleep(2000).then(() => { 
+        firebase.firestore().collection('notifications').doc(idRandom).set({
+          idContratante: e.state.idContratante,
+          idNot: idRandom,
+          idContratado: e.state.id,
+          idAnuncio: e.state.idAnuncio,
+          type: e.state.type,
+          photoProfile: e.state.foto,
+          nome: e.state.nome,
+          telefone: e.state.telefone,
+          service: e.state.servico,
+          valor: e.state.valor,
+          cep: e.state.cep,
+          horario: e.state.horario,
+          dataServico: dataAtual,
+          photoUser: e.state.photoUser,
+          titlePublish: e.state.title,
+          confirmed: false
+        })
+        
+        e.setModalVisible(false)
+        e.props.navigation.navigate('Home')
+      })
+    } else {
+      alert('Por favor, selecione a data e horário do serviço!')
+    }
   }
 
 
@@ -316,7 +326,7 @@ export default class ServiceCadaster extends Component {
                   value={this.state.valor}
                   onChangeText={text => this.onChangePreco(text)}
                   keyboardType={"number-pad"}
-                  placeholder="Valor do Serviço                                                          "
+                  placeholder="Dê sua oferta de valor                                                          "
                 />
             </View>
 
