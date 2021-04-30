@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     padding: 30
   },
   title: {
-    marginLeft: windowWidth/6, 
+    marginLeft: windowWidth/12, 
     fontSize: 15, 
     fontWeight: 'bold', 
     color: 'white'
@@ -79,7 +79,8 @@ export default class NotificationsB extends Component {
       valueUser:'',
       telefoneUser:'',
       dataUser:'',
-      horarioUser:''
+      horarioUser:'',
+      type: ''
     };
   }
 
@@ -106,7 +107,8 @@ export default class NotificationsB extends Component {
             cep: doc.data().cep,
             dataServico: doc.data().dataServico,
             horario: doc.data().horario,
-            idNot: doc.data().idNot
+            idNot: doc.data().idNot,
+            type: doc.data().type
           })
         })
 
@@ -136,6 +138,7 @@ export default class NotificationsB extends Component {
     this.setState({dataUser: userData.dataServico})
     this.setState({horarioUser: userData.horario})
     this.setState({itemData: userData.idNot})
+    this.setState({type: userData.type})
 
     const modalizeRef = this.state.modalizeRef;
     modalizeRef.current?.open()
@@ -268,7 +271,7 @@ export default class NotificationsB extends Component {
         {/*Modalize dos comentários*/}
         <Modalize
             ref={this.state.modalizeRef}
-            snapPoint={500}
+            snapPoint={900}
             modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
           >
 
@@ -276,6 +279,18 @@ export default class NotificationsB extends Component {
             <View style={{width: windowWidth/1.06, height:100, backgroundColor: '#d98b0d', flexDirection:'row', borderRadius:60, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
               <Image source={{uri: fotoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
                 <Text  style={styles.title}>{nameUser}</Text>
+                
+                {this.state.type == "Autonomo" &&
+                  <View style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/5, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
+                    <IconResponsiveNOBACK name="user-tie" size={24}/>
+                  </View>
+                }
+
+                {this.state.type == "Estabelecimento" &&
+                  <View style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/5, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
+                    <IconResponsiveNOBACK name="briefcase" size={24}/>
+                  </View>
+                }
                 <TouchableOpacity onPress={() => this.deleteService(itemData)} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
                   <IconResponsiveNOBACK name="times-circle" size={24}/>
                 </TouchableOpacity>

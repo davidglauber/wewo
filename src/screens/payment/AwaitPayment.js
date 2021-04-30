@@ -113,7 +113,7 @@ function deleteNotification() {
           <View style={{alignItems:"center"}}>
             <Heading style={styles.paddingTitle}>Aguardando Pagamento</Heading>
 
-            <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Essa tela se atualiza constantemente, ao pagamento ser confirmado será mostrada uma mensagem de sucesso! {"\n\n"}<TextDescription2 style={{fontWeight:"bold"}}>(Lembre-se de pedir ao cliente para lhe avaliar)</TextDescription2></TextDescription2>
+            <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Ao pagamento ser confirmado será mostrada uma mensagem de sucesso pelo Mercado Pago! Após isso clique em "Recebi o Dinheiro" para finalizar o serviço {"\n\n"}<TextDescription2 style={{fontWeight:"bold"}}>(Lembre-se de pedir ao cliente para lhe avaliar)</TextDescription2></TextDescription2>
             <View style={{alignItems:'center', marginTop:100}}>
               <LottieView source={payLoading} style={{width:200, height:200}} autoPlay loop />  
               <TouchableOpacity onPress={() => deleteNotification()} style={{marginTop:50, height:50, width:200, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
