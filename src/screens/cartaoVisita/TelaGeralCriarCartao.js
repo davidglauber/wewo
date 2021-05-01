@@ -143,6 +143,7 @@ export default class TelaGeralCriarCartao extends Component {
   async componentDidMount() {
     let e = this;
     let currentUserUID = firebase.auth().currentUser.uid;
+    this.setState({mesAtual: this.state.mesAtual.getMonth() + 1});
 
     await firebase.firestore().collection(`usuarios/${currentUserUID}/cartoes`).where("type", "==", "Autonomo").where("verifiedPublish", "==", true).onSnapshot(documentSnapshot => {
       let cartoesAutoDidMount = []
@@ -221,6 +222,18 @@ export default class TelaGeralCriarCartao extends Component {
         e.setState({mesCriacaoTokenFirebase: documentSnapshot.data().mesCriacaoToken})
       } else {
         return null
+      }
+
+      let subtracao = this.state.mesAtual - documentSnapshot.data().mesCriacaoToken;
+
+      if(subtracao >= 5) {
+        firebase.firestore().collection('usuarios').doc(currentUserUID).update({
+          idMP: firebase.firestore.FieldValue.delete(),
+          accessTK: firebase.firestore.FieldValue.delete()
+        }).then(() => {
+          alert('Você precisa vincular sua conta Mercado Pago para receber pagamentos')
+          this.props.navigation.navigate('MLConfigAccount')
+        })
       }
     })
 
@@ -327,7 +340,6 @@ export default class TelaGeralCriarCartao extends Component {
 
   async verifyNumberOfPublises() {
     let currentUserUID = firebase.auth().currentUser.uid;
-    let currentMonth = this.state.mesAtual.getMonth() + 1;
     let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
 
     firebase.firestore().collection(`usuarios/${currentUserUID}/cartoes`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
@@ -349,16 +361,6 @@ export default class TelaGeralCriarCartao extends Component {
       if(this.state.idMPState == '') {
         alert('Você precisa vincular sua conta Mercado Pago para receber pagamentos')
         this.props.navigation.navigate('MLConfigAccount')
-      }
-
-      if(currentMonth - this.state.mesCriacaoTokenFirebase >= 5) {
-        firebase.firestore().collection('usuarios').doc(currentUserUID).update({
-          idMP: firebase.firestore.FieldValue.delete(),
-          accessTK: firebase.firestore.FieldValue.delete()
-        }).then(() => {
-          alert('Você precisa vincular sua conta Mercado Pago para receber pagamentos')
-          this.props.navigation.navigate('MLConfigAccount')
-        })
       }
 
       if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {

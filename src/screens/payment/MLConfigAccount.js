@@ -113,21 +113,24 @@ export default class MLConfigAccount extends Component {
       this.setState({textPortfolio: documentSnapshot.data().textPortfolio})
       this.setState({tipoDeConta: documentSnapshot.data().tipoDeConta})
 
-      if(documentSnapshot.data().mesCriacaoTokenFirebase) {
+      if(documentSnapshot.data().mesCriacaoToken) {
         this.setState({mesCriacaoTokenFirebase: documentSnapshot.data().mesCriacaoToken})
       }
 
       if(documentSnapshot.data().idMP) {
         this.setState({idMercadoPago: documentSnapshot.data().idMP})
       }
+
+      let subtracao = this.state.mesAtual - documentSnapshot.data().mesCriacaoToken;
+
+      if(subtracao >= 5) {
+        firebase.firestore().collection('usuarios').doc(currentUser).update({
+           idMP: firebase.firestore.FieldValue.delete(),
+           accessTK: firebase.firestore.FieldValue.delete()
+        })
+      }
     })
 
-    if(this.state.mesAtual - this.state.mesCriacaoTokenFirebase >= 5) {
-      await firebase.firestore().collection('usuarios').doc(currentUser).update({
-         idMP: firebase.firestore.FieldValue.delete(),
-         accessTK: firebase.firestore.FieldValue.delete()
-      })
-    }
 
   }
   

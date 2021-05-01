@@ -28,7 +28,7 @@ import { PulseIndicator } from 'react-native-indicators';
 // import components
 import {SmallText} from '../../components/text/CustomText';
 
-import { SafeBackground, SwipeLeft, Description, Heading, IconResponsiveNOBACK, Favorite } from '../home/styles';
+import { SafeBackground, SwipeLeft, Description, Heading, IconResponsiveNOBACK, IconResponsive, TextTheme, Favorite } from '../home/styles';
 
 import LottieView from 'lottie-react-native';
 
@@ -293,8 +293,17 @@ export default class CheckoutA extends Component {
               }
             />
 
+  
+
 
           </ScrollView>
+          
+          <View style={{position:"absolute", top: windowHeight/1.2, left: windowWidth/5.5, flexDirection:'row', alignItems: 'center'}}>
+            <TouchableOpacity onPress={() => {}} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                  <IconResponsive name="shopping-cart" size={30}/>
+                  <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao carrinho</TextTheme>
+            </TouchableOpacity>
+          </View>
 
           <View style={{justifyContent: 'center',alignItems: 'center', padding: 8}}>
             <SwipeLeft>
