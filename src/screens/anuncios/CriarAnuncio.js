@@ -707,7 +707,7 @@ export default class CriarAnuncio extends Component {
       }
       
       if(typePublish === 'Autonomo') { 
-      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.nomeAuto !== '' && this.state.phoneAuto !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.nomeAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '') {
         
         this.setModalVisible(true)
 
@@ -817,6 +817,7 @@ export default class CriarAnuncio extends Component {
                         
                               } else {
                                 alert('Todos os campos devem ser preenchidos!')
+                                this.setModalVisible(false)
                               }
                             }
                         
@@ -893,6 +894,7 @@ export default class CriarAnuncio extends Component {
                                   })
                               } else {
                                 alert('Todos os campos devem ser preenchidos!')
+                                this.setModalVisible(false)
                               }
                               
               
@@ -1013,6 +1015,7 @@ export default class CriarAnuncio extends Component {
                         
                               } else {
                                 alert('Todos os campos devem ser preenchidos!')
+                                this.setModalVisible(false)
                               }
                             }
                         
@@ -1089,6 +1092,7 @@ export default class CriarAnuncio extends Component {
                                   })
                               } else {
                                 alert('Todos os campos devem ser preenchidos!')
+                                this.setModalVisible(false)
                               }
                               
               
@@ -1105,13 +1109,14 @@ export default class CriarAnuncio extends Component {
 
       } else {
         alert('Por favor, verifique se TODOS os campos estão preenchidos (incluindo 3 imagens)')
+        this.setModalVisible(false)
       }
 
     }
 
 
     if(typePublish === 'Estabelecimento') {
-      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.categoria !== '') {
         
         this.setModalVisible(true)
 
@@ -1219,6 +1224,7 @@ export default class CriarAnuncio extends Component {
                       
                             } else {
                               alert('Todos os campos devem ser preenchidos!')
+                              this.setModalVisible(false)
                             }
                           }
                       
@@ -1291,6 +1297,7 @@ export default class CriarAnuncio extends Component {
                                 })
                             } else {
                               alert('Todos os campos devem ser preenchidos!')
+                              this.setModalVisible(false)
                             }
                             
             
@@ -1408,6 +1415,7 @@ export default class CriarAnuncio extends Component {
                       
                             } else {
                               alert('Todos os campos devem ser preenchidos!')
+                              this.setModalVisible(false)
                             }
                           }
                       
@@ -1480,6 +1488,7 @@ export default class CriarAnuncio extends Component {
                                 })
                             } else {
                               alert('Todos os campos devem ser preenchidos!')
+                              this.setModalVisible(false)
                             }
                             
             
@@ -1497,6 +1506,7 @@ export default class CriarAnuncio extends Component {
 
       } else {
         alert('Por favor, verifique se TODOS os campos estão preenchidos (incluindo 3 imagens)')
+        this.setModalVisible(false)
       }
     }
 

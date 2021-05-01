@@ -575,26 +575,31 @@ export default class MostrarCartao extends Component {
     console.log('ITEM: ' + item)
     if(currentUser !== null) {
       if(this.state.qtd > 0){
-        e.setModalVisible(true)
-        await firebase.firestore().collection('products').doc(idProduct).set({
-          idDonoDoProduto: item.idUser,
-          idComprador: currentUser.uid,
-          fotoUsuarioLogado: item.fotoUsuarioLogado,
-          fotoProduto: item.photo2,
-          quantidade: e.state.qtd,
-          valorProduto: item.value,
-          tituloProduto: item.title,
-          nomeUsuario: e.state.nomeUser
-        })
-          e.setModalVisible(false)
-          alert('O produto foi adicionado ao carrinho')
-          e.props.navigation.navigate('Checkout')
+        if(currentUser.uid == item.idUser){
+          alert('Você não pode comprar algo de si mesmo ;)')
+        } else {
+          e.setModalVisible(true)
+          await firebase.firestore().collection('products').doc(idProduct).set({
+            idDonoDoProduto: item.idUser,
+            idComprador: currentUser.uid,
+            fotoUsuarioLogado: item.fotoUsuarioLogado,
+            fotoProduto: item.photo2,
+            quantidade: e.state.qtd,
+            valorProduto: item.value,
+            tituloProduto: item.title,
+            nomeUsuario: e.state.nomeUser
+          })
+            e.setModalVisible(false)
+            alert('O produto foi adicionado ao carrinho')
+            e.props.navigation.navigate('Checkout')
+        }
       } else {
         alert('Você não pode comprar 0 quantidades de algo ;)')
       }
     } else {
       alert('Você precisa estar logado para comprar um produto')
     }
+
   }
 
   render() {
@@ -1083,7 +1088,7 @@ export default class MostrarCartao extends Component {
                     </TouchableItem>
                   </ButtonIconContainer>
 
-                  <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', position:'absolute', bottom: windowHeight/3.9, opacity:0.8, left: windowWidth/3.7, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.valueServiceEstab}</ValueFieldPrincipal>
+                  <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', position:'absolute', bottom: windowHeight/3.9, opacity:0.8, left: windowWidth/3.7, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>Valor: {item.valueServiceEstab}</ValueFieldPrincipal>
                   
                 </View>
 

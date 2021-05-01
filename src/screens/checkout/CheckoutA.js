@@ -226,6 +226,10 @@ export default class CheckoutA extends Component {
     })
   }
 
+
+  buyProducts() {
+
+  }
  
   render() {
     return (
@@ -298,10 +302,10 @@ export default class CheckoutA extends Component {
 
           </ScrollView>
           
-          <View style={{position:"absolute", top: windowHeight/1.2, left: windowWidth/5.5, flexDirection:'row', alignItems: 'center'}}>
-            <TouchableOpacity onPress={() => {}} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
-                  <IconResponsive name="shopping-cart" size={30}/>
-                  <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao carrinho</TextTheme>
+          <View style={{position:"absolute", top: windowHeight/1.2, left: windowWidth/4, flexDirection:'row', alignItems: 'center'}}>
+            <TouchableOpacity onPress={() => buyProducts()} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                  <IconResponsive name="check" size={24}/>
+                  <Text style={{color: this.context.dark ? 'black' : 'white', fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Finalizar Pedido</Text>
             </TouchableOpacity>
           </View>
 
