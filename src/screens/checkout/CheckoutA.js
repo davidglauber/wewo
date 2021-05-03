@@ -232,6 +232,7 @@ export default class CheckoutA extends Component {
     var products = this.state.products;
     var value = [];
     var qtdArray = [];
+    var idsUsers = [];
 
     products.map((e) => {
       let replace = e.valorProduto.replace('R$', '');
@@ -242,27 +243,35 @@ export default class CheckoutA extends Component {
         if(knowLength > 10) {
           let replacePoint = replace.split(',00').join('');
           let replacePoint2 = replacePoint.split('.').join('');
-          
+          let replaceInter = new Number(replacePoint2);
+
           //envia o valor sem , ou pontos
-          value.push(replacePoint2)
+          value.push(replaceInter)
 
           //envia a quantidade de cada produto
           qtdArray.push(e.quantidade)
+
+          //salva o id do dono do produto no array
+          idsUsers.push(e.idDonoDoProduto)
           
-          alert('VALOR DO POINT THREE: ' + replacePoint2)
+          alert('VALOR DO POINT THREE: ' + replaceInter)
         }
   
         if(knowLength <= 10) {
           let replacePoint = replace.replace(',00','');
           let replacePoint2 = replacePoint.split('.').join('');
-          
+          let replaceInter = new Number(replacePoint2);
+
           //envia o valor sem , ou pontos
-          value.push(replacePoint2)
+          value.push(replaceInter)
 
           //envia a quantidade de cada produto
           qtdArray.push(e.quantidade)
 
-          alert('VALOR DO POINT TWO: ' + replacePoint2)
+          //salva o id do dono do produto no array
+          idsUsers.push(e.idDonoDoProduto)
+
+          alert('VALOR DO POINT TWO: ' + replaceInter)
         }
   
         
@@ -271,27 +280,35 @@ export default class CheckoutA extends Component {
   
         if(knowLength <= 6) {
           let replacePoint = replace.split(',').join('.');
+          let replaceInter = new Number(replacePoint);
           
           //envia o valor sem , ou pontos
-          value.push(replacePoint)
+          value.push(replaceInter)
 
           //envia a quantidade de cada produto
           qtdArray.push(e.quantidade)
 
-          alert('VALOR DO POINT ONE: ' + replacePoint)
+          //salva o id do dono do produto no array
+          idsUsers.push(e.idDonoDoProduto)
+
+          alert('VALOR DO POINT ONE: ' + replaceInter)
         }
   
         if(knowLength > 6) {
           let replacePointOne = replace.split(',').join('.');
           let replacePoint2 = replacePointOne.split('.').join('');
-          
+          let replaceInter = new Number(replacePoint2);
+
           //envia o valor sem , ou pontos
-          value.push(replacePoint2)
+          value.push(replaceInter)
 
           //envia a quantidade de cada produto
           qtdArray.push(e.quantidade)
 
-          alert('VALOR DO POINT TWO(2): ' + replacePoint2)
+          //salva o id do dono do produto no array
+          idsUsers.push(e.idDonoDoProduto)
+          
+          alert('VALOR DO POINT TWO(2): ' + replaceInter)
         }
         
       }
@@ -300,7 +317,8 @@ export default class CheckoutA extends Component {
     
     this.props.navigation.navigate('PaymentProducts', {
       valuePayment: value,
-      quantidade: qtdArray
+      quantidade: qtdArray,
+      idsUsers: idsUsers
     })
 
   }

@@ -73,15 +73,14 @@ export default class PaymentProducts extends Component {
       brCodeValue: '',
       QRCode:'',
       endpointMP: '',
-      valueService: '',
-      value:20,
       paymentStatus:'',
       idTransaction:'',
       idNot: '',
       modalizeRef: React.createRef(null),
       accTK:'',
       fotoUser:'',
-      idAnuncio: ''
+      idAnuncio: '',
+      resultSumValues: ''
     };
   }
 
@@ -94,14 +93,38 @@ export default class PaymentProducts extends Component {
 
 
   componentDidMount() {
-    let valueRoute = ''
+    let e = this;
+    let valueRoute = '';
     valueRoute =  this.props.route.params.valuePayment;
     let qtdRoute = 0;
     qtdRoute = this.props.route.params.quantidade;
+    let idDonoDoProduto = ''; 
+    idDonoDoProduto = this.props.route.params.idsUsers;
 
-    console.log('VALOR DO ROUTER: ' + valueRoute + '\n\nQuantidade de Produto: ' + qtdRoute)
+
+    this.setState({resultSumValues: valueRoute.reduce((a, b) => a + b, 0)})
+    alert('Soma dos valores: ' + valueRoute.reduce((a, b) => a + b, 0))
+
+    if(idDonoDoProduto !== null) {
+
+      idDonoDoProduto.map(async (i) => {
+        await firebase.firestore().collection('usuarios').doc(i).onSnapshot(documentSnapshot => {
+          e.setState({accTK: documentSnapshot.data().accessTK})
+          alert('TOKEN FIREBASE PRODUCTS: ' + documentSnapshot.data().accessTK)
+        })
+  
+        await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
+          e.setState({fotoUser: documentSnapshot.data().photoProfile})
+        })
+      })
+    } else {
+      return null
+    }
+    
+    console.log('VALOR DO ROUTER: ' + valueRoute + '\n\nQuantidade de Produto: ' + qtdRoute + '\n\nID DO ANUNCIANTE: ' + idDonoDoProduto)
   }
   
+
   openModalize() {
     const modalizeRef = this.state.modalizeRef;
 
@@ -167,8 +190,7 @@ export default class PaymentProducts extends Component {
 
   mercadoPago() {
     console.log('TOKEN DO USUARIO: ' +  this.state.accTK)
-    let value = this.state.value;
-    let newNumber = new Number(value);
+    let value = this.state.resultSumValues;
 
     let percentToWeWo = ((newNumber / 100) * 15).toFixed(2);
     let percentToWeWoNumberInt = new Number(percentToWeWo);
@@ -222,10 +244,10 @@ export default class PaymentProducts extends Component {
         {this.state.brCodeValue == '' ?
           <View style={{alignItems:'center'}}>
             <Heading style={styles.paddingTitle}>Pagamento</Heading>
-            <Heading style={{paddingTop: 10, marginBottom:10}}>Valor do Serviço: {this.state.valueService}</Heading>
-            <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Escolha o método de pagamento que mais lhe é conveniente (será cobrada uma pequena taxa sobre o valor para a manuntenção da plataforma)</TextDescription2>
+            <Heading style={{paddingTop: 10, marginBottom:10}}>Valor do Serviço: R${this.state.resultSumValues}</Heading>
+            <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>(será cobrada uma pequena taxa sobre o valor para a manuntenção da plataforma)</TextDescription2>
               <TouchableOpacity style={{marginTop: windowHeight/9}} onPress={() => this.mercadoPago()}>
-                <Image source={require('../../../assets/MPlogo.png')} style={{width:248, height:64}}/>
+                <Image source={require('../../../assets/wewologoPayment.png')} style={{width:248, height:66}}/>
               </TouchableOpacity>
               <TextDescription2 style={{paddingHorizontal:60, marginTop:10, fontSize:10, textAlign:'center'}}>(Conta Mercado Pago, Cartão de Crédito ou Débito, Pix, Boleto, Cartão Virtual Caixa, Lotérica e PayPal)</TextDescription2>
           </View>
