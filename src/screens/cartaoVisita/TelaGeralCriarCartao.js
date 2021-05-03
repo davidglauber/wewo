@@ -393,7 +393,7 @@ export default class TelaGeralCriarCartao extends Component {
     if(this.state.cartoesAuto.length == 0 && this.state.cartoesEstab.length == 0) {
         return( 
           <View style={{flex:1, alignItems:'center', paddingTop: 80}}>
-            <View>
+            <View style={{alignItems:'center'}}>
               <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
               <Text style={{fontWeight:'bold', color:'white'}}>Nenhum Cartão Ativo Foi Encontrado</Text>
             </View>

@@ -77,7 +77,7 @@ export default class PaymentProducts extends Component {
       idTransaction:'',
       idNot: '',
       modalizeRef: React.createRef(null),
-      accTK:'',
+      accTK: [],
       fotoUser:'',
       idAnuncio: '',
       resultSumValues: ''
@@ -101,6 +101,7 @@ export default class PaymentProducts extends Component {
     let idDonoDoProduto = ''; 
     idDonoDoProduto = this.props.route.params.idsUsers;
 
+    let currentUser = firebase.auth().currentUser;
 
     this.setState({resultSumValues: valueRoute.reduce((a, b) => a + b, 0)})
     alert('Soma dos valores: ' + valueRoute.reduce((a, b) => a + b, 0))
@@ -109,8 +110,8 @@ export default class PaymentProducts extends Component {
 
       idDonoDoProduto.map(async (i) => {
         await firebase.firestore().collection('usuarios').doc(i).onSnapshot(documentSnapshot => {
-          e.setState({accTK: documentSnapshot.data().accessTK})
-          alert('TOKEN FIREBASE PRODUCTS: ' + documentSnapshot.data().accessTK)
+          e.state.accTK.push(documentSnapshot.data().accessTK)
+          console.log('TOKEN FIREBASE PRODUCTS: ' + e.state.accTK)
         })
   
         await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
@@ -191,7 +192,8 @@ export default class PaymentProducts extends Component {
   mercadoPago() {
     console.log('TOKEN DO USUARIO: ' +  this.state.accTK)
     let value = this.state.resultSumValues;
-
+    let newNumber = new Number(value);
+    
     let percentToWeWo = ((newNumber / 100) * 15).toFixed(2);
     let percentToWeWoNumberInt = new Number(percentToWeWo);
 

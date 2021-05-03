@@ -414,7 +414,7 @@ export default class MostrarCartao extends Component {
     e.setState({usersThatVotedFirebase: []})
   } else {
     //pega a imagem e nome da pessoa logada
-    await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('usuarios').doc(currentUserUID).onSnapshot(documentSnapshot => {
           e.setState({fotoUser: documentSnapshot.data().photoProfile}),
           e.setState({nomeUser: documentSnapshot.data().nome})
     })
@@ -1117,11 +1117,17 @@ export default class MostrarCartao extends Component {
                   </TouchableOpacity>
 
 
-
-                  <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
+                  {item.local == null ?
+                    <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
                       <IconResponsiveNOBACK name="map-marked-alt" size={25}/>
+                      <TextTheme style={{fontSize:15, marginLeft: 15}}>Remoto</TextTheme>
+                    </View>
+                  :
+                    <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>
+                        <IconResponsiveNOBACK name="map-marked-alt" size={25}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.local}</TextTheme>
-                  </View>
+                    </View>
+                  }
 
 
                   <View style={{paddingHorizontal: 16, marginTop:20, flexDirection:'row', alignItems: 'center'}}>

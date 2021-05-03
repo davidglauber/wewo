@@ -391,7 +391,7 @@ export default class TelaPrincipalAnuncio extends Component {
 
                 {anunciosEstab.length == 0 && anunciosAuto.length == 0 &&
                     <View style={{flex:1, alignItems:'center', paddingTop: 75}}>
-                        <View>
+                        <View style={{alignItems:'center'}}>
                           <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
                           <Text style={{fontWeight:'bold'}}>Nenhum Anúncio Ativo Foi Encontrado</Text>
                         </View>
