@@ -80,6 +80,8 @@ import EditarAnuncio from '../screens/anuncios/EditarAnuncio';
 
 import PaymentServices from '../screens/payment/PaymentServices';
 
+import PaymentProducts from '../screens/payment/PaymentProducts';
+
 import AwaitPayment from '../screens/payment/AwaitPayment';
 
 import Chat from '../screens/chat/Chat';
@@ -345,6 +347,12 @@ function MainNavigatorA() {
         <Stack.Screen
           name="PaymentServices"
           component={PaymentServices}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name="PaymentProducts"
+          component={PaymentProducts}
           options={{headerShown: false}}
         />
 

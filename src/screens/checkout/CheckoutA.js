@@ -142,6 +142,7 @@ export default class CheckoutA extends Component {
           productsArray.push({
             idDonoDoProduto: doc.data().idDonoDoProduto,
             idComprador: doc.data().idComprador,
+            idProduct: doc.data().idProduct,
             fotoUsuarioLogado: doc.data().fotoUsuarioLogado,
             fotoProduto: doc.data().fotoProduto,
             quantidade: doc.data().quantidade,
@@ -219,7 +220,7 @@ export default class CheckoutA extends Component {
 
 
   RemoveFav(id) {
-    firebase.firestore().collection('products').where('idComprador', '==', id).get().then(function(querySnapshot) {
+    firebase.firestore().collection('products').where('idProduct', '==', id).get().then(function(querySnapshot) {
       querySnapshot.forEach(function(doc){
         doc.ref.delete();
       })
@@ -229,16 +230,79 @@ export default class CheckoutA extends Component {
 
   buyProducts() {
     var products = this.state.products;
+    var value = [];
+    var qtdArray = [];
 
     products.map((e) => {
-      let valorProduto = e.valorProduto.replace('R$', '');
-      let valorProduto2 = valorProduto.replace(',00', '');
-      let valorProduto3 = valorProduto2.replace('.', '');
-      let valorProduto4 = valorProduto3.replace('.', '');
+      let replace = e.valorProduto.replace('R$', '');
 
-      let newNumber = new Number(valorProduto4)
-      alert(`Quantidades: ${e.quantidade} \n\nTitulo do Anuncio: ${e.tituloProduto} \n\nValor do Produto: ${newNumber}`)
+      if(replace.includes(',00')){
+        let knowLength = replace.length;
+  
+        if(knowLength > 10) {
+          let replacePoint = replace.split(',00').join('');
+          let replacePoint2 = replacePoint.split('.').join('');
+          
+          //envia o valor sem , ou pontos
+          value.push(replacePoint2)
+
+          //envia a quantidade de cada produto
+          qtdArray.push(e.quantidade)
+          
+          alert('VALOR DO POINT THREE: ' + replacePoint2)
+        }
+  
+        if(knowLength <= 10) {
+          let replacePoint = replace.replace(',00','');
+          let replacePoint2 = replacePoint.split('.').join('');
+          
+          //envia o valor sem , ou pontos
+          value.push(replacePoint2)
+
+          //envia a quantidade de cada produto
+          qtdArray.push(e.quantidade)
+
+          alert('VALOR DO POINT TWO: ' + replacePoint2)
+        }
+  
+        
+      } else {
+        let knowLength = replace.length;
+  
+        if(knowLength <= 6) {
+          let replacePoint = replace.split(',').join('.');
+          
+          //envia o valor sem , ou pontos
+          value.push(replacePoint)
+
+          //envia a quantidade de cada produto
+          qtdArray.push(e.quantidade)
+
+          alert('VALOR DO POINT ONE: ' + replacePoint)
+        }
+  
+        if(knowLength > 6) {
+          let replacePointOne = replace.split(',').join('.');
+          let replacePoint2 = replacePointOne.split('.').join('');
+          
+          //envia o valor sem , ou pontos
+          value.push(replacePoint2)
+
+          //envia a quantidade de cada produto
+          qtdArray.push(e.quantidade)
+
+          alert('VALOR DO POINT TWO(2): ' + replacePoint2)
+        }
+        
+      }
+
     })
+    
+    this.props.navigation.navigate('PaymentProducts', {
+      valuePayment: value,
+      quantidade: qtdArray
+    })
+
   }
  
   render() {
@@ -288,7 +352,7 @@ export default class CheckoutA extends Component {
               renderItem={({item}) => 
                 <Swipeable
                   renderLeftActions={this.RightAction}
-                  onSwipeableLeftOpen={() => this.RemoveFav(item.idComprador)}
+                  onSwipeableLeftOpen={() => this.RemoveFav(item.idProduct)}
                 > 
                   <View style={{paddingHorizontal:30, flexDirection:'row', maxWidth: windowWidth/1.5}}>
                     <Image style={{width:160, height:140, borderRadius:20}} source={{uri: item.fotoProduto}}/>

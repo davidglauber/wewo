@@ -582,6 +582,7 @@ export default class MostrarCartao extends Component {
           await firebase.firestore().collection('products').doc(idProduct).set({
             idDonoDoProduto: item.idUser,
             idComprador: currentUser.uid,
+            idProduct: idProduct,
             fotoUsuarioLogado: item.fotoUsuarioLogado,
             fotoProduto: item.photo2,
             quantidade: e.state.qtd,
