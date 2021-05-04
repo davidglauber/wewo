@@ -352,7 +352,7 @@ export default class PaymentServices extends Component {
                 <Image source={require('../../../assets/pix.png')} style={{width:134, height:134}}/>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.mercadoPago()}>
-                <Image source={require('../../../assets/wewologoPayment.png')} style={{width:248, height:64}}/>
+                <Image source={require('../../../assets/PAYWOLOGO.png')} style={{width:248, height:166}}/>
               </TouchableOpacity>
               <TextDescription2 style={{paddingHorizontal:60, marginTop:10, fontSize:10, textAlign:'center'}}>(Conta Mercado Pago, Cartão de Crédito ou Débito, Pix, Boleto, Cartão Virtual Caixa, Lotérica e PayPal)</TextDescription2>
           </View>
