@@ -1334,15 +1334,33 @@ export default class TelaAnuncio extends Component {
 
                   <FlatList keyExtractor={() => this.makeid(17)} data={this.state.cartoesEstab} horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{marginTop:20}} 
                     renderItem={({item}) => 
-                      <View style={{paddingHorizontal: windowWidth/6}}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{flexDirection:'row', backgroundColor:'#d98b0d', borderRadius:40, width: windowWidth/1.5, height:130, alignItems:'center', paddingTop:20, marginTop:40, justifyContent:'center', paddingBottom:30}}>
-                          <Image source={{uri: item.photo}} style={{width:80, height:80, borderRadius:30}}/>
-                          <View style={{flexDirection:"column", padding:10}}>
-                            <Text>Produto</Text>
-                            <Text style={{fontWeight:'bold'}}>{item.title}</Text>
-                            <Text>{item.valueServiceEstab}</Text>
+                      <View>
+                        {this.state.cartoesEstab.length <= 1 ?
+                          <View style={{paddingHorizontal: windowWidth/6}}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{flexDirection:'row', backgroundColor:'#d98b0d', borderRadius:40, width: windowWidth/1.5, height:130, alignItems:'center', paddingTop:20, marginTop:40, justifyContent:'center', paddingBottom:30}}>
+                              <Image source={{uri: item.photo}} style={{width:80, height:80, borderRadius:30}}/>
+                              <View style={{flexDirection:"column", padding:10}}>
+                                <Text>Produto</Text>
+                                <Text style={{fontWeight:'bold'}}>{item.title}</Text>
+                                <Text>{item.valueServiceEstab}</Text>
+                              </View>
+                            </TouchableOpacity>
                           </View>
-                        </TouchableOpacity>
+
+                          :
+
+                          <View style={{marginLeft: windowWidth/10}}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{flexDirection:'row', backgroundColor:'#d98b0d', borderRadius:40, width: windowWidth/1.5, height:130, alignItems:'center', paddingTop:20, marginTop:40, justifyContent:'center', paddingBottom:30}}>
+                              <Image source={{uri: item.photo}} style={{width:80, height:80, borderRadius:30}}/>
+                              <View style={{flexDirection:"column", padding:10}}>
+                                <Text>Produto</Text>
+                                <Text style={{fontWeight:'bold'}}>{item.title}</Text>
+                                <Text>{item.valueServiceEstab}</Text>
+                              </View>
+                            </TouchableOpacity>
+                          </View>
+
+                        }
                       </View>
                   }
                   />
