@@ -341,9 +341,9 @@ async componentDidMount() {
               <View style={{flexDirection: 'row',  justifyContent: 'center',  alignItems: 'center', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
               
               {this.context.dark ? 
-                <Image source={require("../../../assets/wewologo2.png")} style={{height:104, width:104, justifyContent:'center'}}/>
+                <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104, justifyContent:'center'}}/>
                 :
-                <Image source={require("../../../assets/wewologo2.png")} style={{height:104, width:104, justifyContent:'center'}}/>
+                <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104, justifyContent:'center'}}/>
               }      
               </View>
 

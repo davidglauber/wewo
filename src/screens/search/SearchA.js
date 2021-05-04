@@ -300,9 +300,9 @@ export default class SearchA extends Component {
 
         <View style={{alignItems:'center', paddingTop:16}}>
           {this.context.dark ? 
-            <Image source={require("../../../assets/wewologo2.png")} style={{height:104, width:104, justifyContent:'center'}}/>
+            <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104, justifyContent:'center'}}/>
             :
-            <Image source={require("../../../assets/wewologo2.png")} style={{height:104, width:104, justifyContent:'center'}}/>
+            <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104, justifyContent:'center'}}/>
           }      
         </View>
 
