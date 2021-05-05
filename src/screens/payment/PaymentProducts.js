@@ -112,7 +112,8 @@ export default class PaymentProducts extends Component {
             e.state.accTK.push({
               accTK: documentSnapshot.data().accessTK,
               img: i.img,
-              qtd: i.qtd
+              qtd: i.qtd,
+              value: i.value
             })
           })
     
@@ -173,8 +174,8 @@ export default class PaymentProducts extends Component {
 
 
 
-  mpTaxAndPayment(data, taxWeWo, taxUser, fullValue) {
-    alert(`Valor total: ${fullValue}\n\n\nTaxa do WeWo (15%): ${taxWeWo}\nValor do anunciante: ${taxUser}`)
+  mpTaxAndPayment(data, taxWeWo, taxUser, fullValue, quantidade) {
+    alert(`Valor total: ${fullValue * quantidade}\n\n\nTaxa do WeWo (15%): ${taxWeWo * quantidade}\nValor do anunciante: ${taxUser * quantidade}`)
 
     this.setState({endpointMP: data})
   }
@@ -198,23 +199,26 @@ export default class PaymentProducts extends Component {
 
   mercadoPago() {
     console.log('TOKEN DO USUARIO: ' +  this.state.accTK)
-    let value = this.state.resultSumValues;
-    let newNumber = new Number(value);
     
-    let percentToWeWo = ((newNumber / 100) * 15).toFixed(2);
-    let percentToWeWoNumberInt = new Number(percentToWeWo);
-
-    let percentToUser = ((newNumber / 100) * 85).toFixed(2);
-    let percentToUserNumberInt = new Number(percentToUser);
-
-    let percentToUser2 = ((newNumber / 100) * 100).toFixed(2);
-    let percentToUserNumberInt2 = new Number(percentToUser2);
-
     this.setState({brCodeValue:'loaded'});
-
-
-      for(var x = 0; x <= this.state.accTK.length; x++) {
-        if(x == this.state.valueIncrement) {
+    
+    
+    for(var x = 0; x <= this.state.accTK.length; x++) {
+      
+      if(x == this.state.valueIncrement) {
+          let value = this.state.accTK[x].value;
+          let newNumber = new Number(value);
+          
+          let percentToWeWo = ((newNumber / 100) * 15).toFixed(2);
+          let percentToWeWoNumberInt = new Number(percentToWeWo);
+      
+          let percentToUser = ((newNumber / 100) * 85).toFixed(2);
+          let percentToUserNumberInt = new Number(percentToUser);
+      
+          let percentToUser2 = ((newNumber / 100) * 100).toFixed(2);
+          let percentToUserNumberInt2 = new Number(percentToUser2);
+    
+          let qtd = this.state.accTK[x].qtd;
           fetch('https://api.mercadopago.com/checkout/preferences', {
             method:'POST',
             mode: 'no-cors',
@@ -239,10 +243,10 @@ export default class PaymentProducts extends Component {
             })
             })
             .then((res) => res.json())
-            .then((json) => this.mpTaxAndPayment(json.init_point, percentToWeWoNumberInt, percentToUserNumberInt, percentToUserNumberInt2))
+            .then((json) => this.mpTaxAndPayment(json.init_point, percentToWeWoNumberInt, percentToUserNumberInt, percentToUserNumberInt2, qtd))
             .catch((i) => alert('Erro ao requisitar o mercado pago: ' + i))
             
-            console.log(`QTD: ${this.state.accTK[x].qtd} \n\nACCESSTOKEN: ${this.state.accTK[x].accTK} \n\nFoto: ${this.state.accTK[x].img}`)
+            console.log(`QTD: ${this.state.accTK[x].qtd} \n\nACCESSTOKEN: ${this.state.accTK[x].accTK} \n\nFoto: ${this.state.accTK[x].img} \n\nValor: ${this.state.accTK[x].value}`)
         }
       }
 
