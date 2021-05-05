@@ -184,25 +184,28 @@ export default class PaymentProducts extends Component {
 
   _onNavigationStateChange(webViewState){
     if(webViewState.url.includes('https://www.mercadopago.com/mp.php')) {
-      Alert.alert("Atenção", "O pagamento foi aprovado! Avalie o serviço para ajudar mais pessoas a encontrarem o profissional!", [
-        {
+      let valueIncrement = this.state.valueIncrement;
+      this.setState({valueIncrement: valueIncrement + 1})
+
+      if(valueIncrement == this.state.accTK.length) {
+        Alert.alert("Atenção", "O pagamento foi aprovado! Avalie o serviço para ajudar mais pessoas a encontrarem o profissional!", [
+          {
             text: "OK",
-            onPress: () => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: this.state.idAnuncio, idUserCartao: this.props.route.params.idContratado}),
+            onPress: () => this.props.navigation.navigate('Home'),
             style: "cancel"
-        },
-        { text: "Vou avaliar", onPress: () => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: this.state.idAnuncio, idUserCartao: this.props.route.params.idContratado}) }
-      ]);
+          },
+          { text: "Vou avaliar", onPress: () => this.props.navigation.navigate('Home')}
+        ]);
+      } else {
+        this.mercadoPago()
+      }
     }
   }
 
 
 
   mercadoPago() {
-    console.log('TOKEN DO USUARIO: ' +  this.state.accTK)
-    
     this.setState({brCodeValue:'loaded'});
-    
-    
     for(var x = 0; x <= this.state.accTK.length; x++) {
       
       if(x == this.state.valueIncrement) {
@@ -247,7 +250,7 @@ export default class PaymentProducts extends Component {
             .catch((i) => alert('Erro ao requisitar o mercado pago: ' + i))
             
             console.log(`QTD: ${this.state.accTK[x].qtd} \n\nACCESSTOKEN: ${this.state.accTK[x].accTK} \n\nFoto: ${this.state.accTK[x].img} \n\nValor: ${this.state.accTK[x].value}`)
-        }
+        } 
       }
 
   }

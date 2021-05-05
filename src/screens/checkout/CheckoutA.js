@@ -390,10 +390,14 @@ export default class CheckoutA extends Component {
           </ScrollView>
           
           <View style={{position:"absolute", top: windowHeight/1.2, left: windowWidth/4, flexDirection:'row', alignItems: 'center'}}>
-            <TouchableOpacity onPress={() => this.buyProducts()} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
-                  <IconResponsive name="check" size={24}/>
-                  <Text style={{color: this.context.dark ? 'black' : 'white', fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Finalizar Pedido</Text>
-            </TouchableOpacity>
+            {this.state.products.length == 0 ?
+              null
+              :
+              <TouchableOpacity onPress={() => this.buyProducts()} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                    <IconResponsive name="check" size={24}/>
+                    <Text style={{color: this.context.dark ? 'black' : 'white', fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Finalizar Pedido</Text>
+              </TouchableOpacity>
+            }
           </View>
 
           <View style={{justifyContent: 'center',alignItems: 'center', padding: 8}}>
