@@ -80,7 +80,8 @@ export default class PaymentProducts extends Component {
       accTK: [],
       fotoUser:'',
       idAnuncio: '',
-      resultSumValues: ''
+      resultSumValues: '',
+      valorTotal: ''
     };
   }
 
@@ -93,42 +94,38 @@ export default class PaymentProducts extends Component {
 
 
   componentDidMount() {
-    let e = this;
+    var e = this;
+    let arrayProduct = this.props.route.params.infoProductArray;
+    var currentUser = firebase.auth().currentUser;
+    var arraySumValue = [];
+
+    console.log('INFO PRODUCT ARRAY: ' + JSON.stringify(arrayProduct))
+
+    arrayProduct.map(async (i) => {
+
+      //calcula o valor total dos produtos já com a quantidade correspondente
+      let sumandmulti = Math.round(i.value * i.qtd);
+      arraySumValue.push(sumandmulti)
+      
+      alert('Valor + Quantidade: ' + sumandmulti)
+
+      if(i.idDonoDoProduto !== null) {
+          await firebase.firestore().collection('usuarios').doc(i.idDonoDoProduto).onSnapshot(documentSnapshot => {
+            e.state.accTK.push(documentSnapshot.data().accessTK)
+            console.log('TOKEN FIREBASE PRODUCTS: ' + e.state.accTK)
+          })
     
-    console.log('INFO PRODUCT ARRAY: ' + JSON.stringify(this.props.route.params.infoProductArray))
-    /*
-    let valueRoute = '';
-    valueRoute =  this.props.route.params.valuePayment;
-    let qtdRoute = 0;
-    qtdRoute = this.props.route.params.quantidade;
-    let idDonoDoProduto = ''; 
-    idDonoDoProduto = this.props.route.params.idsUsers;
+          await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
+            e.setState({fotoUser: documentSnapshot.data().photoProfile})
+          })
+      } else {
+        return null
+      }
+      
+      console.log('VALOR DO ROUTER: ' + i.value + '\n\nQuantidade de Produto: ' + i.qtd + '\n\nID DO ANUNCIANTE: ' + i.idDonoDoProduto)
+    })
 
-
-
-    let currentUser = firebase.auth().currentUser;
-
-    this.setState({resultSumValues: valueRoute.reduce((a, b) => a + b, 0)})
-    alert('Soma dos valores: ' + valueRoute.reduce((a, b) => a + b, 0))
-
-
-    if(idDonoDoProduto !== null) {
-      idDonoDoProduto.map(async (i) => {
-        await firebase.firestore().collection('usuarios').doc(i).onSnapshot(documentSnapshot => {
-          e.state.accTK.push(documentSnapshot.data().accessTK)
-          console.log('TOKEN FIREBASE PRODUCTS: ' + e.state.accTK)
-        })
-  
-        await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
-          e.setState({fotoUser: documentSnapshot.data().photoProfile})
-        })
-      })
-    } else {
-      return null
-    }
-    
-    console.log('VALOR DO ROUTER: ' + valueRoute + '\n\nQuantidade de Produto: ' + qtdRoute + '\n\nID DO ANUNCIANTE: ' + idDonoDoProduto)
-  */
+    this.setState({resultSumValues: arraySumValue.reduce((a, b) => a + b, 0)})
   }
   
 
