@@ -250,7 +250,8 @@ export default class CheckoutA extends Component {
           infoProduct.push({
             value: replaceInter,
             qtd: e.quantidade,
-            idDonoDoProduto: e.idDonoDoProduto
+            idDonoDoProduto: e.idDonoDoProduto,
+            img: e.fotoUsuarioLogado
           })
 
           console.log('VALOR DO POINT THREE: ' + replaceInter)
@@ -265,7 +266,8 @@ export default class CheckoutA extends Component {
           infoProduct.push({
             value: replaceInter,
             qtd: e.quantidade,
-            idDonoDoProduto: e.idDonoDoProduto
+            idDonoDoProduto: e.idDonoDoProduto,
+            img: e.fotoUsuarioLogado
           })
 
           console.log('VALOR DO POINT TWO: ' + replaceInter)
@@ -283,7 +285,8 @@ export default class CheckoutA extends Component {
           infoProduct.push({
             value: replaceInter,
             qtd: e.quantidade,
-            idDonoDoProduto: e.idDonoDoProduto
+            idDonoDoProduto: e.idDonoDoProduto,
+            img: e.fotoUsuarioLogado
           })
 
           console.log('VALOR DO POINT ONE: ' + replaceInter)
@@ -298,7 +301,8 @@ export default class CheckoutA extends Component {
           infoProduct.push({
             value: replaceInter,
             qtd: e.quantidade,
-            idDonoDoProduto: e.idDonoDoProduto
+            idDonoDoProduto: e.idDonoDoProduto,
+            img: e.fotoUsuarioLogado
           })
           
           console.log('VALOR DO POINT TWO(2): ' + replaceInter)

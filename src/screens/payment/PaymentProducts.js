@@ -33,6 +33,7 @@ import firebase from '../../config/firebase';
 import { ThemeContext } from '../../../ThemeContext';
 
 import { WebView } from 'react-native-webview'
+import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
 
 
 //consts
@@ -78,10 +79,10 @@ export default class PaymentProducts extends Component {
       idNot: '',
       modalizeRef: React.createRef(null),
       accTK: [],
-      fotoUser:'',
       idAnuncio: '',
       resultSumValues: '',
-      valorTotal: ''
+      valorTotal: '',
+      valueIncrement: 0
     };
   }
 
@@ -102,22 +103,19 @@ export default class PaymentProducts extends Component {
     console.log('INFO PRODUCT ARRAY: ' + JSON.stringify(arrayProduct))
 
     arrayProduct.map(async (i) => {
-
       //calcula o valor total dos produtos já com a quantidade correspondente
-      let sumandmulti = Math.round(i.value * i.qtd);
+      let sumandmulti = i.value * i.qtd;
       arraySumValue.push(sumandmulti)
       
-      alert('Valor + Quantidade: ' + sumandmulti)
-
       if(i.idDonoDoProduto !== null) {
           await firebase.firestore().collection('usuarios').doc(i.idDonoDoProduto).onSnapshot(documentSnapshot => {
-            e.state.accTK.push(documentSnapshot.data().accessTK)
-            console.log('TOKEN FIREBASE PRODUCTS: ' + e.state.accTK)
+            e.state.accTK.push({
+              accTK: documentSnapshot.data().accessTK,
+              img: i.img,
+              qtd: i.qtd
+            })
           })
     
-          await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
-            e.setState({fotoUser: documentSnapshot.data().photoProfile})
-          })
       } else {
         return null
       }
@@ -171,11 +169,17 @@ export default class PaymentProducts extends Component {
     .catch((err) => alert('Houve um erro ao verificar o status da transação: ' + err))
   }
 
+
+
+
+
   mpTaxAndPayment(data, taxWeWo, taxUser, fullValue) {
     alert(`Valor total: ${fullValue}\n\n\nTaxa do WeWo (15%): ${taxWeWo}\nValor do anunciante: ${taxUser}`)
 
     this.setState({endpointMP: data})
   }
+
+
 
   _onNavigationStateChange(webViewState){
     if(webViewState.url.includes('https://www.mercadopago.com/mp.php')) {
@@ -205,35 +209,43 @@ export default class PaymentProducts extends Component {
 
     let percentToUser2 = ((newNumber / 100) * 100).toFixed(2);
     let percentToUserNumberInt2 = new Number(percentToUser2);
-    
+
     this.setState({brCodeValue:'loaded'});
-    
-      fetch('https://api.mercadopago.com/checkout/preferences', {
-        method:'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.state.accTK}`
-        },
-        body: JSON.stringify({
-          items: [
-            {
-              title:"Pagamento de Serviço WeWo",
-              quantity: 1,
-              currency_id:"BRL",
-              unit_price: percentToUserNumberInt2,
-              picture_url: this.state.fotoUser
-            }
-          ],
-          marketplace_fee: percentToWeWoNumberInt,
-          back_urls: {
-            success: "https://www.mercadopago.com/mp.php"
-          }
-        })
-      })
-      .then((res) => res.json())
-      .then((json) => this.mpTaxAndPayment(json.init_point, percentToWeWoNumberInt, percentToUserNumberInt, percentToUserNumberInt2))
-      .catch((e) => alert('erro ao requisitar o mercado pago: ' + e))
+
+
+      for(var x = 0; x <= this.state.accTK.length; x++) {
+        if(x == this.state.valueIncrement) {
+          fetch('https://api.mercadopago.com/checkout/preferences', {
+            method:'POST',
+            mode: 'no-cors',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${this.state.accTK[x].accTK}`
+            },
+            body: JSON.stringify({
+              items: [
+                {
+                  title:"Pagamento de Serviço WeWo",
+                  quantity: this.state.accTK[x].qtd,
+                  currency_id:"BRL",
+                  unit_price: percentToUserNumberInt2,
+                  picture_url: this.state.accTK[x].img
+                }
+              ],
+              marketplace_fee: percentToWeWoNumberInt,
+              back_urls: {
+                success: "https://www.mercadopago.com/mp.php"
+              }
+            })
+            })
+            .then((res) => res.json())
+            .then((json) => this.mpTaxAndPayment(json.init_point, percentToWeWoNumberInt, percentToUserNumberInt, percentToUserNumberInt2))
+            .catch((i) => alert('Erro ao requisitar o mercado pago: ' + i))
+            
+            console.log(`QTD: ${this.state.accTK[x].qtd} \n\nACCESSTOKEN: ${this.state.accTK[x].accTK} \n\nFoto: ${this.state.accTK[x].img}`)
+        }
+      }
+
   }
 
 
