@@ -325,6 +325,13 @@ export default class PaymentServices extends Component {
           marketplace_fee: percentToWeWoNumberInt,
           back_urls: {
             success: "https://www.mercadopago.com/mp.php"
+          },
+          payment_methods: {
+            excluded_payment_methods: [
+              {
+                id: 'pix'
+              }
+            ]
           }
         })
       })

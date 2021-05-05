@@ -102,6 +102,15 @@ export default class PaymentProducts extends Component {
 
     console.log('INFO PRODUCT ARRAY: ' + JSON.stringify(arrayProduct))
 
+    Alert.alert("Importante", "Por questão de segurança, se você vai comprar mais de um produto será necessário pagar separadamente \n\nO PROCESSO É TOTALMENTE AUTOMÁTICO", [
+      {
+        text: "OK",
+        onPress: () => {},
+        style: "cancel"
+      },
+      { text: "Continuar", onPress: () => {}}
+    ]);
+
     arrayProduct.map(async (i) => {
       //calcula o valor total dos produtos já com a quantidade correspondente
       let sumandmulti = i.value * i.qtd;
@@ -113,7 +122,8 @@ export default class PaymentProducts extends Component {
               accTK: documentSnapshot.data().accessTK,
               img: i.img,
               qtd: i.qtd,
-              value: i.value
+              value: i.value,
+              idDonoDoProduto: i.idDonoDoProduto
             })
           })
     
@@ -180,23 +190,26 @@ export default class PaymentProducts extends Component {
     this.setState({endpointMP: data})
   }
 
-
-
+  
+  //ve quantos usuarios ja foram pagos e quando o processo estiver terminado ele apaga o produto do carrinho e joga para a tela inicial
   _onNavigationStateChange(webViewState){
     if(webViewState.url.includes('https://www.mercadopago.com/mp.php')) {
       let valueIncrement = this.state.valueIncrement;
       this.setState({valueIncrement: valueIncrement + 1})
 
-      if(valueIncrement == this.state.accTK.length) {
-        Alert.alert("Atenção", "O pagamento foi aprovado! Avalie o serviço para ajudar mais pessoas a encontrarem o profissional!", [
+      if(valueIncrement == this.state.accTK.length && this.state.accTK.length >= 1) {
+        Alert.alert("Atenção", "Parabéns! O pagamento foi aprovado!", [
           {
             text: "OK",
             onPress: () => this.props.navigation.navigate('Home'),
             style: "cancel"
           },
-          { text: "Vou avaliar", onPress: () => this.props.navigation.navigate('Home')}
+          { text: "Voltar para tela inicial", onPress: () => this.props.navigation.navigate('Home')}
         ]);
-      } else {
+      } 
+      
+      if(valueIncrement !== this.state.accTK.length && this.state.accTK.length > 1){
+        alert('Redirecionando você para pagar o próximo usuário')
         this.mercadoPago()
       }
     }
@@ -242,6 +255,13 @@ export default class PaymentProducts extends Component {
               marketplace_fee: percentToWeWoNumberInt,
               back_urls: {
                 success: "https://www.mercadopago.com/mp.php"
+              },
+              payment_methods: {
+                excluded_payment_methods: [
+                  {
+                    id: 'pix'
+                  }
+                ]
               }
             })
             })
@@ -249,7 +269,7 @@ export default class PaymentProducts extends Component {
             .then((json) => this.mpTaxAndPayment(json.init_point, percentToWeWoNumberInt, percentToUserNumberInt, percentToUserNumberInt2, qtd))
             .catch((i) => alert('Erro ao requisitar o mercado pago: ' + i))
             
-            console.log(`QTD: ${this.state.accTK[x].qtd} \n\nACCESSTOKEN: ${this.state.accTK[x].accTK} \n\nFoto: ${this.state.accTK[x].img} \n\nValor: ${this.state.accTK[x].value}`)
+            console.log(`QTD: ${this.state.accTK[x].qtd} \n\nACCESSTOKEN: ${this.state.accTK[x].accTK} \n\nFoto: ${this.state.accTK[x].img} \n\nValor: ${this.state.accTK[x].value} \n\nIDDONO ANUNCIO: ${this.state.accTK[x].idDonoDoProduto}`)
         } 
       }
 
@@ -281,21 +301,6 @@ export default class PaymentProducts extends Component {
             onNavigationStateChange={this._onNavigationStateChange.bind(this)}
             />
         }
-
-          {/*Modalize dos comentários*/}
-            <Modalize
-              ref={this.state.modalizeRef}
-              snapPoint={650}
-              modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
-            >
-            <View style={{alignItems:'center', marginTop:40}}>
-              <Text style={{paddingHorizontal:20, textAlign:'center'}}>Pague a taxa através desse QR Code {"\n\n"}(ao ser confirmado o pagamento, será aberto uma tela para pagar a parte do contratado, NÃO FECHE A PÁGINA){"\n\n"}Taxa: R${((this.state.value / 100) * 5).toFixed(2)}{"\n"}Status: {this.state.paymentStatus}</Text>
-              <Image style={{width: 300, height: 300}} source={{uri: `data:image/png;base64,${this.state.QRCode}`}}/>
-              <TouchableOpacity onPress={() => this.getPaymentStatus(this.state.idTransaction)}>
-                <IconResponsiveNOBACK name="sync-alt" size={30} color={'#d98b0d'}/>
-              </TouchableOpacity>
-            </View>
-          </Modalize>
 
       </SafeBackground>
     );
