@@ -37,6 +37,7 @@ import LottieView from 'lottie-react-native';
 //import datepicker
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import AlertPro from "react-native-alert-pro";
 
 //locationSERVICES
 import * as Location from 'expo-location';
@@ -84,12 +85,7 @@ export default class ServiceCadaster extends Component {
     let enabled = await Location.hasServicesEnabledAsync();
 
     if (!enabled) {
-      Alert.alert(
-        'O serviço de localização não está ativado',
-        'Por favor ative o serviço de localização para continuar',
-        [{ text: 'OK' }],
-        { cancelable: false }
-      );
+      this.AlertPro.open();
     } else {
       this.setState({locationServiceEnabled: enabled});
     }
@@ -101,12 +97,7 @@ export default class ServiceCadaster extends Component {
     let { status } = await Location.requestPermissionsAsync();
 
     if (status !== 'granted') {
-      Alert.alert(
-        'Permissão negada pelo usuário',
-        'Permita o app usar o serviço de localização',
-        [{ text: 'OK' }],
-        { cancelable: false }
-      );
+      this.AlertPro2.open();
     }
   
     let { coords } = await Location.getCurrentPositionAsync();
@@ -245,7 +236,7 @@ export default class ServiceCadaster extends Component {
         e.props.navigation.navigate('Home')
       })
     } else {
-      alert('Por favor, selecione a data e horário do serviço!')
+      this.AlertPro3.open();
     }
   }
 
@@ -269,6 +260,101 @@ export default class ServiceCadaster extends Component {
         </Modal>
 
 
+        <AlertPro
+          ref={ref => {
+            this.AlertPro = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro.close()}
+          title="O serviço de localização não está ativado"
+          message="Por favor ative o serviço de localização para continuar"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+        
+        <AlertPro
+          ref={ref => {
+            this.AlertPro2 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro2.close()}
+          title="Permissão negada pelo usuário"
+          message="Permita o app usar o serviço de localização"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+        
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro3 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro3.close()}
+          title="Erro!"
+          message="Por favor, selecione a data e horário do serviço!"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        
         <ScrollView style={{marginBottom:50}}>
           <View style={{alignItems:'center', marginTop:15}}>
             <Heading>Contratar Serviço</Heading>

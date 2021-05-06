@@ -38,6 +38,8 @@ import { TextInputMask } from 'react-native-masked-text';
 
 import { TextDays, ChooseOption } from '../home/styles';
 
+import AlertPro from "react-native-alert-pro";
+
 //import icons
 import { FontAwesome5 } from '@expo/vector-icons';
 
@@ -260,19 +262,19 @@ export default class Cadastro extends Component {
     const {navigation} = this.props;
 
     if(this.state.password !== this.state.confirmPassword){
-      alert('As senhas não coincidem')
+      this.AlertPro.open();
       } 
       
     if (this.state.password.length < 6) {
-        alert('A senha deve ter no mínimo 6 caracteres')
+      this.AlertPro2.open();
     } 
 
     if (this.state.nome == '' || this.state.email == '' || this.state.password == '' || this.state.confirmPassword == '' || this.state.phone == '') {
-      alert('Todos os campos devem ser preenchidos!')
+      this.AlertPro3.open();
     } 
 
     if(actualYear - userDate < 13) {
-      alert('Você precisa ter ao menos 13 anos para se cadastrar no WeWo')
+      this.AlertPro4.open();
     } 
     
     
@@ -346,6 +348,134 @@ export default class Cadastro extends Component {
     
     return (
       <ScrollView style={{flex:1, backgroundColor:'white'}}>
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro.close()}
+          title="Erro!"
+          message="As senhas não coincidem"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        
+        <AlertPro
+          ref={ref => {
+            this.AlertPro2 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro2.close()}
+          title="Erro!"
+          message="A senha deve ter no mínimo 6 caracteres"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro3 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro3.close()}
+          title="Erro!"
+          message="Todos os campos devem ser preenchidos!"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro4 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro4.close()}
+          title="Erro!"
+          message="Você precisa ter ao menos 13 anos para se cadastrar no WeWo"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
         <StatusBar
           backgroundColor='#fff'
           barStyle="dark-content"

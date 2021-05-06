@@ -202,16 +202,18 @@ export default class TelaLogin extends Component {
     navigation.navigate(screen);
   };
 
+
+  nav(boolean) {
+    this.AlertPro5.close();
+    if(boolean == true) {
+      this.props.navigation.navigate('TelaLoginSMS')
+    } else {
+      this.props.navigation.navigate('SignUp')
+    }
+  }
+
   confirmIfUserHasBeenSignUp() {
-    Alert.alert(
-      'AVISO',
-      'Você se cadastrou? Senão o fez, o processo de login dará errado! ',
-      [
-        {text: 'Vou me cadastrar', onPress: () => this.props.navigation.navigate('SignUp'), style: 'cancel'},
-        {text: 'Sim, já me cadastrei', onPress: () => this.props.navigation.navigate('TelaLoginSMS')}
-      ],
-      {cancelable: false},
-    );
+    this.AlertPro5.open();
   }
 
   
@@ -413,6 +415,39 @@ export default class TelaLogin extends Component {
             }
           }}
         />
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro5 = ref;
+          }}
+          onCancel={() => this.nav(false)}
+          onConfirm={() => this.nav(true)}
+          title="Aviso!!!"
+          message="Você se cadastrou? Senão o fez, o processo de login dará errado!"
+          textConfirm="Sim, já me cadastrei"
+          textCancel="Vou me cadastrar"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
 
         <StatusBar
           backgroundColor="white"

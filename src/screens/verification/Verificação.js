@@ -39,6 +39,8 @@ import Colors from '../../theme/colors';
 //import Google API
 import {GoogleSignin, statusCodes} from 'react-native-google-signin';
 
+import AlertPro from "react-native-alert-pro";
+
 //import Facebook API
 import * as Facebook from 'expo-facebook';
 
@@ -184,8 +186,8 @@ export default class Verificação extends Component {
               })
             AsyncStorage.setItem('emailUserSaved', result.user.email)
             this.props.navigation.navigate('HomeNavigator')
+            this.AlertPro4.open();
 
-            alert('Você foi cadastrado com sucesso 👍')
         }).catch((err) => {
           console.log('erro: ' + err)
         })
@@ -193,12 +195,12 @@ export default class Verificação extends Component {
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
-        alert('Usuário cancelou o login');
+        this.AlertPro2.open();
       } else if (error.code === statusCodes.IN_PROGRESS) {
         alert('Login em progresso...');
         // operation (f.e. sign in) is in progress already
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        alert('Google Play Serviços não disponível');
+        this.AlertPro3.open();
         // play services not available or outdated
       } else {
         // some other error happened
@@ -244,7 +246,7 @@ export default class Verificação extends Component {
                     })
                   AsyncStorage.setItem('emailUserSaved', result.user.email)
                   this.props.navigation.navigate('HomeNavigator')
-                  alert('Você foi cadastrado com sucesso 👍')
+                  this.AlertPro4.open();
           }).catch(error => {
               console.log(error);
           });
@@ -257,6 +259,102 @@ export default class Verificação extends Component {
   render() {
     return (
       <SafeAreaView forceInset={{top: 'never'}} style={styles.screenContainer}>
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro2 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro2.close()}
+          title="Erro"
+          message="Usuário cancelou o login"
+          textConfirm="Fechar"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+      <AlertPro
+          ref={ref => {
+            this.AlertPro3 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro3.close()}
+          title="Erro"
+          message="Google Play Serviços não disponível"
+          textConfirm="Fechar"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro4 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro4.close()}
+          title="Sucesso"
+          message="Logado com sucesso"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+
         <StatusBar
           backgroundColor="#fff"
           barStyle="dark-content"
