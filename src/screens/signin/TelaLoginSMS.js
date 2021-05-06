@@ -27,6 +27,9 @@ import {Heading5, Paragraph} from '../../components/text/CustomText';
 import NumericKeyboard from '../../components/keyboard/NumericKeyboard';
 import { useNavigation } from "@react-navigation/native";
 
+
+import AlertPro from "react-native-alert-pro";
+
 //import firebase
 import firebase from '../../config/firebase';
 import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaVerifier } from 'expo-firebase-recaptcha';
@@ -102,6 +105,8 @@ const styles = StyleSheet.create({
 export default function TelaLoginSMS () {
   const navigation = useNavigation();
   const [phoneInput, setPhoneInput] = React.useState('');
+  const alertPro = React.useRef();
+  const alertPro2 = React.useRef();
 
   let changePhone = '+55' + phoneInput;
   let changePhone2 = changePhone.replace(' ', '');
@@ -132,7 +137,7 @@ export default function TelaLoginSMS () {
           recaptchaVerifier.current
         );
         setVerificationId(verificationId);
-        alert('O código de verificação foi enviado para o seu celular')
+        alertPro.current.open();
       } catch (err) {
         alert('Ocorreu um erro ao enviar o SMS: ' + err)
       }
@@ -141,6 +146,67 @@ export default function TelaLoginSMS () {
 
     return (
       <SafeAreaView forceInset={{top: 'never'}} style={styles.screenContainer}>
+
+      <AlertPro
+        ref={alertPro}
+        showCancel={false}
+        onConfirm={() => alertPro.current.close()}
+        title="Tudo certo!"
+        message="O código de verificação foi enviado para o seu celular"
+        textConfirm="OK"
+        customStyles={{
+          mask: {
+            backgroundColor: "black",
+            opacity: 0.9
+          },
+          container: {
+            borderWidth: 1,
+            borderColor: "#d98b0d",
+            shadowColor: "#000000",
+            shadowOpacity: 0.1,
+            shadowRadius: 10,
+            borderRadius:30
+          },
+          buttonCancel: {
+            backgroundColor: "#3f3f3f"
+          },
+          buttonConfirm: {
+            backgroundColor: "#ffa31a"
+          }
+        }}
+      />
+
+
+      <AlertPro
+        ref={alertPro2}
+        showCancel={false}
+        onConfirm={() => alertPro2.current.close()}
+        title="Tudo certo"
+        message="Logado com sucesso!"
+        textConfirm="OK"
+        customStyles={{
+          mask: {
+            backgroundColor: "black",
+            opacity: 0.9
+          },
+          container: {
+            borderWidth: 1,
+            borderColor: "#d98b0d",
+            shadowColor: "#000000",
+            shadowOpacity: 0.1,
+            shadowRadius: 10,
+            borderRadius:30
+          },
+          buttonCancel: {
+            backgroundColor: "#3f3f3f"
+          },
+          buttonConfirm: {
+            backgroundColor: "#ffa31a"
+          }
+        }}
+      />
+
+
         <StatusBar
           backgroundColor="white"
           barStyle="dark-content"
@@ -221,7 +287,7 @@ export default function TelaLoginSMS () {
                   verificationCode
                 );
                     await firebase.auth().signInWithCredential(credential).then(() => {
-                        alert('Logado com sucesso')
+                        alertPro2.current.open();
                         navigation.navigate('HomeNavigator')
                     }).catch((err) => {
                         console.log(err)

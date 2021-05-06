@@ -31,6 +31,8 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import firebase from '../../config/firebase';
 import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaVerifier } from 'expo-firebase-recaptcha';
 
+import AlertPro from "react-native-alert-pro";
+
 
 // import colors
 import Colors from '../../theme/colors';
@@ -114,6 +116,7 @@ export default function SMSVerificacao () {
   const getTelefone = route.params.telefone;
   const getDataNascimento = route.params.dataNascimento;
   const getTipoDeConta = route.params.tipoDeConta;
+  const alertPro = React.useRef();
 
 
 
@@ -126,7 +129,7 @@ export default function SMSVerificacao () {
           recaptchaVerifier.current
         );
         setVerificationId(verificationId);
-        alert('O código de verificação foi enviado para o seu celular')
+        alertPro.current.open();
       } catch (err) {
         alert('Ocorreu um erro ao enviar o SMS: ' + err)
       }
@@ -143,7 +146,7 @@ export default function SMSVerificacao () {
         recaptchaVerifier.current
       );
       setVerificationId(verificationId);
-      alert('O código de verificação foi enviado para o seu celular')
+      alertPro.current.open();
     } catch (err) {
       alert('Ocorreu um erro ao enviar o SMS: ' + err)
     }
@@ -152,6 +155,37 @@ export default function SMSVerificacao () {
   
     return (
       <SafeAreaView forceInset={{top: 'never'}} style={styles.screenContainer}>
+
+      <AlertPro
+        ref={alertPro}
+        showCancel={false}
+        onConfirm={() => alertPro.current.close()}
+        title="Tudo certo!"
+        message="O código de verificação foi enviado para o seu celular"
+        textConfirm="OK"
+        customStyles={{
+          mask: {
+            backgroundColor: "black",
+            opacity: 0.9
+          },
+          container: {
+            borderWidth: 1,
+            borderColor: "#d98b0d",
+            shadowColor: "#000000",
+            shadowOpacity: 0.1,
+            shadowRadius: 10,
+            borderRadius:30
+          },
+          buttonCancel: {
+            backgroundColor: "#3f3f3f"
+          },
+          buttonConfirm: {
+            backgroundColor: "#ffa31a"
+          }
+        }}
+      />
+
+
         <StatusBar
           backgroundColor='white'
           barStyle="dark-content"

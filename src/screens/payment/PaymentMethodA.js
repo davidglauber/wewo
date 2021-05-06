@@ -38,7 +38,10 @@ import firebase from '../../config/firebase';
 
 import LottieView from 'lottie-react-native';
 
+import AlertPro from "react-native-alert-pro";
+
 import { Subtitle2Publish, ChooseOption } from '../home/styles';
+
 //consts
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -134,6 +137,8 @@ export default function PaymentMethodA() {
   const [plan, setPlan] = useState('mensal');
   const [verifySub, setVerifySub] = useState(false);
   const [tipoDeConta, setTipoDeConta] = useState("");
+  const alertPro = React.useRef();
+  const alertPro2 = React.useRef();
   
   const itemSubs = Platform.select({
     android: [
@@ -184,10 +189,10 @@ export default function PaymentMethodA() {
   
       if(comprou == true) {
         setVerifySub(true)
-        alert('Você já possui um plano')
+        alertPro.current.open()
       } else {
         setVerifySub(false)
-        alert('Você não possui um plano')
+        alertPro2.current.open()
       }
     }
     isBought();
@@ -203,6 +208,65 @@ export default function PaymentMethodA() {
 
     return (
       <View style={{flex:1, padding:15, backgroundColor:'#fff'}}>
+      
+      
+      <AlertPro
+        ref={alertPro}
+        showCancel={false}
+        onConfirm={() => alertPro.current.close()}
+        title="Que legal!"
+        message="Você já possui um plano"
+        textConfirm="OK"
+        customStyles={{
+          mask: {
+            backgroundColor: "black",
+            opacity: 0.9
+          },
+          container: {
+            borderWidth: 1,
+            borderColor: "#d98b0d",
+            shadowColor: "#000000",
+            shadowOpacity: 0.1,
+            shadowRadius: 10,
+            borderRadius:30
+          },
+          buttonCancel: {
+            backgroundColor: "#3f3f3f"
+          },
+          buttonConfirm: {
+            backgroundColor: "#ffa31a"
+          }
+        }}
+      />
+
+      <AlertPro
+        ref={alertPro2}
+        showCancel={false}
+        onConfirm={() => alertPro2.current.close()}
+        title="Que pena!"
+        message="Você não possui um plano"
+        textConfirm="Vou assinar"
+        customStyles={{
+          mask: {
+            backgroundColor: "black",
+            opacity: 0.9
+          },
+          container: {
+            borderWidth: 1,
+            borderColor: "#d98b0d",
+            shadowColor: "#000000",
+            shadowOpacity: 0.1,
+            shadowRadius: 10,
+            borderRadius:30
+          },
+          buttonCancel: {
+            backgroundColor: "#3f3f3f"
+          },
+          buttonConfirm: {
+            backgroundColor: "#ffa31a"
+          }
+        }}
+      />
 
 
         {plan == 'mensal' && tipoDeConta == 'Autonomo' &&

@@ -6,7 +6,7 @@
  */
 
 // import dependencies
-import React, {useContext, useState, useEffect} from "react";
+import React, {useContext, useState, useEffect, useRef} from "react";
 import {
   StatusBar,
   Alert,
@@ -29,6 +29,10 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { ThemeContext } from '../../../ThemeContext';
 
 import payLoading from '../../../assets/loadingPay.json';
+
+import AlertPro from "react-native-alert-pro";
+
+import { useReducer } from "react";
 
 
 //consts
@@ -60,6 +64,7 @@ const route = useRoute();
 const navigation = useNavigation();
 const {dark, setDark} = useContext(ThemeContext);
 const [name, setName] = useState('');
+const alertPro = useRef();
 
 useEffect(() => {
   async function getUserName() {
@@ -88,23 +93,50 @@ async function deleteFromFirebase() {
       { text: "Vou continuar", onPress: () =>  navigation.navigate('Home')}
     ]);
   })
+
+  alertPro.current.close();
 }
 
 
 
 function deleteNotification() {
-  Alert.alert("Importante", "Ao confirmar que o pagamento foi aprovado toda o chat será excluído", [
-    {
-        text: "Cancelar",
-        onPress: () => null,
-        style: "cancel"
-    },
-    { text: "Confirmar", onPress: () => deleteFromFirebase() }
-  ]);
+  alertPro.current.open();
 }
 
     return (
       <SafeBackground>
+
+        <AlertPro
+          ref={alertPro}
+          onCancel={() => alertPro.current.close()}
+          onConfirm={() => deleteFromFirebase()}
+          title="Importante"
+          message="Ao confirmar que o pagamento foi aprovado toda o chat será excluído"
+          textCancel="Cancelar"
+          textConfirm="Confirmar"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+
         <StatusBar
           backgroundColor={dark ? '#121212' : 'white'}
           barStyle={dark ? 'light-content' : 'dark-content'}

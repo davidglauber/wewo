@@ -39,6 +39,7 @@ import Colors from '../../theme/colors';
 //import firebase
 import firebase from '../../config/firebase';
 
+import AlertPro from "react-native-alert-pro";
 
 import LottieView from 'lottie-react-native';
 
@@ -205,7 +206,9 @@ export default function Configuracoes() {
   const [fotoPerfil, setFotoPerfil] = React.useState('');
   const [value, setValue] = React.useState(false);
   const {dark, setDark} = useContext(ThemeContext);
-  const [modalVisible, setModalVisible] = React.useState(true)
+  const [modalVisible, setModalVisible] = React.useState(true);
+  const alertPro = React.useRef();
+  const alertPro2 = React.useRef();
 
 
   useEffect(() => {
@@ -230,6 +233,7 @@ export default function Configuracoes() {
           return null
         }
       })
+
     }
 
     callFirebase();
@@ -237,20 +241,16 @@ export default function Configuracoes() {
 
 
 
-
+  function navFunc() {
+    alertPro.current.close();
+    navigation.navigate('Home')
+  }
 
  
   useEffect(() => {
     const backAction = () => {
         if (navigation.isFocused()) {
-              Alert.alert("Atenção", "Você quer mesmo voltar para a tela principal?", [
-                  {
-                      text: "Não",
-                      onPress: () => null,
-                      style: "cancel"
-                  },
-                  { text: "Sim", onPress: () => navigation.navigate('Home') }
-              ]);
+              alertPro.current.open();
               return true;
         }
     };
@@ -260,24 +260,78 @@ export default function Configuracoes() {
 
 
   function sair () {
-        navigation.navigate('TelaLogout')
+    alertPro2.current.close();
+    navigation.navigate('TelaLogout')
   }
 
   function logout () {
-    Alert.alert(
-      'Sair',
-      'Tem certeza que quer sair?',
-      [
-        {text: 'Cancelar', onPress: () => {}, style: 'cancel'},
-        {text: 'Sim, quero sair', onPress: () => sair()}
-      ],
-      {cancelable: false},
-    );
+    alertPro2.current.open();
   };
 
 
     return (
       <SafeBackground>
+
+          <AlertPro
+            ref={alertPro}
+            onCancel={() => alertPro.current.close()}
+            onConfirm={() => navFunc()}
+            title="Atenção"
+            message="Você quer mesmo voltar para a tela principal?"
+            textCancel="Não"
+            textConfirm="Sim"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+          <AlertPro
+            ref={alertPro2}
+            onCancel={() => alertPro2.current.close()}
+            onConfirm={() => sair()}
+            title="Logout"
+            message="Tem certeza que quer sair?"
+            textCancel="Não"
+            textConfirm="Sim"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
 
         <Modal
             animationType="slide"
