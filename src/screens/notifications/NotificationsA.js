@@ -33,6 +33,9 @@ import { ThemeContext } from '../../../ThemeContext';
 
 import bell from '../../../assets/notification.json';
 
+import AlertPro from "react-native-alert-pro";
+
+
 // NotificationsA Config
 const EMPTY_STATE_ICON = "bell-ring-outline";
 
@@ -88,7 +91,7 @@ export default class NotificationsA extends Component {
     let e = this;
 
     if(user == null) {
-      alert('Usuários não logados não tem notificações ativas')
+      this.AlertPro.open();
     } else {
       await firebase.firestore().collection('notifications').where("idContratado", "==", user.uid).where("confirmed", "==", false).onSnapshot(documentSnapshot => {
         let notifications = [];
@@ -143,7 +146,7 @@ export default class NotificationsA extends Component {
 
   uploadedNotifications(){
     if(firebase.auth().currentUser == null){
-      alert('Você não pode acessar essa área sem estar logado!')
+      this.AlertPro2.open();
     } else {
       this.props.navigation.navigate('NotificationsB')
     }
@@ -151,7 +154,7 @@ export default class NotificationsA extends Component {
 
   comfirmedServices() {
     if(firebase.auth().currentUser == null){
-      alert('Você não pode acessar essa área sem estar logado!')
+      this.AlertPro2.open();
     } else {
       this.props.navigation.navigate('ConfirmedServices')
     }
@@ -166,7 +169,7 @@ export default class NotificationsA extends Component {
 
     modalizeRef.current?.close();
     this.props.navigation.navigate('ConfirmedServices')
-    alert('Serviço confirmado! Lembre-se de comparecer no local e ativar o modo pagamento no final do serviço!')
+    this.AlertPro3.open();
   }
 
   async deniedButton(idNot) {
@@ -174,7 +177,7 @@ export default class NotificationsA extends Component {
 
     await firebase.firestore().collection('notifications').doc(idNot).delete()
     modalizeRef.current?.close();
-    alert('Serviço cancelado!')
+    this.AlertPro4.open();
   }
 
   makeid(length) {
@@ -222,6 +225,135 @@ export default class NotificationsA extends Component {
 
     return (
       <SafeBackground>
+
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro.close()}
+            title="Desculpe, mas..."
+            message="Usuários não logados não tem notificações ativas"
+            textConfirm="OK"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro2 = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro2.close()}
+            title="Desculpe, mas..."
+            message="Você não pode acessar essa área sem estar logado!"
+            textConfirm="OK"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro3 = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro3.close()}
+            title="Tudo certo ;)"
+            message="Serviço confirmado! Lembre-se de comparecer no local e ativar o modo pagamento no final do serviço!"
+            textConfirm="OK"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro4 = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro4.close()}
+            title="Cancelado com sucesso"
+            message="Serviço cancelado!"
+            textConfirm="OK"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}

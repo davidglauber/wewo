@@ -39,6 +39,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 import { ThemeContext } from '../../../ThemeContext';
 
+import AlertPro from "react-native-alert-pro";
 
 //import GestureHandler
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -155,7 +156,7 @@ export default class CheckoutA extends Component {
         e.setModalVisible(false)
       })
     } else {
-      alert('Você precisa estar logado para adicionar produtos no carrinho')
+      this.AlertPro.open();
     }
     
   }
@@ -340,7 +341,39 @@ export default class CheckoutA extends Component {
                 <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
             </View>
           </Modal>
-          
+        
+          <AlertPro
+            ref={ref => {
+              this.AlertPro = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro.close()}
+            title="Ops, ocorreu um erro"
+            message="Você precisa estar logado para adicionar produtos no carrinho"
+            textConfirm="Entendi"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+
           <ScrollView>
             <View style={styles.categoriesContainer}>
               <View style={styles.titleContainer}>

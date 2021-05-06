@@ -34,6 +34,8 @@ import { ThemeContext } from '../../../ThemeContext';
 
 import bell from '../../../assets/notification.json';
 
+import AlertPro from "react-native-alert-pro";
+
 // NotificationsA Config
 const EMPTY_STATE_ICON = "bell-ring-outline";
 
@@ -89,7 +91,7 @@ export default class NotificationsB extends Component {
     let e = this;
 
     if(user == null) {
-      alert('Usuários não logados não tem notificações ativas')
+      this.AlertPro.open();
     } else {
       await firebase.firestore().collection('notifications').where("idContratante", "==", user.uid).where("confirmed", "==", false).onSnapshot(documentSnapshot => {
         let notifications = [];
@@ -154,11 +156,11 @@ export default class NotificationsB extends Component {
   }
 
   confirmButton() {
-    alert('Serviço confirmado! Lembre-se de comparecer no local e ativar o modo pagamento no final do serviço!')
+    this.AlertPro2.open();
   }
 
   deniedButton() {
-    alert('Serviço cancelado! O usuário contratante será informado sobre o cancelamento')
+    this.AlertPro3.open();
   }
 
   makeid(length) {
@@ -202,6 +204,101 @@ export default class NotificationsB extends Component {
     const user = firebase.auth().currentUser;
     return (
       <SafeBackground>
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro.close()}
+            title="Desculpe, mas..."
+            message="Usuários não logados não tem notificações ativas"
+            textConfirm="OK"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro2 = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro2.close()}
+            title="Tudo certo ;)"
+            message="Serviço confirmado! Lembre-se de comparecer no local e ativar o modo pagamento no final do serviço!"
+            textConfirm="OK"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro3 = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro3.close()}
+            title="Cancelado com sucesso"
+            message="Serviço cancelado! O usuário contratante será informado sobre o cancelamento"
+            textConfirm="OK"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}

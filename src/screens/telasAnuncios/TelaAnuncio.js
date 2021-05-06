@@ -752,7 +752,7 @@ export default class TelaAnuncio extends Component {
           showCancel={false}
           onConfirm={() => this.AlertPro3.close()}
           title="Tudo certo ;)"
-          message="Anúncio salvo com sucesso!"
+          message="Avaliação salva com sucesso!"
           textConfirm="OK"
           customStyles={{
             mask: {

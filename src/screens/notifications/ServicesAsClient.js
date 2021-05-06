@@ -33,6 +33,8 @@ import firebase from '../../config/firebase';
 
 import { ThemeContext } from '../../../ThemeContext';
 
+import AlertPro from "react-native-alert-pro";
+
 // NotificationsA Config
 const EMPTY_STATE_ICON = "bell-ring-outline";
 
@@ -91,7 +93,7 @@ export default class ServicesAsClient extends Component {
     let e = this;
 
     if(user == null) {
-      alert('Usuários não logados não tem notificações ativas')
+      this.AlertPro.open();
     } else {
       await firebase.firestore().collection('notifications').where("idContratante", "==", user.uid).where("confirmed", "==", true).onSnapshot(documentSnapshot => {
         let notifications = [];
@@ -165,6 +167,40 @@ export default class ServicesAsClient extends Component {
     const user = firebase.auth().currentUser;
     return (
       <SafeBackground>
+
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro.close()}
+            title="Desculpe, mas..."
+            message="Usuários não logados não tem notificações ativas"
+            textConfirm="OK"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}

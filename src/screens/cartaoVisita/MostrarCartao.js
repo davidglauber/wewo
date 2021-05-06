@@ -77,6 +77,8 @@ import {purchased} from '../../config/purchase';
 
 import LottieView from 'lottie-react-native';
 
+import AlertPro from "react-native-alert-pro";
+
 import loading from '../../../assets/loading.json';
 
 //import ADS
@@ -520,12 +522,12 @@ export default class MostrarCartao extends Component {
           starRating: numberOfStar,
         })
   
-        alert('O serviço foi avaliado!')
+        this.AlertPro3.open()
       } else {
-        alert('O serviço já foi avaliado! Você não pode avaliar mais de uma vez!')
+        this.AlertPro4.open()
       }
     } else {
-      alert('Você só pode avaliar depois de fazer o login!')
+      this.AlertPro5.open()
     }
   }
 
@@ -543,7 +545,8 @@ export default class MostrarCartao extends Component {
         idUserThatComment: currentUser.uid,
         comment: text,
       })
-      alert('Comentário salvo com sucesso!')
+
+      this.AlertPro6.open();
       e.setState({text: ''})
     } catch (error) {
       alert('Ops, ocorreu um erro ao salvar seu comentário :/')
@@ -576,7 +579,7 @@ export default class MostrarCartao extends Component {
     if(currentUser !== null) {
       if(this.state.qtd > 0){
         if(currentUser.uid == item.idUser){
-          alert('Você não pode comprar algo de si mesmo ;)')
+          this.AlertPro8.open();
         } else {
           e.setModalVisible(true)
           await firebase.firestore().collection('products').doc(idProduct).set({
@@ -591,14 +594,14 @@ export default class MostrarCartao extends Component {
             nomeUsuario: e.state.nomeUser
           })
             e.setModalVisible(false)
-            alert('O produto foi adicionado ao carrinho')
+            e.AlertPro7.open();
             e.props.navigation.navigate('Checkout')
         }
       } else {
-        alert('Você não pode comprar 0 quantidades de algo ;)')
+        this.AlertPro9.open();
       }
     } else {
-      alert('Você precisa estar logado para comprar um produto')
+      this.AlertPro10.open();
     }
 
   }
@@ -625,6 +628,258 @@ export default class MostrarCartao extends Component {
               <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
           </View>
         </Modal>
+
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro3 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro3.close()}
+          title="Tudo certo ;)"
+          message="Avaliação salva com sucesso!"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro4 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro4.close()}
+          title="Opa, algo deu errado"
+          message="O serviço já foi avaliado! Você não pode avaliar mais de uma vez!"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro5 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro5.close()}
+          title="Opa, algo deu errado"
+          message="Você só pode avaliar depois de fazer o login!"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro6 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro6.close()}
+          title="Tudo certo ;)"
+          message="Comentário salvo com sucesso!"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro7 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro7.close()}
+          title="Deu tudo certo!"
+          message="O produto foi adicionado ao carrinho"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro8 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro8.close()}
+          title="Ops, algo deu errado!"
+          message="Você não pode comprar nada de si mesmo"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro9 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro9.close()}
+          title="Ops, algo deu errado!"
+          message="Você não pode comprar 0 quantidades de algo ;)"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro10 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro10.close()}
+          title="Ops, algo deu errado!"
+          message="Você precisa estar logado para comprar um produto"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+
 
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}

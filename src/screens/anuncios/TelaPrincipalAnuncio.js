@@ -37,6 +37,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 import { ThemeContext } from '../../../ThemeContext';
 
+import AlertPro from "react-native-alert-pro";
+
 //MODULE IAP
 import {purchased} from '../../config/purchase';
 
@@ -210,7 +212,7 @@ export default class TelaPrincipalAnuncio extends Component {
           idMP: firebase.firestore.FieldValue.delete(),
           accessTK: firebase.firestore.FieldValue.delete()
         }).then(() => {
-          alert('Você precisa vincular sua conta Mercado Pago para receber pagamentos')
+          this.AlertPro.open();
           this.props.navigation.navigate('MLConfigAccount')
         })
       }
@@ -263,7 +265,7 @@ export default class TelaPrincipalAnuncio extends Component {
       
 
       if(this.state.idMPState == '') {
-        alert('Você precisa vincular sua conta Mercado Pago para receber pagamentos')
+        this.AlertPro.open();
         this.props.navigation.navigate('MLConfigAccount')
       }
 
@@ -281,7 +283,7 @@ export default class TelaPrincipalAnuncio extends Component {
 
       if(comprou == false) {
         if(anunciosDidMount.length >= 3 && this.state.idMPState !== '') {
-          alert('A conta Free permite até 3 anúncios, consulte a tela de PLANOS para mais informações')
+          this.AlertPro2.open();
         }
 
         if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
@@ -372,6 +374,68 @@ export default class TelaPrincipalAnuncio extends Component {
                 <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
             </View>
           </Modal>
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro.close()}
+            title="Importante!!!"
+            message="Você precisa vincular sua conta Mercado Pago para receber pagamentos"
+            textConfirm="OK"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro2 = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro2.close()}
+            title="Aviso"
+            message="A conta Free permite até 3 anúncios, consulte a tela de PLANOS para mais informações"
+            textConfirm="OK"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
           
           <ScrollView>
             <View style={styles.categoriesContainer}>
