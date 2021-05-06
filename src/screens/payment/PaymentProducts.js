@@ -212,6 +212,22 @@ export default class PaymentProducts extends Component {
         alert('Redirecionando você para pagar o próximo usuário')
         this.mercadoPago()
       }
+
+      if(valueIncrement !== this.state.accTK.length && this.state.accTK.length >= 1){
+        alert('Redirecionando você para pagar o próximo usuário')
+        this.mercadoPago()
+      }
+
+      if(valueIncrement == this.state.accTK.length && this.state.accTK.length > 1) {
+        Alert.alert("Atenção", "Parabéns! O pagamento foi aprovado!", [
+          {
+            text: "OK",
+            onPress: () => this.props.navigation.navigate('Home'),
+            style: "cancel"
+          },
+          { text: "Voltar para tela inicial", onPress: () => this.props.navigation.navigate('Home')}
+        ]);
+      } 
     }
   }
 

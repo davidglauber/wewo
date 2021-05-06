@@ -62,6 +62,8 @@ import LottieView from 'lottie-react-native';
 
 import loading from '../../../assets/loading.json';
 
+import AlertPro from "react-native-alert-pro";
+
 //import IAP API 
 import {purchased} from '../../config/purchase';
 
@@ -523,7 +525,7 @@ export default class TelaAnuncio extends Component {
     let currentUser = firebase.auth().currentUser;
 
     if(currentUser == null) {
-      alert('Você precisa estar logado para favoritar um anúncio!')
+      this.AlertPro.open();
 
       this.setState({isOpen: false})
 
@@ -541,7 +543,7 @@ export default class TelaAnuncio extends Component {
         this.setState({isOpen: true})
       })
 
-      alert("Anúncio salvo com sucesso!")
+      this.AlertPro2.open();
     }
   }
 
@@ -601,12 +603,12 @@ export default class TelaAnuncio extends Component {
           starRating: numberOfStar,
         })
   
-        alert('O serviço foi avaliado!')
+        this.AlertPro3.open()
       } else {
-        alert('O serviço já foi avaliado! Você não pode avaliar mais de uma vez!')
+        this.AlertPro4.open();
       }
     } else {
-      alert('Você só pode avaliar depois de fazer o login!')
+      this.AlertPro5.open();
     }
   }
 
@@ -624,7 +626,8 @@ export default class TelaAnuncio extends Component {
         idUserThatComment: currentUser.uid,
         comment: text,
       })
-      alert('Comentário salvo com sucesso!')
+
+      this.AlertPro6.open();
       e.setState({text: ''})
     } catch (error) {
       alert('Ops, ocorreu um erro ao salvar seu comentário :/')
@@ -635,9 +638,9 @@ export default class TelaAnuncio extends Component {
     let userID = firebase.auth().currentUser;
 
     if(userID == null) {
-      alert('Você não pode contratar alguém sem estar logado')
+      this.AlertPro7.open();
     } else if (idDoContratado == userID.uid){
-      alert('Você não pode contratar a si mesmo')
+      this.AlertPro8.open();
     } else {
       //parâmetros que devem ser enviados ao BD: Foto, nome, CEP, Serviço que quer contratar, Valor, Telefone, Calendário
       this.props.navigation.navigate('ServiceCadaster', {
@@ -678,6 +681,255 @@ export default class TelaAnuncio extends Component {
               <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
           </View>
         </Modal>
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro.close()}
+          title="Importante!"
+          message="Você precisa estar logado para favoritar um anúncio!"
+          textConfirm="Entendi"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro2 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro2.close()}
+          title="Tudo certo ;)"
+          message="O serviço foi avaliado!"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro3 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro3.close()}
+          title="Tudo certo ;)"
+          message="Anúncio salvo com sucesso!"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro4 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro4.close()}
+          title="Opa, algo deu errado"
+          message="O serviço já foi avaliado! Você não pode avaliar mais de uma vez!"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro5 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro5.close()}
+          title="Opa, algo deu errado"
+          message="Você só pode avaliar depois de fazer o login!"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro6 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro6.close()}
+          title="Tudo certo ;)"
+          message="Comentário salvo com sucesso!"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro7 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro7.close()}
+          title="Ops, algo deu errado!"
+          message="Você não pode contratar alguém sem estar logado"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro8 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro8.close()}
+          title="Ops, algo deu errado!"
+          message="Você não pode contratar a si mesmo"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
 
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}

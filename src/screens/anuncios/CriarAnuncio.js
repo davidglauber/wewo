@@ -70,6 +70,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 // import colors
 import Colors from '../../theme/colors';
 
+import AlertPro from "react-native-alert-pro";
 
 //locationSERVICES
 import * as Location from 'expo-location';
@@ -219,12 +220,7 @@ export default class CriarAnuncio extends Component {
     let enabled = await Location.hasServicesEnabledAsync();
 
     if (!enabled) {
-      Alert.alert(
-        'O serviço de localização não está ativado',
-        'Por favor ative o serviço de localização para continuar',
-        [{ text: 'OK' }],
-        { cancelable: false }
-      );
+      this.AlertPro.open();
     } else {
       this.setState({locationServiceEnabled: enabled});
     }
@@ -238,12 +234,7 @@ export default class CriarAnuncio extends Component {
     this.setModalVisible(true)
 
     if (status !== 'granted') {
-      Alert.alert(
-        'Permissão negada pelo usuário',
-        'Permita o app usar o serviço de localização',
-        [{ text: 'OK' }],
-        { cancelable: false }
-      );
+      this.AlertPro2.open();
     }
   
     let { coords } = await Location.getCurrentPositionAsync();
@@ -462,12 +453,14 @@ export default class CriarAnuncio extends Component {
 
 
   openModalizePhotos() {
+    this.AlertPro5.close();
     const modalizePhotos = this.state.modalizePhotos;
 
     modalizePhotos.current?.open()
   }
 
   openModalizePhotosAndVideos() {
+    this.AlertPro5.close();
     const modalizeVideoAndPhoto = this.state.modalizeVideoAndPhoto;
 
     modalizeVideoAndPhoto.current?.open()
@@ -530,7 +523,7 @@ export default class CriarAnuncio extends Component {
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== 'granted') {
-        alert('Desculpa, nós precisamos do acesso a permissão da câmera');
+        this.AlertPro3.open();
       }
     }
 
@@ -560,7 +553,7 @@ export default class CriarAnuncio extends Component {
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== 'granted') {
-        alert('Desculpa, nós precisamos do acesso a permissão da câmera');
+        this.AlertPro3.open();
       }
     }
 
@@ -590,7 +583,7 @@ export default class CriarAnuncio extends Component {
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== 'granted') {
-        alert('Desculpa, nós precisamos do acesso a permissão da câmera');
+        this.AlertPro3.open();
       }
     }
 
@@ -620,13 +613,13 @@ export default class CriarAnuncio extends Component {
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== 'granted') {
-        alert('Desculpa, nós precisamos do acesso a permissão da câmera');
+        this.AlertPro3.open();
       }
     }
 
     
     try {
-      alert('Escolha um vídeo de até 15 segundos')
+      this.AlertPro4.open();
 
       this.sleep(2000).then(async () => { 
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -651,15 +644,9 @@ export default class CriarAnuncio extends Component {
 
 
   setVideoAndPhotoOrJustPhoto() {
-    Alert.alert("Atenção", "Deseja adicionar um vídeo no seu anúncio?", [
-      {
-          text: "Não",
-          onPress: () => this.openModalizePhotos(),
-          style: "cancel"
-      },
-      { text: "Sim", onPress: () => this.openModalizePhotosAndVideos() }
-    ]);
+    this.AlertPro5.open();
   }
+
 
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
@@ -816,7 +803,7 @@ export default class CriarAnuncio extends Component {
                                 })
                         
                               } else {
-                                alert('Todos os campos devem ser preenchidos!')
+                                this.AlertPro6.open()
                                 this.setModalVisible(false)
                               }
                             }
@@ -893,7 +880,7 @@ export default class CriarAnuncio extends Component {
                                     this.props.navigation.navigate('TelaPrincipalAnuncio')
                                   })
                               } else {
-                                alert('Todos os campos devem ser preenchidos!')
+                                this.AlertPro6.open()
                                 this.setModalVisible(false)
                               }
                               
@@ -1014,7 +1001,7 @@ export default class CriarAnuncio extends Component {
                                 })
                         
                               } else {
-                                alert('Todos os campos devem ser preenchidos!')
+                                this.AlertPro6.open()
                                 this.setModalVisible(false)
                               }
                             }
@@ -1091,7 +1078,7 @@ export default class CriarAnuncio extends Component {
                                     this.props.navigation.navigate('TelaPrincipalAnuncio')
                                   })
                               } else {
-                                alert('Todos os campos devem ser preenchidos!')
+                                this.AlertPro6.open()
                                 this.setModalVisible(false)
                               }
                               
@@ -1108,7 +1095,7 @@ export default class CriarAnuncio extends Component {
         }
 
       } else {
-        alert('Por favor, verifique se TODOS os campos estão preenchidos (incluindo 3 imagens)')
+        this.AlertPro7.open()
         this.setModalVisible(false)
       }
 
@@ -1223,7 +1210,7 @@ export default class CriarAnuncio extends Component {
                               })
                       
                             } else {
-                              alert('Todos os campos devem ser preenchidos!')
+                              this.AlertPro6.open()
                               this.setModalVisible(false)
                             }
                           }
@@ -1296,7 +1283,7 @@ export default class CriarAnuncio extends Component {
                                   this.props.navigation.navigate('TelaPrincipalAnuncio')
                                 })
                             } else {
-                              alert('Todos os campos devem ser preenchidos!')
+                              this.AlertPro6.open()
                               this.setModalVisible(false)
                             }
                             
@@ -1414,7 +1401,7 @@ export default class CriarAnuncio extends Component {
                               })
                       
                             } else {
-                              alert('Todos os campos devem ser preenchidos!')
+                              this.AlertPro6.open()
                               this.setModalVisible(false)
                             }
                           }
@@ -1487,7 +1474,7 @@ export default class CriarAnuncio extends Component {
                                   this.props.navigation.navigate('TelaPrincipalAnuncio')
                                 })
                             } else {
-                              alert('Todos os campos devem ser preenchidos!')
+                              this.AlertPro6.open()
                               this.setModalVisible(false)
                             }
                             
@@ -1505,7 +1492,7 @@ export default class CriarAnuncio extends Component {
 
 
       } else {
-        alert('Por favor, verifique se TODOS os campos estão preenchidos (incluindo 3 imagens)')
+        this.AlertPro7.open()
         this.setModalVisible(false)
       }
     }
@@ -1612,6 +1599,226 @@ export default class CriarAnuncio extends Component {
                           <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
                       </View>
                     </Modal>
+
+
+                    <AlertPro
+                      ref={ref => {
+                        this.AlertPro = ref;
+                      }}
+                      showCancel={false}
+                      onConfirm={() => this.AlertPro.close()}
+                      title="O serviço de localização não está ativado"
+                      message="Por favor ative o serviço de localização para continuar"
+                      textConfirm="OK"
+                      customStyles={{
+                        mask: {
+                          backgroundColor: "black",
+                          opacity: 0.9
+                        },
+                        container: {
+                          borderWidth: 1,
+                          borderColor: "#d98b0d",
+                          shadowColor: "#000000",
+                          shadowOpacity: 0.1,
+                          shadowRadius: 10,
+                          borderRadius:30
+                        },
+                        buttonCancel: {
+                          backgroundColor: "#3f3f3f"
+                        },
+                        buttonConfirm: {
+                          backgroundColor: "#ffa31a"
+                        }
+                      }}
+                    />
+
+
+                    <AlertPro
+                      ref={ref => {
+                        this.AlertPro2 = ref;
+                      }}
+                      showCancel={false}
+                      onConfirm={() => this.AlertPro2.close()}
+                      title="Permissão negada pelo usuário"
+                      message="Permita o app usar o serviço de localização"
+                      textConfirm="OK"
+                      customStyles={{
+                        mask: {
+                          backgroundColor: "black",
+                          opacity: 0.9
+                        },
+                        container: {
+                          borderWidth: 1,
+                          borderColor: "#d98b0d",
+                          shadowColor: "#000000",
+                          shadowOpacity: 0.1,
+                          shadowRadius: 10,
+                          borderRadius:30
+                        },
+                        buttonCancel: {
+                          backgroundColor: "#3f3f3f"
+                        },
+                        buttonConfirm: {
+                          backgroundColor: "#ffa31a"
+                        }
+                      }}
+                    />
+
+                    <AlertPro
+                      ref={ref => {
+                        this.AlertPro3 = ref;
+                      }}
+                      showCancel={false}
+                      onConfirm={() => this.AlertPro3.close()}
+                      title="Ops, Algo deu errado!"
+                      message="Desculpa, nós precisamos do acesso a permissão da câmera"
+                      textConfirm="OK"
+                      customStyles={{
+                        mask: {
+                          backgroundColor: "black",
+                          opacity: 0.9
+                        },
+                        container: {
+                          borderWidth: 1,
+                          borderColor: "#d98b0d",
+                          shadowColor: "#000000",
+                          shadowOpacity: 0.1,
+                          shadowRadius: 10,
+                          borderRadius:30
+                        },
+                        buttonCancel: {
+                          backgroundColor: "#3f3f3f"
+                        },
+                        buttonConfirm: {
+                          backgroundColor: "#ffa31a"
+                        }
+                      }}
+                    />
+
+                    <AlertPro
+                      ref={ref => {
+                        this.AlertPro4 = ref;
+                      }}
+                      showCancel={false}
+                      onConfirm={() => this.AlertPro4.close()}
+                      title="Importante!!!"
+                      message="Escolha um vídeo de até 15 segundos"
+                      textConfirm="OK"
+                      customStyles={{
+                        mask: {
+                          backgroundColor: "black",
+                          opacity: 0.9
+                        },
+                        container: {
+                          borderWidth: 1,
+                          borderColor: "#d98b0d",
+                          shadowColor: "#000000",
+                          shadowOpacity: 0.1,
+                          shadowRadius: 10,
+                          borderRadius:30
+                        },
+                        buttonCancel: {
+                          backgroundColor: "#3f3f3f"
+                        },
+                        buttonConfirm: {
+                          backgroundColor: "#ffa31a"
+                        }
+                      }}
+                    />
+
+                    <AlertPro
+                      ref={ref => {
+                        this.AlertPro5 = ref;
+                      }}
+                      onCancel={() => this.openModalizePhotos()}
+                      onConfirm={() => this.openModalizePhotosAndVideos()}
+                      title="Atenção"
+                      message="Deseja adicionar um vídeo no seu anúncio?"
+                      textCancel="Não"
+                      textConfirm="Sim"
+                      customStyles={{
+                        mask: {
+                          backgroundColor: "black",
+                          opacity: 0.9
+                        },
+                        container: {
+                          borderWidth: 1,
+                          borderColor: "#d98b0d",
+                          shadowColor: "#000000",
+                          shadowOpacity: 0.1,
+                          shadowRadius: 10,
+                          borderRadius:30
+                        },
+                        buttonCancel: {
+                          backgroundColor: "#3f3f3f"
+                        },
+                        buttonConfirm: {
+                          backgroundColor: "#ffa31a"
+                        }
+                      }}
+                    />
+
+                    <AlertPro
+                      ref={ref => {
+                        this.AlertPro6 = ref;
+                      }}
+                      showCancel={false}
+                      onConfirm={() => this.AlertPro6.close()}
+                      title="Aviso"
+                      message="Todos os campos devem ser preenchidos!"
+                      textConfirm="OK"
+                      customStyles={{
+                        mask: {
+                          backgroundColor: "black",
+                          opacity: 0.9
+                        },
+                        container: {
+                          borderWidth: 1,
+                          borderColor: "#d98b0d",
+                          shadowColor: "#000000",
+                          shadowOpacity: 0.1,
+                          shadowRadius: 10,
+                          borderRadius:30
+                        },
+                        buttonCancel: {
+                          backgroundColor: "#3f3f3f"
+                        },
+                        buttonConfirm: {
+                          backgroundColor: "#ffa31a"
+                        }
+                      }}
+                    />
+
+                    <AlertPro
+                      ref={ref => {
+                        this.AlertPro7 = ref;
+                      }}
+                      showCancel={false}
+                      onConfirm={() => this.AlertPro7.close()}
+                      title="Aviso"
+                      message="Por favor, verifique se TODOS os campos estão preenchidos (incluindo 3 imagens)"
+                      textConfirm="OK"
+                      customStyles={{
+                        mask: {
+                          backgroundColor: "black",
+                          opacity: 0.9
+                        },
+                        container: {
+                          borderWidth: 1,
+                          borderColor: "#d98b0d",
+                          shadowColor: "#000000",
+                          shadowOpacity: 0.1,
+                          shadowRadius: 10,
+                          borderRadius:30
+                        },
+                        buttonCancel: {
+                          backgroundColor: "#3f3f3f"
+                        },
+                        buttonConfirm: {
+                          backgroundColor: "#ffa31a"
+                        }
+                      }}
+                    />
                         
                         {this.state.tipoDeConta == 'Autonomo' &&
                             <View>
