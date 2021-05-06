@@ -31,6 +31,8 @@ import {Subtitle1} from '../../components/text/CustomText';
 import firebase from '../../config/firebase';
 
 
+import AlertPro from "react-native-alert-pro";
+
 
 // import colors
 import Colors from '../../theme/colors';
@@ -204,7 +206,7 @@ export default class Filtro extends Component {
     } 
 
     else if(selected.length >= 10) {
-      alert('Você só pode escolher até 10 categorias diferentes!')
+      this.AlertPro2.open();
     } else {
       this.setState({selected: selected.concat(array)})
     }
@@ -227,7 +229,7 @@ export default class Filtro extends Component {
     } 
 
     else if(selected.length >= 10) {
-      alert('Você só pode escolher até 10 estados diferentes!')
+      this.AlertPro.open();
     } else {
       this.setState({selectedStates: selected.concat(array)})
     }
@@ -285,6 +287,71 @@ export default class Filtro extends Component {
 
     return (
       <SafeBackground>
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro.close()}
+          title="Aviso!!!"
+          message="Você só pode escolher até 10 estados diferentes!"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro2 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro2.close()}
+          title="Aviso!!!"
+          message="Você só pode escolher até 10 categorias diferentes!"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
           barStyle={this.context.dark ? "light-content" : "dark-content"}

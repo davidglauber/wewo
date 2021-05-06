@@ -32,6 +32,8 @@ import { WebView } from 'react-native-webview'
 
 import LottieView from 'lottie-react-native';
 
+import AlertPro from "react-native-alert-pro";
+
 
 
 const thumbsUp = require('../../../assets/thumbsup.json');
@@ -143,7 +145,7 @@ export default class MLConfigAccount extends Component {
 
 
   mercadoPago() {
-    alert('Você está sendo redirecionado para página de autorização')
+    this.AlertPro.open();
     this.setState({webviewBoolean: true})
   }
 
@@ -224,6 +226,39 @@ export default class MLConfigAccount extends Component {
   render() {
     return (
       <SafeBackground>
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro.close()}
+            title="Tudo certo"
+            message="Você está sendo redirecionado para página de autorização"
+            textConfirm="OK"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}

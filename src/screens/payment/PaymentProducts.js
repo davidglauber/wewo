@@ -33,7 +33,8 @@ import firebase from '../../config/firebase';
 import { ThemeContext } from '../../../ThemeContext';
 
 import { WebView } from 'react-native-webview'
-import { throwIfAudioIsDisabled } from "expo-av/build/Audio/AudioAvailability";
+
+import AlertPro from "react-native-alert-pro";
 
 
 //consts
@@ -101,15 +102,7 @@ export default class PaymentProducts extends Component {
     var arraySumValue = [];
 
     console.log('INFO PRODUCT ARRAY: ' + JSON.stringify(arrayProduct))
-
-    Alert.alert("Importante", "Por questão de segurança, se você vai comprar mais de um produto será necessário pagar separadamente \n\nO PROCESSO É TOTALMENTE AUTOMÁTICO", [
-      {
-        text: "OK",
-        onPress: () => {},
-        style: "cancel"
-      },
-      { text: "Continuar", onPress: () => {}}
-    ]);
+    this.AlertPro.open();
 
     arrayProduct.map(async (i) => {
       //calcula o valor total dos produtos já com a quantidade correspondente
@@ -190,6 +183,10 @@ export default class PaymentProducts extends Component {
     this.setState({endpointMP: data})
   }
 
+  nav() {
+    this.AlertPro2.close();
+    this.props.navigation.navigate('Home')
+  }
   
   //ve quantos usuarios ja foram pagos e quando o processo estiver terminado ele apaga o produto do carrinho e joga para a tela inicial
   _onNavigationStateChange(webViewState){
@@ -198,35 +195,21 @@ export default class PaymentProducts extends Component {
       this.setState({valueIncrement: valueIncrement + 1})
 
       if(valueIncrement == this.state.accTK.length && this.state.accTK.length >= 1) {
-        Alert.alert("Atenção", "Parabéns! O pagamento foi aprovado!", [
-          {
-            text: "OK",
-            onPress: () => this.props.navigation.navigate('Home'),
-            style: "cancel"
-          },
-          { text: "Voltar para tela inicial", onPress: () => this.props.navigation.navigate('Home')}
-        ]);
+        this.AlertPro2.open();
       } 
       
       if(valueIncrement !== this.state.accTK.length && this.state.accTK.length > 1){
-        alert('Redirecionando você para pagar o próximo usuário')
+        this.AlertPro3.open();
         this.mercadoPago()
       }
 
       if(valueIncrement !== this.state.accTK.length && this.state.accTK.length >= 1){
-        alert('Redirecionando você para pagar o próximo usuário')
+        this.AlertPro3.open();
         this.mercadoPago()
       }
 
       if(valueIncrement == this.state.accTK.length && this.state.accTK.length > 1) {
-        Alert.alert("Atenção", "Parabéns! O pagamento foi aprovado!", [
-          {
-            text: "OK",
-            onPress: () => this.props.navigation.navigate('Home'),
-            style: "cancel"
-          },
-          { text: "Voltar para tela inicial", onPress: () => this.props.navigation.navigate('Home')}
-        ]);
+        this.AlertPro2.open();
       } 
     }
   }
@@ -297,6 +280,105 @@ export default class PaymentProducts extends Component {
 
     return (
       <SafeBackground>
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro = ref;
+            }}
+            onCancel={() => this.AlertPro.close()}
+            onConfirm={() => this.AlertPro.close()}
+            title="Importante"
+            message="Por questão de segurança, se você vai comprar mais de um produto será necessário pagar separadamente O PROCESSO É TOTALMENTE AUTOMÁTICO"
+            textCancel="OK"
+            textConfirm="Continuar"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro2 = ref;
+            }}
+            onCancel={() => this.nav()}
+            onConfirm={() => this.nav()}
+            title="Parabéns"
+            message="O pagamento foi aprovado!"
+            textCancel="OK"
+            textConfirm="Voltar para tela inicial"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro3 = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro3.close()}
+            title="Um momento..."
+            message="Redirecionando você para pagar o próximo usuário"
+            textConfirm="Ok, pagar o restante"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}

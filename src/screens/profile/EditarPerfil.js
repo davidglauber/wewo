@@ -40,6 +40,8 @@ import * as Permissions from 'expo-permissions';
 //import firebase
 import firebase from '../../config/firebase';
 
+import AlertPro from "react-native-alert-pro";
+
 // import colors
 import Colors from '../../theme/colors';
 
@@ -165,7 +167,7 @@ export default class EditarPerfil extends Component {
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== 'granted') {
-        alert('Desculpa, nós precisamos do acesso a permissão da câmera');
+        this.AlertPro.open();
       }
     }
 
@@ -231,7 +233,7 @@ export default class EditarPerfil extends Component {
         })
       })
     } else {
-      alert('Por favor, selecione uma imagem para o perfil')
+      this.AlertPro2.open();
     }
 
 
@@ -312,6 +314,68 @@ export default class EditarPerfil extends Component {
                   <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
               </View>
             </Modal>
+
+            <AlertPro
+              ref={ref => {
+                this.AlertPro = ref;
+              }}
+              showCancel={false}
+              onConfirm={() => this.AlertPro.close()}
+              title="Ops, Algo deu errado!"
+              message="Desculpa, nós precisamos do acesso a permissão da câmera"
+              textConfirm="OK"
+              customStyles={{
+                mask: {
+                  backgroundColor: "black",
+                  opacity: 0.9
+                },
+                container: {
+                  borderWidth: 1,
+                  borderColor: "#d98b0d",
+                  shadowColor: "#000000",
+                  shadowOpacity: 0.1,
+                  shadowRadius: 10,
+                  borderRadius:30
+                },
+                buttonCancel: {
+                  backgroundColor: "#3f3f3f"
+                },
+                buttonConfirm: {
+                  backgroundColor: "#ffa31a"
+                }
+              }}
+            />
+
+            <AlertPro
+              ref={ref => {
+                this.AlertPro2 = ref;
+              }}
+              showCancel={false}
+              onConfirm={() => this.AlertPro2.close()}
+              title="Aviso"
+              message="Por favor, selecione uma imagem para o perfil"
+              textConfirm="OK"
+              customStyles={{
+                mask: {
+                  backgroundColor: "black",
+                  opacity: 0.9
+                },
+                container: {
+                  borderWidth: 1,
+                  borderColor: "#d98b0d",
+                  shadowColor: "#000000",
+                  shadowOpacity: 0.1,
+                  shadowRadius: 10,
+                  borderRadius:30
+                },
+                buttonCancel: {
+                  backgroundColor: "#3f3f3f"
+                },
+                buttonConfirm: {
+                  backgroundColor: "#ffa31a"
+                }
+              }}
+            />
 
             {this.state.fotoPerfil == null ?
             <View style={styles.avatarSection}>
