@@ -199,7 +199,9 @@ export default class CriarAnuncio extends Component {
       errorMsg: null,
       locationServiceEnabled: false,
       fotoPerfil: null,
-      tipoDeConta: ''
+      tipoDeConta: '',
+      percentWeWoAuto: 0,
+      percentWeWoEstab: 0,
     };
   }
 
@@ -1570,9 +1572,108 @@ export default class CriarAnuncio extends Component {
     
   };
 
+  renderPercentToWeWoAuto() {
+    const replace = this.state.precoAuto.replace('R$', '');
+
+    if(replace.includes(',00')){
+      let knowLength = replace.length;
+
+      if(knowLength > 10) {
+        let replacePoint = replace.split(',00').join('');
+        let replacePoint2 = replacePoint.split('.').join('');
+        let replaceInter = new Number(replacePoint2);
+        let taxWeWo = ((replaceInter / 100) * 15).toFixed(2)
+        
+        return taxWeWo
+      }
+
+      if(knowLength <= 10) {
+        let replacePoint = replace.replace(',00','');
+        let replacePoint2 = replacePoint.split('.').join('');
+        let replaceInter = new Number(replacePoint2);
+        let taxWeWo = ((replaceInter / 100) * 15).toFixed(2)
+        
+        return taxWeWo
+      }
+
+      
+    } else {
+      let knowLength = replace.length;
+
+      if(knowLength <= 6) {
+        let replacePoint = replace.split(',').join('.');
+        let replaceInter = new Number(replacePoint);
+        let taxWeWo = ((replaceInter / 100) * 15).toFixed(2)
+        
+        return taxWeWo
+      }
+
+      if(knowLength > 6) {
+        let replacePointOne = replace.split(',').join('.');
+        let replacePoint2 = replacePointOne.replace('.','');
+        let replaceInter = new Number(replacePoint2);
+        let taxWeWo = ((replaceInter / 100) * 15).toFixed(2)
+        
+        return taxWeWo
+      }
+      
+    }
+  }
+
+
+  renderPercentToWeWoEstab() {
+    const replace = this.state.precoEstab.replace('R$', '');
+
+    if(replace.includes(',00')){
+      let knowLength = replace.length;
+
+      if(knowLength > 10) {
+        let replacePoint = replace.split(',00').join('');
+        let replacePoint2 = replacePoint.split('.').join('');
+        let replaceInter = new Number(replacePoint2);
+        let taxWeWo = ((replaceInter / 100) * 15).toFixed(2)
+        
+        return taxWeWo
+      }
+
+      if(knowLength <= 10) {
+        let replacePoint = replace.replace(',00','');
+        let replacePoint2 = replacePoint.split('.').join('');
+        let replaceInter = new Number(replacePoint2);
+        let taxWeWo = ((replaceInter / 100) * 15).toFixed(2)
+        
+        return taxWeWo
+      }
+
+      
+    } else {
+      let knowLength = replace.length;
+
+      if(knowLength <= 6) {
+        let replacePoint = replace.split(',').join('.');
+        let replaceInter = new Number(replacePoint);
+        let taxWeWo = ((replaceInter / 100) * 15).toFixed(2)
+        
+        return taxWeWo
+      }
+
+      if(knowLength > 6) {
+        let replacePointOne = replace.split(',').join('.');
+        let replacePoint2 = replacePointOne.replace('.','');
+        let replaceInter = new Number(replacePoint2);
+        let taxWeWo = ((replaceInter / 100) * 15).toFixed(2)
+        
+        return taxWeWo
+      }
+      
+    }
+  }
+
 
   render() {
-    const { categorias, categoria } = this.state
+    const { categorias, categoria } = this.state;
+
+
     return (
       <Fragment>
         <SafeAreaView style={styles.topArea} />
@@ -2448,13 +2549,14 @@ export default class CriarAnuncio extends Component {
           </Modalize>
 
 
-{/*Modalize do preço AUTONOMO*/}
-<Modalize
+          {/*Modalize do preço AUTONOMO*/}
+          <Modalize
             ref={this.state.modalizeRefValueAuto}
             snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
           >
             <View style={{flex:1,alignItems:'center'}}>
-                <Text style={{fontWeight: 'bold', padding:15, textAlign:'center'}}>Deseja selecionar um preço? {'\n'}(caso não, o valor será "a combinar" )</Text>  
+                <TextDays style={{fontWeight: 'bold', padding:15, textAlign:'center'}}>Deseja selecionar um preço? {'\n'}(caso não, o valor será "a combinar" )</TextDays>  
                 {this.state.precoAuto == '' &&
                   <View>
                     <View style={{flexDirection:'row'}}>
@@ -2469,25 +2571,26 @@ export default class CriarAnuncio extends Component {
                 }
 
                 {this.state.precoAuto == 'definir valor' &&
-                  <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                  <View style={{flexDirection: 'column'}}>
                     <InputFormMask
                       type={'money'}
                       value={this.state.precoAuto}
                       onChangeText={text => this.onChangePrecoAuto(text)}
                       keyboardType={"number-pad"}
-                      placeholder="Valor do Serviço                                                          "
-                    />
+                      placeholder="Valor do Serviço"
+                      />
                   </View>
                 }
 
                 {this.state.precoAuto.indexOf('R$') > -1 &&
-                  <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                  <View style={{flexDirection: 'column'}}>
+                    <TextDays>Taxa de Manutenção (15%): R${this.renderPercentToWeWoAuto()}</TextDays>
                     <InputFormMask
                       type={'money'}
                       value={this.state.precoAuto}
                       onChangeText={text => this.onChangePrecoAuto(text)}
                       keyboardType={"number-pad"}
-                      placeholder="Valor do Serviço                                                          "
+                      placeholder="Valor do Serviço"
                     />
                   </View>
                 }
@@ -2513,9 +2616,10 @@ export default class CriarAnuncio extends Component {
           <Modalize
             ref={this.state.modalizeRefValueEstab}
             snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
           >
             <View style={{flex:1,alignItems:'center'}}>
-                <Text style={{fontWeight: 'bold', padding:15, textAlign:'center'}}>Deseja selecionar um preço? {'\n'}(caso não, o valor será "a combinar" )</Text>  
+                <TextDays style={{fontWeight: 'bold', padding:15, textAlign:'center'}}>Deseja selecionar um preço? {'\n'}(caso não, o valor será "a combinar" )</TextDays>  
                 {this.state.precoEstab == '' &&
                   <View>
                     <View style={{flexDirection:'row'}}>
@@ -2536,19 +2640,20 @@ export default class CriarAnuncio extends Component {
                       value={this.state.precoEstab}
                       onChangeText={text => this.onChangePrecoEstab(text)}
                       keyboardType={"number-pad"}
-                      placeholder="Valor do Serviço                                                          "
+                      placeholder="Valor do Serviço"
                     />
                   </View>
                 }
 
                 {this.state.precoEstab.indexOf('R$') > -1 &&
-                  <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                  <View style={{flexDirection: 'column'}}>
+                    <TextDays>Taxa de Manutenção (15%): R${this.renderPercentToWeWoEstab()}</TextDays>
                     <InputFormMask
                       type={'money'}
                       value={this.state.precoEstab}
                       onChangeText={text => this.onChangePrecoEstab(text)}
                       keyboardType={"number-pad"}
-                      placeholder="Valor do Serviço                                                          "
+                      placeholder="Valor do Serviço"
                     />
                   </View>
                 }
