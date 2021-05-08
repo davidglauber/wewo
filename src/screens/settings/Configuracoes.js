@@ -62,6 +62,7 @@ const DOLLAR_ICON = IOS ? 'logo-usd' : 'logo-usd';
 const ORDERS_ICON = IOS ? 'ios-list' : 'md-list';
 const VISIT_CARD = IOS ? 'ios-albums' : 'ios-albums';
 const CARRINHO = IOS ? 'md-cart': 'md-cart';
+const PRODUCTS_SOLD = IOS ? 'ios-cube' : 'ios-cube';
 
 const ABOUT_ICON = IOS ? 'ios-finger-print' : 'md-finger-print';
 const CHAT_ICON = IOS ? 'chatbox-ellipses-outline' : 'chatbox-ellipses-outline';
@@ -430,6 +431,13 @@ export default function Configuracoes() {
             setting="Meu Carrinho"
           />
 
+          {tipoDeConta == 'Estabelecimento' &&
+            <Setting
+              onPress={() => navigation.navigate('SoldProducts')}
+              icon={PRODUCTS_SOLD}
+              setting="Produtos Vendidos"
+            />
+          }
 
           <SectionHeader title="Sobre" />
           <Setting

@@ -82,6 +82,8 @@ import PaymentServices from '../screens/payment/PaymentServices';
 
 import PaymentProducts from '../screens/payment/PaymentProducts';
 
+import SoldProducts from '../screens/checkout/SoldProducts';
+
 import AwaitPayment from '../screens/payment/AwaitPayment';
 
 import Chat from '../screens/chat/Chat';
@@ -355,6 +357,13 @@ function MainNavigatorA() {
           component={PaymentProducts}
           options={{headerShown: false}}
         />
+
+        <Stack.Screen
+          name="SoldProducts"
+          component={SoldProducts}
+          options={{headerShown: false}}
+        />
+
 
         <Stack.Screen
           name="AwaitPayment"
