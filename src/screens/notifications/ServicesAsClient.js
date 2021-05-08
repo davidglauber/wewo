@@ -216,7 +216,7 @@ export default class ServicesAsClient extends Component {
           <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PagWo)</TextDescription2>
 
           <View style={{alignItems:'center', marginTop:100}}>
-            <LottieView source={bell} style={{width:100, height:100}} autoPlay loop />  
+            <LottieView source={bell} style={{width:200, height:200}} autoPlay loop />  
             <Text style={{color: this.context.dark ? 'white' : 'black'}}>Nenhuma Notificação Encontrada</Text>
           </View>
         </View>

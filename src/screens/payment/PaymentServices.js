@@ -269,8 +269,6 @@ export default class PaymentServices extends Component {
 
 
   mpTaxAndPayment(data, taxWeWo, taxUser, fullValue) {
-    alert(`Valor total: ${fullValue}\n\n\nTaxa do WeWo (15%): ${taxWeWo}\nValor do anunciante: ${taxUser}`)
-
     this.setState({endpointMP: data})
   }
 

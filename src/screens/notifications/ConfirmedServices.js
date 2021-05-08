@@ -218,7 +218,7 @@ export default class ConfirmedServices extends Component {
           <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Para sua segurança, deve-se utilizar o Modo PagWo para efetuar o pagamento entre o Contratado e Contratante (não nos responsabilizamos por qualquer problema de pagamento fora da plataforma)</TextDescription2>
 
           <View style={{alignItems:'center', marginTop:100}}>
-            <LottieView source={bell} style={{width:100, height:100}} autoPlay loop />  
+            <LottieView source={bell} style={{width:200, height:200}} autoPlay loop />  
             <Text style={{color: this.context.dark ? 'white' : 'black'}}>Nenhuma Notificação Encontrada</Text>
           </View>
         </View>
