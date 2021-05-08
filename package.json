@@ -17,6 +17,7 @@
     "@react-navigation/native": "^5.8.0",
     "@react-navigation/stack": "^5.8.0",
     "buffer": "^6.0.3",
+    "commitizen": "^4.2.4",
     "expo": "~40.0.0",
     "expo-ads-admob": "~8.4.0",
     "expo-av": "~8.7.0",
@@ -31,6 +32,7 @@
     "expo-updates": "~0.4.0",
     "faz-um-pix": "^2.0.2",
     "firebase": "^8.2.2",
+    "global": "^4.4.0",
     "lottie-ios": "3.1.8",
     "lottie-react-native": "^3.5.0",
     "pix-charge": "^1.1.0",
@@ -66,11 +68,17 @@
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "babel-jest": "~25.2.6",
+    "cz-conventional-changelog": "3.3.0",
     "jest": "~25.2.6",
     "react-test-renderer": "~16.13.1"
   },
   "jest": {
     "preset": "react-native"
   },
-  "private": true
+  "private": true,
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
