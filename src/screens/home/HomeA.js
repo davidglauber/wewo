@@ -11,6 +11,7 @@ import {
   Platform,
   View,
   TouchableOpacity,
+  StyleSheet,
   Dimensions,
   TouchableOpacityBase,
 } from 'react-native';
@@ -49,6 +50,14 @@ import { Video } from 'expo-av';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+const styles = StyleSheet.create({
+  headerSty: {
+    flexDirection:'row', 
+    justifyContent:'center', 
+    alignItems:"center", 
+    marginLeft: windowWidth/4
+  }
+})
  
 export default class HomeA extends Component {
   static contextType = ThemeContext;
@@ -337,19 +346,59 @@ async componentDidMount() {
         </Modal>
 
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{paddingBottom: 16}}>
-              <View style={{flexDirection: 'row',  justifyContent: 'center',  alignItems: 'center', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
-              
-              {this.context.dark ? 
-                <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104, justifyContent:'center'}}/>
-                :
-                <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104, justifyContent:'center'}}/>
-              }      
+
+            {this.context.dark ?
+              <View style={{paddingBottom: 16}}>
+                <View style={{flexDirection: 'row',  justifyContent: 'center',  alignItems: 'center', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
+                  <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104, justifyContent:'center'}}/>
+                </View>
               </View>
+              :
+              <View style={{paddingBottom: 16, marginHorizontal:20, marginTop:20, flexDirection:"row", backgroundColor:'#E98D0A', borderRadius:30}}>
+                <View style={{flexDirection: 'row', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
+                  <Image source={require("../../../assets/LOGOICONEAPP.png")} style={{height:104, width:104}}/>
+                </View>
 
-            
+                {this.state.type == 'Estabelecimento' &&
+                  <View style={styles.headerSty}>
+                    <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Autonomo'})}>
+                      <IconResponsive
+                        style={{color:'#3E3C3F'}}
+                        name="user-tie"
+                        size={24}
+                      />
+                    </TouchableOpacity>
 
-            </View>
+                    <TouchableOpacity style={{padding:15}}>
+                      <IconResponsive
+                        name="briefcase"
+                        size={24}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                }
+
+                {this.state.type == 'Autonomo' &&
+                  <View style={styles.headerSty}>
+                    <TouchableOpacity style={{padding:15}}>
+                      <IconResponsive
+                        name="user-tie"
+                        size={24}
+                      /> 
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Estabelecimento'})}>
+                      <IconResponsive
+                        style={{color:'#3E3C3F'}}
+                        name="briefcase"
+                        size={24}
+                      />
+                    </TouchableOpacity>
+
+                  </View>
+                }
+              </View>
+            }
 
             <ScrollView alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} horizontal={true} style={{padding:15}}>
                 <FlatList
@@ -357,54 +406,106 @@ async componentDidMount() {
                   keyExtractor={() => this.makeid(17)}
                   data={categories}
                   renderItem={({item}) => 
-                    <TouchCategory onPress={() => this.props.navigation.navigate('HomeCategory', {titleOfCategory: item.titleCategory})} style={{width: windowWidth/3, height:50, alignItems:'center', justifyContent:'center', borderRadius:50, marginRight: 20}}>
+                    <TouchCategory onPress={() => this.props.navigation.navigate('HomeCategory', {titleOfCategory: item.titleCategory})} style={{width: windowWidth/3, height:75, alignItems:'center', justifyContent:'center', borderRadius:20, marginRight: 20}}>
+                      {item.titleCategory == 'Transportes' &&
+                        <Image source={{uri: 'https://www.infoescola.com/wp-content/uploads/2011/04/geografia-do-transporte-1262195809.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Animais' &&
+                        <Image source={{uri: 'http://s2.glbimg.com/cYa3pKAKIPidjKyGPuAd8T4Hd1I=/e.glbimg.com/og/ed/f/original/2017/08/21/dog-2570398_960_720.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+
+                      {item.titleCategory == 'Lazer' &&
+                        <Image source={{uri: 'https://www.marinha.mil.br/saudenaval/sites/www.marinha.mil.br.saudenaval/files/ST_saude_lazer_noticias_redes.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Comida' &&
+                        <Image source={{uri: 'https://lightchef.com.br/wp-content/uploads/2019/10/Comida-Congelada-em-S%C3%A3o-Paulo-Como-pedir-no-delivery.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Administração' &&
+                        <Image source={{uri: 'https://www.napratica.org.br/wp-content/uploads/2018/09/curso-de-administra%C3%A7%C3%A3o.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Negócios' &&
+                        <Image source={{uri: 'https://blog.solarprime.com.br/app/uploads/2019/03/279321-gestao-de-negocios-tudo-o-que-voce-precisa-saber-sobre-o-assunto-1280x640.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Informática' &&
+                        <Image source={{uri: 'https://www.wreducacional.com.br/img_cursos/prod/img_1230x644/informatica/informatica-basica.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Audio-Visual' &&
+                        <Image source={{uri: 'https://ebac.art.br/upload/iblock/a9b/fil1.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Eletrodomésticos' &&
+                        <Image source={{uri: 'https://i0.wp.com/amodaeparatodos.com.br/wp-content/uploads/2020/06/3-eletrodomesticos-praticos-para-ter-em-casa.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Automóveis' &&
+                        <Image source={{uri: 'https://www.instacarro.com/uploads/2019/01/a41ac9a1-269180-conheca-as-principais-expectativas-para-o-mercado-de-automoveis.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Beleza' &&
+                        <Image source={{uri: 'https://static1.belezaextraordinaria.com.br/articles/8/35/88/@/33352-nova-etapa-na-rotina-de-cuidados-com-a-opengraph_1200-2.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Saúde' &&
+                        <Image source={{uri: 'https://ansemp.org.br/wp-content/uploads/2020/12/plano-de-sau%CC%81de-760x450-1.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Farmácias' &&
+                        <Image source={{uri: 'https://s2.glbimg.com/jVnNPEN6cGzKOuxFeyTye1qWACA=/0x0:1057x585/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2019/O/t/IMjQQOTBKPayhaSAN7aA/medicamentos.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Market' &&
+                        <Image source={{uri: 'https://www.doisamaisalimentos.com.br/wp-content/uploads/2021/01/Ambiente-Koa-14-foto_-Arne-Lee-660x330.jpeg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Música' &&
+                        <Image source={{uri: 'https://www.encorda.com.br/wp-content/uploads/2019/12/original-07a3b6b19bbc223a97160238d495d34e-scaled.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Artes' &&
+                        <Image source={{uri: 'https://artout.com.br/wp-content/uploads/2019/02/O-que-%C3%A9-arte-visual-1.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Construção' &&
+                        <Image source={{uri: 'https://blog.obraprimaweb.com.br/wp-content/uploads/2019/12/mercado-da-constru%C3%A7%C3%A3o-civil-em-crescimento-935x614.png'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Imóveis' &&
+                        <Image source={{uri: 'https://www.jornalcontabil.com.br/wp-content/uploads/2016/03/locacao-imoveis.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Turismo' &&
+                        <Image source={{uri: 'https://www.saopaulo.sp.gov.br/wp-content/uploads/2020/09/turismo.png'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Aluguel' &&
+                        <Image source={{uri: 'https://s2.glbimg.com/LJyz6a7REaciGEMB5i3I8m8IDrc=/0x98:2000x1200/924x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_f035dd6fd91c438fa04ab718d608bbaa/internal_photos/bs/2020/4/C/1YVBjWSiWp1jS38ofUoA/gettyimages-979070020.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Shows' &&
+                        <Image source={{uri: 'https://www.tenhomaisdiscosqueamigos.com/wp-content/uploads/2020/04/shows-coronavirus-1280x720.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Segurança' &&
+                        <Image source={{uri: 'https://www.armazemdc.com.br/storage/blog/o-que-e-seguranca-de-dados.jpeg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
+                      {item.titleCategory == 'Educação' &&
+                        <Image source={{uri: 'https://revistamelhor.com.br/wp-content/uploads/2019/10/O-poder-da-educac%CC%A7a%CC%83o.png'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
+                      }
+
                       <Text style={{fontWeight:'bold', color:'#fff', fontSize:13}}>{item.titleCategory}</Text>
                     </TouchCategory>
                 }
                 ></FlatList>
 
             </ScrollView>
-
-
-        {this.state.type == 'Estabelecimento' &&
-          <View style={{flexDirection:'row', justifyContent:'center'}}>
-            <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Autonomo'})}>
-              <IconResponsiveNOBACK
-                style={{color:'#3E3C3F'}}
-                name="user-tie"
-                size={24}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={{padding:15}}>
-              <IconResponsiveNOBACK
-                name="briefcase"
-                size={24}
-              />
-            </TouchableOpacity>
-          </View>
-        }
-
-        {this.state.type == 'Autonomo' &&
-          <View style={{flexDirection:'row', justifyContent:'center'}}>
-            <TouchableOpacity style={{padding:15}}>
-              <IconResponsiveNOBACK
-                name="user-tie"
-                size={24}
-              /> 
-            </TouchableOpacity>
-
-            <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Estabelecimento'})}>
-              <IconResponsiveNOBACK
-                style={{color:'#3E3C3F'}}
-                name="briefcase"
-                size={24}
-              />
-            </TouchableOpacity>
-
-          </View>
-        }
-
 
 
             <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>

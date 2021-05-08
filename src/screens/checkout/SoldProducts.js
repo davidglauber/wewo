@@ -210,24 +210,6 @@ export default class SoldProducts extends Component {
   }
 
 
-  RightAction() {
-    return(
-      <TouchableWithoutFeedback style={{width: 336, height: 170, flexDirection:'row', justifyContent:'center', alignItems:'center', marginBottom:5, marginTop: 10, borderRadius: 10, opacity:0.5}}>
-          <IconResponsiveNOBACK style={{marginRight:40}} name="trash-alt" size={24}/>
-          <Favorite>Deletado</Favorite>
-      </TouchableWithoutFeedback>
-    );
-  }
-
-
-  RemoveFav(id) {
-    firebase.firestore().collection('products').where('idProduct', '==', id).get().then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc){
-        doc.ref.delete();
-      })
-    })
-  }
-
 
   buyProducts() {
     var products = this.state.products;
@@ -396,10 +378,6 @@ export default class SoldProducts extends Component {
               keyExtractor={() => this.makeid(17)}
               data={this.state.products}
               renderItem={({item}) => 
-                <Swipeable
-                  renderLeftActions={this.RightAction}
-                  onSwipeableLeftOpen={() => this.RemoveFav(item.idProduct)}
-                > 
                   <View style={{paddingHorizontal:30, flexDirection:'row', maxWidth: windowWidth/1.5}}>
                     <Image style={{width:160, height:140, borderRadius:20}} source={{uri: item.fotoProduto}}/>
                     <View style={{flexDirection:"column"}}>
@@ -413,7 +391,6 @@ export default class SoldProducts extends Component {
                       <Text style={{marginLeft: 40, fontWeight:'bold', color:'#d98b0d', marginBottom:30, fontSize:14}}>Quantidade: {item.quantidade}</Text>
                     </View>
                   </View>
-                </Swipeable>
               }
             />
 
