@@ -4,6 +4,7 @@ export default {
     backgroundColor2: '#fff',
     color:'#d98b0d',
     colorTitle:'#fff',
+    colorTitle2: '#d98b0d',
     colorContainerDetails: '#3E3C3F',
     colorCallAndMessage: '#d98b0d',
     colorSetting: '#d98b0d',

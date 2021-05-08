@@ -228,8 +228,9 @@ export const AnuncioContainer = styled.TouchableOpacity`
     height: 135px; 
     margin-top: 3px; 
     border-radius: 0px; 
-    background-color: ${props => props.theme.backgroundColor};
+    background-color: ${props => props.theme.backgroundColor2};
 `
+
 
 export const CallAndMessageContainer = styled.View`
     flex-direction: row;
@@ -280,11 +281,11 @@ export const ButtonIconContainer = styled.View`
 export const Title = styled.Text`
     font-size:17px;
     font-weight: bold; 
-    color:${props => props.theme.colorTitle}
+    color:${props => props.theme.colorTitle2}
 `
 
 export const ValueField = styled.Text`
-    color:${props => props.theme.colorTitle};
+    color:${props => props.theme.colorTitle2};
     font-weight: bold
 `
 
@@ -371,6 +372,11 @@ export const TextBoldGolden = styled.Text`
 export const IconResponsive = styled(FontAwesome5)`
     color: ${props => props.theme.colorTitle}
 `
+
+export const IconResponsive2 = styled(FontAwesome5)`
+    color: ${props => props.theme.colorTitle2}
+`
+
 export const IconResponsiveNOBACK = styled(FontAwesome5)`
     color: ${props => props.theme.color}
 `

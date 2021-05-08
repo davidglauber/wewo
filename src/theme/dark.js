@@ -1,10 +1,11 @@
 export default {
   background: '#121212',
   backgroundColor: '#3E3C3F',
-  backgroundColor2: '#3E3C3F',
+  backgroundColor2: '#121212',
   color:'#d98b0d',
   colorContainerDetails: '#d98b0d',
   colorTitle:'#d98b0d',
+  colorTitle2: '#d98b0d',
   colorCallAndMessage: '#a37c1a',
   colorSetting: '#DAA520',
   colorICONMAIN: '#DAA520',

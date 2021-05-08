@@ -23,7 +23,7 @@ import firebase from '../../config/firebase';
 
 
 //CSS responsivo
-import { SafeBackground, IconResponsive, TouchCategory, AnuncioContainer, Description, IconResponsiveNOBACK, Heading, Title, ValueField, TouchableDetails, TextDetails, SignUpBottom, TextBold, TextBoldGolden } from './styles';
+import { SafeBackground, IconResponsive, IconResponsive2, TouchCategory, AnuncioContainer, Description, IconResponsiveNOBACK, Heading, Title, ValueField, TouchableDetails, TextDetails, SignUpBottom, TextBold, TextBoldGolden } from './styles';
 
 import { PulseIndicator } from 'react-native-indicators';
 
@@ -52,10 +52,10 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   headerSty: {
-    flexDirection:'row', 
+    flexDirection:'column', 
     justifyContent:'center', 
     alignItems:"center", 
-    marginLeft: windowWidth/4
+    marginLeft: windowWidth/2.8
   }
 })
  
@@ -348,13 +348,52 @@ async componentDidMount() {
           <ScrollView showsVerticalScrollIndicator={false}>
 
             {this.context.dark ?
-              <View style={{paddingBottom: 16}}>
-                <View style={{flexDirection: 'row',  justifyContent: 'center',  alignItems: 'center', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
-                  <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104, justifyContent:'center'}}/>
+              <View style={{marginHorizontal:20, marginTop:20, flexDirection:"row", backgroundColor:'#3E3C3F', borderRadius:30}}>
+              <View style={{flexDirection: 'row', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
+                <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104}}/>
+              </View>
+
+              {this.state.type == 'Estabelecimento' &&
+                <View style={styles.headerSty}>
+                  <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Autonomo'})}>
+                    <IconResponsive
+                      style={{color:'#a66811'}}
+                      name="user-tie"
+                      size={24}
+                    />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={{padding:15}}>
+                    <IconResponsive
+                      name="briefcase"
+                      size={24}
+                    />
+                  </TouchableOpacity>
                 </View>
+              }
+
+              {this.state.type == 'Autonomo' &&
+                <View style={styles.headerSty}>
+                  <TouchableOpacity style={{padding:15}}>
+                    <IconResponsive
+                      name="user-tie"
+                      size={24}
+                    /> 
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Estabelecimento'})}>
+                    <IconResponsive
+                      style={{color:'#a66811'}}
+                      name="briefcase"
+                      size={24}
+                    />
+                  </TouchableOpacity>
+
+                </View>
+              }
               </View>
               :
-              <View style={{paddingBottom: 16, marginHorizontal:20, marginTop:20, flexDirection:"row", backgroundColor:'#E98D0A', borderRadius:30}}>
+              <View style={{marginHorizontal:20, marginTop:20, flexDirection:"row", backgroundColor:'#E98D0A', borderRadius:30}}>
                 <View style={{flexDirection: 'row', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
                   <Image source={require("../../../assets/LOGOICONEAPP.png")} style={{height:104, width:104}}/>
                 </View>
@@ -363,7 +402,7 @@ async componentDidMount() {
                   <View style={styles.headerSty}>
                     <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Autonomo'})}>
                       <IconResponsive
-                        style={{color:'#3E3C3F'}}
+                        style={{color:'#a66811'}}
                         name="user-tie"
                         size={24}
                       />
@@ -389,7 +428,7 @@ async componentDidMount() {
 
                     <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Estabelecimento'})}>
                       <IconResponsive
-                        style={{color:'#3E3C3F'}}
+                        style={{color:'#a66811'}}
                         name="briefcase"
                         size={24}
                       />
@@ -500,7 +539,7 @@ async componentDidMount() {
                         <Image source={{uri: 'https://revistamelhor.com.br/wp-content/uploads/2019/10/O-poder-da-educac%CC%A7a%CC%83o.png'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
                       }
 
-                      <Text style={{fontWeight:'bold', color:'#fff', fontSize:13}}>{item.titleCategory}</Text>
+                      <Text style={{fontWeight:'bold', color: this.context.dark ? '#d98b0d' : '#fff', fontSize:13}}>{item.titleCategory}</Text>
                     </TouchCategory>
                 }
                 ></FlatList>
@@ -529,7 +568,7 @@ async componentDidMount() {
                             <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                                 <View style={{flexDirection:'row'}}>
                                       {item.video == null ?
-                                        <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20}}></Image>
+                                        <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
                                         :
                                         <Video 
                                           source={{ uri: item.video }}
@@ -539,32 +578,27 @@ async componentDidMount() {
                                           resizeMode="cover"
                                           shouldPlay
                                           isLooping
-                                          style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
+                                          style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
                                         />
                                       }
                                     
                                     <View style={{flexDirection:'column'}}>
-                                          <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
-                                            <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
-                                          </View>
-                                            {this.cutDescription(item.description)}
+                                        <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                          <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                        </View>
+                                          {this.cutDescription(item.description)}
+                                        <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                            <ValueField>{item.value}</ValueField>
+                                        </View>
                                     </View>
+                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:15}}>
+                                    <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
+                                        <IconResponsive2 style={{marginLeft:10}}  name="crown" size={19}/>
+                                    </View>
+
+
                                 </View> 
                                 
-
-
-                                <View style={{flexDirection: 'row'}}>
-                                    <View style={{marginLeft:windowWidth/1.75}}>
-                                        <ValueField>{item.value}</ValueField>
-                                    </View>
-
-                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.05}}>
-                                        <IconResponsive style={{marginLeft:16}}  name="user-tie" size={19}/>
-                                        <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
-                                    </View>
-
-                                </View> 
-
                             </AnuncioContainer>
                         </View>
 
@@ -585,7 +619,7 @@ async componentDidMount() {
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                     {item.video == null ?
-                                      <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20}}></Image>
+                                      <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
                                       :
                                       <Video 
                                         source={{ uri: item.video }}
@@ -595,7 +629,7 @@ async componentDidMount() {
                                         resizeMode="cover"
                                         shouldPlay
                                         isLooping
-                                        style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20}}
+                                        style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}
                                       />
                                     }
                                   
@@ -604,20 +638,20 @@ async componentDidMount() {
                                           <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
                                         </View>
                                           {this.cutDescription(item.description)}
+                                        <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                            <ValueField>{item.value}</ValueField>
+                                        </View>
                                   </View>
+                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:15}}>
+                                      <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
+                                  </View>
+
                               </View> 
+
                               
 
 
-                              <View style={{flexDirection: 'row'}}>
-                                  <View style={{marginLeft:windowWidth/1.75}}>
-                                      <ValueField>{item.value}</ValueField>
-                                  </View>
-                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.05}}>
-                                      <IconResponsive style={{marginLeft:16}}  name="user-tie" size={19}/>
-                                  </View>
 
-                              </View> 
 
                           </AnuncioContainer>
                       </View>
@@ -643,7 +677,7 @@ async componentDidMount() {
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                                 <View style={{flexDirection:'row'}}>
                                       {item.video == null ?
-                                        <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20}}></Image>
+                                        <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
                                         :
                                         <Video 
                                           source={{ uri: item.video }}
@@ -653,30 +687,25 @@ async componentDidMount() {
                                           resizeMode="cover"
                                           shouldPlay
                                           isLooping
-                                          style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
+                                          style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
                                         />
                                       }
                                     
                                     <View style={{flexDirection:'column'}}>
-                                          <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
-                                            <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
-                                          </View>
-                                            {this.cutDescription(item.description)}
+                                        <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                          <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                        </View>
+                                          {this.cutDescription(item.description)}
+                                        <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                            <ValueField>{item.value}</ValueField>
+                                        </View>
+                                    </View>
+                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:15}}>
+                                        <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
+                                        <IconResponsive2 style={{marginLeft:10}}  name="crown" size={19}/>
                                     </View>
                                 </View> 
                                 
-
-
-                                <View style={{flexDirection: 'row'}}>
-                                    <View style={{marginLeft:windowWidth/1.75}}>
-                                        <ValueField>{item.value}</ValueField>
-                                    </View>
-                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.05}}>
-                                        <IconResponsive style={{marginLeft:16}}  name="briefcase" size={19}/>
-                                        <IconResponsive style={{marginLeft:10}}  name="crown" size={19}/>
-                                    </View>
-                                </View> 
-
                             </AnuncioContainer>
                       </View>
                   </View>
@@ -695,7 +724,7 @@ async componentDidMount() {
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                                 <View style={{flexDirection:'row'}}>
                                       {item.video == null ?
-                                        <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20}}></Image>
+                                        <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
                                         :
                                         <Video 
                                           source={{ uri: item.video }}
@@ -705,28 +734,25 @@ async componentDidMount() {
                                           resizeMode="cover"
                                           shouldPlay
                                           isLooping
-                                          style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
+                                          style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
                                         />
                                       }
                                     
                                     <View style={{flexDirection:'column'}}>
-                                          <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
-                                            <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
-                                          </View>
-                                            {this.cutDescription(item.description)}
+                                        <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                          <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                        </View>
+                                          {this.cutDescription(item.description)}
+                                        <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                            <ValueField>{item.value}</ValueField>
+                                        </View>
                                     </View>
+                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:15}}>
+                                        <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
+                                    </View>
+
                                 </View> 
                                 
-
-
-                                <View style={{flexDirection: 'row'}}>
-                                    <View style={{marginLeft:windowWidth/1.75, marginRight:windowWidth/6}}>
-                                        <ValueField>{item.value}</ValueField>
-                                    </View>
-                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.05}}>
-                                        <IconResponsive style={{marginLeft:16}}  name="briefcase" size={19}/>
-                                    </View>
-                                </View> 
 
                             </AnuncioContainer>
                       </View>
