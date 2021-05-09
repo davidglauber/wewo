@@ -26,7 +26,7 @@ import firebase from '../../config/firebase';
 import { PulseIndicator } from 'react-native-indicators';
 
 
-import { SafeBackground, Title, AnuncioContainer, PlusContainer, PlusIcon, Description, IconResponsiveNOBACK, TouchableDetails, TextDetails, IconResponsive, Heading } from '../home/styles';
+import { SafeBackground, Title, AnuncioContainer, PlusContainer, PlusIcon, Description, ValueField, TouchableDetails, TextDetails, IconResponsive, IconResponsive2, Heading } from '../home/styles';
 
 import LottieView from 'lottie-react-native';
 
@@ -296,17 +296,17 @@ export default class TelaPrincipalAnuncio extends Component {
   }
 
   cutDescription(text) {
-    if(text.length > 40) {
-      let shortDescription = text.substr(0, 40)
+    if(text.length > 25) {
+      let shortDescription = text.substr(0, 25)
 
       return(
-        <View style={{justifyContent: 'center', alignItems: 'center',}}>
+        <View style={{justifyContent: 'center', alignItems: 'center', marginLeft:5}}>
           <Description>{shortDescription} ...</Description>
         </View>
       );
     } else {
       return(
-        <View style={{justifyContent: 'center', alignItems: 'center',}}>
+        <View style={{justifyContent: 'center', alignItems: 'center', marginLeft:5}}>
           <Description>{text}</Description>
         </View>
       );
@@ -345,7 +345,7 @@ export default class TelaPrincipalAnuncio extends Component {
   responsibleFont() {
     let Height = Dimensions.get('window').height
 
-    return RFValue(15, Height);
+    return RFValue(20, Height);
   }
 
 
@@ -470,14 +470,10 @@ export default class TelaPrincipalAnuncio extends Component {
                         keyExtractor={() => this.makeid(17)}
                         data={anunciosAuto}
                         renderItem={({item}) => 
-                            <AnuncioContainer style={{ width: 336,
-                              height: 170,
-                              marginBottom:5,
-                              marginTop: 10,
-                              borderRadius: 30}} onPress={() => this.props.navigation.navigate('', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                            <AnuncioContainer onPress={() => this.props.navigation.navigate('', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                   {item.video == null ?
-                                    <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                    <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20}}></Image>
                                     :
                                     <Video 
                                       source={{ uri: item.video }}
@@ -487,31 +483,29 @@ export default class TelaPrincipalAnuncio extends Component {
                                       resizeMode="cover"
                                       shouldPlay
                                       isLooping
-                                      style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                      style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20 }}
                                     />
                                   }
                                   
                                   <View style={{flexDirection:'column'}}>
-                                    <Title style={{fontSize: this.responsibleFont(),  fontSize:17, marginTop:20, fontWeight: 'bold', marginLeft:20}}>{item.title}</Title>
+                                        <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                          <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                        </View>
+                                          {this.cutDescription(item.description)}
+                                        <View style={{marginLeft:windowWidth/15, marginTop:10, flexDirection:'row', backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                            <TouchableOpacity onPress={() => this.props.navigation.navigate('EditarAnuncio', {idAnuncio: item.idAnuncio, type: item.type})}>
+                                              <IconResponsive2 style={{marginRight: windowWidth/7}} name="pencil-alt" size={19}/>
+                                            </TouchableOpacity>
 
-                                    {this.cutDescription(item.description)}
+                                            <TouchableOpacity onPress={() => this.deletePublish(item.idAnuncio)}>
+                                              <IconResponsive2 style={{marginRight: windowWidth/7}} name="trash" size={19}/>
+
+                                            </TouchableOpacity>
+                                            
+                                              <IconResponsive2  name="user-tie" size={19}/>
+                                        </View>
                                   </View>
                               </View>  
-
-                                <View style={{flexDirection: 'row'}}>
-
-                                  <TouchableOpacity onPress={() => this.props.navigation.navigate('EditarAnuncio', {idAnuncio: item.idAnuncio, type: item.type})} style={{marginTop: 24, marginLeft:100}}>
-                                      <IconResponsive  name="pencil-alt" size={19}/>
-                                  </TouchableOpacity>
-
-                                  <TouchableOpacity onPress={() => this.deletePublish(item.idAnuncio)} style={{marginTop: 24,marginLeft:50}}>
-                                      <IconResponsive  name="trash" size={19}/>
-                                  </TouchableOpacity>
-
-                                  <View style={{marginTop: 24, marginLeft:50}}>
-                                      <IconResponsive  name="user-tie" size={19}/>
-                                </View>
-                              </View> 
 
                             </AnuncioContainer>
                         }
@@ -525,14 +519,10 @@ export default class TelaPrincipalAnuncio extends Component {
                         keyExtractor={() => this.makeid(17)}
                         data={anunciosEstab}
                         renderItem={({item}) => 
-                        <AnuncioContainer style={{ width: 336,
-                          height: 170,
-                          marginBottom:5,
-                          marginTop: 10,
-                          borderRadius: 30}} onPress={() => this.props.navigation.navigate('', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                        <AnuncioContainer onPress={() => this.props.navigation.navigate('', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                           <View style={{flexDirection:'row'}}>
                               {item.video == null ?
-                                <Image source={{uri: item.photo}} style={{width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20}}></Image>
+                                <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20}}></Image>
                                 :
                                 <Video 
                                   source={{ uri: item.video }}
@@ -542,31 +532,28 @@ export default class TelaPrincipalAnuncio extends Component {
                                   resizeMode="cover"
                                   shouldPlay
                                   isLooping
-                                  style={{ width:125, height:88, borderRadius: 10, marginLeft: 20, marginTop: 20 }}
+                                  style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20 }}
                                 />
                               }
                               
                               <View style={{flexDirection:'column'}}>
-                                <Title style={{fontSize: this.responsibleFont(),  fontSize:17, marginTop:20, fontWeight: 'bold', marginLeft:20}}>{item.title}</Title>
+                                  <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                    <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                  </View>
+                                    {this.cutDescription(item.description)}
+                                  <View style={{marginLeft:windowWidth/15, marginTop:10, flexDirection:'row', backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                      <TouchableOpacity onPress={() => this.props.navigation.navigate('EditarAnuncio', {idAnuncio: item.idAnuncio, type: item.type})}>
+                                        <IconResponsive2 style={{marginRight: windowWidth/7}} name="pencil-alt" size={19}/>
+                                      </TouchableOpacity>
 
-                                {this.cutDescription(item.description)}
+                                      <TouchableOpacity onPress={() => this.deletePublish(item.idAnuncio)}>
+                                        <IconResponsive2 style={{marginRight: windowWidth/7}} name="trash" size={19}/>
+
+                                      </TouchableOpacity>
+                                      <IconResponsive2  name="briefcase" size={19}/>
+                                  </View>
                               </View>
                           </View>  
-
-                            <View style={{flexDirection: 'row'}}>
-
-                              <TouchableOpacity onPress={() => this.props.navigation.navigate('EditarAnuncio', {idAnuncio: item.idAnuncio, type: item.type})} style={{marginTop: 24, marginLeft:100}}>
-                                  <IconResponsive  name="pencil-alt" size={19}/>
-                              </TouchableOpacity>
-
-                              <TouchableOpacity onPress={() => this.deletePublish(item.idAnuncio)} style={{marginTop: 24,marginLeft:50}}>
-                                  <IconResponsive  name="trash" size={19}/>
-                              </TouchableOpacity>
-
-                              <View style={{marginTop: 24, marginLeft:50}}>
-                                  <IconResponsive  name="briefcase" size={19}/>
-                            </View>
-                          </View> 
 
                         </AnuncioContainer>
                         }

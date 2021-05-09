@@ -376,7 +376,7 @@ export default class SearchA extends Component {
             </View>
               :
               <View style={{flexDirection:"row", backgroundColor:'#E98D0A'}}>
-                <View style={{flexDirection: 'row', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
+                <View style={{flexDirection: 'row', paddingTop: 16, paddingHorizontal: 5, paddingBottom: 12}}>
                   <Image source={require("../../../assets/LOGOICONEAPP.png")} style={{height:104, width:104}}/>
                   <View style={{marginTop: windowHeight/28, marginLeft: windowWidth/22}}>
                     <TextSearch

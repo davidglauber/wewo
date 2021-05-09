@@ -349,7 +349,7 @@ async componentDidMount() {
 
             {this.context.dark ?
               <View style={{flexDirection:"row", backgroundColor:'#3E3C3F'}}>
-              <View style={{flexDirection: 'row', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
+              <View style={{flexDirection: 'row', paddingTop: 16, paddingHorizontal: 5, paddingBottom: 12}}>
                 <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104}}/>
               </View>
 
@@ -547,7 +547,7 @@ async componentDidMount() {
             </ScrollView>
 
 
-            <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
+            <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 46, paddingHorizontal: 16, paddingBottom: 12}}>
               <Heading>Anúncios</Heading>
               <TouchableOpacity onPress={this.navigateTo('Filtro')} style={{width:20, height:20}}>
                   <IconResponsiveNOBACK  name="sort-alpha-up" size={19}/>
