@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     flexDirection:'column', 
     justifyContent:'center', 
     alignItems:"center", 
-    marginLeft: windowWidth/2
+    marginLeft: windowWidth/1.8
   }
 })
  
@@ -317,7 +317,7 @@ async componentDidMount() {
   responsibleFont() {
     let Height = Dimensions.get('window').height
 
-    return RFValue(15, Height);
+    return RFValue(20, Height);
   }
 
   render() {
@@ -394,7 +394,7 @@ async componentDidMount() {
               </View>
               :
               <View style={{flexDirection:"row", backgroundColor:'#E98D0A'}}>
-                <View style={{flexDirection: 'row', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
+                <View style={{flexDirection: 'row', paddingTop: 16, paddingHorizontal: 5, paddingBottom: 12}}>
                   <Image source={require("../../../assets/LOGOICONEAPP.png")} style={{height:104, width:104}}/>
                 </View>
 
@@ -591,7 +591,7 @@ async componentDidMount() {
                                             <ValueField>{item.value}</ValueField>
                                         </View>
                                     </View>
-                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:15}}>
+                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
                                       <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
                                       <IconResponsive2 style={{marginLeft:10}}  name="crown" size={19}/>
                                     </View>
@@ -642,7 +642,7 @@ async componentDidMount() {
                                             <ValueField>{item.value}</ValueField>
                                         </View>
                                   </View>
-                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:15}}>
+                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
                                       <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
                                   </View>
 
@@ -700,7 +700,7 @@ async componentDidMount() {
                                             <ValueField>{item.value}</ValueField>
                                         </View>
                                     </View>
-                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:15}}>
+                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
                                         <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
                                         <IconResponsive2 style={{marginLeft:10}}  name="crown" size={19}/>
                                     </View>
@@ -747,7 +747,7 @@ async componentDidMount() {
                                             <ValueField>{item.value}</ValueField>
                                         </View>
                                     </View>
-                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:15}}>
+                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
                                         <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
                                     </View>
 

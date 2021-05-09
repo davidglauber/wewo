@@ -31,7 +31,7 @@ import firebase from '../../config/firebase';
 const imgHolder = require('../../assets/img/imgholder.png');
 
 //CSS responsivo
-import { SafeBackground, IconResponsive, AnuncioContainer, Heading, Title, ValueField, Description, TouchableDetails, TextDetails, SignUpBottom, TextBold, TextBoldGolden } from './styles';
+import { SafeBackground, IconResponsive, IconResponsive2, AnuncioContainer, Heading, Title, ValueField, Description, TouchableDetails, TextDetails, SignUpBottom, TextBold, TextBoldGolden } from './styles';
 
 import { ThemeContext } from '../../../ThemeContext';
 
@@ -520,7 +520,7 @@ async componentDidMount() {
   responsibleFont() {
     let Height = Dimensions.get('window').height
 
-    return RFValue(15, Height);
+    return RFValue(18, Height);
   }
 
   render() {
@@ -593,7 +593,7 @@ async componentDidMount() {
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                   {item.video == null ?
-                                      <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20}}></Image>
+                                      <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
                                       :
                                       <Video 
                                         source={{ uri: item.video }}
@@ -603,7 +603,7 @@ async componentDidMount() {
                                         resizeMode="cover"
                                         shouldPlay
                                         isLooping
-                                        style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
+                                        style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
                                       />
                                     }
                                   <View style={{flexDirection:'column'}}>
@@ -611,16 +611,14 @@ async componentDidMount() {
                                           <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
                                         </View>
                                           {this.cutDescription(item.description)}
+                                        <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                            <ValueField>{item.value}</ValueField>
+                                        </View>
+                                  </View>
+                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
+                                      <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
                                   </View>
                               </View>  
-
-                              <View style={{flexDirection: 'row'}}>
-                                  <View style={{marginLeft:windowWidth/1.75, marginRight:windowWidth/6}}>
-                                      <ValueField>{item.value}</ValueField>
-                                  </View>
-                                      <IconResponsive style={{marginLeft:16}}  name="user-tie" size={19}/>
-
-                              </View> 
 
                           </AnuncioContainer>
                       </View>
@@ -640,7 +638,7 @@ async componentDidMount() {
                     <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                   {item.video == null ?
-                                      <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20}}></Image>
+                                      <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
                                       :
                                       <Video 
                                         source={{ uri: item.video }}
@@ -650,23 +648,24 @@ async componentDidMount() {
                                         resizeMode="cover"
                                         shouldPlay
                                         isLooping
-                                        style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/4, marginTop: 20 }}
+                                        style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
                                       />
                                     }
-                                  <View style={{flexDirection:'column'}}>
+
+                                    <View style={{flexDirection:'column'}}>
                                         <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
                                           <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
                                         </View>
                                           {this.cutDescription(item.description)}
-                                  </View>
-                              </View>  
+                                        <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                            <ValueField>{item.value}</ValueField>
+                                        </View>
+                                    </View>
+                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
+                                        <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
+                                    </View>
 
-                              <View style={{flexDirection: 'row'}}>
-                                  <View style={{marginLeft:windowWidth/1.75, marginRight:windowWidth/6}}>
-                                      <ValueField>{item.value}</ValueField>
-                                  </View>
-                                      <IconResponsive style={{marginLeft:16}}  name="briefcase" size={19}/>
-                              </View> 
+                              </View>  
 
                           </AnuncioContainer>
                     </View>

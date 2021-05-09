@@ -230,7 +230,7 @@ export default class FavoritesA extends Component {
   responsibleFont() {
     let Height = Dimensions.get('window').height
 
-    return RFValue(15, Height);
+    return RFValue(20, Height);
   }
 
   cutDescription(text) {
@@ -318,8 +318,7 @@ export default class FavoritesA extends Component {
                                           <ValueField>{item.categoria}</ValueField>
                                       </View>
                                   </View>
-                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.24, marginTop:15}}>
-                                    <IconResponsive2 style={{marginLeft:16}}  name="clone" size={19}/>
+                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.14, marginTop:18}}>
                                     <IconResponsive2 style={{marginLeft:10}}  name="user-tie" size={19}/>
                                   </View>
                           </View>  
@@ -367,8 +366,7 @@ export default class FavoritesA extends Component {
                                           <ValueField>{item.categoria}</ValueField>
                                       </View>
                               </View>
-                              <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.24, marginTop:15}}>
-                                <IconResponsive2 style={{marginLeft:16}}  name="clone" size={19}/>
+                              <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.14, marginTop:18}}>
                                 <IconResponsive2 style={{marginLeft:10}}  name="briefcase" size={19}/>
                               </View>
 

@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     paddingHorizontal: 16,
+    marginTop:20
   },
   titleText: {
     paddingTop: 16,
@@ -186,7 +187,7 @@ export default class SearchA extends Component {
   responsibleFont() {
     let Height = Dimensions.get('window').height
 
-    return RFValue(15, Height);
+    return RFValue(18, Height);
   }
 
   makeid(length) {
@@ -487,7 +488,7 @@ export default class SearchA extends Component {
                                 <ValueField>{item.value}</ValueField>
                             </View>
                       </View>
-                      <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.15, marginTop:15}}>
+                      <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.15, marginTop:18}}>
                           <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
                       </View>
 
@@ -538,7 +539,7 @@ export default class SearchA extends Component {
                                             <ValueField>{item.value}</ValueField>
                                         </View>
                                   </View>
-                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.15, marginTop:15}}>
+                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.15, marginTop:18}}>
                                       <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
                                   </View>
                               </View>  
