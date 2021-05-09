@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     flexDirection:'column', 
     justifyContent:'center', 
     alignItems:"center", 
-    marginLeft: windowWidth/2.8
+    marginLeft: windowWidth/2
   }
 })
  
@@ -327,7 +327,7 @@ async componentDidMount() {
       <SafeBackground>
 
         <StatusBar
-          backgroundColor={this.context.dark ? '#121212' : 'white'}
+          backgroundColor={this.context.dark ? '#3E3C3F' : '#E98D0A'}
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
         
@@ -348,7 +348,7 @@ async componentDidMount() {
           <ScrollView showsVerticalScrollIndicator={false}>
 
             {this.context.dark ?
-              <View style={{marginHorizontal:20, marginTop:20, flexDirection:"row", backgroundColor:'#3E3C3F', borderRadius:30}}>
+              <View style={{flexDirection:"row", backgroundColor:'#3E3C3F'}}>
               <View style={{flexDirection: 'row', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
                 <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104}}/>
               </View>
@@ -393,7 +393,7 @@ async componentDidMount() {
               }
               </View>
               :
-              <View style={{marginHorizontal:20, marginTop:20, flexDirection:"row", backgroundColor:'#E98D0A', borderRadius:30}}>
+              <View style={{flexDirection:"row", backgroundColor:'#E98D0A'}}>
                 <View style={{flexDirection: 'row', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
                   <Image source={require("../../../assets/LOGOICONEAPP.png")} style={{height:104, width:104}}/>
                 </View>
@@ -592,8 +592,8 @@ async componentDidMount() {
                                         </View>
                                     </View>
                                     <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:15}}>
-                                    <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
-                                        <IconResponsive2 style={{marginLeft:10}}  name="crown" size={19}/>
+                                      <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
+                                      <IconResponsive2 style={{marginLeft:10}}  name="crown" size={19}/>
                                     </View>
 
 

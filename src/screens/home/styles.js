@@ -27,10 +27,9 @@ export const TouchCategory = styled.TouchableOpacity`
     backgroundColor: ${props => props.theme.backgroundColor}
 `
 export const TextSearch = styled.TextInput`
-    border-width: 1px;
     border-radius: 20px;
     border-color: ${props => props.theme.color};
-    background-color: ${props => props.theme.backgroundColor};
+    background-color: ${props => props.theme.backgroundColor2};
     color: ${props => props.theme.inversePallete};
     padding-left: 8px;
     padding-right: 51px;

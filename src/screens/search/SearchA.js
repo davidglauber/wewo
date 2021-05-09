@@ -32,7 +32,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 // import components
 import TouchableItem from '../../components/TouchableItem';
 
-import {SafeBackground, IconResponsive, IconResponsiveNOBACK, TouchableFilter, Description, AnuncioContainer, TouchableFilterUnselected, Heading, TextFilter, Title, ValueField, TouchableDetails, TextDetails, TextSearch} from '../home/styles';
+import {SafeBackground, IconResponsive, IconResponsive2, IconResponsiveNOBACK, TouchableFilter, Description, AnuncioContainer, TouchableFilterUnselected, Heading, TextFilter, Title, ValueField, TouchableDetails, TextDetails, TextSearch} from '../home/styles';
 
 import { ThemeContext } from '../../../ThemeContext';
 
@@ -70,8 +70,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   inputContainer: {
-    marginHorizontal: 16,
-    paddingBottom: 10,
+    marginHorizontal: 6
   },
   textInput: {
     borderWidth: 1,
@@ -111,6 +110,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  headerSty: {
+    flexDirection:'column', 
+    justifyContent:'center', 
+    alignItems:"center", 
+    marginLeft: windowWidth/27
   },
   cardTitle: {
     padding: 16,
@@ -294,81 +299,153 @@ export default class SearchA extends Component {
     return (
       <SafeBackground>
         <StatusBar
-          backgroundColor={this.context.dark ? '#121212' : 'white'}
-          barStyle={this.context.dark ? 'light-content' : 'dark-content'}
+         backgroundColor={this.context.dark ? '#3E3C3F' : '#E98D0A'}
+         barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
 
-        <View style={{alignItems:'center', paddingTop:16}}>
-          {this.context.dark ? 
-            <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104, justifyContent:'center'}}/>
-            :
-            <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104, justifyContent:'center'}}/>
-          }      
-        </View>
+          {this.context.dark ?
+             <View style={{flexDirection:"row", backgroundColor:'#3E3C3F'}}>
+              <View style={{flexDirection: 'row', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
+                <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104}}/>
+                <View style={{marginTop: windowHeight/28, marginLeft: windowWidth/22}}>
+                  <TextSearch
+                    placeholder="Pesquise aqui..."
+                    placeholderTextColor={this.context.dark ? '#DAA520' : '#3E3C3F'}
+                    returnKeyType="search"
+                    maxLength={50}
+                    value={this.state.textSearch}
+                    onChangeText={text => this.onChangeTextoSearch(text)}
+                  />
 
-
-        { this.state.type == 'Estabelecimento' &&
-          <View style={{flexDirection:'row', justifyContent:'center'}}>
-            <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Autonomo'})}>
-              <IconResponsiveNOBACK
-                style={{color:'#3E3C3F'}}
-                name="user-tie"
-                size={24}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={{padding:15}}>
-              <IconResponsiveNOBACK
-                name="briefcase"
-                size={24}
-              />
-            </TouchableOpacity>
-          </View>
-        }
-
-        { this.state.type == 'Autonomo' &&
-          <View style={{flexDirection:'row', justifyContent:'center'}}>
-            <TouchableOpacity style={{padding:15}}>
-              <IconResponsiveNOBACK
-                name="user-tie"
-                size={24}
-              /> 
-            </TouchableOpacity>
-
-            <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Estabelecimento'})}>
-              <IconResponsiveNOBACK
-                style={{color:'#3E3C3F'}}
-                name="briefcase"
-                size={24}
-              />
-            </TouchableOpacity>
-
-          </View>
-        }
-
-        <View style={styles.inputContainer}>
-          <TextSearch
-            placeholder="Digite o título do cartão ou anúncio..."
-            placeholderTextColor={this.context.dark ? '#DAA520' : '#3E3C3F'}
-            returnKeyType="search"
-            maxLength={50}
-            value={this.state.textSearch}
-            onChangeText={text => this.onChangeTextoSearch(text)}
-          />
-          <View style={styles.searchButtonContainer}>
-            <TouchableItem
-              onPress={() => this.getPublishes(this.state.textSearch)}
-              // borderless
-            >
-              <View style={styles.searchButton}>
-                <IconResponsive
-                  name="search"
-                  size={18}
-                />
+                  <View style={styles.searchButtonContainer}>
+                    <TouchableItem
+                      onPress={() => this.getPublishes(this.state.textSearch)}
+                      // borderless
+                    >
+                      <View style={styles.searchButton}>
+                        <IconResponsive2
+                          name="search"
+                          size={18}
+                        />
+                      </View>
+                    </TouchableItem>
+                  </View>
+                </View>
               </View>
-            </TouchableItem>
-          </View>
-        </View>
+
+
+              {this.state.type == 'Estabelecimento' &&
+                <View style={styles.headerSty}>
+                  <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Autonomo'})}>
+                    <IconResponsive
+                      style={{color:'#a66811'}}
+                      name="user-tie"
+                      size={24}
+                    />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={{padding:15}}>
+                    <IconResponsive
+                      name="briefcase"
+                      size={24}
+                    />
+                  </TouchableOpacity>
+                </View>
+              }
+
+              {this.state.type == 'Autonomo' &&
+                <View style={styles.headerSty}>
+                  <TouchableOpacity style={{padding:15}}>
+                    <IconResponsive
+                      name="user-tie"
+                      size={24}
+                    /> 
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Estabelecimento'})}>
+                    <IconResponsive
+                      style={{color:'#a66811'}}
+                      name="briefcase"
+                      size={24}
+                    />
+                  </TouchableOpacity>
+
+                </View>
+              }
+            </View>
+              :
+              <View style={{flexDirection:"row", backgroundColor:'#E98D0A'}}>
+                <View style={{flexDirection: 'row', paddingTop: 16, paddingHorizontal: 16, paddingBottom: 12}}>
+                  <Image source={require("../../../assets/LOGOICONEAPP.png")} style={{height:104, width:104}}/>
+                  <View style={{marginTop: windowHeight/28, marginLeft: windowWidth/22}}>
+                    <TextSearch
+                      placeholder="Pesquise aqui..."
+                      placeholderTextColor={this.context.dark ? '#DAA520' : '#3E3C3F'}
+                      returnKeyType="search"
+                      maxLength={50}
+                      value={this.state.textSearch}
+                      onChangeText={text => this.onChangeTextoSearch(text)}
+                    />
+
+                    <View style={styles.searchButtonContainer}>
+                      <TouchableItem
+                        onPress={() => this.getPublishes(this.state.textSearch)}
+                        // borderless
+                      >
+                        <View style={styles.searchButton}>
+                          <IconResponsive2
+                            name="search"
+                            size={18}
+                          />
+                        </View>
+                      </TouchableItem>
+                    </View>
+                  </View>
+                </View>
+
+
+                {this.state.type == 'Estabelecimento' &&
+                  <View style={styles.headerSty}>
+                    <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Autonomo'})}>
+                      <IconResponsive
+                        style={{color:'#a66811'}}
+                        name="user-tie"
+                        size={24}
+                      />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{padding:15}}>
+                      <IconResponsive
+                        name="briefcase"
+                        size={24}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                }
+
+                {this.state.type == 'Autonomo' &&
+                  <View style={styles.headerSty}>
+                    <TouchableOpacity style={{padding:15}}>
+                      <IconResponsive
+                        name="user-tie"
+                        size={24}
+                      /> 
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Estabelecimento'})}>
+                      <IconResponsive
+                        style={{color:'#a66811'}}
+                        name="briefcase"
+                        size={24}
+                      />
+                    </TouchableOpacity>
+
+                  </View>
+                }
+              </View>
+            }    
+
+
 
 
         <View style={styles.titleContainer}>
@@ -387,7 +464,7 @@ export default class SearchA extends Component {
               <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                   <View style={{flexDirection:'row'}}>
                       {item.video == null ?
-                          <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/10, marginTop: 20}}></Image>
+                          <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}></Image>
                           :
                           <Video 
                             source={{ uri: item.video }}
@@ -397,26 +474,24 @@ export default class SearchA extends Component {
                             resizeMode="cover"
                             shouldPlay
                             isLooping
-                            style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/10, marginTop: 20 }}
+                            style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20 }}
                           />
                         }
+                        
                       <View style={{flexDirection:'column'}}>
                             <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
                               <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
                             </View>
                               {this.cutDescription(item.description)}
+                            <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                <ValueField>{item.value}</ValueField>
+                            </View>
                       </View>
+                      <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.15, marginTop:15}}>
+                          <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
+                      </View>
+
                   </View>  
-
-                  <View style={{flexDirection: 'row'}}>
-                      <View style={{marginLeft:windowWidth/2.3}}>
-                          <ValueField>{item.value}</ValueField>
-                      </View>
-                      <View style={{position:'absolute', left: windowWidth/1.3}}>
-                          <IconResponsive style={{marginLeft:16}}  name="briefcase" size={19}/>
-                      </View>
-
-                  </View> 
 
                 </AnuncioContainer>
               </View>
@@ -440,7 +515,7 @@ export default class SearchA extends Component {
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                   {item.video == null ?
-                                      <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: windowWidth/10, marginTop: 20}}></Image>
+                                      <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}></Image>
                                       :
                                       <Video 
                                         source={{ uri: item.video }}
@@ -450,25 +525,23 @@ export default class SearchA extends Component {
                                         resizeMode="cover"
                                         shouldPlay
                                         isLooping
-                                        style={{ width:88, height:88, borderRadius: 50, marginLeft: windowWidth/10, marginTop: 20 }}
+                                        style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}
                                       />
                                     }
+
                                   <View style={{flexDirection:'column'}}>
                                         <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
                                           <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
                                         </View>
                                           {this.cutDescription(item.description)}
+                                        <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                            <ValueField>{item.value}</ValueField>
+                                        </View>
+                                  </View>
+                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.15, marginTop:15}}>
+                                      <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
                                   </View>
                               </View>  
-
-                              <View style={{flexDirection: 'row'}}>
-                                  <View style={{marginLeft:windowWidth/2.3}}>
-                                      <ValueField>{item.value}</ValueField>
-                                  </View>
-                                  <View style={{position:'absolute', left: windowWidth/1.3}}>
-                                      <IconResponsive style={{marginLeft:16}}  name="user-tie" size={19}/>
-                                  </View>
-                              </View> 
 
                           </AnuncioContainer>
                       </View>
@@ -481,7 +554,7 @@ export default class SearchA extends Component {
             }
 
           {this.state.activesPublishesAuto.length == 0 && this.state.activesPublishesEstab.length == 0 &&
-            <Text>Nenhum resultado encontrado!</Text>
+            <Text style={{color: this.context.dark ? '#fff' : '#000'}}>Nenhum resultado encontrado!</Text>
           }
         </View>
       </SafeBackground>

@@ -38,7 +38,7 @@ import Colors from '../../theme/colors';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 //CSS responsivo
-import {SafeBackground, IconResponsive,TextDetails, Description, IconResponsiveNOBACK, TouchableDetails, Favorite, Heading, AnuncioContainer, ValueField, Title, SwipeLeft} from '../home/styles';
+import {SafeBackground, IconResponsive, IconResponsive2, TextDetails, Description, IconResponsiveNOBACK, TouchableDetails, Favorite, Heading, AnuncioContainer, ValueField, Title, SwipeLeft} from '../home/styles';
 
 import { ThemeContext } from '../../../ThemeContext';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -296,7 +296,7 @@ export default class FavoritesA extends Component {
                     <AnuncioContainer onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
                           <View style={{flexDirection:'row'}}>
                               {item.video == null ?
-                                    <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: 20, marginTop: 20}}></Image>
+                                    <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}></Image>
                                     :
                                     <Video 
                                       source={{ uri: item.video }}
@@ -306,27 +306,23 @@ export default class FavoritesA extends Component {
                                       resizeMode="cover"
                                       shouldPlay
                                       isLooping
-                                      style={{ width:88, height:88, borderRadius: 50, marginLeft: 20, marginTop: 20 }}
+                                      style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20 }}
                                     />
                                   }
                                   <View style={{flexDirection:'column'}}>
-                                        <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
-                                          <Title style={{fontSize: this.responsibleFont()}}>{item.nome}</Title>
-                                        </View>
+                                      <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                        <Title style={{fontSize: this.responsibleFont()}}>{item.nome}</Title>
+                                      </View>
                                         {this.cutDescription(item.description)}
+                                      <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                          <ValueField>{item.categoria}</ValueField>
+                                      </View>
+                                  </View>
+                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.24, marginTop:15}}>
+                                    <IconResponsive2 style={{marginLeft:16}}  name="clone" size={19}/>
+                                    <IconResponsive2 style={{marginLeft:10}}  name="user-tie" size={19}/>
                                   </View>
                           </View>  
-
-                          <View style={{flexDirection: 'row'}}>
-                              <View style={{marginLeft:windowWidth/2.71}}>
-                                  <ValueField>{item.categoria}</ValueField>
-                              </View>
-                              <View style={{flexDirection:'row', position:'absolute', left:windowWidth/1.4}}>
-                                  <IconResponsive style={{marginLeft:16}}  name="clone" size={19}/>
-                                  <IconResponsive style={{marginLeft:10}}  name="user-tie" size={19}/>
-                              </View>
-
-                          </View> 
 
                     </AnuncioContainer>
                   </Swipeable>
@@ -349,7 +345,7 @@ export default class FavoritesA extends Component {
                         <AnuncioContainer onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
                           <View style={{flexDirection:'row'}}>
                               {item.video == null ?
-                                    <Image source={{uri: item.photo}} style={{width:88, height:88, borderRadius: 50, marginLeft: 20, marginTop: 20}}></Image>
+                                    <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}></Image>
                                     :
                                     <Video 
                                       source={{ uri: item.video }}
@@ -359,27 +355,24 @@ export default class FavoritesA extends Component {
                                       resizeMode="cover"
                                       shouldPlay
                                       isLooping
-                                      style={{ width:88, height:88, borderRadius: 50, marginLeft: 20, marginTop: 20 }}
+                                      style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20 }}
                                     />
                                   }
                               <View style={{flexDirection:'column'}}>
-                                    <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
-                                      <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
-                                    </View>
-                                    {this.cutDescription(item.description)}
+                                      <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                        <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                      </View>
+                                        {this.cutDescription(item.description)}
+                                      <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                          <ValueField>{item.categoria}</ValueField>
+                                      </View>
+                              </View>
+                              <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1.24, marginTop:15}}>
+                                <IconResponsive2 style={{marginLeft:16}}  name="clone" size={19}/>
+                                <IconResponsive2 style={{marginLeft:10}}  name="briefcase" size={19}/>
                               </View>
 
                           </View>  
-
-                            <View style={{flexDirection: 'row'}}>
-                              <View style={{marginLeft:windowWidth/2.71}}>
-                                  <ValueField>{item.categoria}</ValueField>
-                              </View>
-                              <View style={{flexDirection:'row', position:'absolute', left:windowWidth/1.4}}>
-                                  <IconResponsive style={{marginLeft:16}}  name="clone" size={19}/>
-                                  <IconResponsive style={{marginLeft:10}}  name="briefcase" size={19}/>
-                              </View>
-                            </View> 
 
                     </AnuncioContainer>
                   </Swipeable>
