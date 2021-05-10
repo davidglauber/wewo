@@ -97,6 +97,8 @@ export default class HomeA extends Component {
       activesPublishesEstab: [],
       premiumPublishesAuto: [],
       premiumPublishesEstab: [],
+      searchPublishesEstab:[],
+      searchPublishesAuto: [],
       categories: [],
       isFetched: false,
       isFetchedPublish: false,
@@ -104,7 +106,8 @@ export default class HomeA extends Component {
       modalVisible: true,
       products: [],
       purchased: false,
-      type:'Autonomo'
+      type:'Autonomo',
+      textSearch: ''
     };
   }
 
@@ -319,6 +322,64 @@ async componentDidMount() {
   }
 
 
+  async getPublishes(titlePublish) {
+    let e = this;
+    this.setModalVisible(true)
+
+    if(this.state.type == 'Estabelecimento') {
+      await firebase.firestore().collection('anuncios').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("titleEstabArray", "array-contains", titlePublish).onSnapshot(documentSnapshot => {
+        let anunciosAtivosEstab = [];
+        documentSnapshot.forEach(function(doc) {
+          anunciosAtivosEstab.push({
+            idUser: doc.data().idUser,
+            idAnuncio: doc.data().idAnuncio,
+            photo: doc.data().photoPublish,
+            video: doc.data().videoPublish,
+            title: doc.data().titleEstab,
+            premiumUser: doc.data().premiumUser,
+            description: doc.data().descriptionEstab,
+            phone: doc.data().phoneNumberEstab,
+            type: doc.data().type,
+            verified: doc.data().verifiedPublish,
+            value: doc.data().valueServiceEstab
+          })
+        })
+  
+  
+        e.setState({searchPublishesEstab: anunciosAtivosEstab})
+        this.setModalVisible(false)
+      })
+
+    } else {
+      await firebase.firestore().collection('anuncios').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("titleAutoArray", "array-contains", titlePublish).onSnapshot(documentSnapshot => {
+        let anunciosAtivosAuto = [];
+        documentSnapshot.forEach(function(doc) {
+          anunciosAtivosAuto.push({
+            idUser: doc.data().idUser,
+            nome: doc.data().nome,
+            idAnuncio: doc.data().idAnuncio,
+            photo: doc.data().photoPublish,
+            video: doc.data().videoPublish,
+            title: doc.data().titleAuto,
+            premiumUser: doc.data().premiumUser,
+            description: doc.data().descriptionAuto,
+            type: doc.data().type,
+            phone: doc.data().phoneNumberAuto,
+            verified: doc.data().verifiedPublish,
+            value: doc.data().valueServiceAuto
+          })
+        })
+  
+  
+        e.setState({searchPublishesAuto: anunciosAtivosAuto})
+        this.setModalVisible(false)
+  
+      })
+
+    }
+
+  }
+
   cutDescription(text) {
     if(text.length > 25) {
       let shortDescription = text.substr(0, 25)
@@ -337,6 +398,20 @@ async componentDidMount() {
     }
   }
   
+
+  onChangeTextoSearch(text){
+    this.setState({textSearch: text})
+
+    if(text == ''){
+      this.setState({searchPublishesEstab: []})
+      this.setState({searchPublishesAuto: []})
+    } else {
+      return null;
+    }
+    console.log('texto pesquisa'  + this.state.textSearch)
+  }
+
+
 
   responsibleFont() {
     let Height = Dimensions.get('window').height
@@ -377,8 +452,32 @@ async componentDidMount() {
                 <Image source={require("../../../assets/logobold.png")} style={{height:104, width:104}}/>
               </View>
 
+
+              <View style={{marginTop: windowHeight/18, marginLeft: windowWidth/54}}>
+                <TextSearch
+                  placeholder="Pesquise aqui      "
+                  placeholderTextColor={this.context.dark ? '#fff' : '#3E3C3F'}
+                  returnKeyType="search"
+                  maxLength={50}
+                />
+
+                <View style={styles.searchButtonContainer}>
+                  <TouchableItem
+                    onPress={() => {}}
+                    // borderless
+                  >
+                    <View style={styles.searchButton}>
+                      <IconResponsive2
+                        name="search"
+                        size={18}
+                      />
+                    </View>
+                  </TouchableItem>
+                </View>
+              </View>
+
               {this.state.type == 'Estabelecimento' &&
-                <View style={styles.headerSty}>
+                <View style={styles.headerSty2}>
                   <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Autonomo'})}>
                     <IconResponsive
                       style={{color:'#a66811'}}
@@ -397,7 +496,7 @@ async componentDidMount() {
               }
 
               {this.state.type == 'Autonomo' &&
-                <View style={styles.headerSty}>
+                <View style={styles.headerSty2}>
                   <TouchableOpacity style={{padding:15}}>
                     <IconResponsive
                       name="user-tie"
@@ -425,14 +524,16 @@ async componentDidMount() {
                 <View style={{marginTop: windowHeight/18, marginLeft: windowWidth/54}}>
                     <TextSearch
                       placeholder="Pesquise aqui      "
-                      placeholderTextColor={this.context.dark ? '#DAA520' : '#3E3C3F'}
+                      placeholderTextColor={this.context.dark ? '#fff' : '#3E3C3F'}
                       returnKeyType="search"
                       maxLength={50}
+                      value={this.state.textSearch}
+                      onChangeText={text => this.onChangeTextoSearch(text)}
                     />
 
                     <View style={styles.searchButtonContainer}>
                       <TouchableItem
-                        onPress={() => {}}
+                        onPress={() => this.getPublishes(this.state.textSearch)}
                         // borderless
                       >
                         <View style={styles.searchButton}>
@@ -595,15 +696,16 @@ async componentDidMount() {
             </ScrollView>
 
 
-            <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 46, paddingHorizontal: 16, paddingBottom: 12}}>
+            <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 35, paddingHorizontal: 16, paddingBottom: 35}}>
               <Heading>Anúncios</Heading>
-              <TouchableOpacity onPress={this.navigateTo('Filtro')} style={{width:20, height:20}}>
-                  <IconResponsiveNOBACK  name="sort-alpha-up" size={19}/>
+              <TouchableOpacity onPress={this.navigateTo('Filtro')} style={{width:50, height:20, flexDirection:"row", marginRight:17}}>
+                  <ValueField>Filtros</ValueField>
+                  <IconResponsiveNOBACK style={{marginLeft:10}}  name="filter" size={19}/>
               </TouchableOpacity>
             </View>
 
 
-            {this.state.type == 'Autonomo' &&
+            {this.state.type == 'Autonomo' && this.state.searchPublishesAuto.length == 0 && this.state.searchPublishesEstab.length == 0 &&
               <ScrollView>
                 <FlatList 
                   keyExtractor={() => this.makeid(17)}
@@ -713,7 +815,122 @@ async componentDidMount() {
             }
 
 
-            {this.state.type == 'Estabelecimento' &&
+            {/*LISTA DE TERMO DE PESQUISA AUTONOMO*/}
+            {this.state.type == 'Autonomo' && this.state.searchPublishesAuto.length !== 0 && this.state.searchPublishesEstab.length == 0 &&
+            <FlatList 
+                keyExtractor={() => this.makeid(17)}
+                data={this.state.searchPublishesAuto}
+                renderItem={({item}) =>
+                <View style={{flex:1, alignItems: 'center'}}>
+                      <View>
+                      <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                              <View style={{flexDirection:'row'}}>
+                                    {item.video == null ?
+                                      <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                      :
+                                      <Video 
+                                        source={{ uri: item.video }}
+                                        rate={1.0}
+                                        volume={0}
+                                        isMuted={false}
+                                        resizeMode="cover"
+                                        shouldPlay
+                                        isLooping
+                                        style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}
+                                      />
+                                    }
+                                  
+                                  <View style={{flexDirection:'column'}}>
+                                        <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                          <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                        </View>
+                                          {this.cutDescription(item.description)}
+                                        <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                            <ValueField>{item.value}</ValueField>
+                                            {item.premiumUser == true ?
+                                              <IconResponsive2 style={{marginLeft: windowWidth/3.2}}  name="crown" size={15}/>
+                                              :
+                                              null
+                                            }
+                                        </View>
+                                  </View>
+                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
+                                      <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
+                                  </View>
+
+                              </View> 
+
+                              
+
+
+
+
+                          </AnuncioContainer>
+                      </View>
+
+                  </View>
+                
+                  }
+                  >
+                </FlatList>
+            }
+
+
+            {/*LISTA DE TERMO DE PESQUISA ESTABELECIMENTO*/}
+            {this.state.type == 'Estabelecimento' && this.state.searchPublishesAuto.length == 0 && this.state.searchPublishesEstab.length !== 0 &&
+              <FlatList 
+                  keyExtractor={() => this.makeid(17)}
+                  data={this.state.searchPublishesEstab}
+                  renderItem={({item}) =>
+                  
+                  <View style={{flex:1, alignItems: 'center'}}>
+                      <View>
+                      <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                                <View style={{flexDirection:'row'}}>
+                                      {item.video == null ?
+                                        <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                        :
+                                        <Video 
+                                          source={{ uri: item.video }}
+                                          rate={1.0}
+                                          volume={0}
+                                          isMuted={false}
+                                          resizeMode="cover"
+                                          shouldPlay
+                                          isLooping
+                                          style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
+                                        />
+                                      }
+                                    
+                                    <View style={{flexDirection:'column'}}>
+                                        <View style={{flexDirection:'row', marginRight: windowWidth/4, alignItems:'flex-start', marginTop:20, marginLeft:30}}>
+                                          <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
+                                        </View>
+                                          {this.cutDescription(item.description)}
+                                          <View style={{flexDirection:'row', marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                            <ValueField>{item.value}</ValueField>
+                                            {item.premiumUser == true ?
+                                              <IconResponsive2 style={{marginLeft: windowWidth/3.2}}  name="crown" size={15}/>
+                                              :
+                                              null
+                                            }
+                                        </View>
+                                    </View>
+                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
+                                        <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
+                                    </View>
+                                </View> 
+                                
+                            </AnuncioContainer>
+                      </View>
+                  </View>
+                  
+                }
+                >
+                </FlatList>
+            }
+
+            {this.state.type == 'Estabelecimento' && this.state.searchPublishesAuto.length == 0 && this.state.searchPublishesEstab.length == 0 &&
               <ScrollView>
                 <FlatList 
                   keyExtractor={() => this.makeid(17)}
@@ -746,7 +963,6 @@ async componentDidMount() {
                                           {this.cutDescription(item.description)}
                                           <View style={{flexDirection:'row', marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
                                             <ValueField>{item.value}</ValueField>
-                                            <IconResponsive2 style={{marginLeft: windowWidth/3.2}}  name="crown" size={15}/>
                                         </View>
                                     </View>
                                     <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>

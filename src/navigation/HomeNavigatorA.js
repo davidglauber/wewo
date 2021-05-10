@@ -121,21 +121,6 @@ console.log('Dark do HOMEEE: ' + dark)
       /> */}
 
    
-      <Tab.Screen
-        name="Buscar"
-        component={SearchA}
-        options={{
-          tabBarIcon: props => (
-            <FontAwesome5
-              name={`search${props.focused ? '' : ''}`}
-              {...props}
-              size = {15}
-            />
-          ),
-        }}
-      />
-
-
     <Tab.Screen name="Favorites" component={Favorites}/>
     
     <Tab.Screen name="Home" component={Home} />
