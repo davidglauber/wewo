@@ -23,11 +23,15 @@ import firebase from '../../config/firebase';
 
 
 //CSS responsivo
-import { SafeBackground, IconResponsive, IconResponsive2, TouchCategory, AnuncioContainer, Description, IconResponsiveNOBACK, Heading, Title, ValueField, TouchableDetails, TextDetails, SignUpBottom, TextBold, TextBoldGolden } from './styles';
+import { SafeBackground, IconResponsive, IconResponsive2, TouchCategory, AnuncioContainer, Description, IconResponsiveNOBACK, TextSearch, Heading, Title, ValueField, TouchableDetails, TextDetails, SignUpBottom, TextBold, TextBoldGolden } from './styles';
 
 import { PulseIndicator } from 'react-native-indicators';
 
 import { ThemeContext } from '../../../ThemeContext';
+
+
+// import components
+import TouchableItem from '../../components/TouchableItem';
 
 //RESPONSIVE FONT 
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -53,10 +57,30 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   headerSty: {
     flexDirection:'column', 
-    justifyContent:'center', 
+    justifyContent:'flex-start', 
     alignItems:"center", 
-    marginLeft: windowWidth/1.8
-  }
+    position:"absolute",
+    left: windowWidth/1.13,
+    top: windowHeight/50
+  },
+  headerSty2: { 
+    position:'absolute',
+    left: windowWidth/1.2,
+    bottom: windowHeight/57
+  },
+  searchButtonContainer: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  searchButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 38,
+    height: 38,
+  },
 })
  
 export default class HomeA extends Component {
@@ -317,7 +341,7 @@ async componentDidMount() {
   responsibleFont() {
     let Height = Dimensions.get('window').height
 
-    return RFValue(20, Height);
+    return RFValue(18, Height);
   }
 
   render() {
@@ -398,8 +422,32 @@ async componentDidMount() {
                   <Image source={require("../../../assets/LOGOICONEAPP.png")} style={{height:104, width:104}}/>
                 </View>
 
+                <View style={{marginTop: windowHeight/18, marginLeft: windowWidth/54}}>
+                    <TextSearch
+                      placeholder="Pesquise aqui      "
+                      placeholderTextColor={this.context.dark ? '#DAA520' : '#3E3C3F'}
+                      returnKeyType="search"
+                      maxLength={50}
+                    />
+
+                    <View style={styles.searchButtonContainer}>
+                      <TouchableItem
+                        onPress={() => {}}
+                        // borderless
+                      >
+                        <View style={styles.searchButton}>
+                          <IconResponsive2
+                            name="search"
+                            size={18}
+                          />
+                        </View>
+                      </TouchableItem>
+                    </View>
+                  </View>
+
+
                 {this.state.type == 'Estabelecimento' &&
-                  <View style={styles.headerSty}>
+                  <View style={styles.headerSty2}>
                     <TouchableOpacity style={{padding:15}} onPress={() => this.setState({type: 'Autonomo'})}>
                       <IconResponsive
                         style={{color:'#a66811'}}
@@ -407,7 +455,7 @@ async componentDidMount() {
                         size={24}
                       />
                     </TouchableOpacity>
-
+                  
                     <TouchableOpacity style={{padding:15}}>
                       <IconResponsive
                         name="briefcase"
@@ -418,7 +466,7 @@ async componentDidMount() {
                 }
 
                 {this.state.type == 'Autonomo' &&
-                  <View style={styles.headerSty}>
+                  <View style={styles.headerSty2}>
                     <TouchableOpacity style={{padding:15}}>
                       <IconResponsive
                         name="user-tie"
@@ -587,13 +635,13 @@ async componentDidMount() {
                                           <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
                                         </View>
                                           {this.cutDescription(item.description)}
-                                        <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                        <View style={{flexDirection:'row', marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
                                             <ValueField>{item.value}</ValueField>
+                                            <IconResponsive2 style={{marginLeft: windowWidth/3.3}}  name="crown" size={15}/>
                                         </View>
                                     </View>
                                     <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
                                       <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
-                                      <IconResponsive2 style={{marginLeft:10}}  name="crown" size={19}/>
                                     </View>
 
 
@@ -696,13 +744,13 @@ async componentDidMount() {
                                           <Title style={{fontSize: this.responsibleFont()}}>{item.title}</Title>
                                         </View>
                                           {this.cutDescription(item.description)}
-                                        <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
+                                          <View style={{flexDirection:'row', marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
                                             <ValueField>{item.value}</ValueField>
+                                            <IconResponsive2 style={{marginLeft: windowWidth/3.2}}  name="crown" size={15}/>
                                         </View>
                                     </View>
                                     <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
                                         <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
-                                        <IconResponsive2 style={{marginLeft:10}}  name="crown" size={19}/>
                                     </View>
                                 </View> 
                                 
