@@ -81,6 +81,12 @@ import AlertPro from "react-native-alert-pro";
 
 import loading from '../../../assets/loading.json';
 
+// import components
+import { FontAwesome5 } from '@expo/vector-icons';
+
+//locationSERVICES
+import * as Location from 'expo-location';
+
 //import ADS
 import { AdMobBanner} from 'expo-ads-admob';
 
@@ -217,6 +223,7 @@ export default class MostrarCartao extends Component {
       purchased: false,
       modalizeRef: React.createRef(null),
       modalizeRefDisponibilidade: React.createRef(null),
+      modalizeLocation: React.createRef(null),
       usersThatVotedFirebase: [],
       mediaAvaliacao: [],
       notaMedia: 0,
@@ -245,12 +252,58 @@ export default class MostrarCartao extends Component {
       dateEstab:'',
       isFetched: false,
       qtd: 0,
+      locationServiceEnabled: false,
+      enderecoUser: null,
+      item: []
     };
   }
+
+
+
+  async CheckIfLocationEnabled() {
+    let enabled = await Location.hasServicesEnabledAsync();
+
+    if (!enabled) {
+      this.AlertPro11.open();
+    } else {
+      this.setState({locationServiceEnabled: enabled});
+    }
+  };
+
+  async GetCurrentLocation(){
+    let { status } = await Location.requestPermissionsAsync();
+    this.setModalVisible(true)
+
+    if (status !== 'granted') {
+      this.AlertPro12.open();
+    }
+  
+    let { coords } = await Location.getCurrentPositionAsync();
+  
+    if (coords) {
+      const { latitude, longitude } = coords;
+      let response = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude
+      });
+  
+      for (let item of response) {
+        let address = `${item.region}, ${item.subregion}, ${item.district}, ${item.street} (${item.postalCode})`;
+        this.setState({enderecoUser: address})
+        this.saveProductInFirebase(this.state.item)
+      }
+      this.setModalVisible(false)
+    }
+  };
+
+
 
   async componentDidMount() {
     let e = this;
     
+    //pede ao usuario para habilitar os serviços de localização
+    this.CheckIfLocationEnabled();
+
     if(Platform.OS === "android") {
       let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto')
     
@@ -482,6 +535,13 @@ export default class MostrarCartao extends Component {
   }
 
   
+  openModalizeLocation() {
+    const modalizeLocation = this.state.modalizeLocation;
+
+    modalizeLocation.current?.open()
+  }
+
+
 
   openModalizeDisponibilidade() {
     const modalizeRefDisponibilidade = this.state.modalizeRefDisponibilidade;
@@ -570,44 +630,55 @@ export default class MostrarCartao extends Component {
 
 
 
+  getLocationGPSorText(item) {
+    this.openModalizeLocation();
+    this.setState({item: item})
+  }
+
   async saveProductInFirebase(item) {
     let e = this;
     let idProduct = e.makeid(22);
     let currentUser = firebase.auth().currentUser;
+    var n1 = 3; 
 
-    await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
-      if(currentUser !== null) {
-        if(this.state.qtd > 0){
-          if(currentUser.uid == item.idUser){
-            this.AlertPro8.open();
-          } else {
-            e.setModalVisible(true)
-          firebase.firestore().collection('products').doc(idProduct).set({
-            idDonoDoProduto: item.idUser,
-            idComprador: currentUser.uid,
-            idProduct: idProduct,
-            fotoUsuarioLogado: item.fotoUsuarioLogado,
-            fotoUsuarioComprador: documentSnapshot.data().photoProfile,
-            fotoProduto: item.photo2,
-            quantidade: e.state.qtd,
-            valorProduto: item.value,
-            tituloProduto: item.title,
-            nomeUsuario: e.state.nomeUser,
-            nomeUsuarioComprador: documentSnapshot.data().nome,
-            status: 'pending'
-          })
-          e.setModalVisible(false)
-          e.AlertPro7.open();
-          e.props.navigation.navigate('Checkout')
+      if(this.state.enderecoUser !== null) {
+        await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
+          if(currentUser !== null) {
+            if(this.state.qtd > 0){
+              if(currentUser.uid == item.idUser){
+                this.AlertPro8.open();
+              } else {
+                e.setModalVisible(true)
+                firebase.firestore().collection('products').doc(idProduct).set({
+                  idDonoDoProduto: item.idUser,
+              idComprador: currentUser.uid,
+              idProduct: idProduct,
+              fotoUsuarioLogado: item.fotoUsuarioLogado,
+              fotoUsuarioComprador: documentSnapshot.data().photoProfile,
+              fotoProduto: item.photo2,
+              quantidade: e.state.qtd,
+              valorProduto: item.value,
+              tituloProduto: item.title,
+              nomeUsuario: e.state.nomeUser,
+              nomeUsuarioComprador: documentSnapshot.data().nome,
+              enderecoComprador: e.state.enderecoUser,
+              status: 'pending'
+            })
+            e.setModalVisible(false)
+            e.AlertPro7.open();
+            e.props.navigation.navigate('Checkout')
+          }
+        } else {
+          this.AlertPro9.open();
         }
       } else {
-        this.AlertPro9.open();
+        this.AlertPro10.open();
       }
-    } else {
-      this.AlertPro10.open();
-    }
-    
-  })
+      
+    })
+  } else {
+    return null
+  }
    
   }
 
@@ -884,6 +955,69 @@ export default class MostrarCartao extends Component {
           }}
         />
 
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro11 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro11.close()}
+          title="O serviço de localização não está ativado"
+          message="Por favor ative o serviço de localização para continuar"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
+
+
+        <AlertPro
+          ref={ref => {
+            this.AlertPro12 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro12.close()}
+          title="Permissão negada pelo usuário"
+          message="Permita o app usar o serviço de localização"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
 
 
         <StatusBar
@@ -1222,6 +1356,37 @@ export default class MostrarCartao extends Component {
           </Modalize>
 
 
+          {/*Modalize do CEP*/}
+          <Modalize
+            ref={this.state.modalizeLocation}
+            snapPoint={400}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+            >
+            <View style={{flex:1,alignItems:'center', flexDirection:'column'}}>
+                <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, color:'#fff'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000'}}>Localização</Text>
+                
+                {this.state.enderecoUser == null ?
+                  <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff', textAlign:'center'} : {fontWeight: 'bold', padding:15,color:'#000',textAlign:'center'}}>Nenhum endereço encontrado</Text>
+                :
+                  <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff', textAlign:'center'} : {fontWeight: 'bold', padding:15,color:'#000',textAlign:'center'}}>{this.state.enderecoUser}</Text>  
+                }
+                <View style={{flexDirection:'row'}}>
+                  <TouchableOpacity onPress={() => this.GetCurrentLocation()} style={{alignItems:'center', justifyContent:'center', marginTop:10, marginRight:15, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                    <FontAwesome5 name="search-location" size={24} color={'#9A9A9A'}/>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => this.setState({enderecoUser: null})} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                    <FontAwesome5 name="times-circle" size={24} color={'#9A9A9A'}/>
+                  </TouchableOpacity>
+                </View>
+            </View>
+                 
+
+            <View>
+              <Text style={this.context.dark ? {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#fff', textAlign:'center'}: {fontWeight: 'bold', padding:15, fontSize:20, marginTop:50, color:'#000', textAlign:'center'}}>Por favor, verifique se as informações conferem, caso não, pesquise o endereço novamente</Text>
+            </View>
+          </Modalize>
+
 
 
           {/*Modalize dos comentários*/}
@@ -1408,7 +1573,7 @@ export default class MostrarCartao extends Component {
                       </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity onPress={() => this.saveProductInFirebase(item)} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                    <TouchableOpacity onPress={() => this.getLocationGPSorText(item)} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
                           <IconResponsive name="shopping-cart" size={30}/>
                           <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao carrinho</TextTheme>
                     </TouchableOpacity>
