@@ -255,6 +255,7 @@ export default class PaymentProducts extends Component {
                   picture_url: this.state.accTK[x].img
                 }
               ],
+              money_release_days: 60,
               marketplace_fee: percentToWeWoNumberInt,
               back_urls: {
                 success: "https://www.mercadopago.com/mp.php"

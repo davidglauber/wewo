@@ -439,6 +439,14 @@ export default function Configuracoes() {
             />
           }
 
+          {tipoDeConta == 'Autonomo' &&
+            <Setting
+              onPress={() => navigation.navigate('BuyedProducts')}
+              icon={PRODUCTS_SOLD}
+              setting="Produtos Comprados"
+            />
+          }
+
           <SectionHeader title="Sobre" />
           <Setting
             onPress={() => navigation.navigate('AboutUs')}

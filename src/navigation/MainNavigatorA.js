@@ -84,6 +84,8 @@ import PaymentProducts from '../screens/payment/PaymentProducts';
 
 import SoldProducts from '../screens/checkout/SoldProducts';
 
+import BuyedProducts from '../screens/checkout/BuyedProducts';
+
 import AwaitPayment from '../screens/payment/AwaitPayment';
 
 import Chat from '../screens/chat/Chat';
@@ -364,6 +366,11 @@ function MainNavigatorA() {
           options={{headerShown: false}}
         />
 
+        <Stack.Screen
+          name="BuyedProducts"
+          component={BuyedProducts}
+          options={{headerShown: false}}
+        />
 
         <Stack.Screen
           name="AwaitPayment"

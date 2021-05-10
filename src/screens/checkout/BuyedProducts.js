@@ -28,7 +28,7 @@ import { PulseIndicator } from 'react-native-indicators';
 // import components
 import {SmallText} from '../../components/text/CustomText';
 
-import { SafeBackground, SwipeLeft, Description, Heading, IconResponsiveNOBACK, IconResponsive, TextTheme, Favorite } from '../home/styles';
+import { SafeBackground, SwipeLeft, Description, Heading, TextDescription2, IconResponsiveNOBACK, IconResponsive, TextTheme, Favorite } from '../home/styles';
 
 import LottieView from 'lottie-react-native';
 
@@ -75,8 +75,7 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   titleText: {
-    fontWeight: '700',
-    marginRight:30
+    fontWeight: '700'
   },
   viewAllText: {
     color: Colors.primaryColor,
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class CheckoutA extends Component {
+export default class BuyedProducts extends Component {
   static contextType = ThemeContext
 
 
@@ -136,7 +135,7 @@ export default class CheckoutA extends Component {
     let currentUser = firebase.auth().currentUser;
 
     if(currentUser !== null) {
-      await firebase.firestore().collection('products').where('idComprador', '==', currentUser.uid).where('status', "==", 'pending').onSnapshot(documentSnapshot => {
+      await firebase.firestore().collection('products').where('idComprador', '==', currentUser.uid).where('status', "==", 'sold').onSnapshot(documentSnapshot => {
         let productsArray = []
         documentSnapshot.forEach(function(doc) {
           productsArray.push({
@@ -144,11 +143,13 @@ export default class CheckoutA extends Component {
             idComprador: doc.data().idComprador,
             idProduct: doc.data().idProduct,
             fotoUsuarioLogado: doc.data().fotoUsuarioLogado,
+            fotoUsuarioComprador: doc.data().fotoUsuarioComprador,
             fotoProduto: doc.data().fotoProduto,
             quantidade: doc.data().quantidade,
             valorProduto: doc.data().valorProduto,
             tituloProduto: doc.data().tituloProduto,
-            nomeUsuario: doc.data().nomeUsuario
+            nomeUsuario: doc.data().nomeUsuario,
+            nomeUsuarioComprador: doc.data().nomeUsuarioComprador
           })
         })
         e.setState({products: productsArray})
@@ -209,119 +210,7 @@ export default class CheckoutA extends Component {
   }
 
 
-  RightAction() {
-    return(
-      <TouchableWithoutFeedback style={{width: 336, height: 170, flexDirection:'row', justifyContent:'center', alignItems:'center', marginBottom:5, marginTop: 10, borderRadius: 10, opacity:0.5}}>
-          <IconResponsiveNOBACK style={{marginRight:40}} name="trash-alt" size={24}/>
-          <Favorite>Deletado</Favorite>
-      </TouchableWithoutFeedback>
-    );
-  }
 
-
-  RemoveFav(id) {
-    firebase.firestore().collection('products').where('idProduct', '==', id).get().then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc){
-        doc.ref.delete();
-      })
-    })
-  }
-
-
-  buyProducts() {
-    var products = this.state.products;
-    var value = [];
-    var qtdArray = [];
-    var idsUsers = [];
-    var infoProduct = [];
-
-    products.map((e) => {
-      let replace = e.valorProduto.replace('R$', '');
-
-      if(replace.includes(',00')){
-        let knowLength = replace.length;
-  
-        if(knowLength > 10) {
-          let replacePoint = replace.split(',00').join('');
-          let replacePoint2 = replacePoint.split('.').join('');
-          let replaceInter = new Number(replacePoint2);
-
-          //envia o valor sem , ou pontos && quantidade && id do dono
-          infoProduct.push({
-            value: replaceInter,
-            qtd: e.quantidade,
-            idDonoDoProduto: e.idDonoDoProduto,
-            img: e.fotoUsuarioLogado,
-            idProduct: e.idProduct
-          })
-
-          console.log('VALOR DO POINT THREE: ' + replaceInter)
-        }
-  
-        if(knowLength <= 10) {
-          let replacePoint = replace.replace(',00','');
-          let replacePoint2 = replacePoint.split('.').join('');
-          let replaceInter = new Number(replacePoint2);
-
-          //envia o valor sem , ou pontos && quantidade && id do dono
-          infoProduct.push({
-            value: replaceInter,
-            qtd: e.quantidade,
-            idDonoDoProduto: e.idDonoDoProduto,
-            img: e.fotoUsuarioLogado,
-            idProduct: e.idProduct
-          })
-
-          console.log('VALOR DO POINT TWO: ' + replaceInter)
-        }
-  
-        
-      } else {
-        let knowLength = replace.length;
-  
-        if(knowLength <= 6) {
-          let replacePoint = replace.split(',').join('.');
-          let replaceInter = new Number(replacePoint);
-          
-          //envia o valor sem , ou pontos && quantidade && id do dono
-          infoProduct.push({
-            value: replaceInter,
-            qtd: e.quantidade,
-            idDonoDoProduto: e.idDonoDoProduto,
-            img: e.fotoUsuarioLogado,
-            idProduct: e.idProduct
-          })
-
-          console.log('VALOR DO POINT ONE: ' + replaceInter)
-        }
-  
-        if(knowLength > 6) {
-          let replacePointOne = replace.split(',').join('.');
-          let replacePoint2 = replacePointOne.replace('.','');
-          let replaceInter = new Number(replacePoint2);
-
-          //envia o valor sem , ou pontos && quantidade && id do dono
-          infoProduct.push({
-            value: replaceInter,
-            qtd: e.quantidade,
-            idDonoDoProduto: e.idDonoDoProduto,
-            img: e.fotoUsuarioLogado,
-            idProduct: e.idProduct
-          })
-          
-          console.log('VALOR DO POINT TWO(2): ' + replaceInter)
-        }
-        
-      }
-
-    })
-    
-    this.props.navigation.navigate('PaymentProducts', {
-      infoProductArray: infoProduct
-    })
-
-  }
- 
   render() {
     return (
       <SafeBackground>
@@ -381,9 +270,10 @@ export default class CheckoutA extends Component {
             <View style={styles.categoriesContainer}>
               <View style={styles.titleContainer}>
                 <View style={styles.titleContainer}>
-                  <Heading style={styles.titleText}>Produtos no Carrinho</Heading>
+                  <Heading style={styles.titleText}>Produtos Comprados</Heading>
                 </View>
               </View>
+              <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Lembre-se de confirmar quando o produto for entregue, se recebeu o produto e negou-se a confirmar você será penalizado!</TextDescription2>
             </View>
 
             {this.state.products.length == 0 &&
@@ -399,16 +289,12 @@ export default class CheckoutA extends Component {
               keyExtractor={() => this.makeid(17)}
               data={this.state.products}
               renderItem={({item}) => 
-                <Swipeable
-                  renderLeftActions={this.RightAction}
-                  onSwipeableLeftOpen={() => this.RemoveFav(item.idProduct)}
-                > 
                   <View style={{paddingHorizontal:30, flexDirection:'row', maxWidth: windowWidth/1.5}}>
                     <Image style={{width:160, height:140, borderRadius:20}} source={{uri: item.fotoProduto}}/>
                     <View style={{flexDirection:"column"}}>
                       <View style={{flexDirection:'row'}}>
-                        <Image style={{width:30, height:30, borderRadius:40, marginLeft:20}} source={{uri: item.fotoUsuarioLogado}}/>
-                        <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>{item.nomeUsuario}</Text>
+                        <Image style={{width:30, height:30, borderRadius:40, marginLeft:20}} source={{uri: item.fotoUsuarioComprador}}/>
+                        <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>{item.nomeUsuarioComprador}</Text>
                       </View>
                       
                       <Text style={{marginLeft: 40, marginBottom:20, color: this.context.dark ? '#fff' : '#000'}}>{item.tituloProduto}</Text>
@@ -416,33 +302,12 @@ export default class CheckoutA extends Component {
                       <Text style={{marginLeft: 40, fontWeight:'bold', color:'#d98b0d', marginBottom:30, fontSize:14}}>Quantidade: {item.quantidade}</Text>
                     </View>
                   </View>
-                </Swipeable>
               }
             />
 
   
-
-
           </ScrollView>
           
-          <View style={{position:"absolute", top: windowHeight/1.2, left: windowWidth/4, flexDirection:'row', alignItems: 'center'}}>
-            {this.state.products.length == 0 ?
-              null
-              :
-              <TouchableOpacity onPress={() => this.buyProducts()} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
-                    <IconResponsive name="check" size={24}/>
-                    <Text style={{color: this.context.dark ? 'black' : 'white', fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Finalizar Pedido</Text>
-              </TouchableOpacity>
-            }
-          </View>
-
-          <View style={{justifyContent: 'center',alignItems: 'center', padding: 8}}>
-            <SwipeLeft>
-                <SmallText>
-                      {`Deslize para a direita para excluir`}
-                </SmallText>
-            </SwipeLeft>
-          </View>
         </View>
       </SafeBackground>
     );
