@@ -454,26 +454,28 @@ async componentDidMount() {
 
 
               <View style={{marginTop: windowHeight/18, marginLeft: windowWidth/54}}>
-                <TextSearch
-                  placeholder="Pesquise aqui      "
-                  placeholderTextColor={this.context.dark ? '#fff' : '#3E3C3F'}
-                  returnKeyType="search"
-                  maxLength={50}
-                />
+                    <TextSearch
+                      placeholder="Pesquise aqui      "
+                      placeholderTextColor={this.context.dark ? '#fff' : '#3E3C3F'}
+                      returnKeyType="search"
+                      maxLength={50}
+                      value={this.state.textSearch}
+                      onChangeText={text => this.onChangeTextoSearch(text)}
+                    />
 
-                <View style={styles.searchButtonContainer}>
-                  <TouchableItem
-                    onPress={() => {}}
-                    // borderless
-                  >
-                    <View style={styles.searchButton}>
-                      <IconResponsive2
-                        name="search"
-                        size={18}
-                      />
+                    <View style={styles.searchButtonContainer}>
+                      <TouchableItem
+                        onPress={() => this.getPublishes(this.state.textSearch)}
+                        // borderless
+                      >
+                        <View style={styles.searchButton}>
+                          <IconResponsive2
+                            name="search"
+                            size={18}
+                          />
+                        </View>
+                      </TouchableItem>
                     </View>
-                  </TouchableItem>
-                </View>
               </View>
 
               {this.state.type == 'Estabelecimento' &&
