@@ -355,7 +355,7 @@ export default class NotificationsA extends Component {
           />
 
         <StatusBar
-          backgroundColor={this.context.dark ? '#121212' : 'white'}
+          backgroundColor={this.context.dark ? '#3E3C3F' : '#E98D0A'}
           barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
 

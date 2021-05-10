@@ -258,8 +258,8 @@ export default class FavoritesA extends Component {
       <SafeBackground>
 
         <StatusBar
-          backgroundColor={this.context.dark ? '#121212' : 'white'}
-          barStyle={this.context.dark ? "light-content" : "dark-content"}
+          backgroundColor={this.context.dark ? '#3E3C3F' : '#E98D0A'}
+          barStyle={this.context.dark ? 'light-content' : 'dark-content'}
         />
         
 

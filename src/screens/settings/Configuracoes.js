@@ -348,8 +348,8 @@ export default function Configuracoes() {
         </Modal>
 
         <StatusBar
-          backgroundColor={dark ? '#121212' : 'white'}
-          barStyle={dark ? "light-content" : "dark-content"}
+          backgroundColor={dark ? '#3E3C3F' : '#E98D0A'}
+          barStyle={dark ? 'light-content' : 'dark-content'}
         />
 
         <ScrollView contentContainerStyle={styles.contentContainerStyle}>

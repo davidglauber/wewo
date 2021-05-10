@@ -80,10 +80,10 @@ export default class PaymentProducts extends Component {
       idNot: '',
       modalizeRef: React.createRef(null),
       accTK: [],
-      idAnuncio: '',
       resultSumValues: '',
       valorTotal: '',
-      valueIncrement: 0
+      valueIncrement: 0,
+      idProduct: ''
     };
   }
 
@@ -100,6 +100,7 @@ export default class PaymentProducts extends Component {
     let arrayProduct = this.props.route.params.infoProductArray;
     var currentUser = firebase.auth().currentUser;
     var arraySumValue = [];
+    var idProd = ''
 
     console.log('INFO PRODUCT ARRAY: ' + JSON.stringify(arrayProduct))
     this.AlertPro.open();
@@ -120,6 +121,7 @@ export default class PaymentProducts extends Component {
             })
           })
     
+        e.setState({idProduct: i.idProduct})
       } else {
         return null
       }
@@ -183,7 +185,11 @@ export default class PaymentProducts extends Component {
 
   nav() {
     this.AlertPro2.close();
-    this.props.navigation.navigate('Home')
+    firebase.firestore().collection('products').doc(this.state.idProduct).update({
+      status: 'sold'
+    }).then(() => {
+      this.props.navigation.navigate('Home')
+    })
   }
   
   //ve quantos usuarios ja foram pagos e quando o processo estiver terminado ele apaga o produto do carrinho e joga para a tela inicial

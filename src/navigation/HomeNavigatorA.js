@@ -86,7 +86,7 @@ console.log('Dark do HOMEEE: ' + dark)
 
           if (route.name === 'Home') {
             iconName = `home${focused ? '' : '-outline'}`;
-            size = 40
+            size = 25
           } else if (route.name === 'Favorites') {
             iconName = `star${focused ? '' : '-outline'}`;
             size = 20

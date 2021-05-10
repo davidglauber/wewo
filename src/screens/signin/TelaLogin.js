@@ -44,6 +44,11 @@ import AlertPro from "react-native-alert-pro";
 //import icons
 import { FontAwesome5 } from '@expo/vector-icons';
 
+
+//consts
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 // SignInB Config
 const PLACEHOLDER_TEXT_COLOR = 'rgba(255, 255, 255, 0.7)';
 const INPUT_TEXT_COLOR = '#fff';
@@ -58,7 +63,7 @@ const styles = StyleSheet.create({
   contentContainerStyle: {flex: 1},
   content: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   form: {
     paddingHorizontal: Layout.LARGE_PADDING,
@@ -116,7 +121,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   instructionContainer: {
-    flex: 1,
+    marginTop: windowHeight/3,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -464,8 +469,7 @@ export default class TelaLogin extends Component {
         </View>
 
 
-        <View style={{flexDirection:'row', justifyContent:'space-between', marginTop: 100}}>
-            
+        <View style={{flexDirection:'row', marginBottom: windowHeight/2.3}}>
           <TouchableOpacity onPress={() => this.signInWithGoogle()}>
               <FontAwesome5 name="google" size={35} style={{marginRight:25}} color="#DAA520"/>
           </TouchableOpacity>
@@ -490,7 +494,7 @@ export default class TelaLogin extends Component {
           </View>
         </View>
 
-            <View style={styles.content}>
+            <View style={{position:"absolute", bottom: windowHeight/29}}>
               <TouchableWithoutFeedback
                 onPress={this.navigateTo('TermsConditions')}>
                 <View style={styles.footer}>

@@ -137,7 +137,7 @@ export default class CheckoutA extends Component {
     let currentUser = firebase.auth().currentUser;
 
     if(currentUser !== null) {
-      await firebase.firestore().collection('products').where('idComprador', '==', currentUser.uid).onSnapshot(documentSnapshot => {
+      await firebase.firestore().collection('products').where('idComprador', '==', currentUser.uid).where('status', "==", 'pending').onSnapshot(documentSnapshot => {
         let productsArray = []
         documentSnapshot.forEach(function(doc) {
           productsArray.push({
@@ -252,7 +252,8 @@ export default class CheckoutA extends Component {
             value: replaceInter,
             qtd: e.quantidade,
             idDonoDoProduto: e.idDonoDoProduto,
-            img: e.fotoUsuarioLogado
+            img: e.fotoUsuarioLogado,
+            idProduct: e.idProduct
           })
 
           console.log('VALOR DO POINT THREE: ' + replaceInter)
@@ -268,7 +269,8 @@ export default class CheckoutA extends Component {
             value: replaceInter,
             qtd: e.quantidade,
             idDonoDoProduto: e.idDonoDoProduto,
-            img: e.fotoUsuarioLogado
+            img: e.fotoUsuarioLogado,
+            idProduct: e.idProduct
           })
 
           console.log('VALOR DO POINT TWO: ' + replaceInter)
@@ -287,7 +289,8 @@ export default class CheckoutA extends Component {
             value: replaceInter,
             qtd: e.quantidade,
             idDonoDoProduto: e.idDonoDoProduto,
-            img: e.fotoUsuarioLogado
+            img: e.fotoUsuarioLogado,
+            idProduct: e.idProduct
           })
 
           console.log('VALOR DO POINT ONE: ' + replaceInter)
@@ -303,7 +306,8 @@ export default class CheckoutA extends Component {
             value: replaceInter,
             qtd: e.quantidade,
             idDonoDoProduto: e.idDonoDoProduto,
-            img: e.fotoUsuarioLogado
+            img: e.fotoUsuarioLogado,
+            idProduct: e.idProduct
           })
           
           console.log('VALOR DO POINT TWO(2): ' + replaceInter)

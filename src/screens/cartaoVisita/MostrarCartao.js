@@ -244,7 +244,7 @@ export default class MostrarCartao extends Component {
       dateAuto:'',
       dateEstab:'',
       isFetched: false,
-      qtd: 0
+      qtd: 0,
     };
   }
 
@@ -572,30 +572,33 @@ export default class MostrarCartao extends Component {
 
   async saveProductInFirebase(item) {
     let e = this;
-    let idProduct = e.makeid(17);
+    let idProduct = e.makeid(22);
     let currentUser = firebase.auth().currentUser;
 
-    console.log('ITEM: ' + item)
-    if(currentUser !== null) {
-      if(this.state.qtd > 0){
-        if(currentUser.uid == item.idUser){
-          this.AlertPro8.open();
-        } else {
-          e.setModalVisible(true)
-          await firebase.firestore().collection('products').doc(idProduct).set({
+    await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
+      if(currentUser !== null) {
+        if(this.state.qtd > 0){
+          if(currentUser.uid == item.idUser){
+            this.AlertPro8.open();
+          } else {
+            e.setModalVisible(true)
+          firebase.firestore().collection('products').doc(idProduct).set({
             idDonoDoProduto: item.idUser,
             idComprador: currentUser.uid,
             idProduct: idProduct,
             fotoUsuarioLogado: item.fotoUsuarioLogado,
+            fotoUsuarioComprador: documentSnapshot.data().photoProfile,
             fotoProduto: item.photo2,
             quantidade: e.state.qtd,
             valorProduto: item.value,
             tituloProduto: item.title,
-            nomeUsuario: e.state.nomeUser
+            nomeUsuario: e.state.nomeUser,
+            nomeUsuarioComprador: documentSnapshot.data().nome,
+            status: 'pending'
           })
-            e.setModalVisible(false)
-            e.AlertPro7.open();
-            e.props.navigation.navigate('Checkout')
+          e.setModalVisible(false)
+          e.AlertPro7.open();
+          e.props.navigation.navigate('Checkout')
         }
       } else {
         this.AlertPro9.open();
@@ -603,7 +606,9 @@ export default class MostrarCartao extends Component {
     } else {
       this.AlertPro10.open();
     }
-
+    
+  })
+   
   }
 
   render() {
