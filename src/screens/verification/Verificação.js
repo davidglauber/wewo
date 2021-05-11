@@ -182,7 +182,8 @@ export default class Verificação extends Component {
                 premium: false,
                 dataNascimento: e.state.data,
                 telefone: e.state.telefone,
-                tipoDeConta: e.state.tipoDeConta
+                tipoDeConta: e.state.tipoDeConta,
+                userLocation: ''
               })
             AsyncStorage.setItem('emailUserSaved', result.user.email)
             this.props.navigation.navigate('HomeNavigator')
@@ -242,7 +243,8 @@ export default class Verificação extends Component {
                       premium: false,
                       dataNascimento: e.state.data,
                       telefone: e.state.telefone,
-                      tipoDeConta: e.state.tipoDeConta
+                      tipoDeConta: e.state.tipoDeConta,
+                      userLocation: ''
                     })
                   AsyncStorage.setItem('emailUserSaved', result.user.email)
                   this.props.navigation.navigate('HomeNavigator')

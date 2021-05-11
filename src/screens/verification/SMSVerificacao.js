@@ -250,7 +250,8 @@ export default function SMSVerificacao () {
                       premium: false,
                       dataNascimento: getDataNascimento,
                       telefone: getTelefone,
-                      tipoDeConta: getTipoDeConta
+                      tipoDeConta: getTipoDeConta,
+                      userLocation: ''
                     })
                   AsyncStorage.setItem('emailUserSaved', getEmail)
                   navigation.navigate('HomeNavigator')

@@ -264,7 +264,8 @@ export default class MostrarCartao extends Component {
       complementoEnd: '',
       bairroEnd: '',
       cidadeEnd: '',
-      estadoEnd: ''
+      estadoEnd: '',
+      userLocation: ''
     };
   }
 
@@ -298,10 +299,11 @@ export default class MostrarCartao extends Component {
       });
   
       for (let item of response) {
-        let address = `${item.region}, ${item.subregion}, ${item.district}, ${item.street} (${item.postalCode})`;
-        this.setState({enderecoUser: address})
-        this.saveProductInFirebase(this.state.item)
+        var address = `${item.region}, ${item.subregion}, ${item.district}, ${item.street} (${item.postalCode})`;
       }
+
+      this.setState({enderecoUser: address})
+      this.saveProductInFirebase(this.state.item)
       this.setModalVisible(false)
     }
   };
@@ -480,11 +482,30 @@ export default class MostrarCartao extends Component {
           e.setState({fotoUser: documentSnapshot.data().photoProfile}),
           e.setState({nomeUser: documentSnapshot.data().nome})
     })
+    
+    await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
+      if(documentSnapshot.data().userLocation){
+        e.setState({userLocation: documentSnapshot.data().userLocation})
+        e.setState({enderecoUser: documentSnapshot.data().userLocation})
+
+        console.log(`LOCATION1: ` + e.state.userLocation + "LOCATION2: " + e.state.enderecoUser)
+      } else {
+        return null;
+      }
+    })
   }
 
     console.log('ARRAY ANUNCIO cartaoEstab: ' + this.state.cartaoEstab)
     console.log('ARRAY ANUNCIO autonomo: ' + this.state.cartaoAuto)
+
+
+    
   }
+
+
+
+
+
 
   openModalize() {
     const modalizeRef = this.state.modalizeRef;
@@ -656,7 +677,7 @@ export default class MostrarCartao extends Component {
               if(currentUser.uid == item.idUser){
                 this.AlertPro8.open();
               } else {
-                e.setModalVisible(true)
+              e.setModalVisible(true)
               firebase.firestore().collection('products').doc(idProduct).set({
                 idDonoDoProduto: item.idUser,
                 idComprador: currentUser.uid,
@@ -672,8 +693,14 @@ export default class MostrarCartao extends Component {
                 enderecoComprador: e.state.enderecoUser,
                 status: 'pending'
               })
+
+              firebase.firestore().collection('usuarios').doc(currentUser.uid).update({
+                userLocation: e.state.enderecoUser,
+              })
+              
+
                 e.setModalVisible(false)
-                e.AlertPro7.open();
+                this.AlertPro7.open();
                 e.props.navigation.navigate('Checkout')
           }
         } else {
@@ -1743,10 +1770,18 @@ export default class MostrarCartao extends Component {
                       </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity onPress={() => this.getLocationGPSorText(item)} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
-                          <IconResponsive name="shopping-cart" size={30}/>
-                          <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao carrinho</TextTheme>
-                    </TouchableOpacity>
+                    {this.state.userLocation == '' ?
+                      <TouchableOpacity onPress={() => this.getLocationGPSorText(item)} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                            <IconResponsive name="shopping-cart" size={30}/>
+                            <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao carrinho</TextTheme>
+                      </TouchableOpacity>
+                      : 
+                      <TouchableOpacity onPress={() => this.saveProductInFirebase(item)} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                            <IconResponsive name="shopping-cart" size={30}/>
+                            <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao carrinho</TextTheme>
+                      </TouchableOpacity>
+                    }
+
                   </View>
           
                   <ViewComment>
