@@ -136,8 +136,6 @@ export default class CriarAnuncio extends Component {
       categoria:'',
       horarioOpen:'',
       horarioClose:'',
-      phoneAuto:'',
-      phoneEstab:'',
       precoAuto:'',
       precoEstab:'',
       nomeAuto:'',
@@ -359,16 +357,6 @@ export default class CriarAnuncio extends Component {
   };
 
   keyExtractor = item => item.orderNumber.toString();
-
-  onChangePhoneAuto(text) {
-    this.setState({phoneAuto: text})
-    console.log('auto phone: '  + this.state.phoneAuto)
-  }
-
-  onChangePhoneEstab(text) {
-    this.setState({phoneEstab: text})
-    console.log('estab phone: '  + this.state.phoneEstab)
-  }
 
   onChangePrecoAuto(text) {
     this.setState({precoAuto: text})
@@ -696,7 +684,7 @@ export default class CriarAnuncio extends Component {
       }
       
       if(typePublish === 'Autonomo') { 
-      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.nomeAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.nomeAuto !== '' && this.state.categoria !== '') {
         
         this.setModalVisible(true)
 
@@ -733,7 +721,7 @@ export default class CriarAnuncio extends Component {
               
               
                             if(type == 'Estabelecimento'){
-                              if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                              if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.video !== null) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                       firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -751,7 +739,6 @@ export default class CriarAnuncio extends Component {
                                           premiumUser: e.state.usuarioComprou,
                                           UFEstab: e.state.UFEstab,
                                           fotoUsuarioLogado: e.state.fotoPerfil,
-                                          phoneNumberEstab: e.state.phoneEstab,
                                           localEstab: e.state.enderecoEstab,
                                           categoryEstab: e.state.categoria,
                                           subcategoryEstab: e.state.subcategoria,
@@ -778,7 +765,6 @@ export default class CriarAnuncio extends Component {
                                           fotoUsuarioLogado: e.state.fotoPerfil,
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
-                                          phoneNumberEstab: e.state.phoneEstab,
                                           localEstab: e.state.enderecoEstab,
                                           categoryEstab: e.state.categoria,
                                           subcategoryEstab: e.state.subcategoria,
@@ -812,7 +798,7 @@ export default class CriarAnuncio extends Component {
                         
                         
                             if(type == 'Autonomo') {
-                              if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
+                              if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                       firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -832,7 +818,6 @@ export default class CriarAnuncio extends Component {
                                           UFAuto: e.state.UFAuto,
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
-                                          phoneNumberAuto: e.state.phoneAuto,
                                           categoryAuto: e.state.categoria,
                                           subcategoryAuto: e.state.subcategoria,
                                           workDays: e.state.daysWeek,
@@ -860,7 +845,6 @@ export default class CriarAnuncio extends Component {
                                           UFAuto: e.state.UFAuto,
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
-                                          phoneNumberAuto: e.state.phoneAuto,
                                           categoryAuto: e.state.categoria,
                                           subcategoryAuto: e.state.subcategoria,
                                           workDays: e.state.daysWeek,
@@ -931,7 +915,7 @@ export default class CriarAnuncio extends Component {
               
               
                             if(type == 'Estabelecimento'){
-                              if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.horarioFecha !== '' && this.state.horarioAbre !== '' && this.state.categoria !== '' && this.state.image !== null) {
+                              if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioFecha !== '' && this.state.horarioAbre !== '' && this.state.categoria !== '' && this.state.image !== null) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                       firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -949,7 +933,6 @@ export default class CriarAnuncio extends Component {
                                           premiumUser: e.state.usuarioComprou,
                                           UFEstab: e.state.UFEstab,
                                           fotoUsuarioLogado: e.state.fotoPerfil,
-                                          phoneNumberEstab: e.state.phoneEstab,
                                           localEstab: e.state.enderecoEstab,
                                           categoryEstab: e.state.categoria,
                                           subcategoryEstab: e.state.subcategoria,
@@ -976,7 +959,6 @@ export default class CriarAnuncio extends Component {
                                           fotoUsuarioLogado: e.state.fotoPerfil,
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
-                                          phoneNumberEstab: e.state.phoneEstab,
                                           localEstab: e.state.enderecoEstab,
                                           categoryEstab: e.state.categoria,
                                           subcategoryEstab: e.state.subcategoria,
@@ -1010,7 +992,7 @@ export default class CriarAnuncio extends Component {
                         
                         
                             if(type == 'Autonomo') {
-                              if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
+                              if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                       firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1030,7 +1012,6 @@ export default class CriarAnuncio extends Component {
                                           fotoUsuarioLogado: e.state.fotoPerfil,
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
-                                          phoneNumberAuto: e.state.phoneAuto,
                                           categoryAuto: e.state.categoria,
                                           subcategoryAuto: e.state.subcategoria,
                                           workDays: e.state.daysWeek,
@@ -1058,7 +1039,6 @@ export default class CriarAnuncio extends Component {
                                           fotoUsuarioLogado: e.state.fotoPerfil,
                                           verifiedPublish: true,
                                           premiumUser: e.state.usuarioComprou,
-                                          phoneNumberAuto: e.state.phoneAuto,
                                           categoryAuto: e.state.categoria,
                                           subcategoryAuto: e.state.subcategoria,
                                           workDays: e.state.daysWeek,
@@ -1105,7 +1085,7 @@ export default class CriarAnuncio extends Component {
 
 
     if(typePublish === 'Estabelecimento') {
-      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.categoria !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.categoria !== '') {
         
         this.setModalVisible(true)
 
@@ -1142,7 +1122,7 @@ export default class CriarAnuncio extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.video !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1159,7 +1139,6 @@ export default class CriarAnuncio extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1185,7 +1164,6 @@ export default class CriarAnuncio extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1219,7 +1197,7 @@ export default class CriarAnuncio extends Component {
                       
                       
                           if(type == 'Autonomo') {
-                            if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
+                            if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.nomeAuto !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1237,7 +1215,6 @@ export default class CriarAnuncio extends Component {
                                         type: 'Autonomo',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         workDays: e.state.daysWeek,
@@ -1263,7 +1240,6 @@ export default class CriarAnuncio extends Component {
                                         type: 'Autonomo',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         workDays: e.state.daysWeek,
@@ -1333,7 +1309,7 @@ export default class CriarAnuncio extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.phoneEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.image !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioAbre !== '' && this.state.horarioFecha !== '' && this.state.categoria !== '' && this.state.image !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1350,7 +1326,6 @@ export default class CriarAnuncio extends Component {
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1376,7 +1351,6 @@ export default class CriarAnuncio extends Component {
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1410,7 +1384,7 @@ export default class CriarAnuncio extends Component {
                       
                       
                           if(type == 'Autonomo') {
-                            if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.phoneAuto !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
+                            if(this.state.tituloAuto !== '' && this.state.descricaoAuto !== '' && this.state.precoAuto !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.nomeAuto !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1428,7 +1402,6 @@ export default class CriarAnuncio extends Component {
                                         type: 'Autonomo',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         workDays: e.state.daysWeek,
@@ -1454,7 +1427,6 @@ export default class CriarAnuncio extends Component {
                                         type: 'Autonomo',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberAuto: e.state.phoneAuto,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         workDays: e.state.daysWeek,
@@ -2067,16 +2039,6 @@ export default class CriarAnuncio extends Component {
                                 />
                             </TouchableOpacity>
 
-                          <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputFormMask
-                                type={'cel-phone'}
-                                keyboardType={"phone-pad"}
-                                maxLength={17}
-                                value={this.state.phoneAuto}
-                                onChangeText={text => this.onChangePhoneAuto(text)}
-                                placeholder="Número de Telefone                                                   "
-                              />
-                          </View>
 
                           <View style={{flexDirection:'row'}}>
                                 
@@ -2297,17 +2259,6 @@ export default class CriarAnuncio extends Component {
                                 />
                               }
                             </TouchableOpacity>
-
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputFormMask
-                                type={'cel-phone'}
-                                keyboardType={"phone-pad"}
-                                maxLength={17}
-                                value={this.state.phoneEstab}
-                                onChangeText={text => this.onChangePhoneEstab(text)}
-                                placeholder="Número de Telefone                                                   "
-                              />
-                            </View>
                           
                             <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
                                 <InputForm

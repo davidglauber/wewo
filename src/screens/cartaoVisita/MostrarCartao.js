@@ -64,11 +64,12 @@ const imgHolder = require('../../assets/img/confeiteira.jpeg');
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-import { SafeAnuncioView, SignUpBottom, IconResponsiveNOBACK, ValueFieldPrincipal, ViewComment, ReviewView,  TouchableResponsive, ButtonIconContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
+import { SafeAnuncioView, SignUpBottom, IconResponsiveNOBACK, ValueFieldPrincipal, ViewComment, ReviewView, InputFormMask, InputForm, TouchableResponsive, ButtonIconContainer, IconResponsive, Heading, TextDescription, TextTheme, TextDescription2 } from '../home/styles';
 
 import { Modalize } from 'react-native-modalize';
 
 import { ThemeContext } from '../../../ThemeContext';
+
 
 import {Heading6} from '../../components/text/CustomText';
 
@@ -91,6 +92,7 @@ import * as Location from 'expo-location';
 import { AdMobBanner} from 'expo-ads-admob';
 
 import { Video } from 'expo-av';
+import { throwIfAudioIsDisabled } from 'expo-av/build/Audio/AudioAvailability';
 
 // ProductA Styles
 const styles = StyleSheet.create({
@@ -254,7 +256,15 @@ export default class MostrarCartao extends Component {
       qtd: 0,
       locationServiceEnabled: false,
       enderecoUser: null,
-      item: []
+      item: [],
+      nomeEnd: '',
+      cepEnd: '',
+      endereco: '',
+      numeroEnd: '',
+      complementoEnd: '',
+      bairroEnd: '',
+      cidadeEnd: '',
+      estadoEnd: ''
     };
   }
 
@@ -301,9 +311,6 @@ export default class MostrarCartao extends Component {
   async componentDidMount() {
     let e = this;
     
-    //pede ao usuario para habilitar os serviços de localização
-    this.CheckIfLocationEnabled();
-
     if(Platform.OS === "android") {
       let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto')
     
@@ -631,6 +638,8 @@ export default class MostrarCartao extends Component {
 
 
   getLocationGPSorText(item) {
+    //pede ao usuario para habilitar os serviços de localização
+    this.CheckIfLocationEnabled();
     this.openModalizeLocation();
     this.setState({item: item})
   }
@@ -639,7 +648,6 @@ export default class MostrarCartao extends Component {
     let e = this;
     let idProduct = e.makeid(22);
     let currentUser = firebase.auth().currentUser;
-    var n1 = 3; 
 
       if(this.state.enderecoUser !== null) {
         await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
@@ -649,24 +657,24 @@ export default class MostrarCartao extends Component {
                 this.AlertPro8.open();
               } else {
                 e.setModalVisible(true)
-                firebase.firestore().collection('products').doc(idProduct).set({
-                  idDonoDoProduto: item.idUser,
-              idComprador: currentUser.uid,
-              idProduct: idProduct,
-              fotoUsuarioLogado: item.fotoUsuarioLogado,
-              fotoUsuarioComprador: documentSnapshot.data().photoProfile,
-              fotoProduto: item.photo2,
-              quantidade: e.state.qtd,
-              valorProduto: item.value,
-              tituloProduto: item.title,
-              nomeUsuario: e.state.nomeUser,
-              nomeUsuarioComprador: documentSnapshot.data().nome,
-              enderecoComprador: e.state.enderecoUser,
-              status: 'pending'
-            })
-            e.setModalVisible(false)
-            e.AlertPro7.open();
-            e.props.navigation.navigate('Checkout')
+              firebase.firestore().collection('products').doc(idProduct).set({
+                idDonoDoProduto: item.idUser,
+                idComprador: currentUser.uid,
+                idProduct: idProduct,
+                fotoUsuarioLogado: item.fotoUsuarioLogado,
+                fotoUsuarioComprador: documentSnapshot.data().photoProfile,
+                fotoProduto: item.photo2,
+                quantidade: e.state.qtd,
+                valorProduto: item.value,
+                tituloProduto: item.title,
+                nomeUsuario: e.state.nomeUser,
+                nomeUsuarioComprador: documentSnapshot.data().nome,
+                enderecoComprador: e.state.enderecoUser,
+                status: 'pending'
+              })
+                e.setModalVisible(false)
+                e.AlertPro7.open();
+                e.props.navigation.navigate('Checkout')
           }
         } else {
           this.AlertPro9.open();
@@ -681,6 +689,52 @@ export default class MostrarCartao extends Component {
   }
    
   }
+
+
+  onChangeNomeEnd(text) {
+    this.setState({nomeEnd: text})
+  }
+
+  onChangeCEPEnd(text) {
+    this.setState({cepEnd: text})
+  }
+
+  onChangeEnderecoEnd(text) {
+    this.setState({endereco: text})
+  }
+
+  onChangeNumeroEnd(text) {
+    this.setState({numeroEnd: text})
+  }
+
+  onChangeComplementoEnd(text) {
+    this.setState({complementoEnd: text})
+  }
+
+  onChangeBairroEnd(text) {
+    this.setState({bairroEnd: text})
+  }
+
+  onChangeCidadeEnd(text) {
+    this.setState({cidadeEnd: text})
+  }
+
+  onChangeEstadoEnd(text) {
+    this.setState({estadoEnd: text})
+  }
+
+
+  saveAddressToFirebase(){
+    const {nomeEnd, cepEnd, endereco, numeroEnd, complementoEnd, bairroEnd, cidadeEnd, estadoEnd} = this.state; 
+    if(nomeEnd !== '' && cepEnd !== '' && endereco !== '' && numeroEnd !== '' && complementoEnd !== '' && bairroEnd !== '' && cidadeEnd !== '' && estadoEnd !== '') {
+      let address = `${nomeEnd}, ${endereco}, ${bairroEnd}, ${cidadeEnd}, ${estadoEnd} (${cepEnd})`
+      this.setState({enderecoUser: address})
+      this.saveProductInFirebase(this.state.item)
+    } else {
+      this.AlertPro13.open()
+    }
+  }
+
 
   render() {
     const {product, favorite, cartaoAuto, cartaoEstab, isFetched, qtd} = this.state;
@@ -1019,6 +1073,36 @@ export default class MostrarCartao extends Component {
           }}
         />
 
+        <AlertPro
+          ref={ref => {
+            this.AlertPro13 = ref;
+          }}
+          showCancel={false}
+          onConfirm={() => this.AlertPro13.close()}
+          title="OPS!"
+          message="Por favor, preencha todos os campos do seu endereço"
+          textConfirm="OK"
+          customStyles={{
+            mask: {
+              backgroundColor: "black",
+              opacity: 0.9
+            },
+            container: {
+              borderWidth: 1,
+              borderColor: "#d98b0d",
+              shadowColor: "#000000",
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              borderRadius:30
+            },
+            buttonCancel: {
+              backgroundColor: "#3f3f3f"
+            },
+            buttonConfirm: {
+              backgroundColor: "#ffa31a"
+            }
+          }}
+        />
 
         <StatusBar
           backgroundColor={this.context.dark ? '#121212' : 'white'}
@@ -1370,6 +1454,7 @@ export default class MostrarCartao extends Component {
                 :
                   <Text style={this.context.dark ? {fontWeight: 'bold', padding:15,color:'#fff', textAlign:'center'} : {fontWeight: 'bold', padding:15,color:'#000',textAlign:'center'}}>{this.state.enderecoUser}</Text>  
                 }
+
                 <View style={{flexDirection:'row'}}>
                   <TouchableOpacity onPress={() => this.GetCurrentLocation()} style={{alignItems:'center', justifyContent:'center', marginTop:10, marginRight:15, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
                     <FontAwesome5 name="search-location" size={24} color={'#9A9A9A'}/>
@@ -1378,7 +1463,92 @@ export default class MostrarCartao extends Component {
                   <TouchableOpacity onPress={() => this.setState({enderecoUser: null})} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
                     <FontAwesome5 name="times-circle" size={24} color={'#9A9A9A'}/>
                   </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => this.setState({enderecoUser: 'Digite seu Endereço'})} style={{marginLeft: 15, alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                    <FontAwesome5 name="pencil-alt" size={24} color={'#9A9A9A'}/>
+                  </TouchableOpacity>
+
+                  
                 </View>
+              
+              {this.state.enderecoUser == 'Digite seu Endereço' && 
+                <View style={{flexDirection:"column", marginTop:10}}>
+                  <InputForm
+                    value={this.state.nomeEnd}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeNomeEnd(text)}
+                    maxLength={20}
+                    placeholder="Nome para o endereço"
+                  />
+
+                  <InputFormMask
+                    type={'zip-code'}
+                    value={this.state.cepEnd}
+                    onChangeText={text => this.onChangeCEPEnd(text)}
+                    keyboardType={"number-pad"}
+                    placeholder="Digite o CEP"
+                  />
+
+                  <InputForm
+                    value={this.state.endereco}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeEnderecoEnd(text)}
+                    maxLength={20}
+                    placeholder="Endereço. ex: Rua das Flores"
+                  />
+
+                  <InputForm
+                    value={this.state.numeroEnd}
+                    keyboardType={"number-pad"}
+                    onChangeText={text => this.onChangeNumeroEnd(text)}
+                    maxLength={20}
+                    placeholder="Número do Endereço"
+                  />
+
+                  <InputForm
+                    value={this.state.complementoEnd}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeComplementoEnd(text)}
+                    maxLength={20}
+                    placeholder="Complemento"
+                  />
+
+                  <InputForm
+                    value={this.state.bairroEnd}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeBairroEnd(text)}
+                    maxLength={20}
+                    placeholder="Bairro"
+                  />
+
+                  <InputForm
+                    value={this.state.cidadeEnd}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeCidadeEnd(text)}
+                    maxLength={20}
+                    placeholder="Cidade"
+                  />
+
+                  <InputForm
+                    value={this.state.estadoEnd}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeEstadoEnd(text)}
+                    maxLength={20}
+                    placeholder="Estado"
+                  />
+
+
+                  <TouchableOpacity onPress={() => this.saveAddressToFirebase()} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d', marginTop:30}}>
+                    <IconResponsive name="check" size={30}/>
+                    <Text style={{color: this.context.dark ? 'white' : '#121212', fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Confirmar</Text>
+                  </TouchableOpacity>
+                </View>
+                
+
+
+              }
+
+
             </View>
                  
 

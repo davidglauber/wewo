@@ -139,7 +139,6 @@ export default class EditarCartao extends Component {
       categoria:'',
       horarioOpen:'',
       horarioClose:'',
-      phoneEstab:'',
       nomeAuto:'',
       tituloEstab:'',
       descricaoAuto:'',
@@ -299,7 +298,6 @@ export default class EditarCartao extends Component {
             let subcategoria = ''
             let descricao = ''
             let idUser = ''
-            let telefone = ''
             let imagem = ''
             let imagem2 = ''
             let imagem3 = ''
@@ -323,7 +321,6 @@ export default class EditarCartao extends Component {
                 subcategoria = doc.data().subcategoryEstab,
                 descricao = doc.data().descriptionEstab,
                 idUser = doc.data().idUser,
-                telefone = doc.data().phoneNumberEstab,
                 imagem = doc.data().photoPublish,
                 imagem2 = doc.data().photoPublish2,
                 imagem3 = doc.data().photoPublish3,
@@ -344,7 +341,6 @@ export default class EditarCartao extends Component {
             e.setState({descricaoEstab: descricao})
             e.setState({categoria: categoria})
             e.setState({subcategoria: subcategoria})
-            e.setState({phoneEstab: telefone})
             e.setState({image: imagem})
             e.setState({image2: imagem2})
             e.setState({image3: imagem3})
@@ -429,12 +425,6 @@ export default class EditarCartao extends Component {
   };
 
   keyExtractor = item => item.orderNumber.toString();
-
-  onChangePhoneEstab(text) {
-    this.setState({phoneEstab: text})
-    console.log('estab phone: '  + this.state.phoneEstab)
-  }
-
 
 
   onChangeTituloEstab(text) {
@@ -874,7 +864,7 @@ export default class EditarCartao extends Component {
 
 
       if(typePublish === 'Estabelecimento') {
-      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '', this.state.precoEstab !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '', this.state.precoEstab !== '') {
         this.setModalVisible(true)
 
 
@@ -908,7 +898,7 @@ export default class EditarCartao extends Component {
                           imageIdStorageState3 = imageId3
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.precoEstab !== '') {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.precoEstab !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
@@ -926,7 +916,6 @@ export default class EditarCartao extends Component {
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -953,7 +942,6 @@ export default class EditarCartao extends Component {
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1076,7 +1064,7 @@ export default class EditarCartao extends Component {
                           imageIdStorageState3 = imageId3
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.precoEstab !== '') {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.precoEstab !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
@@ -1094,7 +1082,6 @@ export default class EditarCartao extends Component {
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1121,7 +1108,6 @@ export default class EditarCartao extends Component {
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1223,7 +1209,7 @@ export default class EditarCartao extends Component {
 
 
     if(typePublish === 'Autonomo') {
-      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.nomeAuto !== '' && this.state.descricaoAuto !== '' && this.state.phoneAuto !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.nomeAuto !== '' && this.state.descricaoAuto !== '') {
         this.setModalVisible(true)
 
         if(this.state.video !== null){
@@ -1256,7 +1242,7 @@ export default class EditarCartao extends Component {
                           imageIdStorageState3 = imageId3
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.precoEstab !== '') {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null && this.state.precoEstab !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
@@ -1274,7 +1260,6 @@ export default class EditarCartao extends Component {
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1301,7 +1286,6 @@ export default class EditarCartao extends Component {
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1424,7 +1408,7 @@ export default class EditarCartao extends Component {
                           imageIdStorageState3 = imageId3
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.precoEstab !== '') {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null && this.state.precoEstab !== '') {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {   
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {  
@@ -1442,7 +1426,6 @@ export default class EditarCartao extends Component {
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1469,7 +1452,6 @@ export default class EditarCartao extends Component {
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -2079,17 +2061,6 @@ export default class EditarCartao extends Component {
                               }
                             </TouchableOpacity>
 
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputFormMask
-                                type={'cel-phone'}
-                                keyboardType={"phone-pad"}
-                                maxLength={17}
-                                value={this.state.phoneEstab}
-                                onChangeText={text => this.onChangePhoneEstab(text)}
-                                placeholder="Número de Telefone                                                   "
-                              />
-                            </View>
-                          
                             <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
                                 <InputForm
                                   value={this.state.enderecoEstab}

@@ -139,7 +139,6 @@ export default class TelaCriarCartaoVisita extends Component {
       categoria:'',
       horarioOpen:'',
       horarioClose:'',
-      phoneEstab:'',
       nomeAuto:'',
       tituloEstab:'',
       descricaoAuto:'',
@@ -294,12 +293,6 @@ export default class TelaCriarCartaoVisita extends Component {
   };
 
   keyExtractor = item => item.orderNumber.toString();
-
-  onChangePhoneEstab(text) {
-    this.setState({phoneEstab: text})
-    console.log('estab phone: '  + this.state.phoneEstab)
-  }
-
 
 
   onChangeTituloEstab(text) {
@@ -717,7 +710,7 @@ export default class TelaCriarCartaoVisita extends Component {
       }
       
       if(typePublish === 'Estabelecimento') {
-      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '') {
+      if(this.state.image !== null || this.state.video !== null && this.state.image2 !== null && this.state.image3 !== null && this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '') {
         this.setModalVisible(true)
 
         if(this.state.video !== null){
@@ -747,7 +740,7 @@ export default class TelaCriarCartaoVisita extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -765,7 +758,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -791,7 +783,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -917,7 +908,7 @@ export default class TelaCriarCartaoVisita extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -935,7 +926,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -961,7 +951,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1100,7 +1089,7 @@ export default class TelaCriarCartaoVisita extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1118,7 +1107,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1144,7 +1132,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1270,7 +1257,7 @@ export default class TelaCriarCartaoVisita extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.phoneEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1288,7 +1275,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1314,7 +1300,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
-                                        phoneNumberEstab: e.state.phoneEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1936,17 +1921,6 @@ export default class TelaCriarCartaoVisita extends Component {
                               }
                             </TouchableOpacity>
 
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputFormMask
-                                type={'cel-phone'}
-                                keyboardType={"phone-pad"}
-                                maxLength={17}
-                                value={this.state.phoneEstab}
-                                onChangeText={text => this.onChangePhoneEstab(text)}
-                                placeholder="Número de Telefone                                                   "
-                              />
-                            </View>
-                          
                             <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
                                 <InputForm
                                   value={this.state.enderecoEstab}
