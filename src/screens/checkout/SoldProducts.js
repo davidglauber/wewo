@@ -149,7 +149,8 @@ export default class SoldProducts extends Component {
             valorProduto: doc.data().valorProduto,
             tituloProduto: doc.data().tituloProduto,
             nomeUsuario: doc.data().nomeUsuario,
-            nomeUsuarioComprador: doc.data().nomeUsuarioComprador
+            nomeUsuarioComprador: doc.data().nomeUsuarioComprador,
+            enderecoComprador: doc.data().enderecoComprador
           })
         })
         e.setState({products: productsArray})
@@ -289,19 +290,20 @@ export default class SoldProducts extends Component {
               keyExtractor={() => this.makeid(17)}
               data={this.state.products}
               renderItem={({item}) => 
-                  <View style={{paddingHorizontal:30, flexDirection:'row', maxWidth: windowWidth/1.5}}>
-                    <Image style={{width:160, height:140, borderRadius:20}} source={{uri: item.fotoProduto}}/>
-                    <View style={{flexDirection:"column"}}>
-                      <View style={{flexDirection:'row'}}>
-                        <Image style={{width:30, height:30, borderRadius:40, marginLeft:20}} source={{uri: item.fotoUsuarioComprador}}/>
-                        <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>{item.nomeUsuarioComprador}</Text>
-                      </View>
-                      
-                      <Text style={{marginLeft: 40, marginBottom:20, color: this.context.dark ? '#fff' : '#000'}}>{item.tituloProduto}</Text>
-                      <Text style={{marginLeft: 40, fontWeight:'bold', color:'#d98b0d', marginBottom:10, fontSize:20}}>{item.valorProduto}</Text>
-                      <Text style={{marginLeft: 40, fontWeight:'bold', color:'#d98b0d', marginBottom:30, fontSize:14}}>Quantidade: {item.quantidade}</Text>
-                    </View>
+                <View style={{paddingHorizontal:30, flexDirection:'column', maxWidth: windowWidth/1.5}}>
+                  <View style={{flexDirection:"row"}}>
+                    <Image style={{width:30, height:30, borderRadius:40}} source={{uri: item.fotoUsuarioComprador}}/>
+                    <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>{item.nomeUsuarioComprador}</Text>
+                    <Text style={{marginLeft: 40, marginBottom:20, fontSize:18, fontWeight:"bold", color: this.context.dark ? '#fff' : '#000'}}>{item.tituloProduto}</Text>
                   </View>
+                  
+                  <Image style={{width: windowWidth/1.2, height:140, borderBottomLeftRadius:0, borderBottomRightRadius: 0, borderTopRightRadius:20, borderTopLeftRadius:20}} source={{uri: item.fotoProduto}}/>
+                  <View style={{flexDirection:"column", width: windowWidth/1.2, borderBottomLeftRadius:20, borderBottomRightRadius: 20, elevation:10, marginBottom:20, backgroundColor:'#fff'}}>
+                    <Text style={{marginLeft: 20, fontWeight:'bold', marginTop:10, fontSize:20}}>Valor: {item.valorProduto}</Text>
+                    <Text style={{marginLeft: windowWidth/2, position:'absolute', top:15, fontWeight:'bold', fontSize:14}}>Quantidade: {item.quantidade}</Text>
+                    <Text style={{marginLeft: 5, marginBottom:15, marginTop:10, fontSize:14, textAlign:'center'}}>Localização: {item.enderecoComprador}</Text>
+                  </View>
+                </View>
               }
             />
 

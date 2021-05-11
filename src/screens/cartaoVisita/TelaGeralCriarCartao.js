@@ -330,7 +330,7 @@ export default class TelaGeralCriarCartao extends Component {
       idMP: e.state.idMPState,
       accessTK: e.state.accTK,
       mesCriacaoToken: e.state.mesCriacaoTokenFirebase,
-      userLocation: ''
+      userLocation: e.state.userLocation
     })
     
     const modalizeRef = this.state.modalizeRef;
