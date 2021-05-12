@@ -165,6 +165,7 @@ export default class TelaCriarCartaoVisita extends Component {
       modalizeRefSub: React.createRef(null),
       modalizeRefValueEstab:  React.createRef(null),
       modalizeRefAbertura: React.createRef(null),
+      modalizeRefFreteEstab: React.createRef(null),
       modalizeRefFechamento: React.createRef(null),
       modalizePhotos: React.createRef(null),
       modalizeVideoAndPhoto: React.createRef(null),
@@ -191,7 +192,8 @@ export default class TelaCriarCartaoVisita extends Component {
       daysWeek: [],
       locationServiceEnabled: false,
       fotoPerfil: null,
-      tipoDeConta: ''
+      tipoDeConta: '',
+      freteValue: ''
     };
   }
 
@@ -280,6 +282,23 @@ export default class TelaCriarCartaoVisita extends Component {
   }
 
 
+  closeFreteModal(){
+    const modalizeRefFreteEstab = this.state.modalizeRefFreteEstab;
+
+    modalizeRefFreteEstab.current?.close()
+  }
+
+  closeModal() {
+    this.setState({freteValue: 'Retirada no Local'})
+    this.AlertPro8.close();
+  }
+
+  openModalizeFreteEstab() {
+    const modalizeRefFreteEstab = this.state.modalizeRefFreteEstab;
+    modalizeRefFreteEstab.current?.open()
+
+    this.AlertPro8.close();
+  }
 
 
   goBack = () => {
@@ -756,6 +775,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
+                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -781,6 +801,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
+                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -924,6 +945,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
+                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -949,6 +971,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
+                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -1105,6 +1128,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
+                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -1131,6 +1155,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
+                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1273,6 +1298,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
+                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -1299,6 +1325,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
+                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1344,6 +1371,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
+                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -1364,6 +1392,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
+                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -1441,6 +1470,12 @@ export default class TelaCriarCartaoVisita extends Component {
     }
 
     this.state.daysWeek.push(day)
+  }
+
+
+  
+  onChangeFreteEstab(text) {
+    this.setState({freteValue: text})
   }
 
   renderPercentToWeWoEstab() {
@@ -1742,6 +1777,40 @@ export default class TelaCriarCartaoVisita extends Component {
                       }}
                     />
 
+                    <AlertPro
+                      ref={ref => {
+                        this.AlertPro8 = ref;
+                      }}
+                      onCancel={() => this.openModalizeFreteEstab()}
+                      onConfirm={() => this.closeModal()}
+                      title="Como será o frete?"
+                      message="Por favor, defina se o cliente vai retirar no local ou pagar pelo frete"
+                      textConfirm="Retirar"
+                      textCancel="Cobrar Frete"
+                      customStyles={{
+                        mask: {
+                          backgroundColor: "black",
+                          opacity: 0.9
+                        },
+                        container: {
+                          borderWidth: 1,
+                          borderColor: "#d98b0d",
+                          shadowColor: "#000000",
+                          shadowOpacity: 0.1,
+                          shadowRadius: 10,
+                          borderRadius:30
+                        },
+                        buttonCancel: {
+                          backgroundColor: "#3f3f3f"
+                        },
+                        buttonConfirm: {
+                          backgroundColor: "#ffa31a"
+                        }
+                      }}
+                    />
+
+
+
                     {this.state.tipoDeConta == 'Autonomo' &&
                             <View>
                               {this.state.type == 'Autonomo' ?     
@@ -1919,6 +1988,14 @@ export default class TelaCriarCartaoVisita extends Component {
                                   placeholder="Valor do Serviço                                                          "
                                 />
                               }
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => this.AlertPro8.open()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                              <InputForm
+                                editable={false}
+                                value={this.state.freteValue}
+                                placeholder="Defina seu frete aqui                                                          "
+                              />
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
@@ -2121,6 +2198,36 @@ export default class TelaCriarCartaoVisita extends Component {
             </ViewTopForm>
           </SafeViewPublish>
 
+
+
+          {/*Modalize do FRETE ESTABELECIMENTO*/}
+          <Modalize
+            ref={this.state.modalizeRefFreteEstab}
+            snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+          >
+            <View style={{flex:1,alignItems:'center'}}>
+                <TextDays style={{fontWeight: 'bold', maxWidth: windowWidth/1.2, textAlign:'center'}}>Aqui você pode definir o valor do frete (no momento o modelo de frete é por conta do vendedor)</TextDays>  
+                <View style={{flexDirection: 'column', alignItems: 'center',paddingHorizontal: 16, height: windowHeight}}>
+                  <InputFormMask
+                    type={'money'}
+                    value={this.state.freteValue}
+                    onChangeText={text => this.onChangeFreteEstab(text)}
+                    keyboardType={"number-pad"}
+                    placeholder="Digite aqui o valor do frete"
+                  />
+
+                  <TouchableOpacity
+                    onPress={() => this.closeFreteModal()}
+                    style={{borderRadius:30, alignItems:'center', justifyContent:'center', backgroundColor:'#DAA520', height: 40, width: 40, marginTop:30, marginBottom:40}}
+                  >
+                    <FontAwesome5 name="check-circle" size={24} color={'white'}/>
+                  </TouchableOpacity>
+                </View>
+
+
+            </View>
+          </Modalize>
 
 
           {/*Modalize do preço ESTABELECIMENTO*/}

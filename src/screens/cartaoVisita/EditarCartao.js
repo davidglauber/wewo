@@ -163,6 +163,7 @@ export default class EditarCartao extends Component {
       modalizeRefDescriptionEstab: React.createRef(null),
       modalizeRefAbertura: React.createRef(null),
       modalizeRefValueEstab:  React.createRef(null),
+      modalizeRefFreteEstab: React.createRef(null),
       modalizeRefFechamento: React.createRef(null),
       modalizePhotos: React.createRef(null),
       modalizeVideoAndPhoto: React.createRef(null),
@@ -188,7 +189,8 @@ export default class EditarCartao extends Component {
       usuarioComprou: false,
       daysWeek: [],
       locationServiceEnabled: false,
-      fotoPerfil: null
+      fotoPerfil: null,
+      freteValue: ''
     };
   }
 
@@ -312,6 +314,7 @@ export default class EditarCartao extends Component {
             let type = ''
             let ufestab = ''
             let arrayEstab = []
+            let frete = ''
 
             querySnapshot.forEach(function(doc) {
                 idCartao = doc.data().id,
@@ -332,7 +335,8 @@ export default class EditarCartao extends Component {
                 local = doc.data().localEstab,
                 abertura = doc.data().timeOpen,
                 fechamento = doc.data().timeClose,
-                workDays = doc.data().workDays
+                workDays = doc.data().workDays,
+                frete = doc.data().freteValue
             })
 
             e.setState({idCartao: idCartao})
@@ -352,6 +356,7 @@ export default class EditarCartao extends Component {
             e.setState({horarioOpen: abertura})
             e.setState({horarioClose: fechamento})
             e.setState({workDays: workDays})
+            e.setState({freteValue: frete})
         })
 
     }
@@ -472,6 +477,10 @@ export default class EditarCartao extends Component {
     this.setState({precoEstab: text})
   }
 
+  onChangeFreteEstab(text) {
+    this.setState({freteValue: text})
+  }
+
   onChangeCEPEstab(text) {
     this.setState({cepEstab: text})
     console.log('cepEstab'  + this.state.cepEstab)
@@ -547,6 +556,12 @@ export default class EditarCartao extends Component {
     modalizeRefDescription.current?.close()
   }
 
+  closeFreteModal(){
+    const modalizeRefFreteEstab = this.state.modalizeRefFreteEstab;
+
+    modalizeRefFreteEstab.current?.close()
+  }
+
   closeDescriptionEstabModal(){
     const modalizeRefDescriptionEstab = this.state.modalizeRefDescriptionEstab;
 
@@ -575,6 +590,14 @@ export default class EditarCartao extends Component {
     const modalizeRefValueEstab = this.state.modalizeRefValueEstab;
 
     modalizeRefValueEstab.current?.open()
+  }
+
+
+  openModalizeFreteEstab() {
+    const modalizeRefFreteEstab = this.state.modalizeRefFreteEstab;
+    modalizeRefFreteEstab.current?.open()
+
+    this.AlertPro8.close();
   }
 
 
@@ -909,6 +932,7 @@ export default class EditarCartao extends Component {
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
+                                        freteValue: e.state.freteValue,
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
@@ -935,6 +959,7 @@ export default class EditarCartao extends Component {
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
+                                        freteValue: e.state.freteValue,
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
@@ -1072,6 +1097,7 @@ export default class EditarCartao extends Component {
                                         titleEstab: e.state.tituloEstab,
                                         titleEstabArray: e.state.arrayWordsEstab,
                                         valueServiceEstab: e.state.precoEstab,
+                                        freteValue: e.state.freteValue,
                                         idCartao: routeIdCartao,
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
@@ -1099,6 +1125,7 @@ export default class EditarCartao extends Component {
                                         titleEstabArray: e.state.arrayWordsEstab,
                                         idCartao: routeIdCartao,
                                         idUser: userUID,
+                                        freteValue: e.state.freteValue,
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
                                         publishData: e.state.date,
@@ -1262,6 +1289,7 @@ export default class EditarCartao extends Component {
                                         premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
+                                        freteValue: e.state.freteValue,
                                         subcategoryEstab: e.state.subcategoria,
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
@@ -1288,6 +1316,7 @@ export default class EditarCartao extends Component {
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
+                                        freteValue: e.state.freteValue,
                                         subcategoryEstab: e.state.subcategoria,
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
@@ -1425,6 +1454,7 @@ export default class EditarCartao extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
+                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1450,6 +1480,7 @@ export default class EditarCartao extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
+                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -1640,6 +1671,11 @@ export default class EditarCartao extends Component {
     }
   }
 
+
+  closeModal() {
+    this.setState({freteValue: 'Retirada no Local'})
+    this.AlertPro8.close();
+  }
   
   render() {
     const { categorias, categoria } = this.state
@@ -1891,6 +1927,38 @@ export default class EditarCartao extends Component {
                       }}
                     />
 
+                    <AlertPro
+                      ref={ref => {
+                        this.AlertPro8 = ref;
+                      }}
+                      onCancel={() => this.openModalizeFreteEstab()}
+                      onConfirm={() => this.closeModal()}
+                      title="Como será o frete?"
+                      message="Por favor, defina se o cliente vai retirar no local ou pagar pelo frete"
+                      textConfirm="Retirar"
+                      textCancel="Cobrar Frete"
+                      customStyles={{
+                        mask: {
+                          backgroundColor: "black",
+                          opacity: 0.9
+                        },
+                        container: {
+                          borderWidth: 1,
+                          borderColor: "#d98b0d",
+                          shadowColor: "#000000",
+                          shadowOpacity: 0.1,
+                          shadowRadius: 10,
+                          borderRadius:30
+                        },
+                        buttonCancel: {
+                          backgroundColor: "#3f3f3f"
+                        },
+                        buttonConfirm: {
+                          backgroundColor: "#ffa31a"
+                        }
+                      }}
+                    />
+
 
                     <Modal
                         animationType="slide"
@@ -2059,6 +2127,14 @@ export default class EditarCartao extends Component {
                                   placeholder="Valor do Serviço                                                          "
                                 />
                               }
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => this.AlertPro8.open()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                              <InputForm
+                                editable={false}
+                                value={this.state.freteValue}
+                                placeholder="Defina seu frete aqui                                                          "
+                              />
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
@@ -2265,6 +2341,36 @@ export default class EditarCartao extends Component {
           }
 
 
+
+          {/*Modalize do FRETE ESTABELECIMENTO*/}
+          <Modalize
+            ref={this.state.modalizeRefFreteEstab}
+            snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+          >
+            <View style={{flex:1,alignItems:'center'}}>
+                <TextDays style={{fontWeight: 'bold', maxWidth: windowWidth/1.2, textAlign:'center'}}>Aqui você pode definir o valor do frete (no momento o modelo de frete é por conta do vendedor)</TextDays>  
+                <View style={{flexDirection: 'column', alignItems: 'center',paddingHorizontal: 16, height: windowHeight}}>
+                  <InputFormMask
+                    type={'money'}
+                    value={this.state.freteValue}
+                    onChangeText={text => this.onChangeFreteEstab(text)}
+                    keyboardType={"number-pad"}
+                    placeholder="Digite aqui o valor do frete"
+                  />
+
+                  <TouchableOpacity
+                    onPress={() => this.closeFreteModal()}
+                    style={{borderRadius:30, alignItems:'center', justifyContent:'center', backgroundColor:'#DAA520', height: 40, width: 40, marginTop:30, marginBottom:40}}
+                  >
+                    <FontAwesome5 name="check-circle" size={24} color={'white'}/>
+                  </TouchableOpacity>
+                </View>
+
+
+            </View>
+          </Modalize>
+
           {/*Modalize do preço ESTABELECIMENTO*/}
           <Modalize
             ref={this.state.modalizeRefValueEstab}
@@ -2273,7 +2379,7 @@ export default class EditarCartao extends Component {
           >
             <View style={{flex:1,alignItems:'center'}}>
                 <TextDays style={{fontWeight: 'bold', padding:15, textAlign:'center'}}>Deseja selecionar um preço? {'\n'}(caso não, o valor será "a combinar" )</TextDays>  
-                {this.state.precoEstab == '' &&
+                {this.state.precoEstab !== 'Retirada no Local' &&
                   <View>
                     <View style={{flexDirection:'row'}}>
                         <TouchableOpacity onPress={() => this.setState({precoEstab: 'Valor a combinar'})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
