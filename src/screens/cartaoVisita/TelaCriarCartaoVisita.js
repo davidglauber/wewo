@@ -240,6 +240,12 @@ export default class TelaCriarCartaoVisita extends Component {
       e.setState({tipoDeConta: documentSnapshot.data().tipoDeConta})
       e.setState({type: documentSnapshot.data().tipoDeConta})
     })
+
+
+
+    fetch('http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=57046256&sCepDestino=04547000&nVlPeso=1&nCdFormato=1&nVlComprimento=20&nVlAltura=20&nVlLargura=20&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04510&nVlDiametro=0&StrRetorno=xml&nIndicaCalculo=3').then((res) => {
+      console.log(res.text())
+    })
   }
 
 
