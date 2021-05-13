@@ -119,8 +119,11 @@ export default class BuyedProducts extends Component {
     this.state = {
       modalVisible: true,
       products:[],
+      productsFinished: [],
       idDono: '',
-      idCartao: ''
+      idCartao: '',
+      idProduct: '',
+      booleanFinished: false
     };
   }
 
@@ -155,8 +158,33 @@ export default class BuyedProducts extends Component {
           })
           e.setState({idDono: doc.data().idDonoDoProduto})
           e.setState({idCartao: doc.data().idCartao})
+          e.setState({idProduct: doc.data().idProduct})
         })
         e.setState({products: productsArray})
+        e.setModalVisible(false)
+      })
+
+      await firebase.firestore().collection('products').where('idComprador', '==', currentUser.uid).where('status', "==", 'finished').onSnapshot(documentSnapshot => {
+        let productsArray2 = []
+        documentSnapshot.forEach(function(doc) {
+          productsArray2.push({
+            idDonoDoProduto: doc.data().idDonoDoProduto,
+            idComprador: doc.data().idComprador,
+            idProduct: doc.data().idProduct,
+            fotoUsuarioLogado: doc.data().fotoUsuarioLogado,
+            fotoUsuarioComprador: doc.data().fotoUsuarioComprador,
+            fotoProduto: doc.data().fotoProduto,
+            quantidade: doc.data().quantidade,
+            valorProduto: doc.data().valorProduto,
+            tituloProduto: doc.data().tituloProduto,
+            nomeUsuario: doc.data().nomeUsuario,
+            nomeUsuarioComprador: doc.data().nomeUsuarioComprador
+          })
+          e.setState({idDono: doc.data().idDonoDoProduto})
+          e.setState({idCartao: doc.data().idCartao})
+          e.setState({idProduct: doc.data().idProduct})
+        })
+        e.setState({productsFinished: productsArray2})
         e.setModalVisible(false)
       })
     } else {
@@ -214,10 +242,45 @@ export default class BuyedProducts extends Component {
   }
 
 
+  async loadProductsFinished() {
+    let currentUser = firebase.auth().currentUser;
 
-  finishBuyProcess() {
+    await firebase.firestore().collection('products').where('idComprador', '==', currentUser.uid).where('status', "==", 'finished').onSnapshot(documentSnapshot => {
+      let productsArray = []
+      documentSnapshot.forEach(function(doc) {
+        productsArray.push({
+          idDonoDoProduto: doc.data().idDonoDoProduto,
+          idComprador: doc.data().idComprador,
+          idProduct: doc.data().idProduct,
+          fotoUsuarioLogado: doc.data().fotoUsuarioLogado,
+          fotoUsuarioComprador: doc.data().fotoUsuarioComprador,
+          fotoProduto: doc.data().fotoProduto,
+          quantidade: doc.data().quantidade,
+          valorProduto: doc.data().valorProduto,
+          tituloProduto: doc.data().tituloProduto,
+          nomeUsuario: doc.data().nomeUsuario,
+          nomeUsuarioComprador: doc.data().nomeUsuarioComprador
+        })
+        e.setState({idDono: doc.data().idDonoDoProduto})
+        e.setState({idCartao: doc.data().idCartao})
+        e.setState({idProduct: doc.data().idProduct})
+      })
+      e.setState({productsFinished: productsArray})
+      e.setModalVisible(false)
+    })
+    
+  }
+
+
+  async finishBuyProcess() {
     this.AlertPro2.close();
-    this.props.navigation.navigate('MostrarCartao', {idDoCartao: this.state.idCartao, idUserCartao: this.state.idDono})
+    await firebase.firestore().collection('products').doc(this.state.idProduct).update({
+      status: 'finished'
+    }).then(() => {
+      this.props.navigation.navigate('MostrarCartao', {idDoCartao: this.state.idCartao, idUserCartao: this.state.idDono})
+    }).catch((err) => {
+      alert('Ocorreu um erro ao finalizar o processo de confirmação: ' + err)
+    })
   }
 
 
@@ -319,40 +382,102 @@ export default class BuyedProducts extends Component {
               <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Lembre-se de confirmar quando o produto for entregue, se recebeu o produto e negou-se a confirmar você será penalizado!</TextDescription2>
             </View>
 
-            {this.state.products.length == 0 &&
-                <View style={{flex:1, alignItems:'center', paddingTop: 75}}>
-                    <View>
-                      <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
-                    </View>
+
+            {this.state.booleanFinished == false ?
+              //diz que não foi finalizado, só comprado
+              <View>
+                <View style={{flexDirection:'row', marginTop:30, marginBottom:50}}>
+                  <TextDescription2 style={{marginLeft: windowWidth/6, fontSize:20, fontWeight:'bold'}}>Comprado</TextDescription2>
+
+                  <TouchableOpacity onPress={() => this.setState({booleanFinished: true})}>
+                    <TextDescription2 style={{marginLeft:50, fontSize:20, fontWeight:'bold', color:"#3f3f3f"}}>Finalizado</TextDescription2>
+                  </TouchableOpacity>
                 </View>
-            }
 
 
-            <FlatList
-              keyExtractor={() => this.makeid(17)}
-              data={this.state.products}
-              renderItem={({item}) => 
-                  <View style={{paddingHorizontal:30, flexDirection:'column', maxWidth: windowWidth/1.5}}>
-                    <View style={{flexDirection:"row"}}>
-                      <Image style={{width:30, height:30, borderRadius:40}} source={{uri: item.fotoUsuarioComprador}}/>
-                      <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>{item.nomeUsuarioComprador}</Text>
-                      <Text style={{marginLeft: 40, marginBottom:20, fontSize:18, fontWeight:"bold", color: this.context.dark ? '#fff' : '#000'}}>{item.tituloProduto}</Text>
+                <FlatList
+                  keyExtractor={() => this.makeid(17)}
+                  data={this.state.products}
+                  renderItem={({item}) => 
+                    <View style={{paddingHorizontal:30, flexDirection:'column', maxWidth: windowWidth/1.5}}>
+                      <View style={{flexDirection:"row"}}>
+                        <Image style={{width:30, height:30, borderRadius:40}} source={{uri: item.fotoUsuarioComprador}}/>
+                        <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>{item.nomeUsuarioComprador}</Text>
+                        <Text style={{marginLeft: 40, marginBottom:20, fontSize:18, fontWeight:"bold", color: this.context.dark ? '#fff' : '#000'}}>{item.tituloProduto}</Text>
+                      </View>
+
+                      <Image style={{width: windowWidth/1.2, height:140, borderBottomLeftRadius:0, borderBottomRightRadius: 0, borderTopRightRadius:20, borderTopLeftRadius:20}} source={{uri: item.fotoProduto}}/>
+                      <View style={{flexDirection:"column", width: windowWidth/1.2, borderBottomLeftRadius:20, borderBottomRightRadius: 20, elevation:10, marginBottom:20, backgroundColor: this.context.dark ? '#3f3f3f' : '#fff'}}>
+                        <Text style={{marginLeft: 20, fontWeight:'bold', marginTop:10, fontSize:20, color: this.context.dark? '#fff' : '#000'}}>Valor: {item.valorProduto}</Text>
+                        <Text style={{marginLeft: windowWidth/2, position:'absolute', top:15, fontWeight:'bold', fontSize:14, color: this.context.dark? '#fff' : '#000'}}>Quantidade: {item.quantidade}</Text>
+
+                        <TouchableOpacity onPress={() => this.AlertPro2.open()} style={{justifyContent:"center", height:50, borderRadius:40, marginBottom:20, marginTop:20, elevation:5, marginLeft:windowWidth/6, maxWidth: windowWidth/2, flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                          <Text style={{color: this.context.dark ? 'black' : 'white', fontSize:15, fontWeight:'bold'}}>Confirmar Recebimento</Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
+                }
+                />
 
-                    <Image style={{width: windowWidth/1.2, height:140, borderBottomLeftRadius:0, borderBottomRightRadius: 0, borderTopRightRadius:20, borderTopLeftRadius:20}} source={{uri: item.fotoProduto}}/>
-                    <View style={{flexDirection:"column", width: windowWidth/1.2, borderBottomLeftRadius:20, borderBottomRightRadius: 20, elevation:10, marginBottom:20, backgroundColor:'#fff'}}>
-                      <Text style={{marginLeft: 20, fontWeight:'bold', marginTop:10, fontSize:20}}>Valor: {item.valorProduto}</Text>
-                      <Text style={{marginLeft: windowWidth/2, position:'absolute', top:15, fontWeight:'bold', fontSize:14}}>Quantidade: {item.quantidade}</Text>
 
-                      <TouchableOpacity onPress={() => this.AlertPro2.open()} style={{justifyContent:"center", height:50, borderRadius:40, marginBottom:20, marginTop:20, elevation:5, marginLeft:windowWidth/6, maxWidth: windowWidth/2, flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
-                        <Text style={{color: this.context.dark ? 'black' : 'white', fontSize:15, fontWeight:'bold'}}>Confirmar Recebimento</Text>
-                      </TouchableOpacity>
-                    </View>
+              {this.state.products.length == 0 &&
+                  <View style={{flex:1, alignItems:'center', paddingTop: 75}}>
+                      <View>
+                        <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
+                      </View>
                   </View>
               }
-            />
+              </View>
+              :
+              //diz que FOI finalizado
+              <View>
+                <View style={{flexDirection:'row', marginTop:30, marginBottom:50}}>
+                  <TouchableOpacity onPress={() => this.setState({booleanFinished: false})}>
+                    <TextDescription2 style={{marginLeft: windowWidth/6, fontSize:20, fontWeight:'bold', color:"#3f3f3f"}}>Comprado</TextDescription2>
+                  </TouchableOpacity>
 
-  
+                  <TextDescription2 style={{marginLeft:50, fontSize:20, fontWeight:'bold'}}>Finalizado</TextDescription2>
+                </View>
+
+
+
+                {this.state.productsFinished.length == 0 &&
+                  <View style={{flex:1, alignItems:'center', paddingTop: 75}}>
+                      <View>
+                        <LottieView source={require('../../../assets/notfound.json')} style={{width:200, height:200}} autoPlay loop />
+                      </View>
+                  </View>
+                }
+
+
+                <FlatList
+                  keyExtractor={() => this.makeid(17)}
+                  data={this.state.productsFinished}
+                  renderItem={({item}) => 
+                    <View style={{paddingHorizontal:30, flexDirection:'column', maxWidth: windowWidth/1.5}}>
+                      <View style={{flexDirection:"row"}}>
+                        <Image style={{width:30, height:30, borderRadius:40}} source={{uri: item.fotoUsuarioComprador}}/>
+                        <Text style={{marginLeft: 5, marginTop:5, fontWeight:'bold', color:'#d98b0d', marginBottom:30}}>{item.nomeUsuarioComprador}</Text>
+                        <Text style={{marginLeft: 40, marginBottom:20, fontSize:18, fontWeight:"bold", color: this.context.dark ? '#fff' : '#000'}}>{item.tituloProduto}</Text>
+                      </View>
+
+                      <Image style={{width: windowWidth/1.2, height:140, borderBottomLeftRadius:0, borderBottomRightRadius: 0, borderTopRightRadius:20, borderTopLeftRadius:20}} source={{uri: item.fotoProduto}}/>
+                      <View style={{flexDirection:"column", width: windowWidth/1.2, borderBottomLeftRadius:20, borderBottomRightRadius: 20, elevation:10, marginBottom:20, backgroundColor: this.context.dark ? '#3f3f3f' : '#fff'}}>
+                        <Text style={{marginLeft: 20, fontWeight:'bold', marginTop:10, fontSize:20, color: this.context.dark? '#fff' : '#000'}}>Valor: {item.valorProduto}</Text>
+                        <Text style={{marginLeft: windowWidth/2, position:'absolute', top:15, fontWeight:'bold', fontSize:14, color: this.context.dark? '#fff' : '#000'}}>Quantidade: {item.quantidade}</Text>
+
+                        <View style={{justifyContent:"center", height:50, borderRadius:40, marginBottom:20, marginTop:20, elevation:5, marginLeft:windowWidth/6, maxWidth: windowWidth/2, flexDirection:'row', alignItems: 'center', backgroundColor:'#4f4f4f'}}>
+                          <Text style={{color: this.context.dark ? 'black' : 'white', fontSize:15, fontWeight:'bold'}}>Compra Finalizada</Text>
+                        </View>
+                      </View>
+                    </View>
+                }
+                />
+              </View>
+            }
+            
+
+
           </ScrollView>
           
         </View>
