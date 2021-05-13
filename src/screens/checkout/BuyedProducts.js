@@ -118,7 +118,9 @@ export default class BuyedProducts extends Component {
 
     this.state = {
       modalVisible: true,
-      products:[]
+      products:[],
+      idDono: '',
+      idCartao: ''
     };
   }
 
@@ -151,6 +153,8 @@ export default class BuyedProducts extends Component {
             nomeUsuario: doc.data().nomeUsuario,
             nomeUsuarioComprador: doc.data().nomeUsuarioComprador
           })
+          e.setState({idDono: doc.data().idDonoDoProduto})
+          e.setState({idCartao: doc.data().idCartao})
         })
         e.setState({products: productsArray})
         e.setModalVisible(false)
@@ -211,6 +215,12 @@ export default class BuyedProducts extends Component {
 
 
 
+  finishBuyProcess() {
+    this.AlertPro2.close();
+    this.props.navigation.navigate('MostrarCartao', {idDoCartao: this.state.idCartao, idUserCartao: this.state.idDono})
+  }
+
+
   render() {
     return (
       <SafeBackground>
@@ -243,6 +253,39 @@ export default class BuyedProducts extends Component {
             title="Ops, ocorreu um erro"
             message="Você precisa estar logado para adicionar produtos no carrinho"
             textConfirm="Entendi"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro2 = ref;
+            }}
+            onCancel={() => this.AlertPro2.close()}
+            onConfirm={() => this.finishBuyProcess()}
+            title="ATENÇÃO"
+            message="Ao confirmar que recebeu o produto o processo de compra será finalizado e você deverá avaliar o produto."
+            textConfirm="Continuar"
+            textCancel="Cancelar"
             customStyles={{
               mask: {
                 backgroundColor: "black",
@@ -299,7 +342,11 @@ export default class BuyedProducts extends Component {
                     <Image style={{width: windowWidth/1.2, height:140, borderBottomLeftRadius:0, borderBottomRightRadius: 0, borderTopRightRadius:20, borderTopLeftRadius:20}} source={{uri: item.fotoProduto}}/>
                     <View style={{flexDirection:"column", width: windowWidth/1.2, borderBottomLeftRadius:20, borderBottomRightRadius: 20, elevation:10, marginBottom:20, backgroundColor:'#fff'}}>
                       <Text style={{marginLeft: 20, fontWeight:'bold', marginTop:10, fontSize:20}}>Valor: {item.valorProduto}</Text>
-                      <Text style={{marginLeft: windowWidth/2, fontWeight:'bold', marginTop:20, marginBottom:15, fontSize:14}}>Quantidade: {item.quantidade}</Text>
+                      <Text style={{marginLeft: windowWidth/2, position:'absolute', top:15, fontWeight:'bold', fontSize:14}}>Quantidade: {item.quantidade}</Text>
+
+                      <TouchableOpacity onPress={() => this.AlertPro2.open()} style={{justifyContent:"center", height:50, borderRadius:40, marginBottom:20, marginTop:20, elevation:5, marginLeft:windowWidth/6, maxWidth: windowWidth/2, flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                        <Text style={{color: this.context.dark ? 'black' : 'white', fontSize:15, fontWeight:'bold'}}>Confirmar Recebimento</Text>
+                      </TouchableOpacity>
                     </View>
                   </View>
               }

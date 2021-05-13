@@ -265,7 +265,8 @@ export default class MostrarCartao extends Component {
       bairroEnd: '',
       cidadeEnd: '',
       estadoEnd: '',
-      userLocation: ''
+      userLocation: '',
+      idCartao: ''
     };
   }
 
@@ -353,6 +354,7 @@ export default class MostrarCartao extends Component {
           verified: doc.data().verifiedPublish
         })
         dataAtual = doc.data().publishData
+        e.setState({idCartao: idCartao})
       })
       e.setState({cartaoAuto: cartaoAutoDidMount})
       e.setState({dateAuto: dataAtual})
@@ -390,6 +392,7 @@ export default class MostrarCartao extends Component {
           valueServiceEstab: doc.data().valueServiceEstab
         })
         dataAtual = doc.data().publishData
+        e.setState({idCartao: idCartao})
       })
       e.setState({cartaoEstab: cartaoEstabDidMount})
       e.setState({dateEstab: dataAtual})
@@ -682,6 +685,7 @@ export default class MostrarCartao extends Component {
                 idDonoDoProduto: item.idUser,
                 idComprador: currentUser.uid,
                 idProduct: idProduct,
+                idCartao: e.state.idCartao,
                 fotoUsuarioLogado: item.fotoUsuarioLogado,
                 fotoUsuarioComprador: documentSnapshot.data().photoProfile,
                 fotoProduto: item.photo2,
