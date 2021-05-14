@@ -322,12 +322,27 @@ export default class EditarCartao extends Component {
             let type = ''
             let ufestab = ''
             let arrayEstab = []
-            let frete = ''
+            let peso = ''
+            let form = ''
+            let comprimento = ''
+            let altura = ''
+            let largura = ''
+            let diametro = ''
+            let modalidade = ''
+            let cep = ''
 
             querySnapshot.forEach(function(doc) {
                 idCartao = doc.data().id,
                 titulo = doc.data().titleEstab,
                 arrayEstab = doc.data().titleEstabArray,
+                peso = doc.data().pesoEnc,
+                form = doc.data().formEnc,
+                comprimento = doc.data().comprimentoEnc,
+                altura = doc.data().alturaEnc,
+                largura = doc.data().larguraEnc,
+                diametro = doc.data().diametroEnc,
+                modalidade = doc.data().modalidadeCorreio,
+                cep = doc.data().cep,
                 categoria = doc.data().categoryEstab,
                 subcategoria = doc.data().subcategoryEstab,
                 descricao = doc.data().descriptionEstab,
@@ -343,8 +358,7 @@ export default class EditarCartao extends Component {
                 local = doc.data().localEstab,
                 abertura = doc.data().timeOpen,
                 fechamento = doc.data().timeClose,
-                workDays = doc.data().workDays,
-                frete = doc.data().freteValue
+                workDays = doc.data().workDays
             })
 
             e.setState({idCartao: idCartao})
@@ -364,7 +378,14 @@ export default class EditarCartao extends Component {
             e.setState({horarioOpen: abertura})
             e.setState({horarioClose: fechamento})
             e.setState({workDays: workDays})
-            e.setState({freteValue: frete})
+            e.setState({pesoEnc: peso})
+            e.setState({formEnc: form})
+            e.setState({comprimentoEnc: comprimento})
+            e.setState({alturaEnc: altura})
+            e.setState({larguraEnc: largura})
+            e.setState({diametroEnc: diametro})
+            e.setState({modalidadeCorreio: modalidade})
+            e.setState({cep: cep})
         })
 
     }
@@ -564,10 +585,12 @@ export default class EditarCartao extends Component {
     modalizeRefDescription.current?.close()
   }
 
+
   closeFreteModal(){
     const modalizeRefFreteEstab = this.state.modalizeRefFreteEstab;
+    modalizeRefFreteEstab.current?.close();
 
-    modalizeRefFreteEstab.current?.close()
+    this.setState({freteValue: 'Preenchido'})
   }
 
   closeDescriptionEstabModal(){
@@ -853,6 +876,36 @@ export default class EditarCartao extends Component {
   }
 
 
+  onChangePesoEnc(text) {
+    this.setState({pesoEnc: text})
+    console.log('pesoEnc estab'  + this.state.pesoEnc)
+  }
+
+  onChangeComprimentoEnc(text) {
+    this.setState({comprimentoEnc: text})
+    console.log('comprimentoEnc estab'  + this.state.comprimentoEnc)
+  }
+
+  onChangeAlturaEnc(text) {
+    this.setState({alturaEnc: text})
+    console.log('alturaEnc estab'  + this.state.alturaEnc)
+  }
+
+  onChangeLarguraEnc(text) {
+    this.setState({larguraEnc: text})
+    console.log('larguraEnc estab'  + this.state.larguraEnc)
+  }
+
+  onChangeDiametroEnc(text) {
+    this.setState({diametroEnc: text})
+    console.log('diametroEnc estab'  + this.state.diametroEnc)
+  }
+
+  onChangeCEP(text) {
+    this.setState({cep: text})
+  }
+
+
 
   uploadFormToFirebase(typePublish) {
     let routeIdCartao = this.props.route.params.idCartao;
@@ -940,7 +993,6 @@ export default class EditarCartao extends Component {
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
-                                        freteValue: e.state.freteValue,
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
@@ -956,7 +1008,15 @@ export default class EditarCartao extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                           
                                       //editar cartao para a pasta principal onde todos os cartoes ativos serão visiveis
@@ -967,7 +1027,6 @@ export default class EditarCartao extends Component {
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
-                                        freteValue: e.state.freteValue,
                                         publishData: e.state.date,
                                         media: 0,
                                         type: 'Estabelecimento',
@@ -983,7 +1042,15 @@ export default class EditarCartao extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                                   })
                                     })
@@ -1105,7 +1172,6 @@ export default class EditarCartao extends Component {
                                         titleEstab: e.state.tituloEstab,
                                         titleEstabArray: e.state.arrayWordsEstab,
                                         valueServiceEstab: e.state.precoEstab,
-                                        freteValue: e.state.freteValue,
                                         idCartao: routeIdCartao,
                                         idUser: userUID,
                                         descriptionEstab: e.state.descricaoEstab,
@@ -1124,7 +1190,15 @@ export default class EditarCartao extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                           
                                       //editar cartao para a pasta principal onde todos os cartoes ativos serão visiveis
@@ -1133,7 +1207,6 @@ export default class EditarCartao extends Component {
                                         titleEstabArray: e.state.arrayWordsEstab,
                                         idCartao: routeIdCartao,
                                         idUser: userUID,
-                                        freteValue: e.state.freteValue,
                                         descriptionEstab: e.state.descricaoEstab,
                                         valueServiceEstab: e.state.precoEstab,
                                         publishData: e.state.date,
@@ -1151,7 +1224,15 @@ export default class EditarCartao extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                                   })
                                     })
@@ -1297,14 +1378,21 @@ export default class EditarCartao extends Component {
                                         premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
-                                        freteValue: e.state.freteValue,
                                         subcategoryEstab: e.state.subcategoria,
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                           
                                       //editar cartao para a pasta principal onde todos os cartoes ativos serão visiveis
@@ -1324,14 +1412,21 @@ export default class EditarCartao extends Component {
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
-                                        freteValue: e.state.freteValue,
                                         subcategoryEstab: e.state.subcategoria,
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                                   })
                                     })
@@ -1462,7 +1557,6 @@ export default class EditarCartao extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
-                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1472,7 +1566,15 @@ export default class EditarCartao extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                           
                                       //editar cartao para a pasta principal onde todos os cartoes ativos serão visiveis
@@ -1488,7 +1590,6 @@ export default class EditarCartao extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -1499,7 +1600,15 @@ export default class EditarCartao extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                                   })
                                     })
@@ -2350,28 +2459,144 @@ export default class EditarCartao extends Component {
 
 
 
-          {/*Modalize do FRETE ESTABELECIMENTO*/}
-          <Modalize
+         {/*Modalize do FRETE ESTABELECIMENTO*/}
+         <Modalize
             ref={this.state.modalizeRefFreteEstab}
             snapPoint={500}
             modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
           >
             <View style={{flex:1,alignItems:'center'}}>
-                <TextDays style={{fontWeight: 'bold', maxWidth: windowWidth/1.2, textAlign:'center'}}>Aqui você pode definir o valor do frete (no momento o modelo de frete é por conta do vendedor)</TextDays>  
+                <TextDays style={{fontWeight: 'bold', maxWidth: windowWidth/1.2, textAlign:'center'}}>Aqui você pode definir o valor do frete, no momento somente os Correios está disponível (Digite as informações necessárias)</TextDays>  
                 <View style={{flexDirection: 'column', alignItems: 'center',paddingHorizontal: 16, height: windowHeight}}>
                   <InputFormMask
-                    type={'money'}
-                    value={this.state.freteValue}
-                    onChangeText={text => this.onChangeFreteEstab(text)}
+                    type={'zip-code'}
+                    value={this.state.cep}
+                    onChangeText={text => this.onChangeCEP(text)}
                     keyboardType={"number-pad"}
-                    placeholder="Digite aqui o valor do frete"
+                    placeholder="Digite o CEP de onde o produto sairá"
                   />
+
+                  <InputForm
+                    value={this.state.pesoEnc}
+                    onChangeText={text => this.onChangePesoEnc(text)}
+                    keyboardType={"number-pad"}
+                    maxLength={3}
+                    placeholder="Digite o peso da encomenda em KG"
+                  />
+                  
+
+                  <InputForm
+                    value={this.state.alturaEnc}
+                    onChangeText={text => this.onChangeAlturaEnc(text)}
+                    keyboardType={"decimal-pad"}
+                    placeholder="Altura da encomenda, em centímetros"
+                  />
+
+                  <InputForm
+                    value={this.state.larguraEnc}
+                    onChangeText={text => this.onChangeLarguraEnc(text)}
+                    keyboardType={"decimal-pad"}
+                    placeholder="Largura da encomenda, em centímetros"
+                  />
+
+                  <InputForm
+                    value={this.state.diametroEnc}
+                    onChangeText={text => this.onChangeDiametroEnc(text)}
+                    keyboardType={"decimal-pad"}
+                    placeholder="Diâmetro da encomenda, em centímetros"
+                  />
+
+                  <InputForm
+                    value={this.state.comprimentoEnc}
+                    onChangeText={text => this.onChangeComprimentoEnc(text)}
+                    keyboardType={"decimal-pad"}
+                    placeholder="Comprimento da encomenda, em centímetros."
+                  />
+
+                  <View style={{flexDirection:'row'}}>
+                    {this.state.formEnc !== 1 ? 
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.setState({formEnc: 1})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:5, marginTop:20}}/>
+                        <TextDays>Caixa/Pacote</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginLeft:5, marginTop:20}}/>
+                        <TextDays>Caixa/Pacote</TextDays>
+                      </View>
+                    }
+
+                    {this.state.formEnc !== 2 ? 
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.setState({formEnc: 2})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                        <TextDays>Rolo/Prisma</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginLeft:15, marginTop:20}}/>
+                        <TextDays>Rolo/Prisma</TextDays>
+                      </View>
+                    }
+
+                    {this.state.formEnc !== 3 ? 
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.setState({formEnc: 3})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                        <TextDays>Envelope</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginLeft:15, marginTop:20}}/>
+                        <TextDays>Envelope</TextDays>
+                      </View>
+                    }
+                  </View>
+
+
+
+                  {/*Definir a modalidade de entrega*/}
+                  <View style={{flexDirection:'row'}}>
+                    {this.state.modalidadeCorreio !== '04014' ? 
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.setState({modalidadeCorreio: '04014'})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:5, marginTop:20}}/>
+                        <TextDays>SEDEX à vista</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginLeft:5, marginTop:20}}/>
+                        <TextDays>SEDEX à vista</TextDays>
+                      </View>
+                    }
+
+                    {this.state.modalidadeCorreio !== '04510' ? 
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.setState({modalidadeCorreio: '04510'})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                        <TextDays>PAC à vista</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginLeft:15, marginTop:20}}/>
+                        <TextDays>PAC à vista</TextDays>
+                      </View>
+                    }
+
+                    {this.state.modalidadeCorreio !== '04782' ? 
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.setState({modalidadeCorreio: '04782'})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                        <TextDays>SEDEX 12</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginLeft:15, marginTop:20}}/>
+                        <TextDays>SEDEX 12</TextDays>
+                      </View>
+                    }
+                  </View>
 
                   <TouchableOpacity
                     onPress={() => this.closeFreteModal()}
-                    style={{borderRadius:30, alignItems:'center', justifyContent:'center', backgroundColor:'#DAA520', height: 40, width: 40, marginTop:30, marginBottom:40}}
+                    style={{borderRadius:30, alignItems:'center', justifyContent:'center', backgroundColor:'#DAA520', height: 60, width: 60, marginTop:60, marginBottom:40}}
                   >
-                    <FontAwesome5 name="check-circle" size={24} color={'white'}/>
+                    <FontAwesome5 name="check-circle" size={34} color={'white'}/>
                   </TouchableOpacity>
                 </View>
 
