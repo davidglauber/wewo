@@ -190,7 +190,15 @@ export default class EditarCartao extends Component {
       daysWeek: [],
       locationServiceEnabled: false,
       fotoPerfil: null,
-      freteValue: ''
+      freteValue: '',
+      cep: '',
+      pesoEnc: '',
+      formEnc: 1,
+      comprimentoEnc: 0.0,
+      alturaEnc: 0.0,
+      larguraEnc: 0.0,
+      diametroEnc: 0.0,
+      modalidadeCorreio: '04014'
     };
   }
 

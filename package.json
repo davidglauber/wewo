@@ -30,6 +30,7 @@
     "expo-splash-screen": "~0.8.0",
     "expo-status-bar": "~1.0.3",
     "expo-updates": "~0.4.0",
+    "fast-xml-parser": "^3.19.0",
     "faz-um-pix": "^2.0.2",
     "firebase": "^8.2.2",
     "global": "^4.4.0",
@@ -64,6 +65,7 @@
     "react-native-web": "~0.13.12",
     "react-native-webview": "11.0.0",
     "styled-components": "^5.2.1",
+    "typescript": "^4.2.4",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {

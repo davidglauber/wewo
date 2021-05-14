@@ -193,7 +193,15 @@ export default class TelaCriarCartaoVisita extends Component {
       locationServiceEnabled: false,
       fotoPerfil: null,
       tipoDeConta: '',
-      freteValue: ''
+      freteValue: '',
+      cep: '',
+      pesoEnc: '',
+      formEnc: 1,
+      comprimentoEnc: 0.0,
+      alturaEnc: 0.0,
+      larguraEnc: 0.0,
+      diametroEnc: 0.0,
+      modalidadeCorreio: '04014'
     };
   }
 
@@ -242,10 +250,6 @@ export default class TelaCriarCartaoVisita extends Component {
     })
 
 
-
-    fetch('http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=57046256&sCepDestino=04547000&nVlPeso=1&nCdFormato=1&nVlComprimento=20&nVlAltura=20&nVlLargura=20&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04510&nVlDiametro=0&StrRetorno=xml&nIndicaCalculo=3').then((res) => {
-      console.log(res.text())
-    })
   }
 
 
@@ -290,8 +294,9 @@ export default class TelaCriarCartaoVisita extends Component {
 
   closeFreteModal(){
     const modalizeRefFreteEstab = this.state.modalizeRefFreteEstab;
+    modalizeRefFreteEstab.current?.close();
 
-    modalizeRefFreteEstab.current?.close()
+    this.setState({freteValue: 'Preenchido'})
   }
 
   closeModal() {
@@ -349,6 +354,31 @@ export default class TelaCriarCartaoVisita extends Component {
   onChangeEnderecoEstab(text) {
     this.setState({enderecoEstab: text})
     console.log('endereco estab'  + this.state.enderecoEstab)
+  }
+
+  onChangePesoEnc(text) {
+    this.setState({pesoEnc: text})
+    console.log('pesoEnc estab'  + this.state.pesoEnc)
+  }
+
+  onChangeComprimentoEnc(text) {
+    this.setState({comprimentoEnc: text})
+    console.log('comprimentoEnc estab'  + this.state.comprimentoEnc)
+  }
+
+  onChangeAlturaEnc(text) {
+    this.setState({alturaEnc: text})
+    console.log('alturaEnc estab'  + this.state.alturaEnc)
+  }
+
+  onChangeLarguraEnc(text) {
+    this.setState({larguraEnc: text})
+    console.log('larguraEnc estab'  + this.state.larguraEnc)
+  }
+
+  onChangeDiametroEnc(text) {
+    this.setState({diametroEnc: text})
+    console.log('diametroEnc estab'  + this.state.diametroEnc)
   }
 
   onChangeEnderecoAuto(text) {
@@ -781,7 +811,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -792,7 +821,15 @@ export default class TelaCriarCartaoVisita extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                           
                                       firebase.firestore().collection('cartoes').doc(getSameIdToDocument).set({
@@ -807,7 +844,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -818,7 +854,15 @@ export default class TelaCriarCartaoVisita extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                                       }).catch(function(error) {
                                         console.log('ocorreu um erro ao carregar a imagem: ' + error.message)
@@ -951,7 +995,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -962,7 +1005,15 @@ export default class TelaCriarCartaoVisita extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                           
                                       firebase.firestore().collection('cartoes').doc(getSameIdToDocument).set({
@@ -977,7 +1028,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -988,7 +1038,15 @@ export default class TelaCriarCartaoVisita extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                                       }).catch(function(error) {
                                         console.log('ocorreu um erro ao carregar a imagem: ' + error.message)
@@ -1134,7 +1192,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -1145,7 +1202,15 @@ export default class TelaCriarCartaoVisita extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                           
                                       firebase.firestore().collection('cartoes').doc(getSameIdToDocument).set({
@@ -1161,7 +1226,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
-                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1171,7 +1235,15 @@ export default class TelaCriarCartaoVisita extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                                       }).catch(function(error) {
                                         console.log('ocorreu um erro ao carregar a imagem: ' + error.message)
@@ -1304,7 +1376,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
@@ -1315,7 +1386,15 @@ export default class TelaCriarCartaoVisita extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                           
                                       firebase.firestore().collection('cartoes').doc(getSameIdToDocument).set({
@@ -1331,7 +1410,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
-                                        freteValue: e.state.freteValue,
                                         premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1341,7 +1419,15 @@ export default class TelaCriarCartaoVisita extends Component {
                                         photoPublish3: urlImage3,
                                         workDays: e.state.daysWeek,
                                         timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose
+                                        timeClose: e.state.horarioClose,
+                                        pesoEnc: e.state.pesoEnc,
+                                        formEnc: e.state.formEnc,
+                                        comprimentoEnc: e.state.comprimentoEnc,
+                                        alturaEnc: e.state.alturaEnc,
+                                        larguraEnc: e.state.larguraEnc,
+                                        diametroEnc: e.state.diametroEnc,
+                                        modalidadeCorreio: e.state.modalidadeCorreio,
+                                        cep: e.state.cep
                                       })
                                       }).catch(function(error) {
                                         console.log('ocorreu um erro ao carregar a imagem: ' + error.message)
@@ -1532,6 +1618,10 @@ export default class TelaCriarCartaoVisita extends Component {
     }
   }
 
+
+  onChangeCEP(text) {
+    this.setState({cep: text})
+  }
 
   render() {
     const { categorias, categoria } = this.state
@@ -2213,21 +2303,137 @@ export default class TelaCriarCartaoVisita extends Component {
             modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
           >
             <View style={{flex:1,alignItems:'center'}}>
-                <TextDays style={{fontWeight: 'bold', maxWidth: windowWidth/1.2, textAlign:'center'}}>Aqui você pode definir o valor do frete (no momento o modelo de frete é por conta do vendedor)</TextDays>  
+                <TextDays style={{fontWeight: 'bold', maxWidth: windowWidth/1.2, textAlign:'center'}}>Aqui você pode definir o valor do frete, no momento somente os Correios está disponível (Digite as informações necessárias)</TextDays>  
                 <View style={{flexDirection: 'column', alignItems: 'center',paddingHorizontal: 16, height: windowHeight}}>
                   <InputFormMask
-                    type={'money'}
-                    value={this.state.freteValue}
-                    onChangeText={text => this.onChangeFreteEstab(text)}
+                    type={'zip-code'}
+                    value={this.state.cep}
+                    onChangeText={text => this.onChangeCEP(text)}
                     keyboardType={"number-pad"}
-                    placeholder="Digite aqui o valor do frete"
+                    placeholder="Digite o CEP de onde o produto sairá"
                   />
+
+                  <InputForm
+                    value={this.state.pesoEnc}
+                    onChangeText={text => this.onChangePesoEnc(text)}
+                    keyboardType={"number-pad"}
+                    maxLength={3}
+                    placeholder="Digite o peso da encomenda em KG"
+                  />
+                  
+
+                  <InputForm
+                    value={this.state.alturaEnc}
+                    onChangeText={text => this.onChangeAlturaEnc(text)}
+                    keyboardType={"decimal-pad"}
+                    placeholder="Altura da encomenda, em centímetros"
+                  />
+
+                  <InputForm
+                    value={this.state.larguraEnc}
+                    onChangeText={text => this.onChangeLarguraEnc(text)}
+                    keyboardType={"decimal-pad"}
+                    placeholder="Largura da encomenda, em centímetros"
+                  />
+
+                  <InputForm
+                    value={this.state.diametroEnc}
+                    onChangeText={text => this.onChangeDiametroEnc(text)}
+                    keyboardType={"decimal-pad"}
+                    placeholder="Diâmetro da encomenda, em centímetros"
+                  />
+
+                  <InputForm
+                    value={this.state.comprimentoEnc}
+                    onChangeText={text => this.onChangeComprimentoEnc(text)}
+                    keyboardType={"decimal-pad"}
+                    placeholder="Comprimento da encomenda, em centímetros."
+                  />
+
+                  <View style={{flexDirection:'row'}}>
+                    {this.state.formEnc !== 1 ? 
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.setState({formEnc: 1})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:5, marginTop:20}}/>
+                        <TextDays>Caixa/Pacote</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginLeft:5, marginTop:20}}/>
+                        <TextDays>Caixa/Pacote</TextDays>
+                      </View>
+                    }
+
+                    {this.state.formEnc !== 2 ? 
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.setState({formEnc: 2})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                        <TextDays>Rolo/Prisma</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginLeft:15, marginTop:20}}/>
+                        <TextDays>Rolo/Prisma</TextDays>
+                      </View>
+                    }
+
+                    {this.state.formEnc !== 3 ? 
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.setState({formEnc: 3})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                        <TextDays>Envelope</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginLeft:15, marginTop:20}}/>
+                        <TextDays>Envelope</TextDays>
+                      </View>
+                    }
+                  </View>
+
+
+
+                  {/*Definir a modalidade de entrega*/}
+                  <View style={{flexDirection:'row'}}>
+                    {this.state.modalidadeCorreio !== '04014' ? 
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.setState({modalidadeCorreio: '04014'})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:5, marginTop:20}}/>
+                        <TextDays>SEDEX à vista</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginLeft:5, marginTop:20}}/>
+                        <TextDays>SEDEX à vista</TextDays>
+                      </View>
+                    }
+
+                    {this.state.modalidadeCorreio !== '04510' ? 
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.setState({modalidadeCorreio: '04510'})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                        <TextDays>PAC à vista</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginLeft:15, marginTop:20}}/>
+                        <TextDays>PAC à vista</TextDays>
+                      </View>
+                    }
+
+                    {this.state.modalidadeCorreio !== '04782' ? 
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.setState({modalidadeCorreio: '04782'})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
+                        <TextDays>SEDEX 12</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginLeft:15, marginTop:20}}/>
+                        <TextDays>SEDEX 12</TextDays>
+                      </View>
+                    }
+                  </View>
 
                   <TouchableOpacity
                     onPress={() => this.closeFreteModal()}
-                    style={{borderRadius:30, alignItems:'center', justifyContent:'center', backgroundColor:'#DAA520', height: 40, width: 40, marginTop:30, marginBottom:40}}
+                    style={{borderRadius:30, alignItems:'center', justifyContent:'center', backgroundColor:'#DAA520', height: 60, width: 60, marginTop:60, marginBottom:40}}
                   >
-                    <FontAwesome5 name="check-circle" size={24} color={'white'}/>
+                    <FontAwesome5 name="check-circle" size={34} color={'white'}/>
                   </TouchableOpacity>
                 </View>
 

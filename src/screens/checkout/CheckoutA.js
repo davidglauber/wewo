@@ -50,6 +50,8 @@ import {purchased} from '../../config/purchase';
 
 import { Video } from 'expo-av';
 
+import { parse } from 'fast-xml-parser';
+
 //consts
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -158,6 +160,28 @@ export default class CheckoutA extends Component {
       this.AlertPro.open();
     }
     
+
+
+
+    fetch('http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=70002900&sCepDestino=04547000&nVlPeso=1&nCdFormato=1&nVlComprimento=20&nVlAltura=20&nVlLargura=20&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04510&nVlDiametro=0&StrRetorno=xml')
+      .then((response) => response.text())
+      .then((textResponse) => {
+          let obj = parse(textResponse);
+          let Codigo = obj.Servicos.cServico.Codigo;
+          let Valor = obj.Servicos.cServico.Valor;
+          let PrazoEntrega = obj.Servicos.cServico.PrazoEntrega;
+          let ValorSemAdicionais = obj.Servicos.cServico.ValorSemAdicionais;
+          let ValorMaoPropria = obj.Servicos.cServico.ValorMaoPropria;
+          let ValorAvisoRecebimento = obj.Servicos.cServico.ValorAvisoRecebimento;
+          let ValorValorDeclarado = obj.Servicos.cServico.ValorValorDeclarado;
+          let EntregaDomiciliar = obj.Servicos.cServico.EntregaDomiciliar;
+          let EntregaSabado = obj.Servicos.cServico.EntregaSabado;
+
+          console.log(`${Codigo} \n${Valor} \n${PrazoEntrega} \n${ValorSemAdicionais} \n${ValorMaoPropria} \n${ValorAvisoRecebimento} \n${ValorValorDeclarado} \n${EntregaDomiciliar} \n ${EntregaSabado}`)
+      })
+      .catch((error) => {
+          console.log(error);
+      });
   }
 
 
