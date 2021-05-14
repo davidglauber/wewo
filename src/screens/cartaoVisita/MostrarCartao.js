@@ -270,7 +270,11 @@ export default class MostrarCartao extends Component {
       estadoEnd: '',
       userLocation: '',
       idCartao: '',
-      cepComprador: ''
+      cepComprador: '',
+      codigoCorreios: '',
+      valorFrete: '',
+      prazoEntrega: '',
+      erroFrete: ''
     };
   }
 
@@ -618,7 +622,13 @@ export default class MostrarCartao extends Component {
         let ValorValorDeclarado = obj.Servicos.cServico.ValorValorDeclarado;
         let EntregaDomiciliar = obj.Servicos.cServico.EntregaDomiciliar;
         let EntregaSabado = obj.Servicos.cServico.EntregaSabado;
-        let Erro = obj.Servicos.cServico.Erro
+        let Erro = obj.Servicos.cServico.MsgErro;
+
+        this.setState({codigoCorreios: Codigo})
+        this.setState({valorFrete: Valor})
+        this.setState({prazoEntrega: PrazoEntrega})
+        this.setState({erroFrete: Erro})
+        this.setState({item: item})
 
         console.log(`${Codigo} \n${Valor} \n${PrazoEntrega} \n${ValorSemAdicionais} \n${ValorMaoPropria} \n${ValorAvisoRecebimento} \n${ValorValorDeclarado} \n${EntregaDomiciliar} \n ${EntregaSabado} \n${Erro}`)
     })
@@ -739,6 +749,11 @@ export default class MostrarCartao extends Component {
         let EntregaSabado = obj.Servicos.cServico.EntregaSabado;
         let Erro = obj.Servicos.cServico.Erro
 
+        this.setState({codigoCorreios: Codigo})
+        this.setState({valorFrete: Valor})
+        this.setState({prazoEntrega: PrazoEntrega})
+        this.setState({erroFrete: Erro})
+
         console.log(`${Codigo} \n${Valor} \n${PrazoEntrega} \n${ValorSemAdicionais} \n${ValorMaoPropria} \n${ValorAvisoRecebimento} \n${ValorValorDeclarado} \n${EntregaDomiciliar} \n ${EntregaSabado} \n${Erro}`)
     })
     .catch((error) => {
@@ -750,10 +765,7 @@ export default class MostrarCartao extends Component {
     let e = this;
     let idProduct = e.makeid(22);
     let currentUser = firebase.auth().currentUser;
-    let freteValorPrazo = '';
 
-    /*
-    if(freteValorPrazo !== '') {
       if(this.state.enderecoUser !== null) {
         await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
           if(currentUser !== null) {
@@ -772,6 +784,7 @@ export default class MostrarCartao extends Component {
                 fotoProduto: item.photo2,
                 quantidade: e.state.qtd,
                 valorProduto: item.value,
+                valorFrete: e.state.valorFrete,
                 tituloProduto: item.title,
                 nomeUsuario: e.state.nomeUser,
                 nomeUsuarioComprador: documentSnapshot.data().nome,
@@ -800,9 +813,6 @@ export default class MostrarCartao extends Component {
         return null
       }
       
-      }
-
-      */
     }
 
 
@@ -1680,8 +1690,25 @@ export default class MostrarCartao extends Component {
             snapPoint={500}
             modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
           >
-            <View style={{alignItems:'center', marginTop:40}}>
-              <Text>Modalize do Frete</Text>
+            <View style={{alignItems:'center', marginTop:40, paddingHorizontal: windowWidth/5}}>
+              <Text style={{textAlign:"center"}}>Informações do Frete (no momento só é possível usar os Correios como preço base para o frete)</Text>
+            </View>
+
+            <View style={{marginHorizontal: windowWidth/10, marginTop:50, justifyContent:'space-between', backgroundColor:"#3f3f3f", padding: 30, borderRadius: 20}}>
+              <Text style={{fontSize:19, color:'#fff'}}>Código: {this.state.codigoCorreios}</Text>
+              <Text style={{fontSize:19, color:'#fff'}}>Valor do Frete: R${this.state.valorFrete}</Text>
+              <Text style={{fontSize:19, color:'#fff'}}>Prazo de Entrega: {this.state.prazoEntrega} dias</Text>
+
+              {this.state.erroFrete == '' ? 
+                null
+              :
+                <Text>Erro: {this.state.erroFrete}</Text>
+              }
+
+              <TouchableOpacity onPress={() => this.saveProductInFirebase(this.state.item)} style={{height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d', marginTop:30}}>
+                <IconResponsive name="check" size={30}/>
+                <Text style={{color: this.context.dark ? 'white' : '#121212', fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao Carrinho</Text>
+              </TouchableOpacity>
             </View>
           </Modalize>
 

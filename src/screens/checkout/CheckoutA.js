@@ -149,6 +149,7 @@ export default class CheckoutA extends Component {
             fotoProduto: doc.data().fotoProduto,
             quantidade: doc.data().quantidade,
             valorProduto: doc.data().valorProduto,
+            valorFrete: doc.data().valorFrete,
             tituloProduto: doc.data().tituloProduto,
             nomeUsuario: doc.data().nomeUsuario
           })
@@ -161,27 +162,6 @@ export default class CheckoutA extends Component {
     }
     
 
-
-
-    fetch('http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=70002900&sCepDestino=04547000&nVlPeso=1&nCdFormato=1&nVlComprimento=20&nVlAltura=20&nVlLargura=20&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04510&nVlDiametro=0&StrRetorno=xml')
-      .then((response) => response.text())
-      .then((textResponse) => {
-          let obj = parse(textResponse);
-          let Codigo = obj.Servicos.cServico.Codigo;
-          let Valor = obj.Servicos.cServico.Valor;
-          let PrazoEntrega = obj.Servicos.cServico.PrazoEntrega;
-          let ValorSemAdicionais = obj.Servicos.cServico.ValorSemAdicionais;
-          let ValorMaoPropria = obj.Servicos.cServico.ValorMaoPropria;
-          let ValorAvisoRecebimento = obj.Servicos.cServico.ValorAvisoRecebimento;
-          let ValorValorDeclarado = obj.Servicos.cServico.ValorValorDeclarado;
-          let EntregaDomiciliar = obj.Servicos.cServico.EntregaDomiciliar;
-          let EntregaSabado = obj.Servicos.cServico.EntregaSabado;
-
-          console.log(`${Codigo} \n${Valor} \n${PrazoEntrega} \n${ValorSemAdicionais} \n${ValorMaoPropria} \n${ValorAvisoRecebimento} \n${ValorValorDeclarado} \n${EntregaDomiciliar} \n ${EntregaSabado}`)
-      })
-      .catch((error) => {
-          console.log(error);
-      });
   }
 
 
@@ -212,13 +192,13 @@ export default class CheckoutA extends Component {
       let shortDescription = text.substr(0, 40)
 
       return(
-        <View style={{justifyContent: 'center', alignItems: 'center',}}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <Description>{shortDescription} ...</Description>
         </View>
       );
     } else {
       return(
-        <View style={{justifyContent: 'center', alignItems: 'center',}}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <Description>{text}</Description>
         </View>
       );
@@ -274,6 +254,7 @@ export default class CheckoutA extends Component {
           infoProduct.push({
             value: replaceInter,
             qtd: e.quantidade,
+            frete: e.valorFrete,
             idDonoDoProduto: e.idDonoDoProduto,
             img: e.fotoUsuarioLogado,
             idProduct: e.idProduct
@@ -291,6 +272,7 @@ export default class CheckoutA extends Component {
           infoProduct.push({
             value: replaceInter,
             qtd: e.quantidade,
+            frete: e.valorFrete,
             idDonoDoProduto: e.idDonoDoProduto,
             img: e.fotoUsuarioLogado,
             idProduct: e.idProduct
@@ -311,6 +293,7 @@ export default class CheckoutA extends Component {
           infoProduct.push({
             value: replaceInter,
             qtd: e.quantidade,
+            frete: e.valorFrete,
             idDonoDoProduto: e.idDonoDoProduto,
             img: e.fotoUsuarioLogado,
             idProduct: e.idProduct
@@ -328,6 +311,7 @@ export default class CheckoutA extends Component {
           infoProduct.push({
             value: replaceInter,
             qtd: e.quantidade,
+            frete: e.valorFrete,
             idDonoDoProduto: e.idDonoDoProduto,
             img: e.fotoUsuarioLogado,
             idProduct: e.idProduct
@@ -437,6 +421,7 @@ export default class CheckoutA extends Component {
                     <Image style={{width: windowWidth/1.2, height:140, borderBottomLeftRadius:0, borderBottomRightRadius: 0, borderTopRightRadius:20, borderTopLeftRadius:20}} source={{uri: item.fotoProduto}}/>
                     <View style={{flexDirection:"column", width: windowWidth/1.2, borderBottomLeftRadius:20, borderBottomRightRadius: 20, elevation:10, marginBottom:20, backgroundColor:'#fff'}}>
                       <Text style={{marginLeft: 20, fontWeight:'bold', marginTop:10, fontSize:20}}>Valor: {item.valorProduto}</Text>
+                      <Text style={{marginLeft: 20, fontWeight:'bold', marginTop:10, fontSize:20}}>Frete: R${item.valorFrete}</Text>
                       <Text style={{marginLeft: windowWidth/2, fontWeight:'bold', marginTop:20, marginBottom:15, fontSize:14}}>Quantidade: {item.quantidade}</Text>
                     </View>
                   </View>

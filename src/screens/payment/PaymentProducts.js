@@ -107,7 +107,11 @@ export default class PaymentProducts extends Component {
 
     arrayProduct.map(async (i) => {
       //calcula o valor total dos produtos já com a quantidade correspondente
-      let sumandmulti = i.value * i.qtd;
+      let turnN = parseFloat(i.value);
+      let turnN2 = parseFloat(i.qtd);
+      let turnN3 = parseFloat(i.frete);
+      let sumandmulti = (turnN * turnN2) + turnN3;
+      
       arraySumValue.push(sumandmulti)
       
       if(i.idDonoDoProduto !== null) {
@@ -116,6 +120,7 @@ export default class PaymentProducts extends Component {
               accTK: documentSnapshot.data().accessTK,
               img: i.img,
               qtd: i.qtd,
+              frete: i.frete,
               value: i.value,
               idDonoDoProduto: i.idDonoDoProduto
             })
@@ -226,18 +231,26 @@ export default class PaymentProducts extends Component {
       
       if(x == this.state.valueIncrement) {
           let value = this.state.accTK[x].value;
+          let frete = this.state.accTK[x].frete;
+          let qtd = this.state.accTK[x].qtd;
+
           let newNumber = new Number(value);
-          
+          let newNumberFrete = parseFloat(frete);
+          let newNumberQtd = parseFloat(qtd);
+
           let percentToWeWo = ((newNumber / 100) * 15).toFixed(2);
           let percentToWeWoNumberInt = new Number(percentToWeWo);
       
           let percentToUser = ((newNumber / 100) * 85).toFixed(2);
           let percentToUserNumberInt = new Number(percentToUser);
-      
+
           let percentToUser2 = ((newNumber / 100) * 100).toFixed(2);
           let percentToUserNumberInt2 = new Number(percentToUser2);
+          
+          let sum = (percentToUserNumberInt2 * newNumberQtd) + newNumberFrete;
+
+          console.log('SUM WITH FRETE: ' + sum)
     
-          let qtd = this.state.accTK[x].qtd;
           fetch('https://api.mercadopago.com/checkout/preferences', {
             method:'POST',
             mode: 'no-cors',
@@ -249,9 +262,9 @@ export default class PaymentProducts extends Component {
               items: [
                 {
                   title:"Pagamento de Serviço WeWo",
-                  quantity: this.state.accTK[x].qtd,
+                  quantity: 1,
                   currency_id:"BRL",
-                  unit_price: percentToUserNumberInt2,
+                  unit_price: sum,
                   picture_url: this.state.accTK[x].img
                 }
               ],
@@ -269,7 +282,7 @@ export default class PaymentProducts extends Component {
             })
             })
             .then((res) => res.json())
-            .then((json) => this.mpTaxAndPayment(json.init_point, percentToWeWoNumberInt, percentToUserNumberInt, percentToUserNumberInt2, qtd))
+            .then((json) => this.mpTaxAndPayment(json.init_point, percentToWeWoNumberInt, percentToUserNumberInt, sum, qtd))
             .catch((i) => alert('Erro ao requisitar o mercado pago: ' + i))
             
             console.log(`QTD: ${this.state.accTK[x].qtd} \n\nACCESSTOKEN: ${this.state.accTK[x].accTK} \n\nFoto: ${this.state.accTK[x].img} \n\nValor: ${this.state.accTK[x].value} \n\nIDDONO ANUNCIO: ${this.state.accTK[x].idDonoDoProduto}`)
