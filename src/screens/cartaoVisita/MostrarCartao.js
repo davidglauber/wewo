@@ -94,6 +94,8 @@ import { AdMobBanner} from 'expo-ads-admob';
 import { Video } from 'expo-av';
 import { throwIfAudioIsDisabled } from 'expo-av/build/Audio/AudioAvailability';
 
+import { parse } from 'fast-xml-parser';
+
 // ProductA Styles
 const styles = StyleSheet.create({
   screenContainer: {
@@ -225,6 +227,7 @@ export default class MostrarCartao extends Component {
       purchased: false,
       modalizeRef: React.createRef(null),
       modalizeRefDisponibilidade: React.createRef(null),
+      modalizeRefFrete: React.createRef(null),
       modalizeLocation: React.createRef(null),
       usersThatVotedFirebase: [],
       mediaAvaliacao: [],
@@ -266,7 +269,8 @@ export default class MostrarCartao extends Component {
       cidadeEnd: '',
       estadoEnd: '',
       userLocation: '',
-      idCartao: ''
+      idCartao: '',
+      cepComprador: ''
     };
   }
 
@@ -301,9 +305,12 @@ export default class MostrarCartao extends Component {
   
       for (let item of response) {
         var address = `${item.region}, ${item.subregion}, ${item.district}, ${item.street} (${item.postalCode})`;
+        var cep = item.postalCode;
+        var replaceCep = cep.replace('-', '');
       }
 
       this.setState({enderecoUser: address})
+      this.setState({cepComprador: replaceCep})
       this.saveProductInFirebase(this.state.item)
       this.setModalVisible(false)
     }
@@ -389,7 +396,15 @@ export default class MostrarCartao extends Component {
           timeClose: doc.data().timeClose,
           local: doc.data().localEstab,
           workDays: doc.data().workDays,
-          valueServiceEstab: doc.data().valueServiceEstab
+          valueServiceEstab: doc.data().valueServiceEstab,
+          pesoEnc: doc.data().pesoEnc,
+          formEnc: doc.data().formEnc,
+          comprimentoEnc: doc.data().comprimentoEnc,
+          alturaEnc: doc.data().alturaEnc,
+          larguraEnc: doc.data().larguraEnc,
+          diametroEnc: doc.data().diametroEnc,
+          modalidadeCorreio: doc.data().modalidadeCorreio,
+          cep: doc.data().cep,
         })
         dataAtual = doc.data().publishData
         e.setState({idCartao: idCartao})
@@ -580,6 +595,38 @@ export default class MostrarCartao extends Component {
     modalizeRefDisponibilidade.current?.open()
   }
 
+  openModalizeFrete(item) {
+    const modalizeRefFrete = this.state.modalizeRefFrete;
+    modalizeRefFrete.current?.open();
+
+    let endereco = this.state.enderecoUser;
+    let resultado = endereco.substring(endereco.indexOf("(") + 1);
+    let removeParetensis = resultado.replace(')', '');
+    let removeTrac = removeParetensis.replace('-', '');
+    let removeTracOfItem = item.cep.replace('-', '');
+
+    fetch(`http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=${removeTrac}&sCepDestino=${removeTracOfItem}&nVlPeso=${item.pesoEnc}&nCdFormato=${item.formEnc}&nVlComprimento=${item.comprimentoEnc}&nVlAltura=${item.alturaEnc}&nVlLargura=${item.larguraEnc}&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04510&nVlDiametro=${item.diametroEnc}&StrRetorno=xml`)
+      .then((response) => response.text())
+      .then((textResponse) => {
+        let obj = parse(textResponse);
+        let Codigo = obj.Servicos.cServico.Codigo;
+        let Valor = obj.Servicos.cServico.Valor;
+        let PrazoEntrega = obj.Servicos.cServico.PrazoEntrega;
+        let ValorSemAdicionais = obj.Servicos.cServico.ValorSemAdicionais;
+        let ValorMaoPropria = obj.Servicos.cServico.ValorMaoPropria;
+        let ValorAvisoRecebimento = obj.Servicos.cServico.ValorAvisoRecebimento;
+        let ValorValorDeclarado = obj.Servicos.cServico.ValorValorDeclarado;
+        let EntregaDomiciliar = obj.Servicos.cServico.EntregaDomiciliar;
+        let EntregaSabado = obj.Servicos.cServico.EntregaSabado;
+        let Erro = obj.Servicos.cServico.Erro
+
+        console.log(`${Codigo} \n${Valor} \n${PrazoEntrega} \n${ValorSemAdicionais} \n${ValorMaoPropria} \n${ValorAvisoRecebimento} \n${ValorValorDeclarado} \n${EntregaDomiciliar} \n ${EntregaSabado} \n${Erro}`)
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+  }
+
 /*
   openPhoneApp(phone) {
     Linking.openURL(`tel:${phone}`)
@@ -668,11 +715,45 @@ export default class MostrarCartao extends Component {
     this.setState({item: item})
   }
 
+
+  mostrarFrete(item) {
+    let endereco = this.state.enderecoUser;
+    let resultado = endereco.substring(endereco.indexOf("(") + 1);
+    let removeParetensis = resultado.replace(')', '');
+    let removeTrac = removeParetensis.replace('-', '');
+    let removeTracOfItem = item.cep.replace('-', '');
+
+
+    fetch(`http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=${removeTrac}&sCepDestino=${removeTracOfItem}&nVlPeso=${item.pesoEnc}&nCdFormato=${item.formEnc}&nVlComprimento=${item.comprimentoEnc}&nVlAltura=${item.alturaEnc}&nVlLargura=${item.larguraEnc}&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04510&nVlDiametro=${item.diametroEnc}&StrRetorno=xml`)
+      .then((response) => response.text())
+      .then((textResponse) => {
+        let obj = parse(textResponse);
+        let Codigo = obj.Servicos.cServico.Codigo;
+        let Valor = obj.Servicos.cServico.Valor;
+        let PrazoEntrega = obj.Servicos.cServico.PrazoEntrega;
+        let ValorSemAdicionais = obj.Servicos.cServico.ValorSemAdicionais;
+        let ValorMaoPropria = obj.Servicos.cServico.ValorMaoPropria;
+        let ValorAvisoRecebimento = obj.Servicos.cServico.ValorAvisoRecebimento;
+        let ValorValorDeclarado = obj.Servicos.cServico.ValorValorDeclarado;
+        let EntregaDomiciliar = obj.Servicos.cServico.EntregaDomiciliar;
+        let EntregaSabado = obj.Servicos.cServico.EntregaSabado;
+        let Erro = obj.Servicos.cServico.Erro
+
+        console.log(`${Codigo} \n${Valor} \n${PrazoEntrega} \n${ValorSemAdicionais} \n${ValorMaoPropria} \n${ValorAvisoRecebimento} \n${ValorValorDeclarado} \n${EntregaDomiciliar} \n ${EntregaSabado} \n${Erro}`)
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+  }
+
   async saveProductInFirebase(item) {
     let e = this;
     let idProduct = e.makeid(22);
     let currentUser = firebase.auth().currentUser;
+    let freteValorPrazo = '';
 
+    /*
+    if(freteValorPrazo !== '') {
       if(this.state.enderecoUser !== null) {
         await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
           if(currentUser !== null) {
@@ -706,20 +787,23 @@ export default class MostrarCartao extends Component {
                 e.setModalVisible(false)
                 this.AlertPro7.open();
                 e.props.navigation.navigate('Checkout')
+            }
+          } else {
+            this.AlertPro9.open();
           }
-        } else {
-          this.AlertPro9.open();
-        }
+          } else {
+            this.AlertPro10.open();
+          }
+      
+        })
       } else {
-        this.AlertPro10.open();
+        return null
       }
       
-    })
-  } else {
-    return null
-  }
-   
-  }
+      }
+
+      */
+    }
 
 
   onChangeNomeEnd(text) {
@@ -1590,6 +1674,19 @@ export default class MostrarCartao extends Component {
 
 
 
+          {/*Modalize mostra frete, valor e prazo*/}
+          <Modalize
+            ref={this.state.modalizeRefFrete}
+            snapPoint={500}
+            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+          >
+            <View style={{alignItems:'center', marginTop:40}}>
+              <Text>Modalize do Frete</Text>
+            </View>
+          </Modalize>
+
+
+
           {/*Modalize dos comentários*/}
           <Modalize
             ref={this.state.modalizeRef}
@@ -1780,7 +1877,7 @@ export default class MostrarCartao extends Component {
                             <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao carrinho</TextTheme>
                       </TouchableOpacity>
                       : 
-                      <TouchableOpacity onPress={() => this.saveProductInFirebase(item)} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                      <TouchableOpacity onPress={() => this.openModalizeFrete(item)} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
                             <IconResponsive name="shopping-cart" size={30}/>
                             <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao carrinho</TextTheme>
                       </TouchableOpacity>
