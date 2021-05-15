@@ -721,7 +721,7 @@ export default class TelaAnuncio extends Component {
           showCancel={false}
           onConfirm={() => this.AlertPro2.close()}
           title="Tudo certo ;)"
-          message="O serviço foi avaliado!"
+          message="O serviço foi favoritado!"
           textConfirm="OK"
           customStyles={{
             mask: {

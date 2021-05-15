@@ -352,11 +352,15 @@ export default class PaymentServices extends Component {
           <View style={{alignItems:'center'}}>
             <Heading style={styles.paddingTitle}>Pagamento</Heading>
             <Heading style={{paddingTop: 10, marginBottom:10}}>Valor do Serviço: {this.state.valueService}</Heading>
-            <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Escolha o método de pagamento que mais lhe é conveniente (será cobrada uma pequena taxa sobre o valor para a manuntenção da plataforma)</TextDescription2>
-              <TouchableOpacity onPress={() => this.pixQRCODE()}>
-                <Image source={require('../../../assets/pix.png')} style={{width:134, height:134}}/>
-              </TouchableOpacity>
-              <TouchableOpacity style={{marginTop: windowHeight/4}} onPress={() => this.mercadoPago()}>
+            <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Escolha o método de pagamento que mais lhe é conveniente (será cobrada uma pequena taxa sobre o valor para a manuntenção da plataforma) {"\n\n"}Clique no ícone abaixo para realizar o pagamento</TextDescription2>
+              {/** 
+               * 
+               <TouchableOpacity onPress={() => this.pixQRCODE()}>
+                 <Image source={require('../../../assets/pix.png')} style={{width:134, height:134}}/>
+               </TouchableOpacity>
+               * 
+              */}
+              <TouchableOpacity style={{marginTop: windowHeight/7, backgroundColor:'#fff', elevation:10, borderRadius:40}} onPress={() => this.mercadoPago()}>
                 <Image source={require('../../../assets/PAYWOLOGO.png')} style={{width:248, height:166}}/>
               </TouchableOpacity>
               <TextDescription2 style={{paddingHorizontal:60, marginTop:10, fontSize:10, textAlign:'center'}}>(Conta Mercado Pago, Cartão de Crédito ou Débito, Pix, Boleto, Cartão Virtual Caixa, Lotérica e PayPal)</TextDescription2>

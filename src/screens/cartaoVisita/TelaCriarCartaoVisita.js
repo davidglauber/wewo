@@ -2072,7 +2072,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                   value='Valor a Combinar'
                                   onChangeText={text => this.onChangePrecoEstab(text)}
                                   keyboardType={"number-pad"}
-                                  placeholder="Valor do Serviço                                                          "
+                                  placeholder="Valor do Produto                                                          "
                                 />
                                 :
                                 <InputFormMask
@@ -2081,7 +2081,7 @@ export default class TelaCriarCartaoVisita extends Component {
                                   value={this.state.precoEstab}
                                   onChangeText={text => this.onChangePrecoEstab(text)}
                                   keyboardType={"number-pad"}
-                                  placeholder="Valor do Serviço                                                          "
+                                  placeholder="Valor do Produto                                                          "
                                 />
                               }
                             </TouchableOpacity>
