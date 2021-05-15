@@ -428,6 +428,7 @@ export default class EditarPerfil extends Component {
 
             <InputForm
               value={name}
+              editable={false}
               style={{marginBottom: 20}}
               onChangeText={text => this.nameChange(text)}
               autoCapitalize={'words'}

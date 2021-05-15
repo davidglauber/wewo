@@ -314,101 +314,104 @@ async componentDidMount() {
                   keyExtractor={() => this.makeid(17)}
                   data={categories}
                   renderItem={({item}) => 
-                    <TouchCategory onPress={() => this.props.navigation.navigate('HomeCategory2', {titleOfCategory: item.titleCategory})} style={{width: windowWidth/3, height:75, alignItems:'center', justifyContent:'center', borderRadius:20, marginRight: 20}}>
-                      {item.titleCategory == 'Transportes' &&
-                        <Image source={{uri: 'https://www.infoescola.com/wp-content/uploads/2011/04/geografia-do-transporte-1262195809.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                  <View style={{alignItems: 'center'}}>
+                      <TouchCategory onPress={() => this.props.navigation.navigate('HomeCategory2', {titleOfCategory: item.titleCategory})} style={{width: windowWidth/5, height:55, alignItems:'center', marginTop: 20, justifyContent:'center', borderRadius:20, marginRight: 20}}>
+                        {item.titleCategory == 'Transportes' &&
+                          <IconResponsive name="car" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Animais' &&
-                        <Image source={{uri: 'http://s2.glbimg.com/cYa3pKAKIPidjKyGPuAd8T4Hd1I=/e.glbimg.com/og/ed/f/original/2017/08/21/dog-2570398_960_720.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Animais' &&
+                          <IconResponsive name="dog" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
 
-                      {item.titleCategory == 'Lazer' &&
-                        <Image source={{uri: 'https://www.marinha.mil.br/saudenaval/sites/www.marinha.mil.br.saudenaval/files/ST_saude_lazer_noticias_redes.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Lazer' &&
+                          <IconResponsive name="bandcamp" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Comida' &&
-                        <Image source={{uri: 'https://lightchef.com.br/wp-content/uploads/2019/10/Comida-Congelada-em-S%C3%A3o-Paulo-Como-pedir-no-delivery.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Comida' &&
+                          <IconResponsive name="apple" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Administração' &&
-                        <Image source={{uri: 'https://www.napratica.org.br/wp-content/uploads/2018/09/curso-de-administra%C3%A7%C3%A3o.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Administração' &&
+                          <IconResponsive name="pencil-alt" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Negócios' &&
-                        <Image source={{uri: 'https://blog.solarprime.com.br/app/uploads/2019/03/279321-gestao-de-negocios-tudo-o-que-voce-precisa-saber-sobre-o-assunto-1280x640.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Negócios' &&
+                          <IconResponsive name="building" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Informática' &&
-                        <Image source={{uri: 'https://www.wreducacional.com.br/img_cursos/prod/img_1230x644/informatica/informatica-basica.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Informática' &&
+                          <IconResponsive name="laptop" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Audio-Visual' &&
-                        <Image source={{uri: 'https://ebac.art.br/upload/iblock/a9b/fil1.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Audio-Visual' &&
+                          <IconResponsive name="camera-retro" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Eletrodomésticos' &&
-                        <Image source={{uri: 'https://i0.wp.com/amodaeparatodos.com.br/wp-content/uploads/2020/06/3-eletrodomesticos-praticos-para-ter-em-casa.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Eletrodomésticos' &&
+                          <IconResponsive name="plug" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Automóveis' &&
-                        <Image source={{uri: 'https://www.instacarro.com/uploads/2019/01/a41ac9a1-269180-conheca-as-principais-expectativas-para-o-mercado-de-automoveis.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Automóveis' &&
+                          <IconResponsive name="bus" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Beleza' &&
-                        <Image source={{uri: 'https://static1.belezaextraordinaria.com.br/articles/8/35/88/@/33352-nova-etapa-na-rotina-de-cuidados-com-a-opengraph_1200-2.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Beleza' &&
+                          <IconResponsive name="kiss-beam" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Saúde' &&
-                        <Image source={{uri: 'https://ansemp.org.br/wp-content/uploads/2020/12/plano-de-sau%CC%81de-760x450-1.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Saúde' &&
+                          <IconResponsive name="heartbeat" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Farmácias' &&
-                        <Image source={{uri: 'https://s2.glbimg.com/jVnNPEN6cGzKOuxFeyTye1qWACA=/0x0:1057x585/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2019/O/t/IMjQQOTBKPayhaSAN7aA/medicamentos.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Farmácias' &&
+                          <IconResponsive name="capsules" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Market' &&
-                        <Image source={{uri: 'https://www.doisamaisalimentos.com.br/wp-content/uploads/2021/01/Ambiente-Koa-14-foto_-Arne-Lee-660x330.jpeg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Market' &&
+                          <IconResponsive name="shopping-bag" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Música' &&
-                        <Image source={{uri: 'https://www.encorda.com.br/wp-content/uploads/2019/12/original-07a3b6b19bbc223a97160238d495d34e-scaled.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Música' &&
+                          <IconResponsive name="music" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Artes' &&
-                        <Image source={{uri: 'https://artout.com.br/wp-content/uploads/2019/02/O-que-%C3%A9-arte-visual-1.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Artes' &&
+                          <IconResponsive name="paint-brush" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Construção' &&
-                        <Image source={{uri: 'https://blog.obraprimaweb.com.br/wp-content/uploads/2019/12/mercado-da-constru%C3%A7%C3%A3o-civil-em-crescimento-935x614.png'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Construção' &&
+                          <IconResponsive name="wrench" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Imóveis' &&
-                        <Image source={{uri: 'https://www.jornalcontabil.com.br/wp-content/uploads/2016/03/locacao-imoveis.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Imóveis' &&
+                          <IconResponsive name="warehouse" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Turismo' &&
-                        <Image source={{uri: 'https://www.saopaulo.sp.gov.br/wp-content/uploads/2020/09/turismo.png'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Turismo' &&
+                          <IconResponsive name="umbrella-beach" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Aluguel' &&
-                        <Image source={{uri: 'https://s2.glbimg.com/LJyz6a7REaciGEMB5i3I8m8IDrc=/0x98:2000x1200/924x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_f035dd6fd91c438fa04ab718d608bbaa/internal_photos/bs/2020/4/C/1YVBjWSiWp1jS38ofUoA/gettyimages-979070020.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Aluguel' &&
+                          <IconResponsive name="hand-peace" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Shows' &&
-                        <Image source={{uri: 'https://www.tenhomaisdiscosqueamigos.com/wp-content/uploads/2020/04/shows-coronavirus-1280x720.jpg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Shows' &&
+                          <IconResponsive name="microphone-alt" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Segurança' &&
-                        <Image source={{uri: 'https://www.armazemdc.com.br/storage/blog/o-que-e-seguranca-de-dados.jpeg'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
+                        {item.titleCategory == 'Segurança' &&
+                          <IconResponsive name="shield-alt" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
 
-                      {item.titleCategory == 'Educação' &&
-                        <Image source={{uri: 'https://revistamelhor.com.br/wp-content/uploads/2019/10/O-poder-da-educac%CC%A7a%CC%83o.png'}} style={{width: windowWidth/3.8, height:50, borderRadius:20, marginTop:5}}></Image>
-                      }
-                      <Text style={{fontWeight:'bold', color:'#fff', fontSize:13}}>{item.titleCategory}</Text>
-                    </TouchCategory>
+                        {item.titleCategory == 'Educação' &&
+                          <IconResponsive name="book-reader" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                        }
+
+                      </TouchCategory>
+                      <Text style={{fontWeight:'bold', color: this.context.dark ? '#d98b0d' : '#d98b0d', fontSize:13, marginRight:20}}>{item.titleCategory}</Text>
+                    </View>
                   }
                 ></FlatList>
             </ScrollView>
