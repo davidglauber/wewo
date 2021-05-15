@@ -315,7 +315,9 @@ export default class MostrarCartao extends Component {
 
       this.setState({enderecoUser: address})
       this.setState({cepComprador: replaceCep})
-      this.saveProductInFirebase(this.state.item)
+      
+      this.openModalizeFrete(this.state.item, replaceCep)
+      //this.saveProductInFirebase(this.state.item)
       this.setModalVisible(false)
     }
   };
@@ -414,6 +416,7 @@ export default class MostrarCartao extends Component {
         e.setState({idCartao: idCartao})
       })
       e.setState({cartaoEstab: cartaoEstabDidMount})
+      e.setState({item: cartaoEstabDidMount})
       e.setState({dateEstab: dataAtual})
 
       e.setModalVisible(false)
@@ -599,17 +602,20 @@ export default class MostrarCartao extends Component {
     modalizeRefDisponibilidade.current?.open()
   }
 
-  openModalizeFrete(item) {
+  openModalizeFrete(item, cepEx) {
     const modalizeRefFrete = this.state.modalizeRefFrete;
     modalizeRefFrete.current?.open();
 
-    let endereco = this.state.enderecoUser;
-    let resultado = endereco.substring(endereco.indexOf("(") + 1);
-    let removeParetensis = resultado.replace(')', '');
-    let removeTrac = removeParetensis.replace('-', '');
-    let removeTracOfItem = item.cep.replace('-', '');
+    
+    var endereco = this.state.enderecoUser;
+    var resultado = endereco.substring(endereco.indexOf("(") + 1);
+    var removeParetensis = resultado.replace(')', '');
+    var removeTrac = removeParetensis.replace('-', '');
+    var removeTracOfItem = item.cep.replace('-', '');
 
-    fetch(`http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=${removeTrac}&sCepDestino=${removeTracOfItem}&nVlPeso=${item.pesoEnc}&nCdFormato=${item.formEnc}&nVlComprimento=${item.comprimentoEnc}&nVlAltura=${item.alturaEnc}&nVlLargura=${item.larguraEnc}&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04510&nVlDiametro=${item.diametroEnc}&StrRetorno=xml`)
+    
+    if(cepEx == null) {
+      fetch(`http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=${removeTracOfItem}&sCepDestino=${removeTrac}&nVlPeso=${item.pesoEnc}&nCdFormato=${item.formEnc}&nVlComprimento=${item.comprimentoEnc}&nVlAltura=${item.alturaEnc}&nVlLargura=${item.larguraEnc}&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04510&nVlDiametro=${item.diametroEnc}&StrRetorno=xml`)
       .then((response) => response.text())
       .then((textResponse) => {
         let obj = parse(textResponse);
@@ -623,18 +629,50 @@ export default class MostrarCartao extends Component {
         let EntregaDomiciliar = obj.Servicos.cServico.EntregaDomiciliar;
         let EntregaSabado = obj.Servicos.cServico.EntregaSabado;
         let Erro = obj.Servicos.cServico.MsgErro;
-
+        
         this.setState({codigoCorreios: Codigo})
         this.setState({valorFrete: Valor})
         this.setState({prazoEntrega: PrazoEntrega})
         this.setState({erroFrete: Erro})
         this.setState({item: item})
-
+        
         console.log(`${Codigo} \n${Valor} \n${PrazoEntrega} \n${ValorSemAdicionais} \n${ValorMaoPropria} \n${ValorAvisoRecebimento} \n${ValorValorDeclarado} \n${EntregaDomiciliar} \n ${EntregaSabado} \n${Erro}`)
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
-    });
+      });
+    } else {
+      var removeTraco = cepEx.replace('-','');
+      
+      fetch(`http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=${removeTracOfItem}&sCepDestino=${removeTraco}&nVlPeso=${item.pesoEnc}&nCdFormato=${item.formEnc}&nVlComprimento=${item.comprimentoEnc}&nVlAltura=${item.alturaEnc}&nVlLargura=${item.larguraEnc}&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04510&nVlDiametro=${item.diametroEnc}&StrRetorno=xml`)
+      .then((response) => response.text())
+      .then((textResponse) => {
+        let obj = parse(textResponse);
+        let Codigo = obj.Servicos.cServico.Codigo;
+        let Valor = obj.Servicos.cServico.Valor;
+        let PrazoEntrega = obj.Servicos.cServico.PrazoEntrega;
+        let ValorSemAdicionais = obj.Servicos.cServico.ValorSemAdicionais;
+        let ValorMaoPropria = obj.Servicos.cServico.ValorMaoPropria;
+        let ValorAvisoRecebimento = obj.Servicos.cServico.ValorAvisoRecebimento;
+        let ValorValorDeclarado = obj.Servicos.cServico.ValorValorDeclarado;
+        let EntregaDomiciliar = obj.Servicos.cServico.EntregaDomiciliar;
+        let EntregaSabado = obj.Servicos.cServico.EntregaSabado;
+        let Erro = obj.Servicos.cServico.MsgErro;
+        
+        this.setState({codigoCorreios: Codigo})
+        this.setState({valorFrete: Valor})
+        this.setState({prazoEntrega: PrazoEntrega})
+        this.setState({erroFrete: Erro})
+        this.setState({item: item})
+        
+        console.log(`${Codigo} \n${Valor} \n${PrazoEntrega} \n${ValorSemAdicionais} \n${ValorMaoPropria} \n${ValorAvisoRecebimento} \n${ValorValorDeclarado} \n${EntregaDomiciliar} \n ${EntregaSabado} \n${Erro}`)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+
+    console.log("ITEM: " + JSON.stringify(item) + '\n CEP: ' + removeTrac)
   }
 
 /*
@@ -726,47 +764,22 @@ export default class MostrarCartao extends Component {
   }
 
 
-  mostrarFrete(item) {
-    let endereco = this.state.enderecoUser;
-    let resultado = endereco.substring(endereco.indexOf("(") + 1);
-    let removeParetensis = resultado.replace(')', '');
-    let removeTrac = removeParetensis.replace('-', '');
-    let removeTracOfItem = item.cep.replace('-', '');
-
-
-    fetch(`http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=${removeTrac}&sCepDestino=${removeTracOfItem}&nVlPeso=${item.pesoEnc}&nCdFormato=${item.formEnc}&nVlComprimento=${item.comprimentoEnc}&nVlAltura=${item.alturaEnc}&nVlLargura=${item.larguraEnc}&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04510&nVlDiametro=${item.diametroEnc}&StrRetorno=xml`)
-      .then((response) => response.text())
-      .then((textResponse) => {
-        let obj = parse(textResponse);
-        let Codigo = obj.Servicos.cServico.Codigo;
-        let Valor = obj.Servicos.cServico.Valor;
-        let PrazoEntrega = obj.Servicos.cServico.PrazoEntrega;
-        let ValorSemAdicionais = obj.Servicos.cServico.ValorSemAdicionais;
-        let ValorMaoPropria = obj.Servicos.cServico.ValorMaoPropria;
-        let ValorAvisoRecebimento = obj.Servicos.cServico.ValorAvisoRecebimento;
-        let ValorValorDeclarado = obj.Servicos.cServico.ValorValorDeclarado;
-        let EntregaDomiciliar = obj.Servicos.cServico.EntregaDomiciliar;
-        let EntregaSabado = obj.Servicos.cServico.EntregaSabado;
-        let Erro = obj.Servicos.cServico.Erro
-
-        this.setState({codigoCorreios: Codigo})
-        this.setState({valorFrete: Valor})
-        this.setState({prazoEntrega: PrazoEntrega})
-        this.setState({erroFrete: Erro})
-
-        console.log(`${Codigo} \n${Valor} \n${PrazoEntrega} \n${ValorSemAdicionais} \n${ValorMaoPropria} \n${ValorAvisoRecebimento} \n${ValorValorDeclarado} \n${EntregaDomiciliar} \n ${EntregaSabado} \n${Erro}`)
-    })
-    .catch((error) => {
-        console.log(error);
-    });
-  }
-
   async saveProductInFirebase(item) {
     let e = this;
     let idProduct = e.makeid(22);
     let currentUser = firebase.auth().currentUser;
 
+    const {nomeEnd, cepEnd, endereco, numeroEnd, complementoEnd, bairroEnd, cidadeEnd, estadoEnd} = this.state; 
+    
+    if(nomeEnd !== '' && cepEnd !== '' && endereco !== '' && numeroEnd !== '' && complementoEnd !== '' && bairroEnd !== '' && cidadeEnd !== '' && estadoEnd !== '') {
+      let address = `${nomeEnd}, ${endereco}, ${bairroEnd}, ${cidadeEnd}, ${estadoEnd} (${cepEnd})`
+      this.setState({enderecoUser: address})
+    } else {
+      this.AlertPro13.open()
+    }
+
       if(this.state.enderecoUser !== null) {
+        
         await firebase.firestore().collection('usuarios').doc(currentUser.uid).onSnapshot(documentSnapshot => {
           if(currentUser !== null) {
             if(this.state.qtd > 0){
@@ -846,18 +859,6 @@ export default class MostrarCartao extends Component {
 
   onChangeEstadoEnd(text) {
     this.setState({estadoEnd: text})
-  }
-
-
-  saveAddressToFirebase(){
-    const {nomeEnd, cepEnd, endereco, numeroEnd, complementoEnd, bairroEnd, cidadeEnd, estadoEnd} = this.state; 
-    if(nomeEnd !== '' && cepEnd !== '' && endereco !== '' && numeroEnd !== '' && complementoEnd !== '' && bairroEnd !== '' && cidadeEnd !== '' && estadoEnd !== '') {
-      let address = `${nomeEnd}, ${endereco}, ${bairroEnd}, ${cidadeEnd}, ${estadoEnd} (${cepEnd})`
-      this.setState({enderecoUser: address})
-      this.saveProductInFirebase(this.state.item)
-    } else {
-      this.AlertPro13.open()
-    }
   }
 
 
@@ -1663,7 +1664,7 @@ export default class MostrarCartao extends Component {
                   />
 
 
-                  <TouchableOpacity onPress={() => this.saveAddressToFirebase()} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d', marginTop:30}}>
+                  <TouchableOpacity onPress={() => this.openModalizeFrete(this.state.item, this.state.cepEnd)} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d', marginTop:30}}>
                     <IconResponsive name="check" size={30}/>
                     <Text style={{color: this.context.dark ? 'white' : '#121212', fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Confirmar</Text>
                   </TouchableOpacity>
@@ -1700,15 +1701,14 @@ export default class MostrarCartao extends Component {
               <Text style={{fontSize:19, color:'#fff'}}>Prazo de Entrega: {this.state.prazoEntrega} dias</Text>
 
               {this.state.erroFrete == '' ? 
-                null
+                <TouchableOpacity onPress={() => this.saveProductInFirebase(this.state.item)} style={{height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d', marginTop:30}}>
+                  <IconResponsive name="check" size={30}/>
+                  <Text style={{color: this.context.dark ? 'white' : '#121212', fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao Carrinho</Text>
+                </TouchableOpacity>
               :
                 <Text>Erro: {this.state.erroFrete}</Text>
               }
 
-              <TouchableOpacity onPress={() => this.saveProductInFirebase(this.state.item)} style={{height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d', marginTop:30}}>
-                <IconResponsive name="check" size={30}/>
-                <Text style={{color: this.context.dark ? 'white' : '#121212', fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao Carrinho</Text>
-              </TouchableOpacity>
             </View>
           </Modalize>
 
@@ -1904,7 +1904,7 @@ export default class MostrarCartao extends Component {
                             <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao carrinho</TextTheme>
                       </TouchableOpacity>
                       : 
-                      <TouchableOpacity onPress={() => this.openModalizeFrete(item)} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                      <TouchableOpacity onPress={() => this.openModalizeFrete(item, null)} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
                             <IconResponsive name="shopping-cart" size={30}/>
                             <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Adicionar ao carrinho</TextTheme>
                       </TouchableOpacity>

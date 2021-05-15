@@ -380,7 +380,7 @@ export default class SoldProducts extends Component {
               <View>
                 <View style={{flexDirection:'row', marginTop:30, marginBottom:50}}>
                   <TouchableOpacity onPress={() => this.setState({booleanFinished: false})}>
-                    <TextDescription2 style={{marginLeft: windowWidth/6, fontSize:20, fontWeight:'bold', color:"#3f3f3f"}}>Comprado</TextDescription2>
+                    <TextDescription2 style={{marginLeft: windowWidth/6, fontSize:20, fontWeight:'bold', color:"#3f3f3f"}}>Vendido</TextDescription2>
                   </TouchableOpacity>
 
                   <TextDescription2 style={{marginLeft:50, fontSize:20, fontWeight:'bold'}}>Finalizado</TextDescription2>
