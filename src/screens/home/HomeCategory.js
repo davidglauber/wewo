@@ -324,7 +324,6 @@ async componentDidMount() {
                           <IconResponsive name="dog" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
                         }
 
-
                         {item.titleCategory == 'Lazer' &&
                           <IconResponsive name="bandcamp" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
                         }
