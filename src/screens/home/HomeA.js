@@ -590,6 +590,21 @@ async componentDidMount() {
               </View>
             }
 
+            <View style={{elevation:20, flexDirection:'row', backgroundColor:"#d98b0d", marginHorizontal: windowWidth/26, borderRadius:20, marginTop:20}}>
+              <View style={{backgroundColor:'#a66811', marginLeft:10, marginVertical:20, borderRadius:10}}>
+                <IconResponsiveNOBACK name="star" size={12} style={{justifyContent:'center', alignItems:'center', padding:5}}></IconResponsiveNOBACK>
+                <IconResponsiveNOBACK name="star" size={12} style={{justifyContent:'center', alignItems:'center', padding:5}}></IconResponsiveNOBACK>
+                <IconResponsiveNOBACK name="star" size={12} style={{justifyContent:'center', alignItems:'center', padding:5}}></IconResponsiveNOBACK>
+                <IconResponsiveNOBACK name="star" size={12} style={{justifyContent:'center', alignItems:'center', padding:5}}></IconResponsiveNOBACK>
+                <IconResponsiveNOBACK name="star" size={12} style={{justifyContent:'center', alignItems:'center', padding:5}}></IconResponsiveNOBACK>
+              </View>
+              <Image source={{uri: 'https://loocalizei.com.br/wp-content/uploads/2017/11/la-fi-hy-ferrari-anniversary-20170819-e1511781169560.jpg'}} style={{width:108, height:108, borderRadius: 20, marginTop: 20, marginLeft:20, marginBottom:20}}></Image>
+              <View style={{flexDirection:'column'}}>
+                <Text style={{fontSize: this.responsibleFont(), fontWeight:'bold', marginLeft: windowWidth/16, marginTop:20}}>Vendemos Ferrari</Text>
+                {this.cutDescription('Criando ferraris...')}
+              </View>
+            </View>
+
             <ScrollView alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} horizontal={true} style={{padding:15}}>
                 <FlatList
                   horizontal={true}

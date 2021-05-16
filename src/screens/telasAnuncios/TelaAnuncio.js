@@ -968,7 +968,6 @@ export default class TelaAnuncio extends Component {
                         />
                       }
                       
-
                       <Image
                         source={{uri: item.photo2}}
                         style={styles.slideImg}
