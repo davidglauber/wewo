@@ -680,7 +680,7 @@ async componentDidMount() {
               </View>
             }
 
-          <ScrollView horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} style={{flexDirection:'row', backgroundColor:"#fff", borderWidth:1, borderColor:"orange", elevation:5, marginHorizontal: windowWidth/50, borderRadius:10, marginTop:20}}>
+          <ScrollView horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} style={{flexDirection:'row', backgroundColor: this.context.dark? "#121212": "#fff", borderWidth:1, borderColor:"orange", elevation:5, marginHorizontal: windowWidth/50, borderRadius:10, marginTop:20}}>
             <FlatList
               horizontal={true}
               alwaysBounceHorizontal={true}
@@ -688,32 +688,34 @@ async componentDidMount() {
               keyExtractor={() => this.makeid(17)}
               data={this.state.bestsPublishesAuto}
               renderItem={({item}) => 
-              <ScrollView alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} horizontal={true}>
-                <Image source={{uri: item.photo}} style={{width:158, height:108, borderRadius: 10}}></Image>
-                <View style={{flexDirection:'column'}}>
-                  <Text style={{fontSize: this.responsibleFont2(), fontWeight:'bold', marginLeft: windowWidth/16, marginTop:20}}>{item.title}</Text>
-                  {this.cutDescription2(item.description)}
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                <ScrollView alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} horizontal={true}>
+                    <Image source={{uri: item.photo}} style={{width:158, height:108, borderRadius: 10}}></Image>
+                    <View style={{flexDirection:'column'}}>
+                      <Text style={{fontSize: this.responsibleFont2(), fontWeight:'bold', color: this.context.dark ? "#fff": "#121212", marginLeft: windowWidth/16, marginTop:20}}>{item.title}</Text>
+                      {this.cutDescription2(item.description)}
 
-                  {item.media == 4 &&
-                   <>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/11}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/14.5}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/21}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/37}}/>
-                    </>
-                  }
+                      {item.media == 4 &&
+                      <>
+                          <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/11}}/>
+                          <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/14.5}}/>
+                          <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/21}}/>
+                          <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/37}}/>
+                        </>
+                      }
 
-                  {item.media > 4 &&
-                    <>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/10}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/12.5}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/17}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/26}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/54}}/>
-                    </>
-                  }
-                </View>
-              </ScrollView>
+                      {item.media > 4 &&
+                        <>
+                          <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/10}}/>
+                          <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/12.5}}/>
+                          <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/17}}/>
+                          <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/26}}/>
+                          <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/54}}/>
+                        </>
+                      }
+                    </View>
+                </ScrollView>
+              </TouchableOpacity>
               }
             >
 
@@ -727,48 +729,50 @@ async componentDidMount() {
               keyExtractor={() => this.makeid(17)}
               data={this.state.bestsPublishesEstab}
               renderItem={({item}) => 
-              <ScrollView alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} horizontal={true}>
-                <Image source={{uri: item.photo}} style={{width:158, height:108, borderRadius: 10}}></Image>
-                <View style={{flexDirection:'column'}}>
-                  <Text style={{fontSize: this.responsibleFont2(), fontWeight:'bold', marginLeft: windowWidth/16, marginTop:20}}>{item.title}</Text>
-                  {this.cutDescription2(item.description)}
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                <ScrollView alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} horizontal={true}>
+                  <Image source={{uri: item.photo}} style={{width:158, height:108, borderRadius: 10}}></Image>
+                  <View style={{flexDirection:'column'}}>
+                    <Text style={{fontSize: this.responsibleFont2(), fontWeight:'bold', color: this.context.dark ? "#fff": "#121212", marginLeft: windowWidth/16, marginTop:20}}>{item.title}</Text>
+                    {this.cutDescription2(item.description)}
 
-                  {item.media == 4 &&
-                   <>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/11}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/14.5}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/21}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/37}}/>
-                    </>
-                  }
-
-                  {item.media > 4 &&
+                    {item.media == 4 &&
                     <>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/10}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/12.5}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/17}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/26}}/>
-                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/54}}/>
-                    </>
-                  }
-                </View>
-              </ScrollView>
+                        <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/11}}/>
+                        <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/14.5}}/>
+                        <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/21}}/>
+                        <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/37}}/>
+                      </>
+                    }
+
+                    {item.media > 4 &&
+                      <>
+                        <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/10}}/>
+                        <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/12.5}}/>
+                        <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/17}}/>
+                        <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/26}}/>
+                        <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/54}}/>
+                      </>
+                    }
+                  </View>
+                </ScrollView>
+              </TouchableOpacity>
               }
             >
 
             </FlatList>
 
           </ScrollView>
-
-
-            <ScrollView alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} horizontal={true}>
+          
+          
+          <ScrollView alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} horizontal={true}>
                 <FlatList
                   horizontal={true}
                   keyExtractor={() => this.makeid(17)}
                   data={categories}
                   renderItem={({item}) => 
-                    <View style={{alignItems: 'center', backgroundColor:'#f3f3f3', marginTop:30}}>
-                      <TouchCategory onPress={() => this.props.navigation.navigate('HomeCategory', {titleOfCategory: item.titleCategory})} style={{width: windowWidth/5, height:55, alignItems:'center', marginTop: 20, marginLeft:18, justifyContent:'center', borderRadius:20, marginRight: 20, backgroundColor:'#fff'}}>
+                    <View style={{alignItems: 'center', backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', marginTop:30}}>
+                      <TouchCategory onPress={() => this.props.navigation.navigate('HomeCategory', {titleOfCategory: item.titleCategory})} style={{width: windowWidth/5, height:55, alignItems:'center', marginTop: 20, marginLeft:18, justifyContent:'center', borderRadius:20, marginRight: 20, backgroundColor: this.context.dark? '#121212' : '#fff'}}>
                         {item.titleCategory == 'Transportes' &&
                           <IconResponsiveNOBACK name="car" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
                         }
@@ -863,7 +867,7 @@ async componentDidMount() {
                         }
 
                       </TouchCategory>
-                      <Text style={{fontWeight:'bold', color: this.context.dark ? '#000' : '#000', fontSize:13, marginRight:3, marginTop:5, marginBottom:10}}>{item.titleCategory}</Text>
+                      <Text style={{fontWeight:'bold', color: this.context.dark ? '#fff' : '#000', fontSize:13, marginRight:3, marginTop:5, marginBottom:10}}>{item.titleCategory}</Text>
                     </View>
                   }
                 ></FlatList>
@@ -893,7 +897,7 @@ async componentDidMount() {
                             <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                                 <View style={{flexDirection:'row'}}>
                                       {item.video == null ?
-                                        <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                        <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
                                         :
                                         <Video 
                                           source={{ uri: item.video }}
@@ -903,7 +907,7 @@ async componentDidMount() {
                                           resizeMode="cover"
                                           shouldPlay
                                           isLooping
-                                          style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
+                                          style={{ width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
                                         />
                                       }
                                     
@@ -944,7 +948,7 @@ async componentDidMount() {
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                     {item.video == null ?
-                                      <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                      <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
                                       :
                                       <Video 
                                         source={{ uri: item.video }}
@@ -954,7 +958,7 @@ async componentDidMount() {
                                         resizeMode="cover"
                                         shouldPlay
                                         isLooping
-                                        style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}
+                                        style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}
                                       />
                                     }
                                   
@@ -1001,7 +1005,7 @@ async componentDidMount() {
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                     {item.video == null ?
-                                      <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                      <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
                                       :
                                       <Video 
                                         source={{ uri: item.video }}
@@ -1011,7 +1015,7 @@ async componentDidMount() {
                                         resizeMode="cover"
                                         shouldPlay
                                         isLooping
-                                        style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}
+                                        style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}
                                       />
                                     }
                                   
@@ -1063,7 +1067,7 @@ async componentDidMount() {
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                                 <View style={{flexDirection:'row'}}>
                                       {item.video == null ?
-                                        <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                        <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
                                         :
                                         <Video 
                                           source={{ uri: item.video }}
@@ -1073,7 +1077,7 @@ async componentDidMount() {
                                           resizeMode="cover"
                                           shouldPlay
                                           isLooping
-                                          style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
+                                          style={{ width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
                                         />
                                       }
                                     
@@ -1117,7 +1121,7 @@ async componentDidMount() {
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                                 <View style={{flexDirection:'row'}}>
                                       {item.video == null ?
-                                        <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                        <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
                                         :
                                         <Video 
                                           source={{ uri: item.video }}
@@ -1127,7 +1131,7 @@ async componentDidMount() {
                                           resizeMode="cover"
                                           shouldPlay
                                           isLooping
-                                          style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
+                                          style={{ width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
                                         />
                                       }
                                     
@@ -1163,7 +1167,7 @@ async componentDidMount() {
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                                 <View style={{flexDirection:'row'}}>
                                       {item.video == null ?
-                                        <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                        <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
                                         :
                                         <Video 
                                           source={{ uri: item.video }}
@@ -1173,7 +1177,7 @@ async componentDidMount() {
                                           resizeMode="cover"
                                           shouldPlay
                                           isLooping
-                                          style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
+                                          style={{ width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
                                         />
                                       }
                                     

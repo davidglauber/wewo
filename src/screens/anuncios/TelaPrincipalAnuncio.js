@@ -473,7 +473,7 @@ export default class TelaPrincipalAnuncio extends Component {
                             <AnuncioContainer onPress={() => this.props.navigation.navigate('', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                   {item.video == null ?
-                                    <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20}}></Image>
+                                    <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20}}></Image>
                                     :
                                     <Video 
                                       source={{ uri: item.video }}
@@ -483,7 +483,7 @@ export default class TelaPrincipalAnuncio extends Component {
                                       resizeMode="cover"
                                       shouldPlay
                                       isLooping
-                                      style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20 }}
+                                      style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20 }}
                                     />
                                   }
                                   
@@ -522,7 +522,7 @@ export default class TelaPrincipalAnuncio extends Component {
                         <AnuncioContainer onPress={() => this.props.navigation.navigate('', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                           <View style={{flexDirection:'row'}}>
                               {item.video == null ?
-                                <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20}}></Image>
+                                <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20}}></Image>
                                 :
                                 <Video 
                                   source={{ uri: item.video }}
@@ -532,7 +532,7 @@ export default class TelaPrincipalAnuncio extends Component {
                                   resizeMode="cover"
                                   shouldPlay
                                   isLooping
-                                  style={{ width:128, height:100, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20 }}
+                                  style={{ width:128, height:110, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20 }}
                                 />
                               }
                               

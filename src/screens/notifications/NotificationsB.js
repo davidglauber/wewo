@@ -450,7 +450,7 @@ export default class NotificationsB extends Component {
 
 
                 <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
-                  <Title style={{marginRight: 20, textAlign:'center', fontSize: 15, marginTop:25, color: this.context.dark ? 'white' : 'white'}}>Este é um resumo do que você enviou ao contratado(a)</Title>
+                  <Title style={{marginRight: 20, textAlign:'center', fontSize: 15, marginTop:25, color: this.context.dark ? 'white' : 'white'}}>Caso o usuário aceite sua oferta, essa notificação será movida</Title>
                 </View>
 
             </View>

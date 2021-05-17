@@ -1029,7 +1029,7 @@ export default class TelaAnuncio extends Component {
                   </ButtonIconContainer>
 
 
-                  <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', position:'absolute', bottom: windowHeight/3.9, opacity:0.8, left: windowWidth/3.7, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
+                  <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', position:'absolute', bottom: windowHeight/4.5, opacity:0.8, left: windowWidth/3.7, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
                 </View>
 
                   <View style={styles.descriptionContainer}>
@@ -1533,7 +1533,7 @@ export default class TelaAnuncio extends Component {
                   
 
 
-                    <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', position:'absolute', bottom: windowHeight/3.9, opacity:0.8, left: windowWidth/3.7, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
+                    <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', position:'absolute', bottom: windowHeight/4.5, opacity:0.8, left: windowWidth/3.7, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
 
 
                 </View>

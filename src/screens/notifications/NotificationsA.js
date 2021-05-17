@@ -492,12 +492,12 @@ export default class NotificationsA extends Component {
                 
 
                 <View style={{flexDirection:'row', marginLeft:15}}>
-                  <TouchableOpacity onPress={() => this.confirmButton(this.state.idNotification)} style={{marginLeft: 30, marginTop:40, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:20, borderRadius:50}}>
+                  <TouchableOpacity onPress={() => this.confirmButton(this.state.idNotification)} style={{marginLeft: 30, marginTop:30, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:20, borderRadius:50}}>
                     <IconResponsiveNOBACK name="check" size={24}/>
                     <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Confirmar</Title>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => this.deniedButton(this.state.idNotification)} style={{marginLeft: 20, marginTop:40, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:120, borderRadius:50}}>
+                  <TouchableOpacity onPress={() => this.deniedButton(this.state.idNotification)} style={{marginLeft: 20, marginTop:30, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:120, borderRadius:50}}>
                     <IconResponsiveNOBACK name="times" size={24}/>
                     <Title style={{marginLeft: 20, fontSize: 15, marginTop:2, color:'black'}}>Negar     </Title>
                   </TouchableOpacity>
