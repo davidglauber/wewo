@@ -99,6 +99,8 @@ export default class HomeA extends Component {
       premiumPublishesEstab: [],
       searchPublishesEstab:[],
       searchPublishesAuto: [],
+      bestsPublishesAuto: [],
+      bestsPublishesEstab: [],
       categories: [],
       isFetched: false,
       isFetchedPublish: false,
@@ -304,6 +306,70 @@ async componentDidMount() {
       null
     }
 
+
+
+
+
+
+    //obtem somente os anúncios com melhores avaliações (não importa se é premium ou não, TANTO AUTONOMO COMO ESTABELECIMENTO)
+    await firebase.firestore().collection('anuncios').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("media", ">=", 4).orderBy("media", "desc").onSnapshot(documentSnapshot => {
+      let melhoresnunciosAtivosAuto = [];
+      documentSnapshot.forEach(function(doc) {
+        melhoresnunciosAtivosAuto.push({
+          idUser: doc.data().idUser,
+          nome: doc.data().nome,
+          idAnuncio: doc.data().idAnuncio,
+          photo: doc.data().photoPublish,
+          video: doc.data().videoPublish,
+          title: doc.data().titleAuto,
+          description: doc.data().descriptionAuto,
+          type: doc.data().type,
+          phone: doc.data().phoneNumberAuto,
+          verified: doc.data().verifiedPublish,
+          value: doc.data().valueServiceAuto,
+          media: doc.data().media
+        })
+      })
+
+
+      e.setState({bestsPublishesAuto: melhoresnunciosAtivosAuto})
+      this.setModalVisible(false)
+
+      this.sleep(1000).then(() => { 
+      e.setState({isFetchedPublish: true})
+      })
+    })
+
+
+    await firebase.firestore().collection('anuncios').where("type", "==", "Estabelecimento").where("verifiedPublish", "==", true).where("media", ">=", 4).orderBy("media", "desc").onSnapshot(documentSnapshot => {
+      let melhoresnunciosAtivosEstab = [];
+      documentSnapshot.forEach(function(doc) {
+        melhoresnunciosAtivosEstab.push({
+          idUser: doc.data().idUser,
+          idAnuncio: doc.data().idAnuncio,
+          photo: doc.data().photoPublish,
+          video: doc.data().videoPublish,
+          title: doc.data().titleEstab,
+          description: doc.data().descriptionEstab,
+          phone: doc.data().phoneNumberEstab,
+          type: doc.data().type,
+          verified: doc.data().verifiedPublish,
+          value: doc.data().valueServiceEstab,
+          media: doc.data().media
+        })
+
+      })
+
+
+      e.setState({bestsPublishesEstab: melhoresnunciosAtivosEstab})
+      this.setModalVisible(false)
+
+      this.sleep(1000).then(() => { 
+      e.setState({isFetchedPublish: true})
+      })
+    })
+
+  
   }
 
 
@@ -397,6 +463,24 @@ async componentDidMount() {
       );
     }
   }
+
+  cutDescription2(text) {
+    if(text.length > 14) {
+      let shortDescription = text.substr(0, 14)
+
+      return(
+        <View style={{justifyContent: 'center', alignItems: 'center', marginLeft:5}}>
+          <Description>{shortDescription} ...</Description>
+        </View>
+      );
+    } else {
+      return(
+        <View style={{justifyContent: 'center', alignItems: 'center', marginLeft:5}}>
+          <Description>{text}</Description>
+        </View>
+      );
+    }
+  }
   
 
   onChangeTextoSearch(text){
@@ -417,6 +501,12 @@ async componentDidMount() {
     let Height = Dimensions.get('window').height
 
     return RFValue(18, Height);
+  }
+
+  responsibleFont2() {
+    let Height = Dimensions.get('window').height
+
+    return RFValue(16, Height);
   }
 
   render() {
@@ -590,21 +680,86 @@ async componentDidMount() {
               </View>
             }
 
-            <View style={{flexDirection:'row', backgroundColor:"#fff", borderWidth:1, borderColor:"orange", marginHorizontal: windowWidth/50, borderRadius:20, marginTop:20}}>
-              {/*<View style={{backgroundColor:'#a66811', marginLeft:10, marginVertical:20, borderRadius:10}}>
-                <IconResponsiveNOBACK name="star" size={12} style={{justifyContent:'center', alignItems:'center', padding:5}}></IconResponsiveNOBACK>
-                <IconResponsiveNOBACK name="star" size={12} style={{justifyContent:'center', alignItems:'center', padding:5}}></IconResponsiveNOBACK>
-                <IconResponsiveNOBACK name="star" size={12} style={{justifyContent:'center', alignItems:'center', padding:5}}></IconResponsiveNOBACK>
-                <IconResponsiveNOBACK name="star" size={12} style={{justifyContent:'center', alignItems:'center', padding:5}}></IconResponsiveNOBACK>
-                <IconResponsiveNOBACK name="star" size={12} style={{justifyContent:'center', alignItems:'center', padding:5}}></IconResponsiveNOBACK>
-              </View>
-              */}
-              <Image source={{uri: 'https://loocalizei.com.br/wp-content/uploads/2017/11/la-fi-hy-ferrari-anniversary-20170819-e1511781169560.jpg'}} style={{width:108, height:108, borderRadius: 20, marginTop: 20, marginLeft:20, marginBottom:20}}></Image>
-              <View style={{flexDirection:'column'}}>
-                <Text style={{fontSize: this.responsibleFont(), fontWeight:'bold', marginLeft: windowWidth/16, marginTop:20}}>Vendemos Ferrari</Text>
-                {this.cutDescription('Criando ferraris...')}
-              </View>
-            </View>
+          <ScrollView horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} style={{flexDirection:'row', backgroundColor:"#fff", borderWidth:1, borderColor:"orange", elevation:5, marginHorizontal: windowWidth/50, borderRadius:10, marginTop:20}}>
+            <FlatList
+              horizontal={true}
+              alwaysBounceHorizontal={true}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={() => this.makeid(17)}
+              data={this.state.bestsPublishesAuto}
+              renderItem={({item}) => 
+              <ScrollView alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} horizontal={true}>
+                <Image source={{uri: item.photo}} style={{width:158, height:108, borderRadius: 10}}></Image>
+                <View style={{flexDirection:'column'}}>
+                  <Text style={{fontSize: this.responsibleFont2(), fontWeight:'bold', marginLeft: windowWidth/16, marginTop:20}}>{item.title}</Text>
+                  {this.cutDescription2(item.description)}
+
+                  {item.media == 4 &&
+                   <>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/11}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/14.5}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/21}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/37}}/>
+                    </>
+                  }
+
+                  {item.media > 4 &&
+                    <>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/10}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/12.5}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/17}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/26}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/54}}/>
+                    </>
+                  }
+                </View>
+              </ScrollView>
+              }
+            >
+
+            </FlatList>
+
+
+            <FlatList
+              horizontal={true}
+              alwaysBounceHorizontal={true}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={() => this.makeid(17)}
+              data={this.state.bestsPublishesEstab}
+              renderItem={({item}) => 
+              <ScrollView alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} horizontal={true}>
+                <Image source={{uri: item.photo}} style={{width:158, height:108, borderRadius: 10}}></Image>
+                <View style={{flexDirection:'column'}}>
+                  <Text style={{fontSize: this.responsibleFont2(), fontWeight:'bold', marginLeft: windowWidth/16, marginTop:20}}>{item.title}</Text>
+                  {this.cutDescription2(item.description)}
+
+                  {item.media == 4 &&
+                   <>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/11}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/14.5}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/21}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/37}}/>
+                    </>
+                  }
+
+                  {item.media > 4 &&
+                    <>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/10}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/12.5}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/17}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/26}}/>
+                      <IconResponsiveNOBACK name="star" size={12} style={{position:'absolute', right: windowWidth/4.5, bottom: windowHeight/54}}/>
+                    </>
+                  }
+                </View>
+              </ScrollView>
+              }
+            >
+
+            </FlatList>
+
+          </ScrollView>
+
 
             <ScrollView alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} horizontal={true}>
                 <FlatList
@@ -708,7 +863,7 @@ async componentDidMount() {
                         }
 
                       </TouchCategory>
-                      <Text style={{fontWeight:'bold', color: this.context.dark ? '#000' : '#000', fontSize:13, marginRight:6, marginBottom:10}}>{item.titleCategory}</Text>
+                      <Text style={{fontWeight:'bold', color: this.context.dark ? '#000' : '#000', fontSize:13, marginRight:3, marginTop:5, marginBottom:10}}>{item.titleCategory}</Text>
                     </View>
                   }
                 ></FlatList>
@@ -716,7 +871,7 @@ async componentDidMount() {
             </ScrollView>
 
 
-            <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 35, paddingHorizontal: 16, paddingBottom: 35}}>
+            <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 15, paddingHorizontal: 16, paddingBottom: 35}}>
               <Heading>Anúncios</Heading>
               <TouchableOpacity onPress={this.navigateTo('Filtro')} style={{width:50, height:20, flexDirection:"row", marginRight:17}}>
                   <ValueField>Filtros</ValueField>

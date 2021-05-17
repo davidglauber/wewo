@@ -383,7 +383,7 @@ export const IconResponsiveNOBACK = styled(FontAwesome5)`
 export const Description = styled.Text`
     text-align: center; 
     font-size:12px; 
-    margin-top:20px; 
+    margin-top:10px; 
     margin-right:170px; 
     font-weight: 500; 
     margin-left:25px; 
