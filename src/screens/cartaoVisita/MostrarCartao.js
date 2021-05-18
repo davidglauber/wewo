@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   productTitleContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 24,
@@ -1839,13 +1839,12 @@ export default class MostrarCartao extends Component {
                     </TouchableItem>
                   </ButtonIconContainer>
 
-                  <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', position:'absolute', bottom: windowHeight/4.5, opacity:0.8, left: windowWidth/3.7, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>Valor: {item.valueServiceEstab}</ValueFieldPrincipal>
-                  
                 </View>
 
                   <View style={styles.descriptionContainer}>
                       <View style={styles.productTitleContainer}>
                             <Heading>{item.title}</Heading>
+                            <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', marginBottom:30, opacity:0.8, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
                       </View>
                   </View>
 

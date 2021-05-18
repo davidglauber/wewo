@@ -461,11 +461,11 @@ async componentDidMount() {
                                         {this.cutDescription(item.description)}
                                       <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
                                           <ValueField>{item.value}</ValueField>
+                                          <View style={{flexDirection:'row', position:'absolute', left: windowWidth/2.8, marginTop:8}}>
+                                                <IconResponsive2 style={{marginLeft:6}}  name="user-tie" size={19}/>
+                                                <IconResponsive2 style={{marginLeft: 6}}  name="crown" size={19}/>
+                                          </View>
                                       </View>
-                                  </View>
-                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
-                                    <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
-                                    <IconResponsive2 style={{marginLeft:10}}  name="crown" size={19}/>
                                   </View>
                               </View>  
 
@@ -513,11 +513,11 @@ async componentDidMount() {
                                           {this.cutDescription(item.description)}
                                         <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
                                             <ValueField>{item.value}</ValueField>
+                                            <View style={{flexDirection:'row', position:'absolute', left: windowWidth/2.8, marginTop:8}}>
+                                                <IconResponsive2 style={{marginLeft:6}}  name="briefcase" size={19}/>
+                                                <IconResponsive2 style={{marginLeft: 6}}  name="crown" size={19}/>
+                                            </View>
                                         </View>
-                                  </View>
-                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
-                                    <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
-                                    <IconResponsive2 style={{marginLeft:10}}  name="crown" size={19}/>
                                   </View>
                               </View>  
 
@@ -561,10 +561,10 @@ async componentDidMount() {
                                           {this.cutDescription(item.description)}
                                         <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
                                             <ValueField>{item.value}</ValueField>
+                                            <View style={{flexDirection:'row', position:'absolute', left: windowWidth/2.5, marginTop:8}}>
+                                                <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
+                                            </View>
                                         </View>
-                                  </View>
-                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
-                                      <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
                                   </View>
                               </View>  
 
@@ -607,11 +607,10 @@ async componentDidMount() {
                                           {this.cutDescription(item.description)}
                                         <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
                                             <ValueField>{item.value}</ValueField>
+                                            <View style={{flexDirection:'row', position:'absolute', left: windowWidth/2.5, marginTop:8}}>
+                                                <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
+                                            </View>
                                         </View>
-                                  </View>
-                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
-                                      <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
-                                      <IconResponsive2 style={{marginLeft:10}}  name="crown" size={19}/>
                                   </View>
                               </View>  
 

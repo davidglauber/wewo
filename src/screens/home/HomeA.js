@@ -545,7 +545,7 @@ async componentDidMount() {
 
               <View style={{marginTop: windowHeight/18, marginLeft: windowWidth/54}}>
                     <TextSearch
-                      placeholder="Pesquise aqui      "
+                      placeholder="Pesquise aqui"
                       placeholderTextColor={this.context.dark ? '#fff' : '#3E3C3F'}
                       returnKeyType="search"
                       maxLength={50}
@@ -615,7 +615,7 @@ async componentDidMount() {
 
                 <View style={{marginTop: windowHeight/18, marginLeft: windowWidth/54}}>
                     <TextSearch
-                      placeholder="Pesquise aqui      "
+                      placeholder="Pesquise aqui"
                       placeholderTextColor={this.context.dark ? '#fff' : '#3E3C3F'}
                       returnKeyType="search"
                       maxLength={50}
@@ -892,12 +892,12 @@ async componentDidMount() {
                   renderItem={({item}) =>
                   
                   
-                  <View style={{flex:1, alignItems: 'center'}}>
+                  <View style={{flex:1, marginRight: windowWidth/5}}>
                         <View>
                             <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                                 <View style={{flexDirection:'row'}}>
                                       {item.video == null ?
-                                        <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                        <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}></Image>
                                         :
                                         <Video 
                                           source={{ uri: item.video }}
@@ -907,7 +907,7 @@ async componentDidMount() {
                                           resizeMode="cover"
                                           shouldPlay
                                           isLooping
-                                          style={{ width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
+                                          style={{ width:128, height:110, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20 }}
                                         />
                                       }
                                     
@@ -918,11 +918,11 @@ async componentDidMount() {
                                           {this.cutDescription(item.description)}
                                         <View style={{flexDirection:'row', marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
                                             <ValueField>{item.value}</ValueField>
-                                            <IconResponsive2 style={{marginLeft: windowWidth/3.3}}  name="crown" size={15}/>
+                                            <View style={{flexDirection:'row', position:'absolute', left: windowWidth/2.8, marginTop:8}}>
+                                                <IconResponsive2 style={{marginLeft:6}}  name="user-tie" size={19}/>
+                                                <IconResponsive2 style={{marginLeft: 6}}  name="crown" size={19}/>
+                                            </View>
                                         </View>
-                                    </View>
-                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
-                                      <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
                                     </View>
 
 
@@ -943,12 +943,12 @@ async componentDidMount() {
                 renderItem={({item}) =>
                 
                 
-                <View style={{flex:1, alignItems: 'center'}}>
+                <View style={{flex:1, marginRight: windowWidth/5}}>
                       <View>
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                     {item.video == null ?
-                                      <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                      <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}></Image>
                                       :
                                       <Video 
                                         source={{ uri: item.video }}
@@ -958,7 +958,7 @@ async componentDidMount() {
                                         resizeMode="cover"
                                         shouldPlay
                                         isLooping
-                                        style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}
+                                        style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}
                                       />
                                     }
                                   
@@ -969,10 +969,10 @@ async componentDidMount() {
                                           {this.cutDescription(item.description)}
                                         <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
                                             <ValueField>{item.value}</ValueField>
+                                            <View style={{flexDirection:'row', position:'absolute', left: windowWidth/2.5, marginTop:8}}>
+                                                <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
+                                            </View>
                                         </View>
-                                  </View>
-                                  <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
-                                      <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
                                   </View>
 
                               </View> 
@@ -1000,12 +1000,12 @@ async componentDidMount() {
                 keyExtractor={() => this.makeid(17)}
                 data={this.state.searchPublishesAuto}
                 renderItem={({item}) =>
-                <View style={{flex:1, alignItems: 'center'}}>
+                <View style={{flex:1, marginRight: windowWidth/5}}>
                       <View>
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                     {item.video == null ?
-                                      <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                      <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}></Image>
                                       :
                                       <Video 
                                         source={{ uri: item.video }}
@@ -1015,7 +1015,7 @@ async componentDidMount() {
                                         resizeMode="cover"
                                         shouldPlay
                                         isLooping
-                                        style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}
+                                        style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}
                                       />
                                     }
                                   
@@ -1026,11 +1026,14 @@ async componentDidMount() {
                                           {this.cutDescription(item.description)}
                                         <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
                                             <ValueField>{item.value}</ValueField>
-                                            {item.premiumUser == true ?
-                                              <IconResponsive2 style={{marginLeft: windowWidth/3.2}}  name="crown" size={15}/>
-                                              :
-                                              null
-                                            }
+                                            <View style={{flexDirection:'row', position:'absolute', left: windowWidth/2.8, marginTop:8}}>
+                                                <IconResponsive2 style={{marginLeft:16}}  name="user-tie" size={19}/>
+                                                {item.premiumUser == true ?
+                                                  <IconResponsive2 style={{marginLeft: 6}}  name="crown" size={19}/>
+                                                  :
+                                                  null
+                                                }
+                                            </View>
                                         </View>
                                   </View>
                                   <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
@@ -1062,12 +1065,12 @@ async componentDidMount() {
                   data={this.state.searchPublishesEstab}
                   renderItem={({item}) =>
                   
-                  <View style={{flex:1, alignItems: 'center'}}>
+                  <View style={{flex:1, marginRight: windowWidth/5}}>
                       <View>
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                                 <View style={{flexDirection:'row'}}>
                                       {item.video == null ?
-                                        <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                        <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}></Image>
                                         :
                                         <Video 
                                           source={{ uri: item.video }}
@@ -1077,7 +1080,7 @@ async componentDidMount() {
                                           resizeMode="cover"
                                           shouldPlay
                                           isLooping
-                                          style={{ width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
+                                          style={{ width:128, height:110, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20 }}
                                         />
                                       }
                                     
@@ -1088,11 +1091,14 @@ async componentDidMount() {
                                           {this.cutDescription(item.description)}
                                           <View style={{flexDirection:'row', marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
                                             <ValueField>{item.value}</ValueField>
-                                            {item.premiumUser == true ?
-                                              <IconResponsive2 style={{marginLeft: windowWidth/3.2}}  name="crown" size={15}/>
-                                              :
-                                              null
-                                            }
+                                            <View style={{flexDirection:'row', position:'absolute', left: windowWidth/2.8, marginTop:8}}>
+                                                <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
+                                                {item.premiumUser == true ?
+                                                  <IconResponsive2 style={{marginLeft: 6}}  name="crown" size={19}/>
+                                                  :
+                                                  null
+                                                }
+                                            </View>
                                         </View>
                                     </View>
                                     <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
@@ -1116,12 +1122,12 @@ async componentDidMount() {
                   data={premiumPublishesEstab}
                   renderItem={({item}) =>
                   
-                  <View style={{flex:1, alignItems: 'center'}}>
+                  <View style={{flex:1, marginRight: windowWidth/5}}>
                       <View>
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                                 <View style={{flexDirection:'row'}}>
                                       {item.video == null ?
-                                        <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                        <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}></Image>
                                         :
                                         <Video 
                                           source={{ uri: item.video }}
@@ -1131,7 +1137,7 @@ async componentDidMount() {
                                           resizeMode="cover"
                                           shouldPlay
                                           isLooping
-                                          style={{ width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
+                                          style={{ width:128, height:110, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20 }}
                                         />
                                       }
                                     
@@ -1142,10 +1148,11 @@ async componentDidMount() {
                                           {this.cutDescription(item.description)}
                                           <View style={{flexDirection:'row', marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
                                             <ValueField>{item.value}</ValueField>
-                                        </View>
-                                    </View>
-                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
-                                        <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
+                                            <View style={{flexDirection:'row', position:'absolute', left: windowWidth/2.8, marginTop:8}}>
+                                                <IconResponsive2 style={{marginLeft:6}}  name="briefcase" size={19}/>
+                                                <IconResponsive2 style={{marginLeft: 6}}  name="crown" size={19}/>
+                                            </View>
+                                          </View>
                                     </View>
                                 </View> 
                                 
@@ -1162,12 +1169,12 @@ async componentDidMount() {
                   data={activesPublishesEstab}
                   renderItem={({item}) =>
                   
-                  <View style={{flex:1, alignItems: 'center'}}>
+                  <View style={{flex:1, marginRight: windowWidth/5}}>
                       <View>
                       <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                                 <View style={{flexDirection:'row'}}>
                                       {item.video == null ?
-                                        <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20}}></Image>
+                                        <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}></Image>
                                         :
                                         <Video 
                                           source={{ uri: item.video }}
@@ -1177,7 +1184,7 @@ async componentDidMount() {
                                           resizeMode="cover"
                                           shouldPlay
                                           isLooping
-                                          style={{ width:128, height:110, borderRadius: 20, marginLeft: windowWidth/5.5, marginTop: 20 }}
+                                          style={{ width:128, height:110, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20 }}
                                         />
                                       }
                                     
@@ -1188,12 +1195,11 @@ async componentDidMount() {
                                           {this.cutDescription(item.description)}
                                         <View style={{marginLeft:windowWidth/15, marginTop:10, backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', padding:10, borderRadius:30}}>
                                             <ValueField>{item.value}</ValueField>
+                                            <View style={{flexDirection:'row', position:'absolute', left: windowWidth/2.5, marginTop:8}}>
+                                                <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
+                                            </View>
                                         </View>
                                     </View>
-                                    <View style={{flexDirection:'row', position:'absolute', left: windowWidth/1, marginTop:18}}>
-                                        <IconResponsive2 style={{marginLeft:16}}  name="briefcase" size={19}/>
-                                    </View>
-
                                 </View> 
                                 
 

@@ -67,7 +67,6 @@ import AlertPro from "react-native-alert-pro";
 //import IAP API 
 import {purchased} from '../../config/purchase';
 
-
 import { Video } from 'expo-av';
 
 
@@ -83,8 +82,8 @@ const FAV_ICON = IOS ? 'heart' : 'heart';
 const imgHolder = require('../../assets/img/confeiteira.jpeg');
 
 //consts
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('screen').width;
+const windowHeight = Dimensions.get('screen').height;
 
 // ProductA Styles
 const styles = StyleSheet.create({
@@ -127,7 +126,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   productTitleContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 24,
@@ -1028,13 +1027,12 @@ export default class TelaAnuncio extends Component {
                     </TouchableItem>
                   </ButtonIconContainer>
 
-
-                  <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', position:'absolute', bottom: windowHeight/4.5, opacity:0.8, left: windowWidth/3.7, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
                 </View>
 
                   <View style={styles.descriptionContainer}>
                       <View style={styles.productTitleContainer}>
                             <Heading>{item.title}</Heading>
+                            <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', marginBottom:30, opacity:0.8, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
                       </View>
                   </View>
 
@@ -1117,6 +1115,7 @@ export default class TelaAnuncio extends Component {
               { this.state.purchased == true && Platform.OS === "android" &&
                 null
               }
+  
 
               { this.state.purchased == true && Platform.OS === "ios" &&
                 null
@@ -1533,14 +1532,13 @@ export default class TelaAnuncio extends Component {
                   
 
 
-                    <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', position:'absolute', bottom: windowHeight/4.5, opacity:0.8, left: windowWidth/3.7, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
-
 
                 </View>
 
                   <View style={styles.descriptionContainer}>
                       <View style={styles.productTitleContainer}>
                             <Heading>{item.title}</Heading>
+                            <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', marginBottom:30, opacity:0.8, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
                       </View>
                   </View>
 
@@ -1577,7 +1575,7 @@ export default class TelaAnuncio extends Component {
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Estabelecimento')} style={{paddingHorizontal: 13, marginLeft:120, marginRight:120, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Estabelecimento')} style={{paddingHorizontal: 13, width: windowWidth/2, marginLeft:100, marginRight:100, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
                         <IconResponsive name="hands-helping" size={30}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Contratar</TextTheme>
                   </TouchableOpacity>
