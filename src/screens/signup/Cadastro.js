@@ -622,7 +622,7 @@ export default class Cadastro extends Component {
 
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
-                    onPress={this.navigateTo('Verification')}
+                    onPress={this.navigateTo('TermsConditionsB')}
                     style={{backgroundColor:'black', width:200, borderRadius:10, height:50, flexDirection:'row', alignItems:'center'}}
                   >
                     <FontAwesome5 name="plus-square" size={35} style={{marginLeft:15}} color="#fff"/>

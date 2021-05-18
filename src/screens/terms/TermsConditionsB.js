@@ -10,6 +10,8 @@ import React, {Component} from 'react';
 import {
   SafeAreaView,
   ScrollView,
+  Linking,
+  Dimensions,
   StatusBar,
   StyleSheet,
   Text,
@@ -20,13 +22,19 @@ import {
 import Button from '../../components/buttons/Button';
 import {Caption} from '../../components/text/CustomText';
 
+
+//CSS responsivo
+import { SafeBackground, CaptionTerms, TextBlock, HeadTerm, ContainerButton, Title, ValueField, TouchableDetails, TextDetails, SignUpBottom, TextBold, TextBoldGolden } from '../home/styles';
+
+import { ThemeContext } from '../../../ThemeContext';
+
 // import colors
 import Colors from '../../theme/colors';
 
-// TermsConditionsB Config
+// TermsConditionsA Config
 const APP_NAME = 'App Name';
 
-// TermsConditionsB Styles
+// TermsConditionsA Styles
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
@@ -58,93 +66,194 @@ const styles = StyleSheet.create({
     letterSpacing: 0.4,
     textAlign: 'left',
   },
-  buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderTopRightRadius: 22,
-    borderTopLeftRadius: 22,
-    width: '100%',
-    padding: 16,
-  },
   button: {
-    width: '48%',
+    width: Dimensions.get('window').width/3,
+    marginLeft: Dimensions.get('window').width/3.5
   },
 });
 
-// TermsConditionsB
+// TermsConditionsA
 export default class TermsConditionsB extends Component {
+  static contextType = ThemeContext
+
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      nome: '',
+      email: '',
+      senha: '',
+      telefone: '',
+      data: '',
+      tipoDeConta: '', 
+      boolean: false
+    };
   }
 
-  goBack = () => {
+
+
+  componentDidMount() {
+    let getNome = this.props.route.params.nome;
+    let getEmail = this.props.route.params.email;
+    let getSenha = this.props.route.params.senha;
+    let getTelefone = this.props.route.params.telefone;
+    let getDataNascimento = this.props.route.params.dataNascimento;
+    let getTipoDeConta = this.props.route.params.tipoDeConta;
+
+
+
+    this.setState({nome: getNome})
+    this.setState({email: getEmail})
+    this.setState({senha: getSenha})
+    this.setState({telefone: getTelefone})
+    this.setState({data: getDataNascimento})
+    this.setState({tipoDeConta: getTipoDeConta})
+
+    console.log('email navigation: ' + getEmail)
+    console.log('senha navigation: ' + getSenha)
+    console.log('nome navigation: ' + getNome)
+    console.log('Telefone navigation: ' + getTelefone)
+    console.log('Data born navigation: ' + getDataNascimento)
+    console.log('TIPO DE CONTA navigation: ' + getTipoDeConta)
+  }
+
+
+  navigateTo = screen => () => {
     const {navigation} = this.props;
-    navigation.goBack();
+    navigation.navigate(screen, {
+      nome: this.state.nome,
+      email: this.state.email,
+      senha: this.state.senha,
+      telefone: this.state.telefone,
+      dataNascimento: this.state.data,
+      tipoDeConta: this.state.tipoDeConta
+    });
   };
 
   render() {
     return (
-      <SafeAreaView style={styles.screenContainer}>
+      <SafeBackground>
         <StatusBar
-          backgroundColor={Colors.primaryColor}
-          barStyle="light-content"
+          backgroundColor={this.context.dark ? '#121212' : 'white'}
+          barStyle={this.context.dark ? "light-content" : "dark-content"}
         />
-        <ScrollView>
+        <ScrollView onScrollEndDrag={() => this.setState({boolean: false})} onMomentumScrollEnd={() => this.setState({boolean: true})}>
           <View style={styles.content}>
-            <Caption style={styles.caption}>
-              Last update: 12 April, 2020
-            </Caption>
-            <Text
-              style={
-                styles.textBlock
-              }>{`Please read these terms and conditions carefully, before you start using the mobile application ${APP_NAME}.`}</Text>
+            <CaptionTerms>
+              Última atualização: 01 de Dezembro, 2020
+            </CaptionTerms>
+            <TextBlock>{`Por favor leia os termos e condições cautelosamente, antes de começar a usar o aplicativo móvel WeWo`}</TextBlock>
 
-            <Text style={styles.heading}>0. Introduction</Text>
-            <Text style={styles.textBlock}>
-              {`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                 \nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
-            </Text>
+            <HeadTerm>0. Introdução</HeadTerm>
+            <TextBlock>
+              {`WeWo construiu o aplicativo WeWo como um aplicativo Freemium. Este SERVIÇO é fornecido pela WeWo sem nenhum custo e deve ser usado como está.
 
-            <Text style={styles.heading}>1. Your Content</Text>
-            <Text style={styles.textBlock}>
-              {`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                \nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
-            </Text>
+Esta página é usada para informar os visitantes sobre nossas políticas de coleta, uso e divulgação de Informações Pessoais, caso alguém decida usar nosso Serviço.
 
-            <Text style={styles.heading}>2. No warranties</Text>
-            <Text style={styles.textBlock}>
-              {`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                \nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
-            </Text>
+Se você optar por usar nosso Serviço, você concorda com a coleta e uso de informações em relação a esta política. As informações pessoais que coletamos são usadas para fornecer e melhorar o serviço. Não usaremos ou compartilharemos suas informações com ninguém, exceto conforme descrito nesta Política de Privacidade.
 
-            <Text style={styles.heading}>3. License</Text>
-            <Text style={styles.textBlock}>
-              {`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                \nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
-            </Text>
+Os termos usados ​​nesta Política de Privacidade têm os mesmos significados que em nossos Termos e Condições, que podem ser acessados ​​no WeWo, a menos que definido de outra forma nesta Política de Privacidade.`}
+            </TextBlock>
+
+            <HeadTerm>1. Coleta e Uso de Informações</HeadTerm>
+            <TextBlock>
+              {`Para uma melhor experiência, ao usar nosso Serviço, podemos exigir que você nos forneça certas informações de identificação pessoal, incluindo, mas não se limitando ao Desenvolvedor WeWo. As informações que solicitamos serão retidas por nós e usadas conforme descrito nesta política de privacidade.
+
+O aplicativo usa serviços de terceiros que podem coletar informações usadas para identificá-lo.
+
+Link para a política de privacidade de provedores de serviços terceirizados usados ​​pelo aplicativo
+
+Serviços do Google Play
+AdMob
+Google Analytics para Firebase
+Firebase Crashlytics
+Facebook
+Expo`}
+            </TextBlock>
+
+            <HeadTerm>2. Dados de Registro</HeadTerm>
+            <TextBlock>
+              {`Queremos informar que sempre que você utiliza o nosso Serviço, em caso de erro no aplicativo, coletamos dados e informações (por meio de produtos de terceiros) no seu telefone chamados Log Data. 
+              
+Esses dados de registro podem incluir informações como endereço de protocolo de Internet ("IP") do dispositivo, nome do dispositivo, versão do sistema operacional, configuração do aplicativo ao utilizar nosso serviço, hora e data de uso do serviço e outras estatísticas.`}
+            </TextBlock>
+
+            <HeadTerm>3. Cookies</HeadTerm>
+            <TextBlock>
+              {`Cookies são arquivos com uma pequena quantidade de dados que são comumente usados ​​como identificadores exclusivos anônimos. Eles são enviados para o seu navegador a partir dos sites que você visita e são armazenados na memória interna do seu dispositivo.
+
+Este Serviço não usa esses “cookies” explicitamente. No entanto, o aplicativo pode usar código de terceiros e bibliotecas que usam “cookies” para coletar informações e melhorar seus serviços. Você tem a opção de aceitar ou recusar esses cookies e saber quando um cookie está sendo enviado para o seu dispositivo. Se você optar por recusar nossos cookies, pode não ser capaz de usar algumas partes deste Serviço.`}
+            </TextBlock>
+
+            <HeadTerm>4. Provedores de serviço</HeadTerm>
+            <TextBlock>
+              {`Podemos empregar empresas terceirizadas e indivíduos pelos seguintes motivos:
+
+1 - Para facilitar nosso serviço
+2 - Para fornecer o Serviço em nosso nome
+3 - Para executar serviços relacionados com o serviço
+4 - Para nos ajudar a analisar como nosso Serviço é usado
+
+Queremos informar aos usuários deste serviço que esses terceiros têm acesso às suas informações pessoais. O motivo é realizar as tarefas atribuídas a eles em nosso nome. No entanto, eles são obrigados a não divulgar ou usar as informações para qualquer outra finalidade.`}
+            </TextBlock>
+
+            <HeadTerm>5. Segurança</HeadTerm>
+            <TextBlock>
+              {`Valorizamos sua confiança em nos fornecer suas informações pessoais, portanto, estamos nos empenhando para usar meios comercialmente aceitáveis ​​de protegê-las. Mas lembre-se que nenhum método de transmissão pela internet, ou método de armazenamento eletrônico é 100% seguro e confiável, e não podemos garantir sua segurança absoluta.`}
+            </TextBlock>
+
+            <HeadTerm>6. Links para Outros Sites</HeadTerm>
+            <TextBlock>
+              {`Este serviço pode conter links para outros sites. 
+              
+Se você clicar em um link de terceiros, você será direcionado a esse site. 
+              
+Observe que esses sites externos não são operados por nós. Portanto, recomendamos fortemente que você reveja a Política de Privacidade desses sites. 
+              
+Não temos controle e não assumimos responsabilidade pelo conteúdo, políticas de privacidade ou práticas de quaisquer sites ou serviços de terceiros.`}
+            </TextBlock>
+
+            <HeadTerm>7. Privacidade Infantil</HeadTerm>
+            <TextBlock>
+              {`Estes Serviços não se dirigem a ninguém com idade inferior a 13 anos. 
+              
+Não recolhemos intencionalmente informações de identificação pessoal de crianças com menos de 13 anos. No caso de descobrirmos que uma criança com menos de 13 anos nos forneceu informações pessoais, as eliminamos imediatamente dos nossos servidores. Se você é um pai ou responsável e está ciente de que seu filho nos forneceu informações pessoais, entre em contato para que possamos tomar as medidas necessárias.`}
+            </TextBlock>
+
+            <HeadTerm>8. Mudanças nesta Política de Privacidade</HeadTerm>
+            <TextBlock>
+              {`Podemos atualizar nossa Política de Privacidade de tempos em tempos. Portanto, recomendamos que você revise esta página periodicamente para verificar quaisquer alterações. Iremos notificá-lo de quaisquer alterações, publicando a nova Política de Privacidade nesta página.
+
+Esta política entra em vigor a partir de 01/12/2020`}
+            </TextBlock>
+
+            <HeadTerm>9. Contate-Nos</HeadTerm>
+            <TextBlock>
+              {`Se você tiver dúvidas ou sugestões sobre nossa Política de Privacidade, não hesite em nos contatar em wewoprogrammer@gmail.com.
+
+Esta página de política de privacidade foi criada em privacypolicytemplate.net e modificada / gerada pelo App Privacy Generator`}
+            </TextBlock>
           </View>
         </ScrollView>
 
-        <View style={styles.buttonsContainer}>
-          <Button
-            onPress={this.goBack}
+        <View style={{marginBottom:10, marginLeft: 10}}>
+          {this.state.boolean == false ?
+            <Button
+            onPress={this.navigateTo('Verification')}
             buttonStyle={styles.button}
-            borderColor={Colors.primaryColor}
-            title="Decline"
-            outlined
-            rounded
-          />
-
-          <Button
-            onPress={this.goBack}
+            disabled={true}
+            title="Leia o Termo"
+            />
+            
+            :
+            
+            <Button
+            onPress={this.navigateTo('Verification')}
             buttonStyle={styles.button}
-            title="Accept"
-            rounded
-          />
+            title="Li e Concordo"
+            />
+          }
         </View>
-      </SafeAreaView>
+      </SafeBackground>
     );
   }
 }

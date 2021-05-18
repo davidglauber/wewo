@@ -45,6 +45,8 @@ import TelaLogout from '../screens/signin/TelaLogout';
 // import TermsConditions screen
 import TermsConditions from '../screens/terms/TermsConditionsA';
 
+import TermsConditionsB from '../screens/terms/TermsConditionsB';
+
 // import HomeNavigator
 import HomeNavigator from './HomeNavigatorA';
 
@@ -289,6 +291,17 @@ function MainNavigatorA() {
         <Stack.Screen
           name="TermsConditions"
           component={TermsConditions}
+          options={{
+            title: 'Termos e Condições',
+            headerStyle: { backgroundColor: dark ? '#121212' : 'white' },
+            headerTitleStyle: { color: dark ? '#FFD700' : 'black' },
+          }}
+        />
+
+
+        <Stack.Screen
+          name="TermsConditionsB"
+          component={TermsConditionsB}
           options={{
             title: 'Termos e Condições',
             headerStyle: { backgroundColor: dark ? '#121212' : 'white' },
