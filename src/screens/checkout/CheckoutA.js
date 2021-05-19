@@ -53,8 +53,8 @@ import { Video } from 'expo-av';
 import { parse } from 'fast-xml-parser';
 
 //consts
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('screen').width;
+const windowHeight = Dimensions.get('screen').height;
 
 
 // HomeA Styles
@@ -434,7 +434,7 @@ export default class CheckoutA extends Component {
 
           </ScrollView>
           
-          <View style={{position:"absolute", top: windowHeight/1.2, left: windowWidth/4, flexDirection:'row', alignItems: 'center'}}>
+          <View style={{position:"absolute", top: windowHeight/1.3, left: windowWidth/4, flexDirection:'row', alignItems: 'center'}}>
             {this.state.products.length == 0 ?
               null
               :

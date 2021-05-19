@@ -213,7 +213,7 @@ export default class ServicesAsClient extends Component {
             <Heading style={styles.paddingTitle}>Serviços que Contratei</Heading>
           </View>
           
-          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PagWo)</TextDescription2>
+          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PayWo)</TextDescription2>
 
           <View style={{alignItems:'center', marginTop:100}}>
             <LottieView source={bell} style={{width:200, height:200}} autoPlay loop />  
@@ -227,7 +227,7 @@ export default class ServicesAsClient extends Component {
             <Heading style={styles.paddingTitle}>Serviços que Contratei</Heading>
           </View>
           
-          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PagWo)</TextDescription2>
+          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Nessa tela você consegue ver todos os serviços contratados por você (lembre-se de pagar com PayWo)</TextDescription2>
 
           <FlatList
             keyExtractor={() => this.makeid(17)}
@@ -245,7 +245,6 @@ export default class ServicesAsClient extends Component {
             </View>
           }
           ></FlatList>
-
         </View>
 
       }

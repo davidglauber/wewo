@@ -215,7 +215,7 @@ export default class ConfirmedServices extends Component {
             </TouchableOpacity>
           </View>
           
-          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Para sua segurança, deve-se utilizar o Modo PagWo para efetuar o pagamento entre o Contratado e Contratante (não nos responsabilizamos por qualquer problema de pagamento fora da plataforma)</TextDescription2>
+          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Para sua segurança, deve-se utilizar o Modo PayWo para efetuar o pagamento entre o Contratado e Contratante (não nos responsabilizamos por qualquer problema de pagamento fora da plataforma)</TextDescription2>
 
           <View style={{alignItems:'center', marginTop:100}}>
             <LottieView source={bell} style={{width:200, height:200}} autoPlay loop />  
@@ -231,7 +231,7 @@ export default class ConfirmedServices extends Component {
             </TouchableOpacity>
           </View>
           
-          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Para sua segurança, deve-se utilizar o Modo PagWo para efetuar o pagamento entre o Contratado e Contratante (não nos responsabilizamos por qualquer problema de pagamento fora da plataforma)</TextDescription2>
+          <TextDescription2 style={{paddingHorizontal:40, textAlign:'justify'}}>Para sua segurança, deve-se utilizar o Modo PayWo para efetuar o pagamento entre o Contratado e Contratante (não nos responsabilizamos por qualquer problema de pagamento fora da plataforma)</TextDescription2>
 
           <FlatList
             keyExtractor={() => this.makeid(17)}
@@ -250,20 +250,26 @@ export default class ConfirmedServices extends Component {
           }
           ></FlatList>
 
-          <View style={{position:'absolute', top:windowHeight/1.1, paddingHorizontal:30, marginRight:20}}>
-            <View style={{flexDirection:'row'}}>
-              <IconResponsiveNOBACK style={{marginRight:20}} name="comment-alt" size={24}/>
-              <TextDescription2 style={{textAlign:'justify', fontWeight:'bold'}}>Negocie o valor com seu cliente</TextDescription2>
-            </View>
-            
-            <View style={{flexDirection:'row', marginTop:20}}>
-              <IconResponsiveNOBACK style={{marginRight:17}} name="at" size={24}/>
-              <TextDescription2 style={{textAlign:'justify', fontWeight:'bold'}}>O valor será o mesmo do anúncio</TextDescription2>
-            </View>
-          </View>
         </View>
 
         }
+        
+        <View style={{position:'absolute', top:windowHeight/1.2, paddingHorizontal:30, marginRight:20}}>
+          <View style={{flexDirection:'row'}}>
+            <IconResponsiveNOBACK style={{marginRight:20}} name="comment-alt" size={24}/>
+            <TextDescription2 style={{textAlign:'justify', fontWeight:'bold'}}>Negocie o valor com seu cliente</TextDescription2>
+          </View>
+          
+          <View style={{flexDirection:'row', marginTop:20}}>
+            <IconResponsiveNOBACK style={{marginRight:17}} name="at" size={24}/>
+            <TextDescription2 style={{textAlign:'justify', fontWeight:'bold'}}>O valor será o mesmo do anúncio</TextDescription2>
+          </View>
+
+          <View style={{flexDirection:'row', marginTop:20}}>
+            <IconResponsiveNOBACK style={{marginRight:17}} name="handshake" size={24}/>
+            <TextDescription2 style={{textAlign:'justify', fontWeight:'bold'}}>Aba de Serviços Contratados</TextDescription2>
+          </View>
+        </View>
 
 
         {/*Modalize dos comentários*/}

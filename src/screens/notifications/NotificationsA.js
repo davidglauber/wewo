@@ -169,7 +169,7 @@ export default class NotificationsA extends Component {
 
     modalizeRef.current?.close();
     this.props.navigation.navigate('ConfirmedServices')
-    this.AlertPro3.open();
+    alert('Tudo certo ; \n\nServiço confirmado! Lembre-se de comparecer no local e ativar o modo pagamento no final do serviço!')
   }
 
   async deniedButton(idNot) {
@@ -290,37 +290,6 @@ export default class NotificationsA extends Component {
             }}
           />
 
-
-          <AlertPro
-            ref={ref => {
-              this.AlertPro3 = ref;
-            }}
-            showCancel={false}
-            onConfirm={() => this.AlertPro3.close()}
-            title="Tudo certo ;)"
-            message="Serviço confirmado! Lembre-se de comparecer no local e ativar o modo pagamento no final do serviço!"
-            textConfirm="OK"
-            customStyles={{
-              mask: {
-                backgroundColor: "black",
-                opacity: 0.9
-              },
-              container: {
-                borderWidth: 1,
-                borderColor: "#d98b0d",
-                shadowColor: "#000000",
-                shadowOpacity: 0.1,
-                shadowRadius: 10,
-                borderRadius:30
-              },
-              buttonCancel: {
-                backgroundColor: "#3f3f3f"
-              },
-              buttonConfirm: {
-                backgroundColor: "#ffa31a"
-              }
-            }}
-          />
 
 
           <AlertPro
