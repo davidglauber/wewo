@@ -11,6 +11,7 @@ import {
   FlatList,
   Alert,
   StatusBar,
+  BackHandler,
   Image,
   Dimensions,
   Text,
@@ -227,6 +228,10 @@ export default class PaymentProducts extends Component {
 
   mercadoPago() {
     this.setState({brCodeValue:'loaded'});
+
+    //Previne o usuário de voltar a tela para não bugar o webview
+    BackHandler.addEventListener("hardwareBackPress", () => true);
+
     for(var x = 0; x <= this.state.accTK.length; x++) {
       
       if(x == this.state.valueIncrement) {
@@ -270,17 +275,11 @@ export default class PaymentProducts extends Component {
               ],
               marketplace_fee: percentToWeWoNumberInt,
               back_urls: {
-                success: "https://www.mercadopago.com/mp.php"
-              },
-              payment_methods: {
-                excluded_payment_methods: [
-                  {
-                    id: 'pix'
-                  }
-                ]
+                success: "https://www.mercadopago.com/mp.php",
+                pending: "https://www.mercadopago.com/mp.php"
               }
             })
-            })
+          })
             .then((res) => res.json())
             .then((json) => this.mpTaxAndPayment(json.init_point, percentToWeWoNumberInt, percentToUserNumberInt, sum, qtd))
             .catch((i) => alert('Erro ao requisitar o mercado pago: ' + i))

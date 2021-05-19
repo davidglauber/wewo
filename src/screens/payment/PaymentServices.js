@@ -14,6 +14,7 @@ import {
   Image,
   Dimensions,
   Text,
+  BackHandler,
   TouchableOpacity,
   StyleSheet,
   View
@@ -180,6 +181,7 @@ export default class PaymentServices extends Component {
 
 
 
+
   goBack = () => {
     const { navigation } = this.props;
     navigation.goBack();
@@ -219,6 +221,9 @@ export default class PaymentServices extends Component {
     }
   }
 
+
+  
+
   getPaymentStatus(id) {
     //vê se o status já está "approved"
     fetch(`https://api.mercadopago.com/v1/payments/search?status=approved&id=${id}`, {
@@ -237,12 +242,15 @@ export default class PaymentServices extends Component {
     this.setState({endpointMP: data})
   }
 
+  /*
   mpTaxPIXAndPayment(data, jsonData) {
     this.setState({endpointMPPix: data})
 
     console.log('PIX JSON: ' + JSON.stringify(jsonData))
   }
+*/
 
+  /*
   pixQRCODE() {
     let value = this.state.value;
     let newNumber = new Number(value);
@@ -266,10 +274,11 @@ export default class PaymentServices extends Component {
               title:"Pagamento de Serviço WeWo",
               quantity: 1,
               currency_id:"BRL",
-              unit_price: percentToWeWoNumberInt,
+              unit_price: newNumber,
               picture_url: this.state.fotoUser
             }
           ],
+          marketplace_fee: percentToWeWoNumberInt,
           back_urls: {
             success: "https://www.mercadopago.com/mp.php",
             pending: "https://www.mercadopago.com/mp.php",
@@ -316,6 +325,7 @@ export default class PaymentServices extends Component {
       .catch((e) => alert('erro ao requisitar o mercado pago: ' + e))
   }
 
+  */
 
 
 
@@ -325,7 +335,8 @@ export default class PaymentServices extends Component {
 
 
   _onNavigationStateChange(webViewState){
-    if(webViewState.url.includes('https://www.mercadopago.com/mp.php')) {
+    console.log('URL : ' + webViewState.url)
+    if(webViewState.url.includes('https://www.mercadopago.com/mp.php')){
       Alert.alert("Atenção", "O pagamento foi aprovado! Avalie o serviço para ajudar mais pessoas a encontrarem o profissional!", [
         {
             text: "OK",
@@ -335,6 +346,7 @@ export default class PaymentServices extends Component {
         { text: "Vou avaliar", onPress: () => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: this.state.idAnuncio, idUserCartao: this.props.route.params.idContratado}) }
       ]);
     }
+
   }
 
 
@@ -371,7 +383,11 @@ export default class PaymentServices extends Component {
     let percentToUserNumberInt2 = new Number(percentToUser2);
     
     this.setState({brCodeValue:'loaded'});
-    
+
+    //Previne o usuário de voltar a tela para não bugar o webview
+    BackHandler.addEventListener("hardwareBackPress", () => true);
+
+
       fetch('https://api.mercadopago.com/checkout/preferences', {
         method:'POST',
         mode: 'no-cors',
@@ -391,14 +407,8 @@ export default class PaymentServices extends Component {
           ],
           marketplace_fee: percentToWeWoNumberInt,
           back_urls: {
-            success: "https://www.mercadopago.com/mp.php"
-          },
-          payment_methods: {
-            excluded_payment_methods: [
-              {
-                id: 'pix'
-              }
-            ]
+            success: "https://www.mercadopago.com/mp.php",
+            pending: "https://www.mercadopago.com/mp.php"
           }
         })
       })
@@ -423,9 +433,11 @@ export default class PaymentServices extends Component {
             <Heading style={styles.paddingTitle}>Pagamento</Heading>
             <Heading style={{paddingTop: 10, marginBottom:10}}>Valor do Serviço: {this.state.valueService}</Heading>
             <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Escolha o método de pagamento que mais lhe é conveniente (será cobrada uma pequena taxa sobre o valor para a manuntenção da plataforma) {"\n\n"}Clique no ícone abaixo para realizar o pagamento</TextDescription2>
-              <TouchableOpacity onPress={() => this.pixQRCODE()}>
-                <Image source={require('../../../assets/pix.png')} style={{width:134, height:134}}/>
-              </TouchableOpacity>
+              {/**
+               <TouchableOpacity onPress={() => this.pixQRCODE()}>
+                 <Image source={require('../../../assets/pix.png')} style={{width:134, height:134}}/>
+               </TouchableOpacity>
+               */}
               <TouchableOpacity style={{marginTop: windowHeight/7, backgroundColor:'#fff', elevation:10, borderRadius:40}} onPress={() => this.mercadoPago()}>
                 <Image source={require('../../../assets/PAYWOLOGO.png')} style={{width:248, marginLeft:20, height:166}}/>
               </TouchableOpacity>
