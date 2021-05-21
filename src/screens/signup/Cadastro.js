@@ -36,7 +36,7 @@ import Layout from '../../theme/layout';
 //input mask
 import { TextInputMask } from 'react-native-masked-text';
 
-import { TextDays, ChooseOption } from '../home/styles';
+import { TextDays, ChooseOption, InputForm } from '../home/styles';
 
 import AlertPro from "react-native-alert-pro";
 
@@ -576,6 +576,12 @@ export default class Cadastro extends Component {
                   placeholder="Número de Telefone"
                 />
 
+                <TouchableOpacity style={{width:300, height: 55, marginLeft:20, marginTop: 30, borderRadius:20}} onPress={() => this.setState({showDate: true})}>
+                        <Text style={{color: '#DAA520', fontWeight: 'bold', textAlign:'center', fontSize:16}}>
+                          Clique aqui e defina sua Data de Nascimento: {this.convertDate()}
+                        </Text>
+                </TouchableOpacity>
+
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                   {this.state.typeAccount == 'Estabelecimento' ?
                       <View style={{flexDirection:'row'}}>
@@ -602,12 +608,6 @@ export default class Cadastro extends Component {
                   }
                   </View>
 
-                  <TouchableOpacity style={{width:150, height: 55, alignItems:'center', justifyContent:'center', marginTop: 30, borderRadius:20}} onPress={() => this.setState({showDate: true})}>
-                          <Text style={{color: '#DAA520', fontWeight: 'bold', fontSize:12}}>
-                            Defina sua Data de Nascimento: {this.convertDate()}
-                          </Text>
-                  </TouchableOpacity>
-               
                { this.state.showDate == true &&
                   <DateTimePicker
                       testID="dateTimePicker"
