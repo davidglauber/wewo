@@ -129,8 +129,10 @@ export default class Cadastro extends Component {
       emailUser: '',
       emailFocused: false,
       nome:'', 
+      nomeEstab:'',
       nomeFocused:false,
-      date: new Date(),
+      nomeEstabFocused:false,
+      date: '',
       actualDate: new Date(),
       showDate: false,
       mode:'date',
@@ -149,13 +151,10 @@ export default class Cadastro extends Component {
 
 
 
-  onChange = (event, selectedDate) => {
-    this.setState({showDate: false})
-    const currentDate = selectedDate || this.state.date;
-    this.setState({date: currentDate});
-    console.log('data selecionada: ' + currentDate)
-    
-  };
+  dateChange(text) {
+    this.setState({date: text})
+    console.log('date: '  + this.state.date)
+  }
 
   showMode = (currentMode) => {
     setShow(true);
@@ -190,6 +189,13 @@ export default class Cadastro extends Component {
       nome: text,
     });
     console.log('nome user: ' + this.state.nome)
+  };
+
+  nomeEstabChange = text => {
+    this.setState({
+      nomeEstab: text,
+    });
+    console.log('nome user: ' + this.state.nomeEstab)
   };
 
   nomeFocus = () => {
@@ -251,14 +257,17 @@ export default class Cadastro extends Component {
 
 
 
+  
+  checkDateValue() {
+    let year = this.state.actualDate.getFullYear();
+    let cutYear = this.state.date.split('/').pop();
+    let subDates = year - cutYear;  
 
+    return subDates;
+  }
 
   navigateTo = screen => () => {
-    let dataAtual = this.convertDate();
-    
-    let userDate = this.state.date.getFullYear();
-    let actualYear = this.state.actualDate.getFullYear();
-
+    var checkValidDate = this.checkDateValue();
     const {navigation} = this.props;
 
     if(this.state.password !== this.state.confirmPassword){
@@ -269,25 +278,77 @@ export default class Cadastro extends Component {
       this.AlertPro2.open();
     } 
 
-    if (this.state.nome == '' || this.state.email == '' || this.state.password == '' || this.state.confirmPassword == '' || this.state.phone == '') {
-      this.AlertPro3.open();
-    } 
+    if(this.state.typeAccount == 'Autonomo') {
+      if (this.state.nome == '' || this.state.email == '' || this.state.password == '' || this.state.confirmPassword == '' || this.state.phone == '') {
+        this.AlertPro3.open();
+      } 
+    } else {
+      if (this.state.nomeEstab == '' || this.state.email == '' || this.state.password == '' || this.state.confirmPassword == '' || this.state.phone == '') {
+        this.AlertPro3.open();
+      } 
+    }
 
-    if(actualYear - userDate < 13) {
+    if(checkValidDate < 13 && this.state.typeAccount == 'Autonomo') {
       this.AlertPro4.open();
     } 
     
     
-    if(this.state.password == this.state.confirmPassword && this.state.password.length >= 6 && this.state.date !== null && actualYear - userDate >= 13){  
+    //Aplica várias restrições, PRINCIPALMENTE DE IDADE, SE FOR PF MENOR DE 13 NAO PODE CADASTRAR
+    if(this.state.password == this.state.confirmPassword && this.state.password.length >= 6 && this.state.date !== '' && this.state.typeAccount == 'Autonomo' && checkValidDate >= 13){  
+        if(this.state.nome !== '' && this.state.nomeEstab == '') {
+          //quer dizer que o nome de autonomo é o escolhido
+          navigation.navigate(screen, {
+            nome: this.state.nome,
+            email: this.state.emailUser,
+            senha: this.state.password,
+            telefone: this.state.phone,
+            dataNascimento: this.state.date,
+            tipoDeConta: this.state.typeAccount
+          });
+        }
+
+        if(this.state.nome == '' && this.state.nomeEstab !== '') {
+          //quer dizer que o nome de estabelecimento é o escolhido
+          navigation.navigate(screen, {
+            nome: this.state.nomeEstab,
+            email: this.state.emailUser,
+            senha: this.state.password,
+            telefone: this.state.phone,
+            dataNascimento: this.state.date,
+            tipoDeConta: this.state.typeAccount
+          });
+        }
+    }
+
+
+    //Aplica várias restrições, MENOS A DE IDADE, PQ É PJ
+    if(this.state.password == this.state.confirmPassword && this.state.password.length >= 6 && this.state.date !== '' && this.state.typeAccount == 'Estabelecimento'){  
+      if(this.state.nome !== '' && this.state.nomeEstab == '') {
+        //quer dizer que o nome de autonomo é o escolhido
         navigation.navigate(screen, {
           nome: this.state.nome,
           email: this.state.emailUser,
           senha: this.state.password,
           telefone: this.state.phone,
-          dataNascimento: dataAtual,
+          dataNascimento: this.state.date,
           tipoDeConta: this.state.typeAccount
         });
-    }
+      }
+
+      if(this.state.nome == '' && this.state.nomeEstab !== '') {
+        //quer dizer que o nome de estabelecimento é o escolhido
+        navigation.navigate(screen, {
+          nome: this.state.nomeEstab,
+          email: this.state.emailUser,
+          senha: this.state.password,
+          telefone: this.state.phone,
+          dataNascimento: this.state.date,
+          tipoDeConta: this.state.typeAccount
+        });
+      }
+  }
+
+    
   };
 
 
@@ -310,16 +371,6 @@ export default class Cadastro extends Component {
     }
   };
 
-  convertDate() {
-    let day = this.state.date.getDate();
-    let month = this.state.date.getMonth() + 1;
-    let year = this.state.date.getFullYear();
-
-    let fullDate = day + '/' + month + '/' + year;
-
-    console.log('data escolhida: ' +  fullDate)
-    return fullDate;
-  }
 
 
   typeAccountFunction(type) {
@@ -488,27 +539,75 @@ export default class Cadastro extends Component {
               <View />
 
               <View style={styles.form}>
+                <View>
+                  {this.state.typeAccount == 'Estabelecimento' ?
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.typeAccountFunction('Autonomo')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginTop:20}}/>
+                        <TextDays>Autônomo</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginTop:20}}/>
+                        <TextDays>Autônomo</TextDays>
+                      </View>
+                  }
 
-                <UnderlineTextInput
-                  onRef={r => {
-                    this.nome = r;
-                  }}
-                  onChangeText={this.nomeChange}
-                  onFocus={this.nomeFocus}
-                  inputFocused={this.state.nomeFocused}
-                  onSubmitEditing={this.focusOn(this.email)}
-                  returnKeyType="next"
-                  maxLength={32}
-                  autoCapitalize={"words"}
-                  blurOnSubmit={false}
-                  keyboardType="default"
-                  placeholder="Seu nome"
-                  placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
-                  inputTextColor={INPUT_TEXT_COLOR}
-                  borderColor={INPUT_BORDER_COLOR}
-                  focusedBorderColor={INPUT_FOCUSED_BORDER_COLOR}
-                  inputContainerStyle={styles.inputContainer}
-                />
+                  { this.state.typeAccount == 'Autonomo' ?
+                      <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => this.typeAccountFunction('Estabelecimento')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginTop:20}}/>
+                        <TextDays>Estabelecimento</TextDays>
+                      </View>
+                      :
+                      <View style={{flexDirection:'row'}}>
+                        <ChooseOption onPress={() => {}} style={{marginTop:20}}/>
+                        <TextDays>Estabelecimento</TextDays>
+                      </View>
+                  }
+                </View>
+
+                {this.state.typeAccount == 'Autonomo' ?
+                  <UnderlineTextInput
+                    onRef={r => {
+                      this.nome = r;
+                    }}
+                    onChangeText={this.nomeChange}
+                    onFocus={this.nomeFocus}
+                    inputFocused={this.state.nomeFocused}
+                    onSubmitEditing={this.focusOn(this.email)}
+                    returnKeyType="next"
+                    maxLength={32}
+                    autoCapitalize={"words"}
+                    blurOnSubmit={false}
+                    keyboardType="default"
+                    placeholder="Seu nome"
+                    placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
+                    inputTextColor={INPUT_TEXT_COLOR}
+                    borderColor={INPUT_BORDER_COLOR}
+                    focusedBorderColor={INPUT_FOCUSED_BORDER_COLOR}
+                    inputContainerStyle={styles.inputContainer}
+                  />
+                :
+                  <UnderlineTextInput
+                    onRef={r => {
+                      this.nomeEstab = r;
+                    }}
+                    onChangeText={this.nomeEstabChange}
+                    onFocus={this.nomeFocus}
+                    inputFocused={this.state.nomeEstabFocused}
+                    onSubmitEditing={this.focusOn(this.email)}
+                    returnKeyType="next"
+                    maxLength={32}
+                    autoCapitalize={"words"}
+                    blurOnSubmit={false}
+                    keyboardType="default"
+                    placeholder="Nome do Estabelecimento"
+                    placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
+                    inputTextColor={INPUT_TEXT_COLOR}
+                    borderColor={INPUT_BORDER_COLOR}
+                    focusedBorderColor={INPUT_FOCUSED_BORDER_COLOR}
+                    inputContainerStyle={styles.inputContainer}
+                  />
+                }
 
                 <UnderlineTextInput
                   onRef={r => {
@@ -576,49 +675,36 @@ export default class Cadastro extends Component {
                   placeholder="Número de Telefone"
                 />
 
-                <TouchableOpacity style={{width:300, height: 55, marginLeft:20, marginTop: 30, borderRadius:20}} onPress={() => this.setState({showDate: true})}>
-                        <Text style={{color: '#DAA520', fontWeight: 'bold', textAlign:'center', fontSize:16}}>
-                          Clique aqui e defina sua Data de Nascimento: {this.convertDate()}
-                        </Text>
-                </TouchableOpacity>
 
-                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                  {this.state.typeAccount == 'Estabelecimento' ?
-                      <View style={{flexDirection:'row'}}>
-                        <TouchableOpacity onPress={() => this.typeAccountFunction('Autonomo')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginTop:20}}/>
-                        <TextDays>Autônomo</TextDays>
-                      </View>
-                      :
-                      <View style={{flexDirection:'row'}}>
-                        <ChooseOption onPress={() => {}} style={{marginTop:20}}/>
-                        <TextDays>Autônomo</TextDays>
-                      </View>
-                  }
-
-                  { this.state.typeAccount == 'Autonomo' ?
-                      <View style={{flexDirection:'row'}}>
-                        <TouchableOpacity onPress={() => this.typeAccountFunction('Estabelecimento')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginTop:20}}/>
-                        <TextDays>Estabelecimento</TextDays>
-                      </View>
-                      :
-                      <View style={{flexDirection:'row'}}>
-                        <ChooseOption onPress={() => {}} style={{marginTop:20}}/>
-                        <TextDays>Estabelecimento</TextDays>
-                      </View>
-                  }
-                  </View>
-
-               { this.state.showDate == true &&
-                  <DateTimePicker
-                      testID="dateTimePicker"
-                      value={this.state.date}
-                      mode={this.state.mode}
-                      is24Hour={true}
-                      display="default"
-                      onChange={this.onChange}
-                      style={{width: 320, backgroundColor: "white"}}
-                  />
-               }
+              {this.state.typeAccount == 'Autonomo' ?
+                <TextInputMask
+                  type={'datetime'}
+                  options={{
+                    format: 'DD/MM/YYYY'
+                  }}
+                  placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
+                  borderColor={INPUT_BORDER_COLOR}
+                  style={{marginTop:10, borderBottomWidth:1, color:'black'}}
+                  value={this.state.date}
+                  onChangeText={text => this.dateChange(text)}
+                  keyboardType={"number-pad"}
+                  placeholder="Data de Nascimento"
+                />
+                :
+                <TextInputMask
+                  type={'datetime'}
+                  options={{
+                    format: 'DD/MM/YYYY'
+                  }}
+                  placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
+                  borderColor={INPUT_BORDER_COLOR}
+                  style={{marginTop:10, borderBottomWidth:1, color:'black'}}
+                  value={this.state.date}
+                  onChangeText={text => this.dateChange(text)}
+                  keyboardType={"number-pad"}
+                  placeholder="Data de Criação da Empresa"
+                />
+              }
 
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
