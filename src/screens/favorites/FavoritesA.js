@@ -385,7 +385,7 @@ export default class FavoritesA extends Component {
 
           <View style={{justifyContent: 'center',alignItems: 'center', padding: 8}}>
             <SwipeLeft>
-                <SmallText>
+                <SmallText style={{color: 'white'}}>
                       {`Deslize para a direita para excluir`}
                 </SmallText>
             </SwipeLeft>

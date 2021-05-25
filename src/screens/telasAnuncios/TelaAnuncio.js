@@ -1074,9 +1074,9 @@ export default class TelaAnuncio extends Component {
                   </View>
 
 
-                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft:120, marginRight:120, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft:90, marginRight:90, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
                         <IconResponsive name="hands-helping" size={30}/>
-                        <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Contratar</TextTheme>
+                        <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
                   </TouchableOpacity>
 
 
@@ -1575,9 +1575,9 @@ export default class TelaAnuncio extends Component {
                         <TextTheme style={{fontSize:15, marginLeft: 15}}>{item.categoria} / {item.subcategoria}</TextTheme>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Estabelecimento')} style={{paddingHorizontal: 13, width: windowWidth/2, marginLeft:100, marginRight:100, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d'}}>
+                  <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Estabelecimento')} style={{paddingHorizontal: 13, width: windowWidth/2, marginLeft:100, marginRight:100, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
                         <IconResponsive name="hands-helping" size={30}/>
-                        <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Contratar</TextTheme>
+                        <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
                   </TouchableOpacity>
 
 
@@ -1586,7 +1586,7 @@ export default class TelaAnuncio extends Component {
                       <View>
                         {this.state.cartoesEstab.length <= 1 ?
                           <View style={{paddingHorizontal: windowWidth/6}}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{flexDirection:'row', backgroundColor:'#d98b0d', borderRadius:40, width: windowWidth/1.5, height:130, alignItems:'center', paddingTop:20, marginTop:40, justifyContent:'center', paddingBottom:30}}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{flexDirection:'row', backgroundColor:'#d98b0d', borderRadius:40, width: windowWidth/1.4, height:130, alignItems:'center', paddingTop:20, marginTop:40, justifyContent:'center', paddingBottom:30}}>
                               <Image source={{uri: item.photo}} style={{width:80, height:80, borderRadius:30}}/>
                               <View style={{flexDirection:"column", padding:10}}>
                                 <Text>Produto</Text>
@@ -1599,7 +1599,7 @@ export default class TelaAnuncio extends Component {
                           :
 
                           <View style={{marginLeft: windowWidth/10}}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{flexDirection:'row', backgroundColor:'#d98b0d', borderRadius:40, width: windowWidth/1.5, height:130, alignItems:'center', paddingTop:20, marginTop:40, justifyContent:'center', paddingBottom:30}}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})} style={{flexDirection:'row', backgroundColor:'#d98b0d', borderRadius:40, width: windowWidth/1.4, height:130, alignItems:'center', paddingTop:20, marginTop:40, justifyContent:'center', paddingBottom:30}}>
                               <Image source={{uri: item.photo}} style={{width:80, height:80, borderRadius:30}}/>
                               <View style={{flexDirection:"column", padding:10}}>
                                 <Text>Produto</Text>
