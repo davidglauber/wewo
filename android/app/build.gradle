@@ -135,8 +135,8 @@ android {
         applicationId "com.zubito.wewo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 34
-        versionName "3.3.8"
+        versionCode 35
+        versionName "3.3.9"
     }
     splits {
         abi {

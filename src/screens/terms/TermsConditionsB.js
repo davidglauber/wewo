@@ -129,6 +129,13 @@ export default class TermsConditionsB extends Component {
     });
   };
 
+
+  isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    const paddingToBottom = 20;
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
+  };
+
   render() {
     return (
       <SafeBackground>
@@ -136,7 +143,7 @@ export default class TermsConditionsB extends Component {
           backgroundColor={this.context.dark ? '#121212' : 'white'}
           barStyle={this.context.dark ? "light-content" : "dark-content"}
         />
-        <ScrollView onScrollEndDrag={() => this.setState({boolean: false})} onMomentumScrollEnd={() => this.setState({boolean: true})}>
+        <ScrollView onScroll={({nativeEvent}) => { if (this.isCloseToBottom(nativeEvent)) { this.setState({boolean: true}) } else {this.setState({boolean: false})}}}scrollEventThrottle={400}>
           <View style={styles.content}>
             <CaptionTerms>
               Última atualização: 01 de Dezembro, 2020

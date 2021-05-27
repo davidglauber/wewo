@@ -543,7 +543,7 @@ async componentDidMount() {
               </View>
 
 
-              <View style={{marginTop: windowHeight/18, marginLeft: windowWidth/54}}>
+              <View style={{position: "absolute", top: windowHeight/18, left: windowWidth/3}}>
                     <TextSearch
                       placeholder="Pesquise aqui"
                       placeholderTextColor={this.context.dark ? '#fff' : '#3E3C3F'}
@@ -613,7 +613,7 @@ async componentDidMount() {
                   <Image source={require("../../../assets/LOGOICONEAPP.png")} style={{height:104, width:104}}/>
                 </View>
 
-                <View style={{marginTop: windowHeight/18, marginLeft: windowWidth/54}}>
+                <View style={{position: "absolute", top: windowHeight/18, left: windowWidth/3}}>
                     <TextSearch
                       placeholder="Pesquise aqui"
                       placeholderTextColor={this.context.dark ? '#fff' : '#3E3C3F'}
@@ -636,7 +636,7 @@ async componentDidMount() {
                         </View>
                       </TouchableItem>
                     </View>
-                  </View>
+                </View>
 
 
                 {this.state.type == 'Estabelecimento' &&
