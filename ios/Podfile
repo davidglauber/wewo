@@ -3,11 +3,12 @@ require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 platform :ios, '10.0'
-install! 'cocoapods', :disable_input_output_paths => true
 
 target 'wewo' do
-  use_unimodules!
   use_modular_headers!
+  use_unimodules!
+
+  
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
@@ -24,19 +25,24 @@ target 'wewo' do
   #    flipper_post_install(installer)
   #  end
 
+  post_install do |installer|
+    installer.pods_project.targets.each do |target|
+     target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
+     end
+    end
+   end
 
-
-
-  pod 'RNInputMask', :path => '../node_modules/react-native-text-input-mask/ios/InputMask'
-
+   
+   
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'Firebase/Analytics'
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
 
-  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec', :modular_headers => false
-  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec', :modular_headers => false
-  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec', :modular_headers => false
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec', :modular_headers => true
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec', :modular_headers => true
+  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec', :modular_headers => true
 
 end
