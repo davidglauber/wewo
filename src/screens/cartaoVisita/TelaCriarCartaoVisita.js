@@ -153,13 +153,6 @@ export default class TelaCriarCartaoVisita extends Component {
       enderecoCepAuto: [],
       UFEstab: '',
       UFAuto:'',
-      segunda:'',
-      terca:'', 
-      quarta:'',
-      quinta:'',
-      sexta:'',
-      sabado:'',
-      domingo:'',
       modalizeRef: React.createRef(null),
       modalizeRefDescription: React.createRef(null),
       modalizeRefDescriptionEstab: React.createRef(null),
@@ -190,7 +183,6 @@ export default class TelaCriarCartaoVisita extends Component {
       usuarioComprou: false,
       arrayWordsAuto: [],
       arrayWordsEstab: [],
-      daysWeek: [],
       locationServiceEnabled: false,
       fotoPerfil: null,
       tipoDeConta: '',
@@ -732,13 +724,6 @@ export default class TelaCriarCartaoVisita extends Component {
 
 
   uploadFormToFirebase(typePublish) {
-    let segunda = this.state.segunda;
-    let terca = this.state.terca;
-    let quarta = this.state.quarta;
-    let quinta = this.state.quinta;
-    let sexta = this.state.sexta;
-    let sabado = this.state.sabado;
-    let domingo = this.state.domingo;
     let e = this;
 
     let publishId = e.makeid(17);
@@ -820,9 +805,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose,
                                         pesoEnc: e.state.pesoEnc,
                                         formEnc: e.state.formEnc,
                                         comprimentoEnc: e.state.comprimentoEnc,
@@ -853,9 +835,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose,
                                         pesoEnc: e.state.pesoEnc,
                                         formEnc: e.state.formEnc,
                                         comprimentoEnc: e.state.comprimentoEnc,
@@ -1004,9 +983,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose,
                                         pesoEnc: e.state.pesoEnc,
                                         formEnc: e.state.formEnc,
                                         comprimentoEnc: e.state.comprimentoEnc,
@@ -1037,9 +1013,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose,
                                         pesoEnc: e.state.pesoEnc,
                                         formEnc: e.state.formEnc,
                                         comprimentoEnc: e.state.comprimentoEnc,
@@ -1201,9 +1174,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose,
                                         pesoEnc: e.state.pesoEnc,
                                         formEnc: e.state.formEnc,
                                         comprimentoEnc: e.state.comprimentoEnc,
@@ -1234,9 +1204,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         videoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose,
                                         pesoEnc: e.state.pesoEnc,
                                         formEnc: e.state.formEnc,
                                         comprimentoEnc: e.state.comprimentoEnc,
@@ -1385,9 +1352,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose,
                                         pesoEnc: e.state.pesoEnc,
                                         formEnc: e.state.formEnc,
                                         comprimentoEnc: e.state.comprimentoEnc,
@@ -1418,9 +1382,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         photoPublish: urlImage,
                                         photoPublish2: urlImage2,
                                         photoPublish3: urlImage3,
-                                        workDays: e.state.daysWeek,
-                                        timeOpen: e.state.horarioOpen,
-                                        timeClose: e.state.horarioClose,
                                         pesoEnc: e.state.pesoEnc,
                                         formEnc: e.state.formEnc,
                                         comprimentoEnc: e.state.comprimentoEnc,
@@ -1537,34 +1498,6 @@ export default class TelaCriarCartaoVisita extends Component {
 
     return RFValue(12, Height);
   }
-
-  addingDaysOfWeek(day) {
-
-    if(day == 'segunda') {
-      this.setState({segunda: day})
-    }
-    if(day == 'terça') {
-      this.setState({terca: day})
-    }
-    if(day == 'quarta') {
-      this.setState({quarta: day})
-    }
-    if(day == 'quinta') {
-      this.setState({quinta: day})
-    }
-    if(day == 'sexta') {
-      this.setState({sexta: day})
-    }
-    if(day == 'sábado') {
-      this.setState({sabado: day})
-    }
-    if(day == 'domingo') {
-      this.setState({domingo: day})
-    }
-
-    this.state.daysWeek.push(day)
-  }
-
 
   
   onChangeFreteEstab(text) {
@@ -2105,132 +2038,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                 />
                             </TouchableOpacity>
 
-                            <View>
-
-                            <View style={{flexDirection:'row'}}>
-                                
-                                { this.state.segunda == '' ?
-                                    <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('segunda')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
-                                      <TextDays>Seg</TextDays>
-                                    </View>
-                                    :
-                                    <View style={{flexDirection:'row'}}>
-                                      <ChooseOption onPress={() => this.setState({segunda: ''})} style={{marginLeft:15, marginTop:20}}/>
-                                      <TextDays>Seg</TextDays>
-                                    </View>
-                                }
-
-                                { this.state.terca == '' ?
-                                    <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('terça')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
-                                      <TextDays>Ter</TextDays>
-                                    </View>
-                                    :
-                                    <View style={{flexDirection:'row'}}>
-                                      <ChooseOption onPress={() => this.setState({terca: ''})} style={{marginLeft:15, marginTop:20}}/>
-                                      <TextDays>Ter</TextDays>
-                                    </View>
-                                }
-
-
-                                { this.state.quarta == '' ?
-                                    <View style={{flexDirection:'row'}}>
-                                      <TouchableOpacity onPress={() => this.addingDaysOfWeek('quarta')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
-                                      <TextDays>Qua</TextDays>
-                                    </View>
-                                    :
-                                    <View style={{flexDirection:'row'}}>
-                                      <ChooseOption onPress={() => this.setState({quarta: ''})} style={{marginLeft:15, marginTop:20}}/>
-                                      <TextDays>Qua</TextDays>
-                                    </View>
-                                }
-                              </View>
-
-                              <View style={{flexDirection:'row'}}>
-                                { this.state.quinta == '' ?
-                                  <View style={{flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('quinta')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
-                                    <TextDays>Qui</TextDays>
-                                  </View>
-
-                                :
-                                  <View style={{flexDirection:'row'}}>
-                                    <ChooseOption onPress={() => this.setState({quinta: ''})} style={{marginLeft:15, marginTop:20}}/>
-                                    <TextDays>Qui</TextDays>
-                                  </View>
-                                }
-
-                                { this.state.sexta == '' ?
-                                    <View style={{flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sexta')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
-                                        <TextDays>Sex</TextDays>
-                                    </View>
-                                    :
-                                    <View style={{flexDirection:'row'}}>
-                                        <ChooseOption onPress={() => this.setState({sexta: ''})} style={{marginLeft:15, marginTop:20}}/>
-                                        <TextDays>Sex</TextDays>
-                                    </View>
-                                }
-
-
-                                { this.state.sabado == '' ?
-                                    <View style={{flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={() => this.addingDaysOfWeek('sábado')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
-                                        <TextDays>Sáb</TextDays>
-                                    </View>
-                                    :
-                                    <View style={{flexDirection:'row'}}>
-                                        <ChooseOption onPress={() => this.setState({sabado: ''})} style={{marginLeft:15, marginTop:20}}/>
-                                        <TextDays>Sáb</TextDays>
-                                    </View>
-                                }
-                              </View>
-
-                            <View style={{flexDirection:'row'}}>
-                                { this.state.domingo == '' ?
-                                  <View style={{flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={() => this.addingDaysOfWeek('domingo')} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
-                                    <TextDays>Dom</TextDays>
-                                  </View>
-                                  :
-                                  <View style={{flexDirection:'row'}}>
-                                    <ChooseOption onPress={() => this.setState({domingo: ''})} style={{marginLeft:15, marginTop:20}}/>
-                                    <TextDays>Dom</TextDays>
-                                  </View>
-                                }
-                            </View>
-
-                            <View style={{flexDirection:'row'}}>
-                              <View>
-                                <TitleChangeColor style={{fontWeight:'bold', paddingLeft: 15, marginTop:20, fontSize: this.responsibleFont()}}>Horário de Abertura</TitleChangeColor>
-                                  <View style={{marginLeft:14, width: 130, height:30}}>
-                                  <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginTop:4}} onPress={() => this.setState({showHour: true})}> 
-                                        <IconResponsiveNOBACK name="clock" size={24}/>
-                                        {this.state.horarioOpen == '' ? 
-                                          <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>Abertura</Text> 
-                                        : <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>{this.state.horarioOpen}</Text> 
-                                        }
-                                  </TouchableOpacity>
-                                  </View>
-                              </View>
-
-                                <View>
-                                  <TitleChangeColor style={{fontWeight:'bold', paddingLeft: 35, marginTop:20, fontSize: this.responsibleFont()}}>Horário de Fechamento</TitleChangeColor>
-                                    <View style={{marginLeft:44, width: 130, height:30}}>
-                                        <TouchableOpacity style={{flexDirection:'row', alignItems:'center', marginTop:4}} onPress={() => this.setState({showHourClose: true})}> 
-                                          <IconResponsiveNOBACK name="stopwatch" size={24}/>
-                                          {this.state.horarioClose == '' ?
-                                            <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>Fechamento</Text>
-                                          : <Text style={{color:'#9A9A9A', fontWeight:'bold', marginLeft:5}}>{this.state.horarioClose}</Text>
-                                          }
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </View>
-                              
-                            </View>
-
                             {this.state.showHour == true &&
                                 <DateTimePicker
                                     testID="dateTimePicker"
@@ -2769,228 +2576,6 @@ export default class TelaCriarCartaoVisita extends Component {
             </View>
           </Modalize>
 
-
-
-          {/*Modalize do horario de abertura*/}
-          <Modalize
-            ref={this.state.modalizeRefAbertura}
-            snapPoint={500}
-            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
-          >
-            <View style={{alignItems:'flex-start', marginTop:40}}>
-            <Heading6 style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, color:'#fff'} : {fontWeight:'bold', marginLeft: 10, color:'#000'}}>Selecione o Horário de Abertura</Heading6>
-                <View>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('1:00')}>
-                      <CategoryAndSub>1:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('2:00')}>
-                      <CategoryAndSub>2:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('3:00')}>
-                      <CategoryAndSub>3:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('4:00')}>
-                      <CategoryAndSub>4:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('5:00')}>
-                      <CategoryAndSub>5:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('6:00')}>
-                      <CategoryAndSub>6:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('7:00')}>
-                      <CategoryAndSub>7:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('8:00')}>
-                      <CategoryAndSub>8:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('9:00')}>
-                      <CategoryAndSub>9:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('10:00')}>
-                      <CategoryAndSub>10:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('11:00')}>
-                      <CategoryAndSub>11:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('12:00')}>
-                      <CategoryAndSub>12:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('13:00')}>
-                      <CategoryAndSub>13:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('14:00')}>
-                      <CategoryAndSub>14:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('15:00')}>
-                      <CategoryAndSub>15:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('16:00')}>
-                      <CategoryAndSub>16:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('17:00')}>
-                      <CategoryAndSub>17:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('18:00')}>
-                      <CategoryAndSub>18:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('19:00')}>
-                      <CategoryAndSub>19:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('20:00')}>
-                      <CategoryAndSub>20:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('21:00')}>
-                      <CategoryAndSub>21:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('22:00')}>
-                      <CategoryAndSub>22:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('23:00')}>
-                      <CategoryAndSub>23:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioOpen('00:00')}>
-                      <CategoryAndSub>00:00</CategoryAndSub>
-                  </TouchableOpacity>
-                </View>
-            </View>
-          </Modalize>
-
-
-
-
-           {/*Modalize do horario de FECHAMENTO*/}
-           <Modalize
-            ref={this.state.modalizeRefFechamento}
-            snapPoint={500}
-            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
-          >
-            <View style={{alignItems:'flex-start', marginTop:40}}>
-            <Heading6 style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, color:'#fff'} : {fontWeight:'bold', marginLeft: 10, color:'#000'}}>Selecione o Horário de Fechamento</Heading6>
-                <View>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('1:00')}>
-                      <CategoryAndSub>1:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('2:00')}>
-                      <CategoryAndSub>2:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('3:00')}>
-                      <CategoryAndSub>3:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('4:00')}>
-                      <CategoryAndSub>4:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('5:00')}>
-                      <CategoryAndSub>5:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('6:00')}>
-                      <CategoryAndSub>6:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('7:00')}>
-                      <CategoryAndSub>7:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('8:00')}>
-                      <CategoryAndSub>8:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('9:00')}>
-                      <CategoryAndSub>9:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('10:00')}>
-                      <CategoryAndSub>10:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('11:00')}>
-                      <CategoryAndSub>11:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('12:00')}>
-                      <CategoryAndSub>12:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('13:00')}>
-                      <CategoryAndSub>13:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('14:00')}>
-                      <CategoryAndSub>14:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('15:00')}>
-                      <CategoryAndSub>15:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('16:00')}>
-                      <CategoryAndSub>16:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('17:00')}>
-                      <CategoryAndSub>17:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('18:00')}>
-                      <CategoryAndSub>18:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('19:00')}>
-                      <CategoryAndSub>19:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('20:00')}>
-                      <CategoryAndSub>20:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('21:00')}>
-                      <CategoryAndSub>21:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('22:00')}>
-                      <CategoryAndSub>22:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('23:00')}>
-                      <CategoryAndSub>23:00</CategoryAndSub>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.getHorarioClose('00:00')}>
-                      <CategoryAndSub>00:00</CategoryAndSub>
-                  </TouchableOpacity>
-                </View>
-            </View>
-          </Modalize>
         </SafeBackgroundPublish>
       </Fragment>
     );

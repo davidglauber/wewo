@@ -688,7 +688,7 @@ async componentDidMount() {
               data={categories}
               renderItem={({item}) => 
                 <View style={{alignItems: 'center', marginTop:10}}>
-                  <TouchCategory onPress={() => this.props.navigation.navigate('HomeCategory', {titleOfCategory: item.titleCategory})} style={{width: windowWidth/5, height:55, alignItems:'center', marginTop: 20, marginLeft:18, justifyContent:'center', borderRadius:20, marginRight: 20, backgroundColor: this.context.dark? '#d98b0d' : '#d98b0d'}}>
+                  <TouchCategory onPress={() => this.props.navigation.navigate('HomeCategory', {titleOfCategory: item.titleCategory})} style={{width: windowWidth/5, height:55, alignItems:'center', marginTop: 20, marginLeft:18, justifyContent:'center', borderRadius:20, marginRight: 20, backgroundColor: this.context.dark? '#3E3C3F' : '#d98b0d'}}>
                     {item.titleCategory == 'Transportes' &&
                       <IconResponsive name="car" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
                     }

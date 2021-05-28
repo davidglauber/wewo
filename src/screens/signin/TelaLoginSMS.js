@@ -221,7 +221,7 @@ export default function TelaLoginSMS () {
           <View style={styles.instructionContainer}>
             <Heading5 style={styles.heading}>Digite o seu Número para Logar</Heading5>
             <Paragraph style={styles.instruction}>
-                Assim que confirmado, você entrará na sua conta
+                Assim que confirmado, você entrará na sua conta {"\n\n"}(PODE LEVAR ATÉ 5 MINUTOS, SE NÃO CHEGAR, PEÇA PARA REENVIAR O CÓDIGO).
             </Paragraph>
 
 
