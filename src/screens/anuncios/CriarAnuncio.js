@@ -75,6 +75,8 @@ import AlertPro from "react-native-alert-pro";
 //locationSERVICES
 import * as Location from 'expo-location';
 
+import { Video } from 'expo-av';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -2740,7 +2742,16 @@ export default class CriarAnuncio extends Component {
                   :
                   <View>
                     <TouchableOpacity onPress={() => this.getVideo()} style={{alignItems:'center', justifyContent:'center', backgroundColor:'#E3E3E3', width:60, height:60, borderRadius:20, marginTop:7}}>
-                        <FontAwesome5 name="video" size={24} color={'#DAA520'}/>
+                        <Video 
+                          source={{ uri: this.state.video }}
+                          rate={1.0}
+                          volume={0}
+                          isMuted={true}
+                          resizeMode="cover"
+                          shouldPlay
+                          isLooping
+                          style={{width:60, height:60, borderRadius:20}}
+                        />
                     </TouchableOpacity>
                   </View>
                 }

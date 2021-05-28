@@ -231,7 +231,7 @@ export default class TelaLogin extends Component {
         var credential = await firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
 
         await firebase.auth().signInWithCredential(credential).then(() =>{
-            this.props.navigation.navigate('HomeNavigator')
+            this.props.navigation.navigate('Home')
             this.AlertPro4.open();
         }).catch((err) => {
           console.log('erro: ' + err)
@@ -279,7 +279,7 @@ export default class TelaLogin extends Component {
 
           await firebase
           .auth().signInWithCredential(credential).then(() => {
-            this.props.navigation.navigate('HomeNavigator')
+            this.props.navigation.navigate('Home')
             this.AlertPro4.open();
           }).catch(error => {
               console.log(error);

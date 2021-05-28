@@ -470,7 +470,7 @@ export default class TelaPrincipalAnuncio extends Component {
                         keyExtractor={() => this.makeid(17)}
                         data={anunciosAuto}
                         renderItem={({item}) => 
-                            <AnuncioContainer onPress={() => this.props.navigation.navigate('', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                            <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                               <View style={{flexDirection:'row'}}>
                                   {item.video == null ?
                                     <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20}}></Image>
@@ -519,7 +519,7 @@ export default class TelaPrincipalAnuncio extends Component {
                         keyExtractor={() => this.makeid(17)}
                         data={anunciosEstab}
                         renderItem={({item}) => 
-                        <AnuncioContainer onPress={() => this.props.navigation.navigate('', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
+                        <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                           <View style={{flexDirection:'row'}}>
                               {item.video == null ?
                                 <Image source={{uri: item.photo}} style={{width:128, height:110, borderRadius: 20, marginLeft: windowWidth/14, marginTop: 20}}></Image>

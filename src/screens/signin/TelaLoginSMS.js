@@ -288,7 +288,7 @@ export default function TelaLoginSMS () {
                 );
                     await firebase.auth().signInWithCredential(credential).then(() => {
                         alertPro2.current.open();
-                        navigation.navigate('HomeNavigator')
+                        navigation.navigate('Home')
                     }).catch((err) => {
                         console.log(err)
                     })

@@ -284,6 +284,9 @@ export default class MLConfigAccount extends Component {
 
         {this.state.webviewBoolean == false && this.state.idMercadoPago !== "" &&
             <View style={{alignItems:'center'}}>
+              <TouchableOpacity style={{position:'absolute', left: windowWidth/15, top: windowHeight/25}} onPress={() => this.props.navigation.navigate('Home')}>
+                <IconResponsiveNOBACK name="arrow-left" size={24}/>
+              </TouchableOpacity>
               <Heading style={styles.paddingTitle}>Parabéns</Heading>
               <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>Tudo certo, a sua conta Mercado Pago já está conectada com o WeWo</TextDescription2>
               <LottieView source={thumbsUp} style={{width:200, height:200, marginTop: windowHeight / 12}} autoPlay loop />
