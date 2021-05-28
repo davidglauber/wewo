@@ -619,6 +619,7 @@ async componentDidMount() {
                       placeholderTextColor={this.context.dark ? '#fff' : '#3E3C3F'}
                       returnKeyType="search"
                       maxLength={50}
+                      onSubmitEditing={() => this.getPublishes(this.state.textSearch)}
                       value={this.state.textSearch}
                       onChangeText={text => this.onChangeTextoSearch(text)}
                     />
@@ -679,6 +680,119 @@ async componentDidMount() {
                 }
               </View>
             }
+
+          <ScrollView alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} horizontal={true}>
+            <FlatList
+              horizontal={true}
+              keyExtractor={() => this.makeid(17)}
+              data={categories}
+              renderItem={({item}) => 
+                <View style={{alignItems: 'center', marginTop:10}}>
+                  <TouchCategory onPress={() => this.props.navigation.navigate('HomeCategory', {titleOfCategory: item.titleCategory})} style={{width: windowWidth/5, height:55, alignItems:'center', marginTop: 20, marginLeft:18, justifyContent:'center', borderRadius:20, marginRight: 20, backgroundColor: this.context.dark? '#d98b0d' : '#d98b0d'}}>
+                    {item.titleCategory == 'Transportes' &&
+                      <IconResponsive name="car" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Animais' &&
+                      <IconResponsive name="dog" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+
+                    {item.titleCategory == 'Lazer' &&
+                      <IconResponsive name="bandcamp" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Comida' &&
+                      <IconResponsive name="apple" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Administração' &&
+                      <IconResponsive name="pencil-alt" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Negócios' &&
+                      <IconResponsive name="building" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Informática' &&
+                      <IconResponsive name="laptop" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Audio-Visual' &&
+                      <IconResponsive name="camera-retro" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Eletrodomésticos' &&
+                      <IconResponsive name="plug" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Automóveis' &&
+                      <IconResponsive name="bus" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Beleza' &&
+                      <IconResponsive name="kiss-beam" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Saúde' &&
+                      <IconResponsive name="heartbeat" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Farmácias' &&
+                      <IconResponsive name="capsules" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Market' &&
+                      <IconResponsive name="shopping-bag" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Música' &&
+                      <IconResponsive name="music" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Artes' &&
+                      <IconResponsive name="paint-brush" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Construção' &&
+                      <IconResponsive name="wrench" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Imóveis' &&
+                      <IconResponsive name="warehouse" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Turismo' &&
+                      <IconResponsive name="umbrella-beach" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Aluguel' &&
+                      <IconResponsive name="hand-peace" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Shows' &&
+                      <IconResponsive name="microphone-alt" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Segurança' &&
+                      <IconResponsive name="shield-alt" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Educação' &&
+                      <IconResponsive name="book-reader" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Outros' &&
+                      <IconResponsive name="cubes" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                  </TouchCategory>
+                  <Text style={{fontWeight:'bold', color: this.context.dark ? '#fff' : '#000', fontSize:13, marginRight:3, marginTop:5, marginBottom:10}}>{item.titleCategory}</Text>
+                </View>
+              }
+            ></FlatList>
+          </ScrollView>
+
 
           <ScrollView horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} style={{flexDirection:'row', backgroundColor: this.context.dark? "#121212": "#fff", borderWidth:1, borderColor:"orange", elevation:5, marginHorizontal: windowWidth/50, borderRadius:10, marginTop:20}}>
             <FlatList
@@ -761,120 +875,9 @@ async componentDidMount() {
             >
 
             </FlatList>
-
           </ScrollView>
           
           
-          <ScrollView alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} horizontal={true}>
-                <FlatList
-                  horizontal={true}
-                  keyExtractor={() => this.makeid(17)}
-                  data={categories}
-                  renderItem={({item}) => 
-                    <View style={{alignItems: 'center', backgroundColor: this.context.dark ? '#3E3C3F' : '#f3f3f3', marginTop:30}}>
-                      <TouchCategory onPress={() => this.props.navigation.navigate('HomeCategory', {titleOfCategory: item.titleCategory})} style={{width: windowWidth/5, height:55, alignItems:'center', marginTop: 20, marginLeft:18, justifyContent:'center', borderRadius:20, marginRight: 20, backgroundColor: this.context.dark? '#121212' : '#fff'}}>
-                        {item.titleCategory == 'Transportes' &&
-                          <IconResponsiveNOBACK name="car" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Animais' &&
-                          <IconResponsiveNOBACK name="dog" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-
-                        {item.titleCategory == 'Lazer' &&
-                          <IconResponsiveNOBACK name="bandcamp" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Comida' &&
-                          <IconResponsiveNOBACK name="apple" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Administração' &&
-                          <IconResponsiveNOBACK name="pencil-alt" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Negócios' &&
-                          <IconResponsiveNOBACK name="building" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Informática' &&
-                          <IconResponsiveNOBACK name="laptop" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Audio-Visual' &&
-                          <IconResponsiveNOBACK name="camera-retro" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Eletrodomésticos' &&
-                          <IconResponsiveNOBACK name="plug" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Automóveis' &&
-                          <IconResponsiveNOBACK name="bus" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Beleza' &&
-                          <IconResponsiveNOBACK name="kiss-beam" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Saúde' &&
-                          <IconResponsiveNOBACK name="heartbeat" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Farmácias' &&
-                          <IconResponsiveNOBACK name="capsules" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Market' &&
-                          <IconResponsiveNOBACK name="shopping-bag" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Música' &&
-                          <IconResponsiveNOBACK name="music" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Artes' &&
-                          <IconResponsiveNOBACK name="paint-brush" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Construção' &&
-                          <IconResponsiveNOBACK name="wrench" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Imóveis' &&
-                          <IconResponsiveNOBACK name="warehouse" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Turismo' &&
-                          <IconResponsiveNOBACK name="umbrella-beach" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Aluguel' &&
-                          <IconResponsiveNOBACK name="hand-peace" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Shows' &&
-                          <IconResponsiveNOBACK name="microphone-alt" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Segurança' &&
-                          <IconResponsiveNOBACK name="shield-alt" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                        {item.titleCategory == 'Educação' &&
-                          <IconResponsiveNOBACK name="book-reader" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsiveNOBACK>
-                        }
-
-                      </TouchCategory>
-                      <Text style={{fontWeight:'bold', color: this.context.dark ? '#fff' : '#000', fontSize:13, marginRight:3, marginTop:5, marginBottom:10}}>{item.titleCategory}</Text>
-                    </View>
-                  }
-                ></FlatList>
-
-            </ScrollView>
-
-
             <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 15, paddingHorizontal: 16, paddingBottom: 35}}>
               <Heading>Anúncios</Heading>
               <TouchableOpacity onPress={this.navigateTo('Filtro')} style={{width:50, height:20, flexDirection:"row", marginRight:17}}>
