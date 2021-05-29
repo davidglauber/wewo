@@ -42,6 +42,8 @@ import {purchased} from '../../config/purchase';
 
 import { Video } from 'expo-av';
 
+import normalize from '../../config/resizeFont';
+
 //consts
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -407,8 +409,20 @@ async componentDidMount() {
                         <IconResponsive name="book-reader" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
                       }
 
+                      {item.titleCategory == 'Assistência Técnica' &&
+                        <IconResponsive name="hammer" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                      }
+
+                      {item.titleCategory == 'Consultoria' &&
+                        <IconResponsive name="smile-beam" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                      }
+
+                      {item.titleCategory == 'Aulas' &&
+                        <IconResponsive name="book-reader" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                      }
+
                     </TouchCategory>
-                    <Text style={{fontWeight:'bold', color: this.context.dark ? '#d98b0d' : '#d98b0d', fontSize:13, marginRight:20}}>{item.titleCategory}</Text>
+                    <Text style={{fontWeight:'bold', color: this.context.dark ? '#d98b0d' : '#d98b0d', fontSize: normalize(10), marginRight:20}}>{item.titleCategory}</Text>
                   </View>
                 }
                 ></FlatList>

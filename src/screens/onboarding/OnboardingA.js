@@ -33,6 +33,7 @@ import rapaz from '../../../assets/rapazWEWO.json';
 import money from '../../../assets/moneyWEWO.json';
 import rapazECachorro from '../../../assets/rapazcachorroWEWO.json';
 import mulher from '../../../assets/mulherWEWO.json';
+import normalize from '../../config/resizeFont';
 
 // OnboardingA Config
 const isRTL = I18nManager.isRTL;
@@ -93,6 +94,7 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingTop: 24,
+    fontSize: normalize(20),
     color: Colors.primaryText,
     textAlign: 'center',
   },
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   descriptionText: {
-    fontSize: 15,
+    fontSize: normalize(12),
     lineHeight: 23,
     color: Colors.secondaryText,
     textAlign: 'center',
@@ -146,7 +148,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontWeight: '700',
-    fontSize: 14,
+    fontSize: normalize(12),
     color: '#DAA520',
   },
   dot: {

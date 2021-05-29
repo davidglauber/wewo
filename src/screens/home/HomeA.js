@@ -49,6 +49,7 @@ import {AdMobInterstitial} from 'expo-ads-admob';
 
 import { Video } from 'expo-av';
 
+import normalize from '../../config/resizeFont';
 
 //consts
 const windowWidth = Dimensions.get('window').width;
@@ -785,9 +786,21 @@ async componentDidMount() {
                     {item.titleCategory == 'Outros' &&
                       <IconResponsive name="cubes" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
                     }
+                    
+                    {item.titleCategory == 'Assistência Técnica' &&
+                      <IconResponsive name="hammer" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Consultoria' &&
+                      <IconResponsive name="smile-beam" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
+
+                    {item.titleCategory == 'Aulas' &&
+                      <IconResponsive name="book-reader" size={24} style={{justifyContent:'center', alignItems:'center'}}></IconResponsive>
+                    }
 
                   </TouchCategory>
-                  <Text style={{fontWeight:'bold', color: this.context.dark ? '#fff' : '#000', fontSize:13, marginRight:3, marginTop:5, marginBottom:10}}>{item.titleCategory}</Text>
+                  <Text style={{fontWeight:'bold', color: this.context.dark ? '#fff' : '#000', fontSize: normalize(10), marginRight:3, marginTop:5, marginBottom:10}}>{item.titleCategory}</Text>
                 </View>
               }
             ></FlatList>
@@ -878,7 +891,7 @@ async componentDidMount() {
           </ScrollView>
           
           
-            <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 15, paddingHorizontal: 16, paddingBottom: 35}}>
+            <View style={{flexDirection: 'row',  justifyContent: 'space-between',  alignItems: 'center', paddingTop: 25, paddingHorizontal: 16, paddingBottom: 35}}>
               <Heading>Anúncios</Heading>
               <TouchableOpacity onPress={this.navigateTo('Filtro')} style={{width:50, height:20, flexDirection:"row", marginRight:17}}>
                   <ValueField>Filtros</ValueField>

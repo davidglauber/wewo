@@ -42,6 +42,8 @@ import AlertPro from "react-native-alert-pro";
 
 import { Subtitle2Publish, ChooseOption } from '../home/styles';
 
+import normalize from '../../config/resizeFont';
+
 //consts
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -272,43 +274,40 @@ export default function PaymentMethodA() {
         {plan == 'mensal' && tipoDeConta == 'Autonomo' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
             <LottieView source={diamond} style={{width:200, height:200}} autoPlay loop />
-            <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 14,90</Text>
+            <Text style={{fontSize: normalize(17), fontWeight:'bold'}}>Mensal: R$ 14,90</Text>
           </View>
         }
 
         {plan == 'mensal' && tipoDeConta == 'Estabelecimento' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
             <LottieView source={diamond} style={{width:200, height:200}} autoPlay loop />
-            <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 19,90</Text>
+            <Text style={{fontSize: normalize(17), fontWeight:'bold'}}>Mensal: R$ 19,90</Text>
           </View>
         }
 
         {plan == 'anual' && tipoDeConta == 'Autonomo' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
             <LottieView source={diamond} style={{width:200, height:200}} autoPlay loop />
-            <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 170,00</Text>
+            <Text style={{fontSize: normalize(17), fontWeight:'bold'}}>Mensal: R$ 170,00</Text>
           </View>
         }
 
         {plan == 'anual' && tipoDeConta == 'Estabelecimento' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
             <LottieView source={diamond} style={{width:200, height:200}} autoPlay loop />
-            <Text style={{fontSize:20, fontWeight:'bold'}}>Mensal: R$ 220,00</Text>
+            <Text style={{fontSize: normalize(17), fontWeight:'bold'}}>Mensal: R$ 220,00</Text>
           </View>
         }
 
-        <View style={{flexDirection:'row', marginHorizontal: windowWidth/4, justifyContent:'space-between'}}>
+        <View style={{flexDirection:'row', marginTop:40, marginHorizontal: windowWidth/4, justifyContent:'space-between'}}>
           {plan == 'mensal' ?
-            <View style={{flexDirection:'row'}}>
-                <ChooseOption/>
-                <TouchableOpacity>
-                    <Subtitle2Publish
-                      style={{fontWeight: 'bold'}}>Mensal</Subtitle2Publish>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity>
+                <Subtitle2Publish
+                  style={{fontWeight: 'bold', fontSize: normalize(15)}}>Mensal</Subtitle2Publish>
+            </TouchableOpacity>
           :
             <View style={{flexDirection:'row'}}>
-                <TouchableOpacity onPress={() => setPlan('mensal')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
+                <TouchableOpacity onPress={() => setPlan('mensal')} style={{width:18, height:18, borderRadius:30}}/>
                   <TouchableOpacity onPress={() => setPlan( 'mensal')}>
                       <Subtitle2Publish>Mensal</Subtitle2Publish>
                   </TouchableOpacity>
@@ -316,16 +315,13 @@ export default function PaymentMethodA() {
           }
 
           {plan == 'anual' ?
-            <View style={{flexDirection:'row'}}>
-                <ChooseOption/>
-                <TouchableOpacity>
-                    <Subtitle2Publish
-                      style={{fontWeight: 'bold'}}>Anual</Subtitle2Publish>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity>
+                <Subtitle2Publish
+                  style={{fontWeight: 'bold', fontSize: normalize(15)}}>Anual</Subtitle2Publish>
+            </TouchableOpacity>
           :
             <View style={{flexDirection:'row'}}>
-                <TouchableOpacity onPress={() => setPlan('anual')} style={{backgroundColor:'#E3E3E3', width:18, height:18, borderRadius:30}}/>
+                <TouchableOpacity onPress={() => setPlan('anual')} style={{width:18, height:18, borderRadius:30}}/>
                   <TouchableOpacity onPress={() => setPlan('anual')}>
                       <Subtitle2Publish>Anual</Subtitle2Publish>
                   </TouchableOpacity>
@@ -335,39 +331,39 @@ export default function PaymentMethodA() {
 
         <ScrollView>
           {tipoDeConta == 'Autonomo' && 
-            <View style={{backgroundColor:'#e3e3e3', borderRadius:40, padding:10, marginTop: windowHeight/12}}>
+            <View style={{backgroundColor:'#e3e3e3', borderRadius:40, padding:10, marginTop: windowHeight/12, flexWrap: "wrap"}}>
               <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
                 <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
-                <Text style={{marginLeft:10}}>15 Anúncios e Portfólios Ilimitados</Text>
+                <Text style={{marginLeft:10, fontSize: normalize(13)}}>15 Anúncios e Portfólios Ilimitados</Text>
               </View>
 
               <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
                 <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
-                <Text style={{marginLeft:10}}>Maior Visibilidade</Text>
+                <Text style={{marginLeft:10, fontSize: normalize(13)}}>Maior Visibilidade</Text>
               </View>
 
               <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
                 <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
-                <Text style={{marginLeft:10}}>Sem Anúncios no App WeWo</Text>
+                <Text style={{marginLeft:10, fontSize: normalize(13)}}>Sem Anúncios no App WeWo</Text>
               </View>
             </View>
           }
 
           {tipoDeConta == 'Estabelecimento' &&
-            <View style={{backgroundColor:'#e3e3e3', borderRadius:40, padding:10, marginTop: windowHeight/12}}>
+            <View style={{backgroundColor:'#e3e3e3', borderRadius:40, padding:10, marginTop: windowHeight/12, flexWrap: "wrap"}}>
               <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
                 <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
-                <Text style={{marginLeft:10}}>15 Anúncios e Produtos Ilimitados</Text>
+                <Text style={{marginLeft:10, fontSize: normalize(13)}}>15 Anúncios e Produtos Ilimitados</Text>
               </View>
 
               <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
                 <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
-                <Text style={{marginLeft:10}}>Maior Visibilidade</Text>
+                <Text style={{marginLeft:10, fontSize: normalize(13)}}>Maior Visibilidade</Text>
               </View>
 
               <View style={{flexDirection:'row', alignItems:'center', padding:12}}>
                 <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
-                <Text style={{marginLeft:10}}>Sem Anúncios no App WeWo</Text>
+                <Text style={{marginLeft:10, fontSize: normalize(13)}}>Sem Anúncios no App WeWo</Text>
               </View>
             </View>
           }
