@@ -664,6 +664,18 @@ export default class Cadastro extends Component {
                   inputContainerStyle={styles.inputContainer}
                 />
 
+              {Platform.OS == "ios" ? 
+                <TextInputMask
+                  type={'cel-phone'}
+                  placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
+                  borderColor={INPUT_BORDER_COLOR}
+                  style={{marginTop:20, borderBottomWidth:1, color:'black'}}
+                  value={this.state.phone}
+                  onChangeText={text => this.onChangePhone(text)}
+                  keyboardType={"phone-pad"}
+                  placeholder="Número de Telefone"
+                />
+              :
                 <TextInputMask
                   type={'cel-phone'}
                   placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
@@ -674,9 +686,25 @@ export default class Cadastro extends Component {
                   keyboardType={"phone-pad"}
                   placeholder="Número de Telefone"
                 />
+              }
 
+              {Platform.OS == "ios" && this.state.typeAccount == 'Autonomo' &&
+                <TextInputMask
+                  type={'datetime'}
+                  options={{
+                    format: 'DD/MM/YYYY'
+                  }}
+                  placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
+                  borderColor={INPUT_BORDER_COLOR}
+                  style={{marginTop:20, marginBottom: 20, borderBottomWidth:1, color:'black'}}
+                  value={this.state.date}
+                  onChangeText={text => this.dateChange(text)}
+                  keyboardType={"number-pad"}
+                  placeholder="Data de Nascimento"
+                />
+              }
 
-              {this.state.typeAccount == 'Autonomo' ?
+              {Platform.OS == "android" && this.state.typeAccount == 'Autonomo' &&
                 <TextInputMask
                   type={'datetime'}
                   options={{
@@ -690,7 +718,25 @@ export default class Cadastro extends Component {
                   keyboardType={"number-pad"}
                   placeholder="Data de Nascimento"
                 />
-                :
+              }
+
+              {Platform.OS == "ios" && this.state.typeAccount == 'Estabelecimento' &&
+                <TextInputMask
+                  type={'datetime'}
+                  options={{
+                    format: 'DD/MM/YYYY'
+                  }}
+                  placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
+                  borderColor={INPUT_BORDER_COLOR}
+                  style={{marginTop:20, marginBottom: 20, borderBottomWidth:1, color:'black'}}
+                  value={this.state.date}
+                  onChangeText={text => this.dateChange(text)}
+                  keyboardType={"number-pad"}
+                  placeholder="Data de Criação da Empresa"
+                />
+              }
+
+              {Platform.OS == "android" && this.state.typeAccount == 'Estabelecimento' &&
                 <TextInputMask
                   type={'datetime'}
                   options={{
