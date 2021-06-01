@@ -174,6 +174,8 @@ PODS:
   - EXAdsAdMob (8.4.0):
     - Google-Mobile-Ads-SDK (= 7.55.1)
     - UMCore
+  - EXAppleAuthentication (3.1.0):
+    - UMCore
   - EXApplication (2.4.1):
     - UMCore
   - EXAV (8.7.0):
@@ -683,6 +685,7 @@ PODS:
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAdsAdMob (from `../node_modules/expo-ads-admob/ios`)
+  - EXAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
   - EXApplication (from `../node_modules/expo-application/ios`)
   - EXAV (from `../node_modules/expo-av/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
@@ -800,6 +803,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXAdsAdMob:
     :path: "../node_modules/expo-ads-admob/ios"
+  EXAppleAuthentication:
+    :path: "../node_modules/expo-apple-authentication/ios"
   EXApplication:
     :path: "../node_modules/expo-application/ios"
   EXAV:
@@ -952,6 +957,7 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   EXAdsAdMob: 312dc4af8d5568f21240e0baee6ebe1e605a87c5
+  EXAppleAuthentication: e6bb6f9ffe84e52b04a36f00220456da07694c3d
   EXApplication: e3c201e7b913d081bbd37bd3c5d0e2cdc21733b4
   EXAV: e32adf44c10a82f723172d5b01d5693890888dd6
   EXConstants: 54d0bf04319d1692c6c7bc03ca151ef7a71705a4

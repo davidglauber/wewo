@@ -33,6 +33,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import firebase from '../../config/firebase';
 
+
 // import colors
 import Colors from '../../theme/colors';
 
@@ -45,7 +46,7 @@ import AlertPro from "react-native-alert-pro";
 import * as Facebook from 'expo-facebook';
 
 //IMPORT APPLE LOGIN 
-import { appleAuth } from '@invertase/react-native-apple-authentication';
+import * as AppleAuthentication from 'expo-apple-authentication';
 
 // VerificationB Config
 const isRTL = I18nManager.isRTL;
@@ -262,33 +263,8 @@ export default class Verificação extends Component {
   }
 
 
-  async signInWithApple() {
-    //only iOS
-    const appleAuthRequestResponse = await appleAuth.performRequest({
-      requestedOperation: appleAuth.Operation.LOGIN,
-      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-    })
-
-
-    const { identityToken, nonce } = appleAuthRequestResponse;
-
-    if (identityToken) {
-      const appleCredential = firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
-
-      // 4). use the created `AppleAuthProvider` credential to start a Firebase auth request,
-      //     in this example `signInWithCredential` is used, but you could also call `linkWithCredential`
-      //     to link the account to an existing user
-      const userCredential = await firebase.auth().signInWithCredential(appleCredential);
-  
-      // user is now signed in, any Firebase `onAuthStateChanged` listeners you have will trigger
-      console.log(`Firebase authenticated via Apple, UID: ${userCredential.user.uid}`); 
-    } else {
-      return null
-    }
-
-  }
-
   render() {
+    const e = this;
     return (
       <SafeAreaView forceInset={{top: 'never'}} style={styles.screenContainer}>
 
@@ -409,9 +385,58 @@ export default class Verificação extends Component {
 
 
           {Platform.OS === 'ios' ? 
-            <TouchableOpacity onPress={() => this.signInWithApple()}>
-              <FontAwesome5 name="apple" size={38} style={{marginRight:15}} color="#DAA520"/>
-            </TouchableOpacity>
+            <AppleAuthentication.AppleAuthenticationButton
+              buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+              buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+              cornerRadius={10}
+              style={{ width: 200, height: 44 }}
+              onPress={async () => {
+                try {
+                  const credential = await AppleAuthentication.signInAsync({
+                    requestedScopes: [
+                      AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                      AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                    ],
+                  });
+
+                  const authCredential = new firebase.auth.OAuthProvider(
+                    "apple.com"
+                  ).credential({
+                    idToken: credential.identityToken
+                  })
+
+                  try {
+                    await firebase.auth().signInWithCredential(authCredential)
+                    var user = firebase.auth().currentUser;
+                    firebase.firestore().collection('usuarios').doc(user.uid).set({
+                        email: e.state.email,
+                        nome: e.state.nome,
+                        premium: false,
+                        dataNascimento: e.state.data,
+                        telefone: e.state.telefone,
+                        tipoDeConta: e.state.tipoDeConta,
+                        userLocation: ''
+                      })
+                    this.props.navigation.navigate('HomeNavigator')
+                    this.AlertPro4.open();
+                  } catch (e) {
+                    console.log('ERRO: ' + e)
+                  }
+                  // signed in
+                } catch (e) {
+                  if (e.code === 'ERR_CANCELED') {
+                    alert('Cancelado pelo usuario')
+                    // handle that the user canceled the sign-in flow
+                  } if (e.code === 'ERR_APPLE_AUTHENTICATION_INVALID_SCOPE') {
+                    alert('Escopo incorreto')
+                  } if (e.code === 'ERR_APPLE_AUTHENTICATION_UNAVAILABLE') {
+                    alert('Apple Login Indisponivel')
+                  } if (e.code === 'ERR_APPLE_AUTHENTICATION_REQUEST_FAILED') {
+                    alert('Falha de pesquisa')
+                  }
+                }
+              }}
+            />
           :
             <TouchableOpacity onPress={() => this.signInWithFacebook()}>
               <FontAwesome5 name="facebook" size={35} style={{marginRight:15}} color="#DAA520"/>

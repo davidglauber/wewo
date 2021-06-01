@@ -21,6 +21,7 @@
     "correios-brasil": "^2.2.2",
     "expo": "~40.0.0",
     "expo-ads-admob": "~8.4.0",
+    "expo-apple-authentication": "^3.1.0",
     "expo-av": "~8.7.0",
     "expo-dark-mode-switch": "^0.0.1",
     "expo-facebook": "~9.1.0",
