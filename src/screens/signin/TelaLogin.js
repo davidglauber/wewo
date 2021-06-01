@@ -44,6 +44,8 @@ import AlertPro from "react-native-alert-pro";
 //import icons
 import { FontAwesome5 } from '@expo/vector-icons';
 
+//IMPORT APPLE LOGIN 
+import * as AppleAuthentication from 'expo-apple-authentication';
 
 //consts
 const windowWidth = Dimensions.get('window').width;
@@ -292,6 +294,8 @@ export default class TelaLogin extends Component {
 
 
   render() {
+    const e = this;
+
     return (
       <View style={{flex:1, backgroundColor:'white'}}>
 
@@ -469,18 +473,60 @@ export default class TelaLogin extends Component {
         </View>
 
 
-        <View style={{flexDirection:'row', marginBottom: windowHeight/2.3}}>
+        <View style={{flexDirection:'row', marginBottom: windowHeight/3.3}}>
           <TouchableOpacity onPress={() => this.signInWithGoogle()}>
               <FontAwesome5 name="google" size={35} style={{marginRight:25}} color="#DAA520"/>
           </TouchableOpacity>
 
           {Platform.OS === 'ios' ? 
-            null 
+            <AppleAuthentication.AppleAuthenticationButton
+              buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+              buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+              cornerRadius={10}
+              style={{ width: 200, height: 44 }}
+              onPress={async () => {
+                try {
+                  const credential = await AppleAuthentication.signInAsync({
+                    requestedScopes: [
+                      AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                      AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                    ],
+                  });
+
+                  const authCredential = new firebase.auth.OAuthProvider(
+                    "apple.com"
+                  ).credential({
+                    idToken: credential.identityToken
+                  })
+
+                  try {
+                    await firebase.auth().signInWithCredential(authCredential)
+                      this.props.navigation.navigate('Home')
+                      this.AlertPro4.open();
+                  } catch (e) {
+                    console.log('ERRO: ' + e)
+                  }
+                  // signed in
+                } catch (e) {
+                  if (e.code === 'ERR_CANCELED') {
+                    alert('Cancelado pelo usuario')
+                    // handle that the user canceled the sign-in flow
+                  } if (e.code === 'ERR_APPLE_AUTHENTICATION_INVALID_SCOPE') {
+                    alert('Escopo incorreto')
+                  } if (e.code === 'ERR_APPLE_AUTHENTICATION_UNAVAILABLE') {
+                    alert('Apple Login Indisponivel')
+                  } if (e.code === 'ERR_APPLE_AUTHENTICATION_REQUEST_FAILED') {
+                    alert('Falha de pesquisa')
+                  }
+                }
+              }}
+            />
           :
-          <TouchableOpacity onPress={() => this.signInWithFacebook()}>
+            <TouchableOpacity onPress={() => this.signInWithFacebook()}>
               <FontAwesome5 name="facebook" size={35} style={{marginRight:15}} color="#DAA520"/>
-          </TouchableOpacity>
+            </TouchableOpacity>
           }
+
           <View style={{marginBottom: 44, marginLeft: 10}}>
             <Button
               onPress={() => this.confirmIfUserHasBeenSignUp()}
