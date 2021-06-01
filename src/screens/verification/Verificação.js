@@ -44,6 +44,9 @@ import AlertPro from "react-native-alert-pro";
 //import Facebook API
 import * as Facebook from 'expo-facebook';
 
+//IMPORT APPLE LOGIN 
+import { appleAuth } from '@invertase/react-native-apple-authentication';
+
 // VerificationB Config
 const isRTL = I18nManager.isRTL;
 
@@ -258,6 +261,33 @@ export default class Verificação extends Component {
     }
   }
 
+
+  async signInWithApple() {
+    //only iOS
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+    })
+
+
+    const { identityToken, nonce } = appleAuthRequestResponse;
+
+    if (identityToken) {
+      const appleCredential = firebase.auth.AppleAuthProvider.credential(identityToken, nonce);
+
+      // 4). use the created `AppleAuthProvider` credential to start a Firebase auth request,
+      //     in this example `signInWithCredential` is used, but you could also call `linkWithCredential`
+      //     to link the account to an existing user
+      const userCredential = await firebase.auth().signInWithCredential(appleCredential);
+  
+      // user is now signed in, any Firebase `onAuthStateChanged` listeners you have will trigger
+      console.log(`Firebase authenticated via Apple, UID: ${userCredential.user.uid}`); 
+    } else {
+      return null
+    }
+
+  }
+
   render() {
     return (
       <SafeAreaView forceInset={{top: 'never'}} style={styles.screenContainer}>
@@ -379,11 +409,13 @@ export default class Verificação extends Component {
 
 
           {Platform.OS === 'ios' ? 
-            null 
+            <TouchableOpacity onPress={() => this.signInWithApple()}>
+              <FontAwesome5 name="apple" size={38} style={{marginRight:15}} color="#DAA520"/>
+            </TouchableOpacity>
           :
-          <TouchableOpacity onPress={() => this.signInWithFacebook()}>
+            <TouchableOpacity onPress={() => this.signInWithFacebook()}>
               <FontAwesome5 name="facebook" size={35} style={{marginRight:15}} color="#DAA520"/>
-          </TouchableOpacity>
+            </TouchableOpacity>
           }
           <View style={{marginBottom: 44, marginLeft: 10}}>
             <Button
