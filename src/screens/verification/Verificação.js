@@ -338,7 +338,7 @@ export default class Verificação extends Component {
           showCancel={false}
           onConfirm={() => this.AlertPro4.close()}
           title="Sucesso"
-          message="Logado com sucesso"
+          message="Cadastrado com sucesso"
           textConfirm="OK"
           customStyles={{
             mask: {
@@ -389,7 +389,7 @@ export default class Verificação extends Component {
               buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
               buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
               cornerRadius={10}
-              style={{ width: 200, height: 44 }}
+              style={{ width: 44, height: 44 }}
               onPress={async () => {
                 try {
                   const credential = await AppleAuthentication.signInAsync({

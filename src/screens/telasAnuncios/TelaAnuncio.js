@@ -1032,7 +1032,7 @@ export default class TelaAnuncio extends Component {
                   <View style={styles.descriptionContainer}>
                       <View style={styles.productTitleContainer}>
                             <Heading>{item.title}</Heading>
-                            <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', marginBottom:30, opacity:0.8, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
+                            <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', marginBottom:30, marginTop: 10, opacity:0.8, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10, overflow: Platform.OS === "ios" ? "hidden" : null}}>A partir de {item.value}</ValueFieldPrincipal>
                       </View>
                   </View>
 
@@ -1075,7 +1075,7 @@ export default class TelaAnuncio extends Component {
 
 
                   <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft:90, marginRight:90, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
-                        <IconResponsive name="hands-helping" size={30}/>
+                        <IconResponsive name="hands-helping" size={24}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
                   </TouchableOpacity>
 
@@ -1538,7 +1538,7 @@ export default class TelaAnuncio extends Component {
                   <View style={styles.descriptionContainer}>
                       <View style={styles.productTitleContainer}>
                             <Heading>{item.title}</Heading>
-                            <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', marginBottom:30, opacity:0.8, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
+                            <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', marginBottom:30, marginTop: 10, opacity:0.8, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10, overflow: Platform.OS === "ios" ? "hidden" : null}}>A partir de {item.value}</ValueFieldPrincipal>
                       </View>
                   </View>
 
@@ -1576,7 +1576,7 @@ export default class TelaAnuncio extends Component {
                   </TouchableOpacity>
 
                   <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Estabelecimento')} style={{paddingHorizontal: 13, width: windowWidth/2, marginLeft:100, marginRight:100, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
-                        <IconResponsive name="hands-helping" size={30}/>
+                        <IconResponsive name="hands-helping" size={24}/>
                         <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
                   </TouchableOpacity>
 

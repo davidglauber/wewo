@@ -483,7 +483,7 @@ export default class TelaLogin extends Component {
               buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
               buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
               cornerRadius={10}
-              style={{ width: 200, height: 44 }}
+              style={{ width: 44, height: 44 }}
               onPress={async () => {
                 try {
                   const credential = await AppleAuthentication.signInAsync({

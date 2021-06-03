@@ -76,7 +76,15 @@ export default class ServiceCadaster extends Component {
       locationServiceEnabled: false,
       modalVisible: false,
       modalizeLocation: React.createRef(null),
-      boolean: false
+      boolean: false,
+      nomeEnd: '',
+      cepEnd: '',
+      endereco: '',
+      numeroEnd: '',
+      complementoEnd: '',
+      bairroEnd: '',
+      cidadeEnd: '',
+      estadoEnd: '',
     };
   }
 
@@ -233,6 +241,7 @@ export default class ServiceCadaster extends Component {
         })
         
         e.setModalVisible(false)
+        alert('Parabens! O anunciante foi notificado e em breve ira contacta-lo em breve pelo app. Fique atento a aba de serviços enviados')
         e.props.navigation.navigate('Home')
       })
     } else {
@@ -241,7 +250,49 @@ export default class ServiceCadaster extends Component {
   }
 
 
+  onChangeNomeEnd(text) {
+    this.setState({nomeEnd: text})
+  }
 
+  onChangeCEPEnd(text) {
+    this.setState({cepEnd: text})
+  }
+
+  onChangeEnderecoEnd(text) {
+    this.setState({endereco: text})
+  }
+
+  onChangeNumeroEnd(text) {
+    this.setState({numeroEnd: text})
+  }
+
+  onChangeComplementoEnd(text) {
+    this.setState({complementoEnd: text})
+  }
+
+  onChangeBairroEnd(text) {
+    this.setState({bairroEnd: text})
+  }
+
+  onChangeCidadeEnd(text) {
+    this.setState({cidadeEnd: text})
+  }
+
+  onChangeEstadoEnd(text) {
+    this.setState({estadoEnd: text})
+  }
+
+
+  saveAdress() {
+    const {nomeEnd, cepEnd, endereco, numeroEnd, complementoEnd, bairroEnd, cidadeEnd, estadoEnd} = this.state; 
+
+    if(nomeEnd !== '' && cepEnd !== '' && endereco !== '' && numeroEnd !== '' && complementoEnd !== '' && bairroEnd !== '' && cidadeEnd !== '' && estadoEnd !== '') {
+      let address = `${nomeEnd}, ${endereco}, ${bairroEnd}, ${cidadeEnd}, ${estadoEnd} (${cepEnd})`
+      this.setState({cep: address})
+    } else {
+      alert('Por favor preencha todos os campos do seu endereço')
+    }
+  }
 
   render() {
     return (
@@ -367,7 +418,7 @@ export default class ServiceCadaster extends Component {
             <View style={{marginTop:30, paddingHorizontal:20}}>
                 <Subtitle2EditProfile>Seu Nome</Subtitle2EditProfile>
                 <InputForm
-                    value={this.state.nome}
+                    value={`${this.state.nome}                                                                                         `}
                     style={{marginBottom: 10}}
                     editable={false}
                     onChangeText={() => {}}
@@ -381,7 +432,7 @@ export default class ServiceCadaster extends Component {
             <View style={{marginTop:30, paddingHorizontal:20}}>
                 <Subtitle2EditProfile>Serviço a ser Contratado</Subtitle2EditProfile>
                 <InputForm
-                    value={this.state.servico}
+                    value={`${this.state.servico}                                                                                          `}
                     style={{marginBottom: 10}}
                     editable={false}
                     onChangeText={() => {}}
@@ -394,7 +445,7 @@ export default class ServiceCadaster extends Component {
             <View style={{marginTop:30, paddingHorizontal:20}}>
                 <Subtitle2EditProfile>Seu Telefone</Subtitle2EditProfile>
                 <InputForm
-                    value={this.state.telefone}
+                    value={`${this.state.telefone}                                                                                            `}
                     style={{marginBottom: 10}}
                     editable={false}
                     onChangeText={() => {}}
@@ -405,14 +456,14 @@ export default class ServiceCadaster extends Component {
             </View>
 
             <View style={{marginTop:30, paddingHorizontal:20}}>
-                <Subtitle2EditProfile>Valor do Serviço</Subtitle2EditProfile>
+                <Subtitle2EditProfile style={{textAlign: 'justify'}}>Digite aqui o valor do serviço que deseja pagar, o anunciante podera enviar uma contra-proposta pelo chat, caso aceito este sera o valor definitivo</Subtitle2EditProfile>
                 <InputFormMask
                   type={'money'}
-                  style={{marginBottom: 10}}
-                  value={this.state.valor}
+                  style={{marginBottom: 10, marginTop: 10}}
+                  value={`${this.state.valor}                                                                                                    `}
                   onChangeText={text => this.onChangePreco(text)}
                   keyboardType={"number-pad"}
-                  placeholder="Dê sua oferta de valor                                                          "
+                  placeholder="Dê sua oferta de valor                                                                            "
                 />
             </View>
 
@@ -428,10 +479,6 @@ export default class ServiceCadaster extends Component {
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity onPress={() => this.updateToFirebase()} style={{marginTop:30, paddingHorizontal:20}}>
-                <IconResponsiveNOBACK name="telegram-plane" size={35}/>
-            </TouchableOpacity>
-
             {this.state.showDate == true &&
                 <DateTimePicker
                     testID="dateTimePicker"
@@ -441,7 +488,7 @@ export default class ServiceCadaster extends Component {
                     onChange={this.onChange}
                     
                     display="default"
-                    style={{width: 320, backgroundColor: "white"}}
+                    style={{width: 320, marginLeft: windowWidth/2, marginTop: 20, backgroundColor: "white"}}
                 />
             }
 
@@ -453,9 +500,14 @@ export default class ServiceCadaster extends Component {
                     is24Hour={true}
                     display="default"
                     onChange={this.onChangeHour}
-                    style={{width: 320, backgroundColor: "white"}}
+                    style={{width: 320, marginLeft: windowWidth/1.5, marginTop: 20, backgroundColor: "white"}}
                 />
             }
+
+            <TouchableOpacity onPress={() => this.updateToFirebase()} style={{marginTop:30, paddingHorizontal:20}}>
+                <IconResponsiveNOBACK name="telegram-plane" size={35}/>
+            </TouchableOpacity>
+
 
 
           {/*Modalize do CEP*/}
@@ -480,8 +532,89 @@ export default class ServiceCadaster extends Component {
                   <TouchableOpacity onPress={() => this.setState({cep: null})} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
                     <FontAwesome5 name="times-circle" size={24} color={'#9A9A9A'}/>
                   </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => this.setState({cep: 'Digite seu Endereço'})} style={{marginLeft: 15, alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                    <FontAwesome5 name="pencil-alt" size={24} color={'#9A9A9A'}/>
+                  </TouchableOpacity>
                 </View>
             </View>
+
+            {this.state.cep == 'Digite seu Endereço' && 
+                <View style={{flexDirection:"column", marginTop:10, paddingHorizontal: 50}}>
+                  <InputForm
+                    value={this.state.nomeEnd}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeNomeEnd(text)}
+                    maxLength={20}
+                    placeholder="Nome para o endereço"
+                  />
+
+                  <InputFormMask
+                    type={'zip-code'}
+                    value={this.state.cepEnd}
+                    onChangeText={text => this.onChangeCEPEnd(text)}
+                    keyboardType={"number-pad"}
+                    placeholder="Digite o CEP"
+                  />
+
+                  <InputForm
+                    value={this.state.endereco}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeEnderecoEnd(text)}
+                    maxLength={20}
+                    placeholder="Endereço. ex: Rua das Flores"
+                  />
+
+                  <InputForm
+                    value={this.state.numeroEnd}
+                    keyboardType={"number-pad"}
+                    onChangeText={text => this.onChangeNumeroEnd(text)}
+                    maxLength={20}
+                    placeholder="Número do Endereço"
+                  />
+
+                  <InputForm
+                    value={this.state.complementoEnd}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeComplementoEnd(text)}
+                    maxLength={20}
+                    placeholder="Complemento"
+                  />
+
+                  <InputForm
+                    value={this.state.bairroEnd}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeBairroEnd(text)}
+                    maxLength={20}
+                    placeholder="Bairro"
+                  />
+
+                  <InputForm
+                    value={this.state.cidadeEnd}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeCidadeEnd(text)}
+                    maxLength={20}
+                    placeholder="Cidade"
+                  />
+
+                  <InputForm
+                    value={this.state.estadoEnd}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeEstadoEnd(text)}
+                    maxLength={20}
+                    placeholder="Estado"
+                  />
+
+
+                  <TouchableOpacity onPress={() => this.saveAdress()} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d', marginTop:30}}>
+                    <IconResponsive name="check" size={30}/>
+                    <Text style={{color: this.context.dark ? 'white' : '#121212', fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Confirmar</Text>
+                  </TouchableOpacity>
+                </View>
+                
+
+
+              }
                  
 
             <View>

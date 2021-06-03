@@ -669,7 +669,7 @@ export default class Cadastro extends Component {
                   type={'cel-phone'}
                   placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
                   borderColor={INPUT_BORDER_COLOR}
-                  style={{marginTop:20, borderBottomWidth:1, color:'black'}}
+                  style={{marginTop:20, paddingBottom: 17, borderBottomWidth:1, color:'black'}}
                   value={this.state.phone}
                   onChangeText={text => this.onChangePhone(text)}
                   keyboardType={"phone-pad"}
@@ -680,7 +680,7 @@ export default class Cadastro extends Component {
                   type={'cel-phone'}
                   placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
                   borderColor={INPUT_BORDER_COLOR}
-                  style={{marginTop:10, borderBottomWidth:1, color:'black'}}
+                  style={{marginTop:10, paddingBottom: 17, borderBottomWidth:1, color:'black'}}
                   value={this.state.phone}
                   onChangeText={text => this.onChangePhone(text)}
                   keyboardType={"phone-pad"}
@@ -696,7 +696,7 @@ export default class Cadastro extends Component {
                   }}
                   placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
                   borderColor={INPUT_BORDER_COLOR}
-                  style={{marginTop:20, marginBottom: 20, borderBottomWidth:1, color:'black'}}
+                  style={{marginTop:20, marginBottom: 20, paddingBottom: 17, borderBottomWidth:1, color:'black'}}
                   value={this.state.date}
                   onChangeText={text => this.dateChange(text)}
                   keyboardType={"number-pad"}
@@ -712,7 +712,7 @@ export default class Cadastro extends Component {
                   }}
                   placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
                   borderColor={INPUT_BORDER_COLOR}
-                  style={{marginTop:10, borderBottomWidth:1, color:'black'}}
+                  style={{marginTop:20, marginBottom: 20, paddingBottom: 17, borderBottomWidth:1, color:'black'}}
                   value={this.state.date}
                   onChangeText={text => this.dateChange(text)}
                   keyboardType={"number-pad"}
@@ -728,7 +728,7 @@ export default class Cadastro extends Component {
                   }}
                   placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
                   borderColor={INPUT_BORDER_COLOR}
-                  style={{marginTop:20, marginBottom: 20, borderBottomWidth:1, color:'black'}}
+                  style={{marginTop:20, marginBottom: 20, paddingBottom: 17, borderBottomWidth:1, color:'black'}}
                   value={this.state.date}
                   onChangeText={text => this.dateChange(text)}
                   keyboardType={"number-pad"}
@@ -744,7 +744,7 @@ export default class Cadastro extends Component {
                   }}
                   placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
                   borderColor={INPUT_BORDER_COLOR}
-                  style={{marginTop:10, borderBottomWidth:1, color:'black'}}
+                  style={{marginTop:20, marginBottom: 20, paddingBottom: 17, borderBottomWidth:1, color:'black'}}
                   value={this.state.date}
                   onChangeText={text => this.dateChange(text)}
                   keyboardType={"number-pad"}
@@ -755,9 +755,9 @@ export default class Cadastro extends Component {
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
                     onPress={this.navigateTo('TermsConditionsB')}
-                    style={{backgroundColor:'black', width:200, borderRadius:10, height:50, flexDirection:'row', alignItems:'center'}}
+                    style={{backgroundColor:'#d98b0d', width:200, borderRadius:30, height:50, flexDirection:'row', alignItems:'center'}}
                   >
-                    <FontAwesome5 name="plus-square" size={35} style={{marginLeft:15}} color="#fff"/>
+                    <FontAwesome5 name="plus-circle" size={25} style={{marginLeft:15}} color="#fff"/>
                     <Text style={{fontWeight:'bold', marginLeft:15, textAlign:'center', fontSize:20, color:'white'}}>Criar Conta</Text>
                   </TouchableOpacity>
 

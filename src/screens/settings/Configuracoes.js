@@ -473,7 +473,7 @@ export default function Configuracoes() {
             type="logout"
           />
 
-          <Switch style={{marginLeft: 18, marginTop:75}} value={dark} onChange={(value) => setDark(value)}/>
+          {/*<Switch style={{marginLeft: 18, marginTop:75}} value={dark} onChange={(value) => setDark(value)}/>*/}
         </ScrollView>
       </SafeBackground>
     );

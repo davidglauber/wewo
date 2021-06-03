@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontWeight: '700',
-    fontSize: normalize(12),
+    fontSize: normalize(10),
     color: '#DAA520',
   },
   dot: {

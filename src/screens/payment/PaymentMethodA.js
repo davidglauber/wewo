@@ -274,28 +274,28 @@ export default function PaymentMethodA() {
         {plan == 'mensal' && tipoDeConta == 'Autonomo' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
             <LottieView source={diamond} style={{width:200, height:200}} autoPlay loop />
-            <Text style={{fontSize: normalize(17), fontWeight:'bold'}}>Mensal: R$ 14,90</Text>
+            <Text style={{fontSize: normalize(17), marginTop: 15, fontWeight:'bold'}}>Mensal: R$ 14,90</Text>
           </View>
         }
 
         {plan == 'mensal' && tipoDeConta == 'Estabelecimento' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
             <LottieView source={diamond} style={{width:200, height:200}} autoPlay loop />
-            <Text style={{fontSize: normalize(17), fontWeight:'bold'}}>Mensal: R$ 19,90</Text>
+            <Text style={{fontSize: normalize(17), marginTop: 15, fontWeight:'bold'}}>Mensal: R$ 19,90</Text>
           </View>
         }
 
         {plan == 'anual' && tipoDeConta == 'Autonomo' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
             <LottieView source={diamond} style={{width:200, height:200}} autoPlay loop />
-            <Text style={{fontSize: normalize(17), fontWeight:'bold'}}>Mensal: R$ 170,00</Text>
+            <Text style={{fontSize: normalize(17), marginTop: 15, fontWeight:'bold'}}>Mensal: R$ 170,00</Text>
           </View>
         }
 
         {plan == 'anual' && tipoDeConta == 'Estabelecimento' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
             <LottieView source={diamond} style={{width:200, height:200}} autoPlay loop />
-            <Text style={{fontSize: normalize(17), fontWeight:'bold'}}>Mensal: R$ 220,00</Text>
+            <Text style={{fontSize: normalize(17), marginTop: 15, fontWeight:'bold'}}>Mensal: R$ 220,00</Text>
           </View>
         }
 
@@ -372,7 +372,8 @@ export default function PaymentMethodA() {
 
         {plan == 'mensal' && tipoDeConta == 'Estabelecimento' && verifySub == false &&
           <View style={styles.buttonContainer}>
-            <Button 
+            <Button
+              borderRadius={20} 
               onPress={() => signPremium('wewo.gold.mensal')}
               title="Assinar Premium"
             />
@@ -382,6 +383,7 @@ export default function PaymentMethodA() {
         {plan == 'anual' && tipoDeConta == 'Estabelecimento' && verifySub == false &&
           <View style={styles.buttonContainer}>
             <Button
+              borderRadius={20}
               onPress={() => signPremium('wewo_gold_anual')}
               title="Assinar Premium"
             />
@@ -391,6 +393,7 @@ export default function PaymentMethodA() {
         {plan == 'mensal' && tipoDeConta == 'Autonomo' && verifySub == false &&
           <View style={styles.buttonContainer}>
             <Button
+              borderRadius={20}
               onPress={() => signPremium('wewo_gold_auto')}
               title="Assinar Premium"
             />
@@ -400,6 +403,7 @@ export default function PaymentMethodA() {
         {plan == 'anual' && tipoDeConta == 'Autonomo' && verifySub == false &&
           <View style={styles.buttonContainer}>
             <Button
+              borderRadius={20}
               onPress={() => signPremium('wewo_gold_anual_auto')}
               title="Assinar Premium"
             />
@@ -413,6 +417,7 @@ export default function PaymentMethodA() {
         {plan == 'mensal' && tipoDeConta == 'Estabelecimento' && verifySub == true &&
           <View style={styles.buttonContainer}>
             <Button
+              borderRadius={20}
               onPress={() => Linking.openURL('https://play.google.com/store/account/subscriptions?package=com.zubito.wewo&sku=wewo.gold.mensal')}
               title="Cancelar Plano Mensal"
             />
@@ -422,6 +427,7 @@ export default function PaymentMethodA() {
         {plan == 'mensal' && tipoDeConta == 'Autonomo' && verifySub == true &&
           <View style={styles.buttonContainer}>
             <Button
+              borderRadius={20}
               onPress={() => Linking.openURL('https://play.google.com/store/account/subscriptions?package=com.zubito.wewo&sku=wewo_gold_auto')}
               title="Cancelar Plano Mensal"
             />
@@ -431,6 +437,7 @@ export default function PaymentMethodA() {
         {plan == 'anual' && tipoDeConta == 'Estabelecimento' && verifySub == true &&
           <View style={styles.buttonContainer}>
             <Button
+              borderRadius={20}
               onPress={() => Linking.openURL('https://play.google.com/store/account/subscriptions?package=com.zubito.wewo&sku=wewo_gold_anual')}
               title="Cancelar Plano Anual"
             />
@@ -440,6 +447,7 @@ export default function PaymentMethodA() {
         {plan == 'anual' && tipoDeConta == 'Autonomo' && verifySub == true &&
           <View style={styles.buttonContainer}>
             <Button
+              borderRadius={20}
               onPress={() => Linking.openURL('https://play.google.com/store/account/subscriptions?package=com.zubito.wewo&sku=wewo_gold_anual_auto')}
               title="Cancelar Plano Anual"
             />

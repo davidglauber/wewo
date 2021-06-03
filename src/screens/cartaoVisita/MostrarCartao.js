@@ -1650,7 +1650,7 @@ export default class MostrarCartao extends Component {
                   <View style={styles.descriptionContainer}>
                       <View style={styles.productTitleContainer}>
                             <Heading>{item.title}</Heading>
-                            <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', marginBottom:30, opacity:0.8, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10}}>A partir de {item.value}</ValueFieldPrincipal>
+                            <ValueFieldPrincipal style={{fontSize: 18, color: this.context.dark ? '#d98b0d': 'white', marginBottom:30, marginTop: 10, opacity:0.8, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', padding:5, borderRadius:10, overflow: Platform.OS === "ios" ? "hidden" : null}}>A partir de {item.value}</ValueFieldPrincipal>
                       </View>
                   </View>
 
