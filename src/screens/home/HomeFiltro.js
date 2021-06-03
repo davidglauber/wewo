@@ -160,6 +160,13 @@ async componentDidMount() {
   
     let arrayOfSelectedCategories = this.props.route.params.categoriasFiltradas;
     let arrayOfSelectedStates = this.props.route.params.estadosFiltrados;
+    let UFStates = [];
+
+    //pega somente os uf do estado
+    arrayOfSelectedStates.map((e) => {
+      UFStates.push(e.uf)
+    })
+
     let sumLengthArrays = arrayOfSelectedStates.length + arrayOfSelectedCategories.length;
 
 
@@ -273,7 +280,7 @@ async componentDidMount() {
 
 
           if(arrayOfSelectedStates.length > 0 && arrayOfSelectedCategories.length <= 0) {
-            firebase.firestore().collection('anuncios').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFAuto", "in", arrayOfSelectedStates).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
+            firebase.firestore().collection('anuncios').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFAuto", "in", UFStates).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
               let anunciosAtivosAuto = [];
               documentSnapshot.forEach(function(doc) {
                 anunciosAtivosAuto.push({
@@ -331,7 +338,7 @@ async componentDidMount() {
             })
 
 
-            firebase.firestore().collection('anuncios').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFAuto", "in", arrayOfSelectedStates).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
+            firebase.firestore().collection('anuncios').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFAuto", "in", UFStates).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
               let anunciosAtivosAuto = [];
               documentSnapshot.forEach(function(doc) {
                 anunciosAtivosAuto.push({
@@ -395,7 +402,7 @@ async componentDidMount() {
         }
 
         if(arrayOfSelectedStates.length > 0 && arrayOfSelectedCategories.length <= 0) {
-          await firebase.firestore().collection('anuncios').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFEstab", "in", arrayOfSelectedStates).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
+          await firebase.firestore().collection('anuncios').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFEstab", "in", UFStates).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
             let anunciosAtivosEstab = [];
             documentSnapshot.forEach(function(doc) {
                 anunciosAtivosEstab.push({
@@ -423,7 +430,7 @@ async componentDidMount() {
         }
 
         if(arrayOfSelectedStates.length > 0 && arrayOfSelectedCategories.length > 0) {
-          await firebase.firestore().collection('anuncios').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFEstab", "in", arrayOfSelectedStates).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
+          await firebase.firestore().collection('anuncios').where("type", "==", typeRoute).where("verifiedPublish", "==", true).where("UFEstab", "in", UFStates).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {
             let anunciosAtivosEstab = [];
             documentSnapshot.forEach(function(doc) {
                 anunciosAtivosEstab.push({

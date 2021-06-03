@@ -407,7 +407,7 @@ export default class Filtro extends Component {
             <ScrollView  contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap',   justifyContent: 'flex-start', alignItems: 'center', paddingHorizontal: 16}}>
               {estados.map((item) => (
                 <View>
-                    <TouchableFilterUnselected onPress={() => this.renderAndSelectStates(item.uf)}>
+                    <TouchableFilterUnselected onPress={() => this.renderAndSelectStates(item)}>
                       <TextFilter>{item.estado}</TextFilter>
                     </TouchableFilterUnselected>
                 </View>
@@ -431,7 +431,7 @@ export default class Filtro extends Component {
                 {selectedStates.map((item) => (
                   <View>
                       <TouchableFilter key={item} onPress={() => this.reuploadStatesToList(item)}>
-                        <TextFilter>{item}</TextFilter>
+                        <TextFilter>{item.uf}</TextFilter>
                       </TouchableFilter>
                   </View>
                 ))}
