@@ -43,6 +43,12 @@ import AlertPro from "react-native-alert-pro";
 //import icons
 import { FontAwesome5 } from '@expo/vector-icons';
 
+import normalize from '../../config/resizeFont';
+
+
+//CSS responsivo
+import { TextDescription2 } from '../home/styles';
+
 //import datepicker
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
@@ -277,7 +283,15 @@ export default class Cadastro extends Component {
     if (this.state.password.length < 6) {
       this.AlertPro2.open();
     } 
-
+    
+    if(checkValidDate < 13 && this.state.typeAccount == 'Autonomo') {
+      if(Platform.OS === "ios") {
+        alert('Cadastro de menores de 13 anos nao permitido!')
+      } else {
+        this.AlertPro4.open();
+      }
+    } 
+    
     if(this.state.typeAccount == 'Autonomo') {
       if (this.state.nome == '' || this.state.email == '' || this.state.password == '' || this.state.confirmPassword == '' || this.state.phone == '') {
         this.AlertPro3.open();
@@ -288,10 +302,7 @@ export default class Cadastro extends Component {
       } 
     }
 
-    if(checkValidDate < 13 && this.state.typeAccount == 'Autonomo') {
-      this.AlertPro4.open();
-    } 
-    
+
     
     //Aplica várias restrições, PRINCIPALMENTE DE IDADE, SE FOR PF MENOR DE 13 NAO PODE CADASTRAR
     if(this.state.password == this.state.confirmPassword && this.state.password.length >= 6 && this.state.date !== '' && this.state.typeAccount == 'Autonomo' && checkValidDate >= 13){  
@@ -688,22 +699,6 @@ export default class Cadastro extends Component {
                 />
               }
 
-              {Platform.OS == "ios" && this.state.typeAccount == 'Autonomo' &&
-                <TextInputMask
-                  type={'datetime'}
-                  options={{
-                    format: 'DD/MM/YYYY'
-                  }}
-                  placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
-                  borderColor={INPUT_BORDER_COLOR}
-                  style={{marginTop:20, marginBottom: 20, paddingBottom: 17, borderBottomWidth:1, color:'black'}}
-                  value={this.state.date}
-                  onChangeText={text => this.dateChange(text)}
-                  keyboardType={"number-pad"}
-                  placeholder="Data de Nascimento"
-                />
-              }
-
               {Platform.OS == "android" && this.state.typeAccount == 'Autonomo' &&
                 <TextInputMask
                   type={'datetime'}
@@ -720,7 +715,7 @@ export default class Cadastro extends Component {
                 />
               }
 
-              {Platform.OS == "ios" && this.state.typeAccount == 'Estabelecimento' &&
+              {Platform.OS == "ios" && this.state.typeAccount == 'Autonomo' &&
                 <TextInputMask
                   type={'datetime'}
                   options={{
@@ -732,7 +727,7 @@ export default class Cadastro extends Component {
                   value={this.state.date}
                   onChangeText={text => this.dateChange(text)}
                   keyboardType={"number-pad"}
-                  placeholder="Data de Criação da Empresa"
+                  placeholder="Data de Nascimento"
                 />
               }
 
@@ -751,6 +746,23 @@ export default class Cadastro extends Component {
                   placeholder="Data de Criação da Empresa"
                 />
               }
+
+              {Platform.OS == "ios" && this.state.typeAccount == 'Estabelecimento' &&
+                <TextInputMask
+                  type={'datetime'}
+                  options={{
+                    format: 'DD/MM/YYYY'
+                  }}
+                  placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
+                  borderColor={INPUT_BORDER_COLOR}
+                  style={{marginTop:20, marginBottom: 20, paddingBottom: 17, borderBottomWidth:1, color:'black'}}
+                  value={this.state.date}
+                  onChangeText={text => this.dateChange(text)}
+                  keyboardType={"number-pad"}
+                  placeholder="Data de Criação da Empresa"
+                />
+              }
+                <TextDescription2 style={{fontSize: normalize(10), fontWeight: "bold"}}>*Proibido cadastro para menores de 13 anos</TextDescription2>
 
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity

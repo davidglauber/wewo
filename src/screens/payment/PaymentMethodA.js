@@ -394,7 +394,7 @@ export default function PaymentMethodA() {
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
-              onPress={() => signPremium('wewo_gold_auto')}
+              onPress={() => signPremium('gold.auto.mensal')}
               title="Assinar Premium"
             />
           </View>
