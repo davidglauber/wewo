@@ -8,10 +8,24 @@
 // import dependencies
 import 'react-native-gesture-handler';
 import React , {useState}from 'react';
-import { LogBox } from 'react-native';
+import { LogBox, AppRegistry, Platform, NativeModules } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {enableScreens} from 'react-native-screens';
 
+if (Platform.OS === 'android') {
+  const { UIManager } = NativeModules;
+  if (UIManager) {
+    // Add gesture specific events to genericDirectEventTypes object exported from UIManager native module.
+    // Once new event types are registered with react it is possible to dispatch these events to all kind of native views.
+    UIManager.genericDirectEventTypes = {
+      ...UIManager.genericDirectEventTypes,
+      onGestureHandlerEvent: { registrationName: 'onGestureHandlerEvent' },
+      onGestureHandlerStateChange: {
+        registrationName: 'onGestureHandlerStateChange',
+      },
+    };
+  }
+}
 
 enableScreens();
 
