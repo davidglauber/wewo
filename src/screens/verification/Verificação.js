@@ -379,9 +379,13 @@ export default class Verificação extends Component {
 
         <View style={{flexDirection:'row', justifyContent:'space-between'}}>
             
-          <TouchableOpacity onPress={() => this.signInWithGoogle()}>
-              <FontAwesome5 name="google" size={35} style={{marginRight:25}} color="#DAA520"/>
-          </TouchableOpacity>
+          {Platform.OS === "ios" ?
+              null
+            :
+            <TouchableOpacity onPress={() => this.signInWithGoogle()}>
+                <FontAwesome5 name="google" size={35} style={{marginRight:25}} color="#DAA520"/>
+            </TouchableOpacity>
+          }
 
 
           {Platform.OS === 'ios' ? 
@@ -389,7 +393,7 @@ export default class Verificação extends Component {
               buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
               buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
               cornerRadius={10}
-              style={{ width: 44, height: 44 }}
+              style={{ width: 44, height: 44, marginBottom: 60 }}
               onPress={async () => {
                 try {
                   const credential = await AppleAuthentication.signInAsync({
@@ -442,17 +446,22 @@ export default class Verificação extends Component {
               <FontAwesome5 name="facebook" size={35} style={{marginRight:15}} color="#DAA520"/>
             </TouchableOpacity>
           }
-          <View style={{marginBottom: 44, marginLeft: 10}}>
-            <Button
-              onPress={() => this.navigateTo('SMSVerificacao')}
-              disabled={false}
-              borderRadius={4}
-              color="#DAA520"
-              small
-              title={'SMS'.toUpperCase()}
-              titleColor="#fff"
-            />
-          </View>
+
+          {Platform.OS === "ios" ?
+              null
+            :
+              <View style={{marginBottom: 44, marginLeft: 10}}>
+                <Button
+                  onPress={() => this.navigateTo('SMSVerificacao')}
+                  disabled={false}
+                  borderRadius={4}
+                  color="#DAA520"
+                  small
+                  title={'SMS'.toUpperCase()}
+                  titleColor="#fff"
+                />
+              </View>
+          }
         </View>
 
         </View>

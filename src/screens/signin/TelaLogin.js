@@ -474,9 +474,14 @@ export default class TelaLogin extends Component {
 
 
         <View style={{flexDirection:'row', marginBottom: windowHeight/3.3}}>
-          <TouchableOpacity onPress={() => this.signInWithGoogle()}>
-              <FontAwesome5 name="google" size={35} style={{marginRight:25}} color="#DAA520"/>
-          </TouchableOpacity>
+
+          {Platform.OS === "ios" ?
+              null
+            :
+            <TouchableOpacity onPress={() => this.signInWithGoogle()}>
+                <FontAwesome5 name="google" size={35} style={{marginRight:25}} color="#DAA520"/>
+            </TouchableOpacity>
+          }
 
           {Platform.OS === 'ios' ? 
             <AppleAuthentication.AppleAuthenticationButton
@@ -527,17 +532,22 @@ export default class TelaLogin extends Component {
             </TouchableOpacity>
           }
 
-          <View style={{marginBottom: 44, marginLeft: 10}}>
-            <Button
-              onPress={() => this.confirmIfUserHasBeenSignUp()}
-              disabled={false}
-              borderRadius={10}
-              color="#DAA520"
-              small
-              title={'SMS'.toUpperCase()}
-              titleColor="#fff"
-            />
-          </View>
+
+          {Platform.OS === "ios" ?
+              null
+            :
+              <View style={{marginBottom: 44, marginLeft: 10}}>
+                <Button
+                  onPress={() => this.confirmIfUserHasBeenSignUp()}
+                  disabled={false}
+                  borderRadius={10}
+                  color="#DAA520"
+                  small
+                  title={'SMS'.toUpperCase()}
+                  titleColor="#fff"
+                />
+              </View>
+          }
         </View>
 
             <View style={{position:"absolute", bottom: windowHeight/29}}>
