@@ -269,11 +269,8 @@ export default class EditarAnuncio extends Component {
     let e = this;
     let usuarioAtual = firebase.auth().currentUser.uid;
 
-    //verifica se o usuario comprou a assinatura mensal
-    if(Platform.OS === "android") {
-      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
-      this.setState({usuarioComprou: comprou});
-    }
+    let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
+    this.setState({usuarioComprou: comprou});
 
     //pede ao usuario para habilitar os serviços de localização
     this.CheckIfLocationEnabled();

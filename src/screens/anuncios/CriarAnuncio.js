@@ -274,10 +274,8 @@ export default class CriarAnuncio extends Component {
     let usuarioAtual = firebase.auth().currentUser.uid;
 
 
-    if(Platform.OS === "android") {
-      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
-      this.setState({usuarioComprou: comprou});
-    }
+    let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+    this.setState({usuarioComprou: comprou});
 
     //pede ao usuario para habilitar os serviços de localização
     this.CheckIfLocationEnabled();

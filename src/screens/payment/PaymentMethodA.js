@@ -148,6 +148,12 @@ export default function PaymentMethodA() {
       'wewo_gold_anual',
       'wewo_gold_anual_auto',
       'wewo_gold_auto'
+    ], 
+    ios: [
+      'gold.auto.mensal',
+      'gold.auto.anual',
+      'gold.estab.mensal',
+      'gold.estab.anual'
     ]
   })
 
@@ -187,14 +193,22 @@ export default function PaymentMethodA() {
 
   useEffect(() => {
     async function isBought() {
-      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto')
-  
+      let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
+
       if(comprou == true) {
         setVerifySub(true)
         alertPro.current.open()
+
+        if(Platform.OS === "ios") {
+          alert('Voce ja tem um plano!')
+        }
       } else {
         setVerifySub(false)
         alertPro2.current.open()
+
+        if(Platform.OS === "ios") {
+          alert('Voce nao possui um plano!')
+        }
       }
     }
     isBought();
@@ -370,7 +384,7 @@ export default function PaymentMethodA() {
         </ScrollView>
 
 
-        {plan == 'mensal' && tipoDeConta == 'Estabelecimento' && verifySub == false &&
+        {plan == 'mensal' && tipoDeConta == 'Estabelecimento' && verifySub == false && Platform.OS === 'android' &&
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20} 
@@ -380,7 +394,20 @@ export default function PaymentMethodA() {
           </View>
         }
 
-        {plan == 'anual' && tipoDeConta == 'Estabelecimento' && verifySub == false &&
+        {plan == 'mensal' && tipoDeConta == 'Estabelecimento' && verifySub == false && Platform.OS === 'ios' &&
+          <View style={styles.buttonContainer}>
+            <Button
+              borderRadius={20} 
+              onPress={() => signPremium('gold.estab.mensal')}
+              title="Assinar Premium"
+            />
+          </View>
+        }
+
+
+
+
+        {plan == 'anual' && tipoDeConta == 'Estabelecimento' && verifySub == false && Platform.OS === 'android' &&
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
@@ -390,7 +417,31 @@ export default function PaymentMethodA() {
           </View>
         }
 
-        {plan == 'mensal' && tipoDeConta == 'Autonomo' && verifySub == false &&
+        {plan == 'anual' && tipoDeConta == 'Estabelecimento' && verifySub == false && Platform.OS === 'ios' &&
+          <View style={styles.buttonContainer}>
+            <Button
+              borderRadius={20}
+              onPress={() => signPremium('gold.estab.anual')}
+              title="Assinar Premium"
+            />
+          </View>
+        }
+
+
+
+
+
+        {plan == 'mensal' && tipoDeConta == 'Autonomo' && verifySub == false && Platform.OS === 'android' &&
+          <View style={styles.buttonContainer}>
+            <Button
+              borderRadius={20}
+              onPress={() => signPremium('wewo_gold_auto')}
+              title="Assinar Premium"
+            />
+          </View>
+        }
+
+        {plan == 'mensal' && tipoDeConta == 'Autonomo' && verifySub == false && Platform.OS === 'ios' &&
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
@@ -400,11 +451,25 @@ export default function PaymentMethodA() {
           </View>
         }
 
-        {plan == 'anual' && tipoDeConta == 'Autonomo' && verifySub == false &&
+
+
+
+        {plan == 'anual' && tipoDeConta == 'Autonomo' && verifySub == false && Platform.OS === 'android' &&
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
               onPress={() => signPremium('wewo_gold_anual_auto')}
+              title="Assinar Premium"
+            />
+          </View>
+        }
+
+
+        {plan == 'anual' && tipoDeConta == 'Autonomo' && verifySub == false && Platform.OS === 'ios' &&
+          <View style={styles.buttonContainer}>
+            <Button
+              borderRadius={20}
+              onPress={() => signPremium('gold.auto.anual')}
               title="Assinar Premium"
             />
           </View>

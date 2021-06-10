@@ -13,6 +13,7 @@ import {
   Image,
   View,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import Color from 'color';
 
@@ -245,7 +246,8 @@ export default class TelaPrincipalAnuncio extends Component {
 
   async verifyNumberOfPublises() {
     let currentUserUID = firebase.auth().currentUser.uid;
-    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
+    let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+    this.props.navigation.navigate('Orders')
 
     firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
       let anunciosDidMount = []
@@ -262,7 +264,7 @@ export default class TelaPrincipalAnuncio extends Component {
           verified: doc.data().verifiedPublish
         })
       })
-      
+    
 
       if(this.state.idMPState == '') {
         this.AlertPro.open();
@@ -284,6 +286,10 @@ export default class TelaPrincipalAnuncio extends Component {
       if(comprou == false) {
         if(anunciosDidMount.length >= 3 && this.state.idMPState !== '') {
           this.AlertPro2.open();
+          
+          if(Platform.OS === 'ios') {
+            alert('A conta free permite ate 3 anuncios, consulte a tela planos para mais informaçoes')
+          }
         }
 
         if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
@@ -291,6 +297,7 @@ export default class TelaPrincipalAnuncio extends Component {
         }
       }
       console.log('TAMANHO DA LISTA DE ANUNCIOS:> ' + anunciosDidMount)
+      alert('Purchased ' + comprou)
     })
 
   }
@@ -437,7 +444,6 @@ export default class TelaPrincipalAnuncio extends Component {
             }}
           />
           
-          <ScrollView>
             <View style={styles.categoriesContainer}>
               <View style={styles.titleContainer}>
                 <View style={styles.titleContainer}>
@@ -560,7 +566,6 @@ export default class TelaPrincipalAnuncio extends Component {
                       />
                     </View>
                   </View>
-          </ScrollView>
         </View>
       </SafeBackground>
     );

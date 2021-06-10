@@ -156,7 +156,7 @@ export default class CartaoCategory2 extends Component {
   async componentDidMount() {
     let e = this;
     let titleNavCategory = this.props.route.params.titleOfCategory;
-    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto')
+    let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
 
     if(comprou == true) {
       this.setState({purchased: true})

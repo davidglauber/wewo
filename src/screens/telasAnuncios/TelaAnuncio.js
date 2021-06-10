@@ -251,7 +251,7 @@ export default class TelaAnuncio extends Component {
     let e = this;
     
     if(Platform.OS === "android") {
-      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto')
+      let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
     
       if(comprou == true) {
         this.setState({purchased: true})
@@ -935,7 +935,6 @@ export default class TelaAnuncio extends Component {
           barStyle={this.context.dark ? "light-content" : "dark-content"}
         />
 
-        <ScrollView>
 
         <FlatList
             keyExtractor={() => this.makeid(17)}
@@ -1124,7 +1123,6 @@ export default class TelaAnuncio extends Component {
             }
           />
 
-        </ScrollView>
 
 
 
@@ -1438,8 +1436,6 @@ export default class TelaAnuncio extends Component {
 
 
 
-        <ScrollView>
-
         <FlatList
             keyExtractor={() => this.makeid(17)}
             data={anuncioEstab}
@@ -1660,8 +1656,6 @@ export default class TelaAnuncio extends Component {
             }
           />
 
-
-        </ScrollView>
 
       </SafeAnuncioView>
     );
