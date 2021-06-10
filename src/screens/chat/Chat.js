@@ -82,12 +82,12 @@ export default class Chat extends Component {
     console.log('USUARIO DONO DO ANUNCIO: ' + this.props.route.params.idDonoDoAnuncio)
     console.log('Valor do SERVIÇO: ' + this.props.route.params.valuePayment)
 
-    await firebase.firestore().collection('notifications').doc(this.props.route.params.idNotification).collection('chat').orderBy("time", "asc").onSnapshot(documentSnapshot => {
+    await firebase.firestore().collection('chats').doc(this.props.route.params.idNotification).collection('chat').orderBy("time", "asc").onSnapshot(documentSnapshot => {
       let chatContent2 = [];
       documentSnapshot.forEach(function(doc) {
         chatContent2.push({
-          idContratado: doc.data().idUsuarioQueEnviou,
-          idContratante: doc.data().idUsuarioQueRecebeu,
+          idUsuarioQueEnviou: doc.data().idUsuarioQueEnviou,
+          idUsuarioQueRecebeu: doc.data().idUsuarioQueRecebeu,
           valorCombinado: doc.data().valorCombinado,
           boolean: doc.data().boolean,
           texto: doc.data().texto,
@@ -132,7 +132,7 @@ export default class Chat extends Component {
     let e = this;
 
     if(linkToPaymentScreen == false){
-      firebase.firestore().collection('notifications').doc(this.props.route.params.idNotification).collection('chat').doc().set({
+      firebase.firestore().collection('chats').doc(this.props.route.params.idNotification).collection('chat').doc().set({
         idUsuarioQueEnviou: currentUser.uid,
         idUsuarioQueRecebeu: e.state.idUserDonoDoAnuncio,
         texto: textChat,
@@ -140,7 +140,7 @@ export default class Chat extends Component {
         time: currentTime
       })
     } else {
-      firebase.firestore().collection('notifications').doc(this.props.route.params.idNotification).collection('chat').doc().set({
+      firebase.firestore().collection('chats').doc(this.props.route.params.idNotification).collection('chat').doc().set({
         idUsuarioQueEnviou: currentUser.uid,
         idUsuarioQueRecebeu: e.state.idUserDonoDoAnuncio,
         texto: `Valor combinado: ${e.state.valueUser}. Clique aqui para ser redirecionado para a tela de pagamento (somente usuário pagador)`,
@@ -202,7 +202,7 @@ export default class Chat extends Component {
               renderItem={({item}) => 
               <View>
                 {/*USUARIO QUE ENVIOU A MENSAGEM*/}
-                {currentUserId == item.idContratado && item.valorCombinado !== null && item.boolean == true  &&
+                {currentUserId == item.idUsuarioQueEnviou && item.valorCombinado !== null && item.boolean == true  &&
                   <View style={{marginTop:30, marginLeft:50, backgroundColor:'#d98b0d', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
                     <Text style={{color:'white'}}>{item.texto}</Text>
                   </View>
@@ -210,21 +210,21 @@ export default class Chat extends Component {
 
 
 
-                {currentUserId == item.idContratado && item.valorCombinado == null && item.boolean == false &&
+                {currentUserId == item.idUsuarioQueEnviou && item.valorCombinado == null && item.boolean == false &&
                   <View style={{marginTop:20, marginLeft:50, backgroundColor:'#d98b0d', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
                     <Text style={{color:'white'}}>{item.texto}</Text>
                   </View>
                 }
 
 
-                {currentUserId !== item.idContratado && item.valorCombinado == null && item.boolean == false &&
+                {currentUserId !== item.idUsuarioQueEnviou && item.valorCombinado == null && item.boolean == false &&
                   <View onPress={() => alert('oi')} style={{marginTop:15, marginRight:50, backgroundColor:'#d4cccb', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
                     <Text style={{color:'black'}}>{item.texto}</Text>
                   </View>
                 }
 
 
-                {currentUserId !== item.idContratado && item.valorCombinado !== null && item.boolean == true &&
+                {currentUserId !== item.idUsuarioQueEnviou && item.valorCombinado !== null && item.boolean == true &&
                   <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: item.valorCombinado, idNotification: this.props.route.params.idNotification, idContratado: item.idContratado, idDoAnuncio: this.state.idAnuncioUser})} style={{marginTop:15, marginRight:50, backgroundColor:'#d4cccb', borderWidth:2, borderColor:"#d98b0d", padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
                     <Text style={{color:'black', fontSize:17}}>{item.texto}</Text>
                   </TouchableOpacity>
