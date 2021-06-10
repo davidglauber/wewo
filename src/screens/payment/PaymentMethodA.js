@@ -198,17 +198,9 @@ export default function PaymentMethodA() {
       if(comprou == true) {
         setVerifySub(true)
         alertPro.current.open()
-
-        if(Platform.OS === "ios") {
-          alert('Voce ja tem um plano!')
-        }
       } else {
         setVerifySub(false)
         alertPro2.current.open()
-
-        if(Platform.OS === "ios") {
-          alert('Voce nao possui um plano!')
-        }
       }
     }
     isBought();
@@ -479,7 +471,7 @@ export default function PaymentMethodA() {
 
 
 
-        {plan == 'mensal' && tipoDeConta == 'Estabelecimento' && verifySub == true &&
+        {plan == 'mensal' && tipoDeConta == 'Estabelecimento' && verifySub == true && Platform.OS === "android" &&
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
@@ -489,7 +481,23 @@ export default function PaymentMethodA() {
           </View>
         }
 
-        {plan == 'mensal' && tipoDeConta == 'Autonomo' && verifySub == true &&
+        {plan == 'mensal' && tipoDeConta == 'Estabelecimento' && verifySub == true && Platform.OS === "ios" &&
+          <View style={styles.buttonContainer}>
+            <Button
+              borderRadius={20}
+              onPress={() => Linking.openURL('https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions')}
+              title="Cancelar Plano Mensal"
+            />
+          </View>
+        }
+
+
+
+
+
+
+
+        {plan == 'mensal' && tipoDeConta == 'Autonomo' && verifySub == true && Platform.OS === "android" &&
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
@@ -498,8 +506,24 @@ export default function PaymentMethodA() {
             />
           </View>
         }
+        
+        {plan == 'mensal' && tipoDeConta == 'Autonomo' && verifySub == true && Platform.OS === "ios" &&
+          <View style={styles.buttonContainer}>
+            <Button
+              borderRadius={20}
+              onPress={() => Linking.openURL('https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions')}
+              title="Cancelar Plano Mensal"
+            />
+          </View>
+        }
 
-        {plan == 'anual' && tipoDeConta == 'Estabelecimento' && verifySub == true &&
+
+
+
+
+
+
+        {plan == 'anual' && tipoDeConta == 'Estabelecimento' && verifySub == true && Platform.OS === "android" &&
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
@@ -509,11 +533,37 @@ export default function PaymentMethodA() {
           </View>
         }
 
-        {plan == 'anual' && tipoDeConta == 'Autonomo' && verifySub == true &&
+        {plan == 'anual' && tipoDeConta == 'Estabelecimento' && verifySub == true && Platform.OS === "ios" &&
+          <View style={styles.buttonContainer}>
+            <Button
+              borderRadius={20}
+              onPress={() => Linking.openURL('https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions')}
+              title="Cancelar Plano Anual"
+            />
+          </View>
+        }
+
+
+
+
+
+
+
+        {plan == 'anual' && tipoDeConta == 'Autonomo' && verifySub == true && Platform.OS === "android" &&
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
               onPress={() => Linking.openURL('https://play.google.com/store/account/subscriptions?package=com.zubito.wewo&sku=wewo_gold_anual_auto')}
+              title="Cancelar Plano Anual"
+            />
+          </View>
+        }
+
+        {plan == 'anual' && tipoDeConta == 'Autonomo' && verifySub == true && Platform.OS === "ios" &&
+          <View style={styles.buttonContainer}>
+            <Button
+              borderRadius={20}
+              onPress={() => Linking.openURL('https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions')}
               title="Cancelar Plano Anual"
             />
           </View>

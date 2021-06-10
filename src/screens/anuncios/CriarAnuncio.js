@@ -2170,7 +2170,7 @@ export default class CriarAnuncio extends Component {
                                     is24Hour={true}
                                     display="default"
                                     onChange={this.onChange}
-                                    style={{width: 320, backgroundColor: "white"}}
+                                    style={{width: 320, marginLeft: 40, backgroundColor: "white"}}
                                 />
                             }
 
@@ -2182,7 +2182,7 @@ export default class CriarAnuncio extends Component {
                                     is24Hour={true}
                                     display="default"
                                     onChange={this.onChangeClose}
-                                    style={{width: 320, backgroundColor: "white"}}
+                                    style={{width: 320, marginLeft: 220, backgroundColor: "white"}}
                                 />
                             }
 

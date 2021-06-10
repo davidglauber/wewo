@@ -1,6 +1,6 @@
 import RNIap, {purchaseUpdatedListener} from 'react-native-iap';
 
-export const purchased = async (productId1, productId2, productId3, productId4) => {
+export const purchased = async (productId1, productId2, productId3, productId4, productId5, productId6, productId7, productId8) => {
     let isPurchased = false;
 
     try {
@@ -23,6 +23,26 @@ export const purchased = async (productId1, productId2, productId3, productId4) 
             } 
 
             if(purchase.productId === productId4){
+                isPurchased = true;
+                return;
+            } 
+
+            if(purchase.productId === productId5){
+                isPurchased = true;
+                return;
+            } 
+
+            if(purchase.productId === productId6){
+                isPurchased = true;
+                return;
+            } 
+
+            if(purchase.productId === productId7){
+                isPurchased = true;
+                return;
+            } 
+
+            if(purchase.productId === productId8){
                 isPurchased = true;
                 return;
             } 
