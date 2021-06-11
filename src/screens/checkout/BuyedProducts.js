@@ -376,6 +376,9 @@ export default class BuyedProducts extends Component {
             <View style={styles.categoriesContainer}>
               <View style={styles.titleContainer}>
                 <View style={styles.titleContainer}>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeNavigator')}>
+                    <IconResponsiveNOBACK style={{marginTop: windowHeight/85, marginLeft: windowWidth/40, marginRight: windowWidth/10}} name="arrow-left" size={20}/>
+                  </TouchableOpacity>
                   <Heading style={styles.titleText}>Produtos Comprados</Heading>
                 </View>
               </View>

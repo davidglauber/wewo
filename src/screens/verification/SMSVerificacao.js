@@ -12,7 +12,6 @@ import {
   I18nManager,
   SafeAreaView,
   StatusBar,
-  AsyncStorage,
   StyleSheet,
   Text,
   ScrollView,
@@ -253,7 +252,6 @@ export default function SMSVerificacao () {
                       tipoDeConta: getTipoDeConta,
                       userLocation: ''
                     })
-                  AsyncStorage.setItem('emailUserSaved', getEmail)
                   navigation.navigate('HomeNavigator')
                   alert('Você foi cadastrado com sucesso 👍')
                 } catch (err) {

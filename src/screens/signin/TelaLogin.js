@@ -11,7 +11,6 @@ import {
   SafeAreaView,
   StatusBar,
   Alert,
-  AsyncStorage,
   StyleSheet,
   Dimensions,
   TouchableOpacity,

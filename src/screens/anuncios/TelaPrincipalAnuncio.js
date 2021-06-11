@@ -27,7 +27,7 @@ import firebase from '../../config/firebase';
 import { PulseIndicator } from 'react-native-indicators';
 
 
-import { SafeBackground, Title, AnuncioContainer, PlusContainer, PlusIcon, Description, ValueField, TouchableDetails, TextDetails, IconResponsive, IconResponsive2, Heading } from '../home/styles';
+import { SafeBackground, Title, AnuncioContainer, PlusContainer, PlusIcon, Description, ValueField, TouchableDetails, TextDetails, IconResponsive, IconResponsiveNOBACK, IconResponsive2, Heading } from '../home/styles';
 
 import LottieView from 'lottie-react-native';
 
@@ -447,6 +447,9 @@ export default class TelaPrincipalAnuncio extends Component {
             <View style={styles.categoriesContainer}>
               <View style={styles.titleContainer}>
                 <View style={styles.titleContainer}>
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeNavigator')}>
+                    <IconResponsiveNOBACK style={{marginTop: windowHeight/65, marginLeft: windowWidth/40, marginRight: windowWidth/7}} name="arrow-left" size={20}/>
+                  </TouchableOpacity>
                   <Heading style={styles.titleText}>Anúncios Ativos</Heading>
                 </View>
 

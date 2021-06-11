@@ -12,7 +12,6 @@ import {
   Text,
   Dimensions,
   Image,
-  AsyncStorage,
   View,
   TouchableOpacity,
 } from 'react-native';
@@ -207,37 +206,6 @@ async componentDidMount() {
    let senhaUser = '';
    let telefoneUser = '';
    let dataNascimentoUser = '';
-
-
-    AsyncStorage.getItem('verified').then((value) => {
-      if(value == 'true') {
-        AsyncStorage.setItem('verified', JSON.stringify(true))
-      }
-
-      if(value == 'false') {
-         AsyncStorage.getItem('nome').then((value) =>{nomeUser = value})
-         AsyncStorage.getItem('email').then((value) =>{emailUser = value})
-         AsyncStorage.getItem('senha').then((value) =>{senhaUser = value})
-         AsyncStorage.getItem('telefone').then((value) =>{telefoneUser = value})
-         AsyncStorage.getItem('dataNascimento').then((value) =>{dataNascimentoUser = value})
-
-        this.props.navigation.navigate('EmailVerificacao', {
-            nome: nomeUser,
-            email: emailUser,
-            senha: senhaUser,
-            telefone: telefoneUser,
-            dataNascimento: dataNascimentoUser
-        })
-        alert('Você ainda não confirmou o email!')
-      }
-
-      if(value == 'undefined' || value == 'null') {
-        return null;
-      }
-      console.log('VALOR DO ASYNC STORAGE: ' + value)
-    })
-
-
 
     if(arrayOfSelectedCategories.length == 0 && arrayOfSelectedStates.length == 0) {
         this.props.navigation.navigate('HomeNavigator')

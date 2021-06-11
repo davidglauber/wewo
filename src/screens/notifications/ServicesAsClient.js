@@ -210,6 +210,9 @@ export default class ServicesAsClient extends Component {
       {this.state.notificationsActivies.length == 0 ?
       <View>
           <View style={{flexDirection:'row'}}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeNavigator')}>
+                <IconResponsiveNOBACK style={{marginTop: windowHeight/23, marginLeft: windowWidth/16, marginRight: windowWidth/22}} name="arrow-left" size={20}/>
+            </TouchableOpacity>
             <Heading style={styles.paddingTitle}>Serviços que Contratei</Heading>
           </View>
           
@@ -224,6 +227,9 @@ export default class ServicesAsClient extends Component {
 
         <View>
           <View style={{flexDirection:'row'}}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeNavigator')}>
+                <IconResponsiveNOBACK style={{marginTop: windowHeight/23, marginLeft: windowWidth/16, marginRight: windowWidth/22}} name="arrow-left" size={20}/>
+            </TouchableOpacity>
             <Heading style={styles.paddingTitle}>Serviços que Contratei</Heading>
           </View>
           

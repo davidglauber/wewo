@@ -209,6 +209,9 @@ export default class ConfirmedServices extends Component {
 
         <View>
           <View style={{flexDirection:'row'}}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeNavigator')}>
+                <IconResponsiveNOBACK style={{marginTop: windowHeight/23, marginLeft: windowWidth/16, marginRight: windowWidth/8}} name="arrow-left" size={20}/>
+            </TouchableOpacity>
             <Heading style={styles.paddingTitle}>Meus Serviços</Heading>
             <TouchableOpacity style={{position:'absolute', left:windowWidth/1.2, marginTop:30}} onPress={() => this.uploadedNotifications()}>
               <IconResponsiveNOBACK name="handshake" size={24}/>
@@ -225,7 +228,10 @@ export default class ConfirmedServices extends Component {
         :
         <View>
           <View style={{flexDirection:'row'}}>
-          <Heading style={styles.paddingTitle}>Meus Serviços</Heading>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeNavigator')}>
+                <IconResponsiveNOBACK style={{marginTop: windowHeight/23, marginLeft: windowWidth/16, marginRight: windowWidth/8}} name="arrow-left" size={20}/>
+            </TouchableOpacity>
+            <Heading style={styles.paddingTitle}>Meus Serviços</Heading>
             <TouchableOpacity style={{position:'absolute', left:windowWidth/1.2, marginTop:30}} onPress={() => this.uploadedNotifications()}>
               <IconResponsiveNOBACK name="handshake" size={24}/>
             </TouchableOpacity>

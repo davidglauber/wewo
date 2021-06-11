@@ -15,7 +15,6 @@ import {
   StyleSheet,
   Text,
   Platform,
-  AsyncStorage,
   TouchableOpacity,
   View,
   BackHandler
@@ -189,7 +188,6 @@ export default class Verificação extends Component {
                 tipoDeConta: e.state.tipoDeConta,
                 userLocation: ''
               })
-            AsyncStorage.setItem('emailUserSaved', result.user.email)
             this.props.navigation.navigate('HomeNavigator')
             this.AlertPro4.open();
 
@@ -250,7 +248,6 @@ export default class Verificação extends Component {
                       tipoDeConta: e.state.tipoDeConta,
                       userLocation: ''
                     })
-                  AsyncStorage.setItem('emailUserSaved', result.user.email)
                   this.props.navigation.navigate('HomeNavigator')
                   this.AlertPro4.open();
           }).catch(error => {
