@@ -34,7 +34,7 @@ import loading from '../../../assets/loading.json';
 
 import { PulseIndicator } from 'react-native-indicators';
 
-import { SafeBackground, Title, AnuncioContainer, PlusContainer, PlusIcon, Description, TouchableDetails, ValueField, TextDetails, IconResponsive, IconResponsive2, Heading} from '../home/styles';
+import { SafeBackground, Title, AnuncioContainer, PlusContainer, PlusIcon, Description, TouchableDetails, ValueField, TextDetails, IconResponsive, IconResponsiveNOBACK, IconResponsive2, Heading} from '../home/styles';
 
 import { ThemeContext } from '../../../ThemeContext';
 
@@ -508,6 +508,10 @@ export default class TelaGeralCriarCartao extends Component {
           <ScrollView>
             <View style={styles.categoriesContainer}>
               <View style={styles.titleContainer}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeNavigator')}>
+                  <IconResponsiveNOBACK style={{marginRight: 20}} name="arrow-left" size={20}/>
+                </TouchableOpacity>
+
                 {this.state.tipoDeConta == 'Autonomo' &&
                   <Heading style={{marginLeft: 30, marginRight: 34}}>Portfólios Ativos</Heading>
                 }
@@ -515,6 +519,7 @@ export default class TelaGeralCriarCartao extends Component {
                 {this.state.tipoDeConta == 'Estabelecimento' &&
                   <Heading style={{marginLeft: 30, marginRight: 34}}>Produtos Ativos</Heading>
                 }
+                
 
                 <PlusContainer onPress={() => this.verifyNumberOfPublises()}>
                         <PlusIcon  name="plus" size={19}/>

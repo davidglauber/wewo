@@ -8,6 +8,7 @@ import {
   Image,
   Modal,
   Text,
+  BackHandler,
   Platform,
   View,
   TouchableOpacity,
@@ -133,6 +134,8 @@ export default class HomeA extends Component {
 async componentDidMount() {
   let e = this;
 
+  BackHandler.addEventListener('hardwareBackPress', function() {return true})
+  
   if(Platform.OS === "android") {
     let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
   
