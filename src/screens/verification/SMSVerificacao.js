@@ -115,6 +115,7 @@ export default function SMSVerificacao () {
   const getTelefone = route.params.telefone;
   const getDataNascimento = route.params.dataNascimento;
   const getTipoDeConta = route.params.tipoDeConta;
+  const getTokenMessage = route.params.tokenMessage;
   const alertPro = React.useRef();
 
 
@@ -250,7 +251,8 @@ export default function SMSVerificacao () {
                       dataNascimento: getDataNascimento,
                       telefone: getTelefone,
                       tipoDeConta: getTipoDeConta,
-                      userLocation: ''
+                      userLocation: '',
+                      tokenMessage: getTokenMessage
                     })
                   navigation.navigate('HomeNavigator')
                   alert('Você foi cadastrado com sucesso 👍')

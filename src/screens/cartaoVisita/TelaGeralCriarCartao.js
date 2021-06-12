@@ -132,7 +132,8 @@ export default class TelaGeralCriarCartao extends Component {
       accTK: '',
       mesCriacaoTokenFirebase: null,
       mesAtual: new Date(),
-      userLocation: ''
+      userLocation: '',
+      expoPushToken: ''
     };
   }
 
@@ -209,6 +210,7 @@ export default class TelaGeralCriarCartao extends Component {
       e.setState({text: documentSnapshot.data().textPortfolio})
       e.setState({tipoDeConta: documentSnapshot.data().tipoDeConta})
       e.setState({userLocation: documentSnapshot.data().userLocation})
+      e.setState({expoPushToken: documentSnapshot.data().tokenMessage})
       
       if(documentSnapshot.data().idMP) {
         e.setState({idMPState: documentSnapshot.data().idMP})
@@ -330,7 +332,8 @@ export default class TelaGeralCriarCartao extends Component {
       idMP: e.state.idMPState,
       accessTK: e.state.accTK,
       mesCriacaoToken: e.state.mesCriacaoTokenFirebase,
-      userLocation: e.state.userLocation
+      userLocation: e.state.userLocation,
+      tokenMessage: e.state.expoPushToken
     })
     
     const modalizeRef = this.state.modalizeRef;

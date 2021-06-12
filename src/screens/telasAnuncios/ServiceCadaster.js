@@ -44,9 +44,21 @@ import * as Location from 'expo-location';
 
 import loading from '../../../assets/loading.json';
 
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+
 //consts
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
 
 export default class ServiceCadaster extends Component {
   static contextType = ThemeContext
@@ -84,7 +96,7 @@ export default class ServiceCadaster extends Component {
       complementoEnd: '',
       bairroEnd: '',
       cidadeEnd: '',
-      estadoEnd: '',
+      estadoEnd: ''
     };
   }
 
@@ -141,9 +153,30 @@ export default class ServiceCadaster extends Component {
 
     //pede ao usuario para habilitar os serviços de localização
     this.CheckIfLocationEnabled();
+
   }
 
-
+  //envia a notificação para os servidores expo e o expo encaminha para o FCM e Apple Cloud Messaging. A NOTIFICAÇÃO É ENVIADA PARA O USUARIO CONTRATADO
+  async sendPushNotification(expoPushToken) {
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: 'Dinheiro chegando',
+      body: 'Algum usuário quer lhe contratar! Acesse o WeWo',
+      data: { someData: 'goes here' },
+    };
+  
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+  }
+  
   onChange = (event, selectedDate) => {
     this.setState({showDate: false})
     const currentDate = selectedDate || this.state.date;
@@ -408,7 +441,12 @@ export default class ServiceCadaster extends Component {
         
         <ScrollView style={{marginBottom:50}}>
           <View style={{alignItems:'center', marginTop:15}}>
-            <Heading>Contratar Serviço</Heading>
+            <View style={{flexDirection:'row', marginRight: 74}}>
+              <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                  <IconResponsiveNOBACK style={{marginRight: 64, marginTop:5}} name="arrow-left" size={20}/>
+              </TouchableOpacity>
+              <Heading>Contratar Serviço</Heading>
+            </View>
 
             <TextDescription2 style={{paddingHorizontal:40, marginTop:30, textAlign:'center'}}>Olá {this.state.nome}, nessa tela você deve fornecer os dados necessários para que o contratado saiba onde, como e quando te encontrar!</TextDescription2>
             <TextDescription2 style={{paddingHorizontal:40, marginTop:30, textAlign:'center'}}>Após o envio espere uma notificação de retorno do contratado</TextDescription2>

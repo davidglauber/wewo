@@ -47,6 +47,9 @@ import * as Facebook from 'expo-facebook';
 //IMPORT APPLE LOGIN 
 import * as AppleAuthentication from 'expo-apple-authentication';
 
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+
 // VerificationB Config
 const isRTL = I18nManager.isRTL;
 
@@ -113,7 +116,11 @@ export default class Verificação extends Component {
       data:'',
       telefone:'',
       senha:'',
-      tipoDeConta: ''
+      tipoDeConta: '',
+      expoPushToken: '',
+      notification: '',
+      notificationListener: React.createRef(null),
+      responseListener: React.createRef(null)
     };
     this.signInWithFacebook = this.signInWithFacebook.bind(this);
   }
@@ -150,7 +157,69 @@ export default class Verificação extends Component {
     console.log('Telefone navigation: ' + getTelefone)
     console.log('Data born navigation: ' + getDataNascimento)
     console.log('TIPO DE CONTA navigation: ' + getTipoDeConta)
+
+
+
+
+    //configuração de notificações
+    this.registerForPushNotificationsAsync().then(token => this.setState({expoPushToken: token}));
+
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    this.state.notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      this.setState({notification: notification});
+    });
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    this.state.responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(this.state.notificationListener.current);
+      Notifications.removeNotificationSubscription(this.state.responseListener.current);
+    }; 
   }
+
+
+
+
+
+  //Função que, ao usuário permitir as notificações, ele registra o celular dele com um token que será usado para enviar as notificações
+  async registerForPushNotificationsAsync() {
+    let token;
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Falha ao obter token de notificação!');
+        return;
+      }
+      let experienceId = '@zubito/wewo';
+      token = (await Notifications.getExpoPushTokenAsync({experienceId})).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+  
+    return token;
+  }
+
+
+
+
 
   navigateTo = (screen) => {
     const {navigation} = this.props;
@@ -160,7 +229,8 @@ export default class Verificação extends Component {
       senha: this.state.senha,
       telefone: this.state.telefone,
       dataNascimento: this.state.data,
-      tipoDeConta: this.state.tipoDeConta
+      tipoDeConta: this.state.tipoDeConta,
+      tokenMessage: this.state.expoPushToken
     });
   };
 
@@ -186,7 +256,8 @@ export default class Verificação extends Component {
                 dataNascimento: e.state.data,
                 telefone: e.state.telefone,
                 tipoDeConta: e.state.tipoDeConta,
-                userLocation: ''
+                userLocation: '',
+                tokenMessage: e.state.expoPushToken
               })
             this.props.navigation.navigate('HomeNavigator')
             this.AlertPro4.open();
@@ -246,7 +317,8 @@ export default class Verificação extends Component {
                       dataNascimento: e.state.data,
                       telefone: e.state.telefone,
                       tipoDeConta: e.state.tipoDeConta,
-                      userLocation: ''
+                      userLocation: '',
+                      tokenMessage: e.state.expoPushToken
                     })
                   this.props.navigation.navigate('HomeNavigator')
                   this.AlertPro4.open();
@@ -416,7 +488,8 @@ export default class Verificação extends Component {
                         dataNascimento: e.state.data,
                         telefone: e.state.telefone,
                         tipoDeConta: e.state.tipoDeConta,
-                        userLocation: ''
+                        userLocation: '',
+                        tokenMessage: e.state.expoPushToken
                       })
                     this.props.navigation.navigate('HomeNavigator')
                     this.AlertPro4.open();
