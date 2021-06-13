@@ -8,9 +8,9 @@ import {
   Image,
   Modal,
   Text,
-  BackHandler,
   Platform,
   View,
+  Linking,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
@@ -47,8 +47,12 @@ import {purchased} from '../../config/purchase';
 //import ADS
 import {AdMobInterstitial} from 'expo-ads-admob';
 
+import * as Notifications from 'expo-notifications';
 
 import { Video } from 'expo-av';
+
+import Constants from 'expo-constants';
+
 
 import normalize from '../../config/resizeFont';
 
@@ -111,7 +115,10 @@ export default class HomeA extends Component {
       products: [],
       purchased: false,
       type:'Autonomo',
-      textSearch: ''
+      textSearch: '',
+      notificationListener: React.createRef(null),
+      responseListener: React.createRef(null),
+      expoPushToken: ''
     };
   }
 
@@ -130,25 +137,62 @@ export default class HomeA extends Component {
     }
 
 
+//Função que, ao usuário permitir as notificações, ele registra o celular dele com um token que será usado para enviar as notificações
+async registerForPushNotificationsAsync() {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Falha ao obter token de notificação!');
+      return;
+    }
+    let experienceId = '@zubito/wewo';
+    token = (await Notifications.getExpoPushTokenAsync({experienceId})).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  return token;
+}
 
 async componentDidMount() {
   let e = this;
 
-  BackHandler.addEventListener('hardwareBackPress', function() {return true})
+  //configuração de notificações
+  await this.registerForPushNotificationsAsync().then(token => this.setState({expoPushToken: token}));
+
   
   if(Platform.OS === "android") {
     let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
-  
+    
     if(comprou == true) {
       this.setState({purchased: true})
     } else {
       this.setState({purchased: false})
     }
   }
-
-    await firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          e.setState({status: true})
+  
+  await firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      e.setState({status: true})
+          firebase.firestore().collection('usuarios').doc(user.uid).update({
+            tokenMessage: e.state.expoPushToken
+          })
           firebase.firestore().collection('usuarios').doc(user.uid).get().then(documentSnapshot => {
             var removeCharacters = documentSnapshot.data().email.replace('@', '')
               let removeCharacters2 = removeCharacters.replace('gmail.com', '')
@@ -373,7 +417,27 @@ async componentDidMount() {
       })
     })
 
-  
+
+
+
+
+
+    
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    this.state.notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      this.setState({notification: notification});
+    });
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    this.state.responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(this.state.notificationListener.current);
+      Notifications.removeNotificationSubscription(this.state.responseListener.current);
+    }; 
+    
   }
 
 

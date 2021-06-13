@@ -96,7 +96,8 @@ export default class ServiceCadaster extends Component {
       complementoEnd: '',
       bairroEnd: '',
       cidadeEnd: '',
-      estadoEnd: ''
+      estadoEnd: '',
+      tokenMSG: ''
     };
   }
 
@@ -138,7 +139,7 @@ export default class ServiceCadaster extends Component {
   };
 
 
-  componentDidMount() {
+  async componentDidMount() {
     this.setState({id: this.props.route.params.idDoContratado})
     this.setState({idContratante: this.props.route.params.idDoContratante})
     this.setState({nome: this.props.route.params.nome})
@@ -154,6 +155,11 @@ export default class ServiceCadaster extends Component {
     //pede ao usuario para habilitar os serviços de localização
     this.CheckIfLocationEnabled();
 
+    //obter token de mensagem do usuário
+    await firebase.firestore().collection('usuarios').doc(this.props.route.params.idDoContratado).onSnapshot(documentSnapshot => {
+      this.setState({tokenMSG: documentSnapshot.data().tokenMessage})
+    })
+
   }
 
   //envia a notificação para os servidores expo e o expo encaminha para o FCM e Apple Cloud Messaging. A NOTIFICAÇÃO É ENVIADA PARA O USUARIO CONTRATADO
@@ -163,7 +169,7 @@ export default class ServiceCadaster extends Component {
       sound: 'default',
       title: 'Dinheiro chegando',
       body: 'Algum usuário quer lhe contratar! Acesse o WeWo',
-      data: { someData: 'goes here' },
+      data: { url: 'goes here' },
     };
   
     await fetch('https://exp.host/--/api/v2/push/send', {
@@ -273,6 +279,7 @@ export default class ServiceCadaster extends Component {
           confirmed: false
         })
         
+        e.sendPushNotification(e.state.tokenMSG);
         e.setModalVisible(false)
         alert('Parabens! O anunciante foi notificado e em breve ira contacta-lo em breve pelo app. Fique atento a aba de serviços enviados')
         e.props.navigation.navigate('Home')
