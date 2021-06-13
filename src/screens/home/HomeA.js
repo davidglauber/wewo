@@ -11,7 +11,7 @@ import {
   Platform,
   View,
   Linking,
-  TouchableOpacity,
+  TouchableOpacity, 
   StyleSheet,
   Dimensions,
   TouchableOpacityBase,

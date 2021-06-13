@@ -215,7 +215,7 @@ export default class TelaCriarCartaoVisita extends Component {
     let usuarioAtual = firebase.auth().currentUser.uid;
 
     if(Platform.OS === "android") {
-      let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
       this.setState({usuarioComprou: comprou});
       console.log('usuario comprou? ' + JSON.stringify(comprou))
     } else {

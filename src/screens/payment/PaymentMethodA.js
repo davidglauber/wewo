@@ -193,15 +193,27 @@ export default function PaymentMethodA() {
 
   useEffect(() => {
     async function isBought() {
-      let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
 
-      if(comprou == true) {
-        setVerifySub(true)
-        alertPro.current.open()
+      if(Platform.OS === "android") {
+        let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto')
+        if(comprou == true) {
+          setVerifySub(true)
+          alertPro.current.open()
+        } else {
+          setVerifySub(false)
+          alertPro2.current.open()
+        }
       } else {
-        setVerifySub(false)
-        alertPro2.current.open()
+        let comprou = await purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
+        if(comprou == true) {
+          setVerifySub(true)
+          alertPro.current.open()
+        } else {
+          setVerifySub(false)
+          alertPro2.current.open()
+        }
       }
+
     }
     isBought();
   }, [])
