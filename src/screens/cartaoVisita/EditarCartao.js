@@ -212,8 +212,14 @@ export default class EditarCartao extends Component {
 
     //verifica se o usuario comprou a assinatura mensal
     if(Platform.OS === "android") {
-      let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+      let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
       this.setState({usuarioComprou: comprou});
+      console.log('usuario comprou? ' + JSON.stringify(comprou))
+    } else {
+      //let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+      //this.setState({usuarioComprou: comprou});
+      //console.log('usuario comprou? ' + JSON.stringify(comprou))
+      //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
     }
 
 

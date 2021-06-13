@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "419527216736-cajgug10jhmtaq8bkhpnc3uf62f522tm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zubito.wewo",
+            "certificate_hash": "079a61f875feb782080f1e4cee7c90f0c6004c93"
+          }
+        },
+        {
           "client_id": "419527216736-lfu0fmum19jnsgeu6f088uu1s46ll569.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -31,7 +39,7 @@
           }
         },
         {
-          "client_id": "739877707204-ttjeace2rhqtfjbr8fc7ver9vl8s9keo.apps.googleusercontent.com",
+          "client_id": "419527216736-39o1vcm2lh5c1nkf6qdvb74dnlshvemu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

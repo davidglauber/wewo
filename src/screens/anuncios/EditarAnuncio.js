@@ -269,9 +269,16 @@ export default class EditarAnuncio extends Component {
     let e = this;
     let usuarioAtual = firebase.auth().currentUser.uid;
 
-    let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
-    this.setState({usuarioComprou: comprou});
-
+    if(Platform.OS === "android") {
+      let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
+      this.setState({usuarioComprou: comprou});
+      console.log('usuario comprou? ' + JSON.stringify(comprou))
+    } else {
+      //let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+      //this.setState({usuarioComprou: comprou});
+      //console.log('usuario comprou? ' + JSON.stringify(comprou))
+      //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
+    }
     //pede ao usuario para habilitar os serviços de localização
     this.CheckIfLocationEnabled();
 

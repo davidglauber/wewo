@@ -472,6 +472,7 @@ export default class TelaPrincipalAnuncio extends Component {
                 }
 
 
+              <ScrollView>
 
                 <View style={{flex:1, alignItems: 'center'}}>
                     <View>
@@ -569,6 +570,7 @@ export default class TelaPrincipalAnuncio extends Component {
                       />
                     </View>
                   </View>
+              </ScrollView>
         </View>
       </SafeBackground>
     );

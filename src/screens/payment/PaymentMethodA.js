@@ -438,7 +438,7 @@ export default function PaymentMethodA() {
             <Button
               borderRadius={20}
               onPress={() => signPremium('gold.auto.mensal')}
-              title="Assinar Premium"
+              title="Assinar Premium iOS"
             />
           </View>
         }
