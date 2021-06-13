@@ -14,6 +14,7 @@ import {
   Alert,
   Dimensions,
   Text,
+  ScrollView,
   TouchableOpacity,
   StyleSheet,
   View
@@ -332,7 +333,7 @@ export default class NotificationsB extends Component {
             </View>
           </View>
           :
-          <View>
+          <ScrollView>
             <View style={{flexDirection:'row'}}>
               <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeNavigator')}>
                   <IconResponsiveNOBACK style={{marginTop: windowHeight/23, marginLeft: windowWidth/16, marginRight: windowWidth/22}} name="arrow-left" size={20}/>
@@ -369,7 +370,7 @@ export default class NotificationsB extends Component {
               </View>
             }
             ></FlatList>
-          </View>
+          </ScrollView>
         }
 
         

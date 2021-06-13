@@ -159,16 +159,18 @@ export default class ServiceCadaster extends Component {
     await firebase.firestore().collection('usuarios').doc(this.props.route.params.idDoContratado).onSnapshot(documentSnapshot => {
       this.setState({tokenMSG: documentSnapshot.data().tokenMessage})
     })
-
   }
 
   //envia a notificação para os servidores expo e o expo encaminha para o FCM e Apple Cloud Messaging. A NOTIFICAÇÃO É ENVIADA PARA O USUARIO CONTRATADO
   async sendPushNotification(expoPushToken) {
+    let replaceWord = this.props.route.params.nome.split(' ');
+    let repl2 = replaceWord[0];
+
     const message = {
       to: expoPushToken,
       sound: 'default',
       title: 'Dinheiro chegando',
-      body: 'Algum usuário quer lhe contratar! Acesse o WeWo',
+      body: `O(A) usuário(a) ${repl2} quer lhe contratar! Acesse as Notificações`,
       data: { url: 'goes here' },
     };
   
@@ -281,7 +283,7 @@ export default class ServiceCadaster extends Component {
         
         e.sendPushNotification(e.state.tokenMSG);
         e.setModalVisible(false)
-        alert('Parabens! O anunciante foi notificado e em breve ira contacta-lo em breve pelo app. Fique atento a aba de serviços enviados')
+        alert('Parabens! O anunciante foi notificado e em breve irá contactá-lo em breve pelo app. Fique atento a aba de serviços enviados')
         e.props.navigation.navigate('Home')
       })
     } else {

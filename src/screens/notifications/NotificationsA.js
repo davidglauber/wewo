@@ -11,7 +11,9 @@ import {
   FlatList,
   StatusBar,
   Image,
+  Alert,
   Dimensions,
+  ScrollView,
   Text,
   TouchableOpacity,
   StyleSheet,
@@ -330,7 +332,12 @@ export default class NotificationsA extends Component {
 
         {this.state.notificationsActivies.length == 0 ?
           <View>
-            <Heading style={styles.paddingTitle}>Notificações Recebidas</Heading>
+            <View style={{flexDirection:'row'}}>
+              <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                  <IconResponsiveNOBACK style={{marginRight: 24, marginLeft: 20, marginTop: 35}} name="arrow-left" size={20}/>
+              </TouchableOpacity>
+              <Heading style={styles.paddingTitle}>Notificações Recebidas</Heading>
+            </View>
             <View style={{flexDirection:'row', justifyContent:'center'}}>
               <TouchableOpacity>
                 <IconResponsiveNOBACK style={{marginRight:20}} name="arrow-circle-down" size={24}/>
@@ -351,8 +358,13 @@ export default class NotificationsA extends Component {
             </View>
           </View>
           :
-          <View>
-            <Heading style={styles.paddingTitle}>Notificações Recebidas</Heading>
+          <ScrollView>
+            <View style={{flexDirection:'row'}}>
+              <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                  <IconResponsiveNOBACK style={{marginRight: 24, marginLeft: 20, marginTop: 35}} name="arrow-left" size={20}/>
+              </TouchableOpacity>
+              <Heading style={styles.paddingTitle}>Notificações Recebidas</Heading>
+            </View>
             <View style={{flexDirection:'row', justifyContent:'center'}}>
               <TouchableOpacity>
                 <IconResponsiveNOBACK style={{marginRight:20}} name="arrow-circle-down" size={24}/>
@@ -383,7 +395,7 @@ export default class NotificationsA extends Component {
               </View>
             }
             ></FlatList>
-          </View>
+          </ScrollView>
         }
 
 

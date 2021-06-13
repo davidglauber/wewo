@@ -126,7 +126,7 @@ console.log('Dark do HOMEEE: ' + dark)
     <Tab.Screen name="Home" component={Home} />
     
     <Tab.Screen
-      name="Notifications"
+      name="NotificationsNav"
       component={Notifications}
       options={{
         tabBarIcon: props => (

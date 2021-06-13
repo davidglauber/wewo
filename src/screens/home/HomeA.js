@@ -418,11 +418,6 @@ async componentDidMount() {
     })
 
 
-
-
-
-
-    
     // This listener is fired whenever a notification is received while the app is foregrounded
     this.state.notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       this.setState({notification: notification});
@@ -430,7 +425,7 @@ async componentDidMount() {
 
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     this.state.responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
+      console.log(response)
     });
 
     return () => {

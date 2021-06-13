@@ -13,6 +13,7 @@ import {
   Image,
   Dimensions,
   Text,
+  ScrollView,
   TouchableOpacity,
   StyleSheet,
   View
@@ -226,7 +227,7 @@ export default class ConfirmedServices extends Component {
           </View>
         </View>
         :
-        <View>
+        <ScrollView>
           <View style={{flexDirection:'row'}}>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeNavigator')}>
                 <IconResponsiveNOBACK style={{marginTop: windowHeight/23, marginLeft: windowWidth/16, marginRight: windowWidth/8}} name="arrow-left" size={20}/>
@@ -256,7 +257,7 @@ export default class ConfirmedServices extends Component {
           }
           ></FlatList>
 
-        </View>
+        </ScrollView>
 
         }
         

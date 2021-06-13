@@ -598,9 +598,7 @@ function MainNavigatorA() {
         <Stack.Screen
           name="Notifications"
           component={Notifications}
-          options={{
-            title: 'Notifications',
-          }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="Orders"
