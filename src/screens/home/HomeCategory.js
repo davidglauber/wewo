@@ -93,13 +93,22 @@ async componentDidMount() {
    let titleNavCategory = this.props.route.params.titleOfCategory;
    
    if(Platform.OS === "android") {
-    let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
-  
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
     if(comprou == true) {
       this.setState({purchased: true})
     } else {
       this.setState({purchased: false})
     }
+  } else {
+    /*
+    let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+    if(comprou == true) {
+      this.setState({purchased: true})
+    } else {
+      this.setState({purchased: false})
+    }
+    */
+    //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
   }
 
     //obter anuncios PREMIUM ativos autonomo

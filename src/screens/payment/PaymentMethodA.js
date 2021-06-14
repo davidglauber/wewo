@@ -204,7 +204,7 @@ export default function PaymentMethodA() {
           alertPro2.current.open()
         }
       } else {
-        let comprou = await purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
+        let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
         if(comprou == true) {
           setVerifySub(true)
           alertPro.current.open()
@@ -450,7 +450,7 @@ export default function PaymentMethodA() {
             <Button
               borderRadius={20}
               onPress={() => signPremium('gold.auto.mensal')}
-              title="Assinar Premium iOS"
+              title="Assinar Premium"
             />
           </View>
         }

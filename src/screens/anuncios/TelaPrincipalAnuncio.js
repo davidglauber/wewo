@@ -246,59 +246,116 @@ export default class TelaPrincipalAnuncio extends Component {
 
   async verifyNumberOfPublises() {
     let currentUserUID = firebase.auth().currentUser.uid;
-    let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
-    this.props.navigation.navigate('Orders')
-
-    firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
-      let anunciosDidMount = []
-      documentSnapshot.forEach(function(doc) {
-        anunciosDidMount.push({
-          idUser: doc.data().idUser,
-          nome: doc.data().nome,
-          idAnuncio: doc.data().idAnuncio,
-          photo: doc.data().photoPublish,
-          title: doc.data().titleAuto,
-          description: doc.data().descriptionAuto,
-          type: doc.data().type,
-          phone: doc.data().phoneNumberAuto,
-          verified: doc.data().verifiedPublish
+    if(Platform.OS === "android") {
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
+      this.props.navigation.navigate('Orders')
+  
+      firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
+        let anunciosDidMount = []
+        documentSnapshot.forEach(function(doc) {
+          anunciosDidMount.push({
+            idUser: doc.data().idUser,
+            nome: doc.data().nome,
+            idAnuncio: doc.data().idAnuncio,
+            photo: doc.data().photoPublish,
+            title: doc.data().titleAuto,
+            description: doc.data().descriptionAuto,
+            type: doc.data().type,
+            phone: doc.data().phoneNumberAuto,
+            verified: doc.data().verifiedPublish
+          })
         })
-      })
-    
-
-      if(this.state.idMPState == '') {
-        this.AlertPro.open();
-        this.props.navigation.navigate('MLConfigAccount')
-      }
-
-
-      if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
-        this.props.navigation.navigate('Orders')
-      }
-
-
-      if(comprou == true) {
-        if(anunciosDidMount.length <= 15 && this.state.idMPState !== '') {
+      
+  
+        if(this.state.idMPState == '') {
+          this.AlertPro.open();
+          this.props.navigation.navigate('MLConfigAccount')
+        }
+  
+  
+        if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
           this.props.navigation.navigate('Orders')
         }
-      } 
-
-      if(comprou == false) {
-        if(anunciosDidMount.length >= 3 && this.state.idMPState !== '') {
-          this.AlertPro2.open();
-          
-          if(Platform.OS === 'ios') {
-            alert('A conta free permite ate 3 anuncios, consulte a tela planos para mais informaçoes')
+  
+  
+        if(comprou == true) {
+          if(anunciosDidMount.length <= 15 && this.state.idMPState !== '') {
+            this.props.navigation.navigate('Orders')
+          }
+        } 
+  
+        if(comprou == false) {
+          if(anunciosDidMount.length >= 3 && this.state.idMPState !== '') {
+            this.AlertPro2.open();
+            
+            if(Platform.OS === 'ios') {
+              alert('A conta free permite ate 3 anuncios, consulte a tela planos para mais informaçoes')
+            }
+          }
+  
+          if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
+            this.props.navigation.navigate('Orders')
           }
         }
+        console.log('TAMANHO DA LISTA DE ANUNCIOS:> ' + anunciosDidMount)
+        alert('Purchased ' + comprou)
+      })
+
+    } else {
+      let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+      this.props.navigation.navigate('Orders')
+
+      firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
+        let anunciosDidMount = []
+        documentSnapshot.forEach(function(doc) {
+          anunciosDidMount.push({
+            idUser: doc.data().idUser,
+            nome: doc.data().nome,
+            idAnuncio: doc.data().idAnuncio,
+            photo: doc.data().photoPublish,
+            title: doc.data().titleAuto,
+            description: doc.data().descriptionAuto,
+            type: doc.data().type,
+            phone: doc.data().phoneNumberAuto,
+            verified: doc.data().verifiedPublish
+          })
+        })
+      
+
+        if(this.state.idMPState == '') {
+          this.AlertPro.open();
+          this.props.navigation.navigate('MLConfigAccount')
+        }
+
 
         if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
           this.props.navigation.navigate('Orders')
         }
-      }
-      console.log('TAMANHO DA LISTA DE ANUNCIOS:> ' + anunciosDidMount)
-      alert('Purchased ' + comprou)
-    })
+
+
+        if(comprou == true) {
+          if(anunciosDidMount.length <= 15 && this.state.idMPState !== '') {
+            this.props.navigation.navigate('Orders')
+          }
+        } 
+
+        if(comprou == false) {
+          if(anunciosDidMount.length >= 3 && this.state.idMPState !== '') {
+            this.AlertPro2.open();
+            
+            if(Platform.OS === 'ios') {
+              alert('A conta free permite ate 3 anuncios, consulte a tela planos para mais informaçoes')
+            }
+          }
+
+          if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
+            this.props.navigation.navigate('Orders')
+          }
+        }
+        console.log('TAMANHO DA LISTA DE ANUNCIOS:> ' + anunciosDidMount)
+        alert('Purchased ' + comprou)
+      })
+    }
 
   }
 

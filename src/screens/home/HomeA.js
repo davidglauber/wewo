@@ -148,7 +148,7 @@ async registerForPushNotificationsAsync() {
       finalStatus = status;
     }
     if (finalStatus !== 'granted') {
-      alert('Falha ao obter token de notificação!');
+      console.log('Falha ao obter token de notificação! ' + finalStatus);
       return;
     }
     let experienceId = '@zubito/wewo';
@@ -178,13 +178,22 @@ async componentDidMount() {
 
   
   if(Platform.OS === "android") {
-    let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
-    
+    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
     if(comprou == true) {
       this.setState({purchased: true})
     } else {
       this.setState({purchased: false})
     }
+  } else {
+    /*
+    let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+    if(comprou == true) {
+      this.setState({purchased: true})
+    } else {
+      this.setState({purchased: false})
+    }
+    */
+    //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
   }
   
   await firebase.auth().onAuthStateChanged((user) => {
@@ -345,15 +354,6 @@ async componentDidMount() {
         e.setState({isFetchedPublish: true})
       })
     })
-
-    if(Platform.OS === "android" && this.state.purchased == true) {
-      null
-    }
-
-    if(Platform.OS === "ios" && this.state.purchased == true) {
-      null
-    }
-
 
 
 

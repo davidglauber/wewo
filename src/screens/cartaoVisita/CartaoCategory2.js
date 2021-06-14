@@ -16,6 +16,7 @@ import {
   Text,
   Modal,
   TouchableOpacity,
+  Platform,
   Dimensions,
   Image,
   FlatList,
@@ -156,12 +157,23 @@ export default class CartaoCategory2 extends Component {
   async componentDidMount() {
     let e = this;
     let titleNavCategory = this.props.route.params.titleOfCategory;
-    let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
-
-    if(comprou == true) {
-      this.setState({purchased: true})
+    if(Platform.OS === "android") {
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
+      if(comprou == true) {
+        this.setState({purchased: true})
+      } else {
+        this.setState({purchased: false})
+      }
     } else {
-      this.setState({purchased: false})
+      /*
+      let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+      if(comprou == true) {
+        this.setState({purchased: true})
+      } else {
+        this.setState({purchased: false})
+      }
+      */
+      //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
     }
 
     //obter cartoes PREMIUM ativos autonomo

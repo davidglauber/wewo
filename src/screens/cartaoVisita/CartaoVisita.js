@@ -15,6 +15,7 @@ import {
   ScrollView,
   Text,
   Modal,
+  Platform,
   TouchableOpacity,
   Dimensions,
   Image,
@@ -158,12 +159,23 @@ export default class CartaoVisita extends Component {
 
   async componentDidMount() {
     let e = this;
-    let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
-
-    if(comprou == true) {
-      this.setState({purchased: true})
+    if(Platform.OS === "android") {
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
+      if(comprou == true) {
+        this.setState({purchased: true})
+      } else {
+        this.setState({purchased: false})
+      }
     } else {
-      this.setState({purchased: false})
+      /*
+      let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+      if(comprou == true) {
+        this.setState({purchased: true})
+      } else {
+        this.setState({purchased: false})
+      }
+      */
+      //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
     }
     //obter cartoes PREMIUM ativos autonomo 
     await firebase.firestore().collection('cartoes').where("type", "==", "Autonomo").where("verifiedPublish", "==", true).where("premiumUser", "==", true).where("media", ">=", 0).orderBy("media", "desc").onSnapshot(documentSnapshot => {

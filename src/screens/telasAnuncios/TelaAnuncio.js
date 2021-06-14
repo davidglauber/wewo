@@ -251,13 +251,22 @@ export default class TelaAnuncio extends Component {
     let e = this;
     
     if(Platform.OS === "android") {
-      let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
-    
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
       if(comprou == true) {
         this.setState({purchased: true})
       } else {
         this.setState({purchased: false})
       }
+    } else {
+      /*
+      let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+      if(comprou == true) {
+        this.setState({purchased: true})
+      } else {
+        this.setState({purchased: false})
+      }
+      */
+      //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
     }
 
     let idDoAnuncio = this.props.route.params.idDoAnuncio;
@@ -1116,14 +1125,6 @@ export default class TelaAnuncio extends Component {
 
 
 
-              { this.state.purchased == true && Platform.OS === "android" &&
-                null
-              }
-  
-
-              { this.state.purchased == true && Platform.OS === "ios" &&
-                null
-              }
                 </View>
             }
           />
@@ -1653,14 +1654,6 @@ export default class TelaAnuncio extends Component {
 
 
 
-
-              { this.state.purchased == true && Platform.OS === "android" &&
-                null
-              }
-
-              { this.state.purchased == true && Platform.OS === "ios" &&
-                null
-              }
                 </View>
 
             }

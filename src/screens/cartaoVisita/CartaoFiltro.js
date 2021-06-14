@@ -14,6 +14,7 @@ import {
   Dimensions,
   View,
   ScrollView,
+  Platform,
   Text,
   Modal,
   TouchableOpacity,
@@ -163,12 +164,23 @@ export default class CartaoFiltro extends Component {
 
   async componentDidMount() {
     let e = this;
-    let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
-
-    if(comprou == true) {
-      this.setState({purchased: true})
+    if(Platform.OS === "android") {
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
+      if(comprou == true) {
+        this.setState({purchased: true})
+      } else {
+        this.setState({purchased: false})
+      }
     } else {
-      this.setState({purchased: false})
+      /*
+      let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+      if(comprou == true) {
+        this.setState({purchased: true})
+      } else {
+        this.setState({purchased: false})
+      }
+      */
+      //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
     }
     let arrayOfSelectedCategories = this.props.route.params.categoriasFiltradas;
     let arrayOfSelectedStates = this.props.route.params.estadosFiltrados;

@@ -14,6 +14,7 @@ import {
   Image,
   View,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import Color from 'color';
 
@@ -348,52 +349,102 @@ export default class TelaGeralCriarCartao extends Component {
 
   async verifyNumberOfPublises() {
     let currentUserUID = firebase.auth().currentUser.uid;
-    let comprou = purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto', 'gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
 
-    firebase.firestore().collection(`usuarios/${currentUserUID}/cartoes`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
-      let cartoesDidMount = []
-      documentSnapshot.forEach(function(doc) {
-        cartoesDidMount.push({
-          idUser: doc.data().idUser,
-          nome: doc.data().nome,
-          idCartao: doc.data().idCartao,
-          photo: doc.data().photoPublish,
-          description: doc.data().descriptionAuto,
-          type: doc.data().type,
-          categoria: doc.data().categoryAuto,
-          phone: doc.data().phoneNumberAuto,
+    if(Platform.OS === "android") {
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
+      firebase.firestore().collection(`usuarios/${currentUserUID}/cartoes`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
+        let cartoesDidMount = []
+        documentSnapshot.forEach(function(doc) {
+          cartoesDidMount.push({
+            idUser: doc.data().idUser,
+            nome: doc.data().nome,
+            idCartao: doc.data().idCartao,
+            photo: doc.data().photoPublish,
+            description: doc.data().descriptionAuto,
+            type: doc.data().type,
+            categoria: doc.data().categoryAuto,
+            phone: doc.data().phoneNumberAuto,
+          })
         })
-      })
-
-
-      if(this.state.idMPState == '') {
-        this.AlertPro.open();
-        this.props.navigation.navigate('MLConfigAccount')
-      }
-
-      if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {
-        this.props.navigation.navigate('TelaCriarCartaoVisita')
-      }
-
-
-      if(comprou == true) {
-        if(cartoesDidMount.length <= 100 && this.state.idMPState !== '') {
-          this.props.navigation.navigate('TelaCriarCartaoVisita')
+  
+  
+        if(this.state.idMPState == '') {
+          this.AlertPro.open();
+          this.props.navigation.navigate('MLConfigAccount')
         }
-      } 
-
-      if(comprou == false) {
-        if(cartoesDidMount.length >= 7 && this.state.idMPState !== '') {
-          this.AlertPro2.open();
-        }
-
+  
         if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {
           this.props.navigation.navigate('TelaCriarCartaoVisita')
         }
-      }
+  
+  
+        if(comprou == true) {
+          if(cartoesDidMount.length <= 100 && this.state.idMPState !== '') {
+            this.props.navigation.navigate('TelaCriarCartaoVisita')
+          }
+        } 
+  
+        if(comprou == false) {
+          if(cartoesDidMount.length >= 7 && this.state.idMPState !== '') {
+            this.AlertPro2.open();
+          }
+  
+          if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {
+            this.props.navigation.navigate('TelaCriarCartaoVisita')
+          }
+        }
+  
+        console.log('TAMANHO DA LISTA DE CARTOES:> ' + cartoesDidMount)
+      })
 
-      console.log('TAMANHO DA LISTA DE CARTOES:> ' + cartoesDidMount)
-    })
+    } else {
+      let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+      firebase.firestore().collection(`usuarios/${currentUserUID}/cartoes`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
+        let cartoesDidMount = []
+        documentSnapshot.forEach(function(doc) {
+          cartoesDidMount.push({
+            idUser: doc.data().idUser,
+            nome: doc.data().nome,
+            idCartao: doc.data().idCartao,
+            photo: doc.data().photoPublish,
+            description: doc.data().descriptionAuto,
+            type: doc.data().type,
+            categoria: doc.data().categoryAuto,
+            phone: doc.data().phoneNumberAuto,
+          })
+        })
+  
+  
+        if(this.state.idMPState == '') {
+          this.AlertPro.open();
+          this.props.navigation.navigate('MLConfigAccount')
+        }
+  
+        if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {
+          this.props.navigation.navigate('TelaCriarCartaoVisita')
+        }
+  
+  
+        if(comprou == true) {
+          if(cartoesDidMount.length <= 100 && this.state.idMPState !== '') {
+            this.props.navigation.navigate('TelaCriarCartaoVisita')
+          }
+        } 
+  
+        if(comprou == false) {
+          if(cartoesDidMount.length >= 7 && this.state.idMPState !== '') {
+            this.AlertPro2.open();
+          }
+  
+          if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {
+            this.props.navigation.navigate('TelaCriarCartaoVisita')
+          }
+        }
+  
+        console.log('TAMANHO DA LISTA DE CARTOES:> ' + cartoesDidMount)
+      })
+    }
+
 
   }
 
