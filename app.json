@@ -12,6 +12,9 @@
       "permissions":["com.android.vending.BILLING"],
       "versionCode": 10,
       "package": "com.zubito.wewo"
+    }, 
+    "ios": {
+      "bundleIdentifier": "com.wewo.zubito"
     }
   }
 }
