@@ -291,6 +291,11 @@ export default class TelaLogin extends Component {
     }
   }
 
+  async loginWithCredentialsApple(cred) {
+    await firebase.auth().signInWithCredential(cred)
+      this.props.navigation.navigate('Home')
+      this.AlertPro4.open();
+  }
 
   render() {
     const e = this;
@@ -503,13 +508,28 @@ export default class TelaLogin extends Component {
                     idToken: credential.identityToken
                   })
 
-                  try {
-                    await firebase.auth().signInWithCredential(authCredential)
-                      this.props.navigation.navigate('Home')
-                      this.AlertPro4.open();
-                  } catch (e) {
-                    console.log('ERRO: ' + e)
-                  }
+                  await firebase.firestore().collection('usuarios').where('idAppleOnlyIOS', '==', credential.user).get().then(function(querySnapshot) {
+                    let idsAvailable = []
+                    querySnapshot.forEach(function(doc) {
+                      idsAvailable.push({
+                        idAppleOnlyIOS: doc.data().idAppleOnlyIOS
+                      })
+                    })
+
+                    if(idsAvailable.length == 1) {
+                      //garante que o usuario apple ja se registrou, se sim, ele faz login sucesso
+                      try {
+                        e.loginWithCredentialsApple(authCredential)
+                      } catch (e) {
+                        console.log('ERRO: ' + e)
+                      }
+                    }
+
+                    if(idsAvailable == 0) {
+                      //nesse caso o usuario nao foi encontrado no banco de dados e sera obrigado a se cadastrar
+                      alert('Parece que você ainda não se cadastrou, se cadastre e em seguida faça login')
+                    }
+                  })
                   // signed in
                 } catch (e) {
                   if (e.code === 'ERR_CANCELED') {

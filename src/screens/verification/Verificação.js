@@ -474,7 +474,8 @@ export default class Verificação extends Component {
                         telefone: e.state.telefone,
                         tipoDeConta: e.state.tipoDeConta,
                         userLocation: '',
-                        tokenMessage: e.state.expoPushToken
+                        tokenMessage: e.state.expoPushToken,
+                        idAppleOnlyIOS: credential.user
                       })
                     this.props.navigation.navigate('HomeNavigator')
                     this.AlertPro4.open();

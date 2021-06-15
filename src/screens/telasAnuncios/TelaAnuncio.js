@@ -1083,13 +1083,25 @@ export default class TelaAnuncio extends Component {
 
                     
                   <View style={{flexDirection:'row'}}>
-                    <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft:90, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
-                          <IconResponsive name="hands-helping" size={24}/>
-                          <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {idLoggedUser: usuarioEstado.uid, idDonoDoAnuncio: item.idUser, idNotification: item.idAnuncio, valuePayment: item.value, type: 'normalNotif'})} style={{paddingHorizontal: 13, marginRight:90, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
+                    {usuarioEstado == null ?
+                      <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft:120, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
+                            <IconResponsive name="hands-helping" size={24}/>
+                            <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
+                      </TouchableOpacity>
+                    
+                    :
+                      <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft:90, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
+                            <IconResponsive name="hands-helping" size={24}/>
+                            <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
+                      </TouchableOpacity>
+                    }
+                    {usuarioEstado == null ?
+                      null
+                    :
+                      <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {idLoggedUser: usuarioEstado.uid, idDonoDoAnuncio: item.idUser, idNotification: item.idAnuncio, valuePayment: item.value, type: 'normalNotif'})} style={{paddingHorizontal: 13, marginRight:90, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
                           <IconResponsive name="comment" size={24}/>
-                    </TouchableOpacity>
+                      </TouchableOpacity>
+                    }
                   </View>
 
 
@@ -1578,13 +1590,25 @@ export default class TelaAnuncio extends Component {
                   </TouchableOpacity>
 
                     <View style={{flexDirection:'row'}}>
-                      <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft:90, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
-                            <IconResponsive name="hands-helping" size={24}/>
-                            <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {idLoggedUser: usuarioEstado.uid, idDonoDoAnuncio: item.idUser, idNotification: item.idAnuncio, valuePayment: item.value, type: 'normalNotif'})} style={{paddingHorizontal: 13, marginRight:90, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
+                      {usuarioEstado == null ?
+                        <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft:120, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
+                              <IconResponsive name="hands-helping" size={24}/>
+                              <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
+                        </TouchableOpacity>
+                      
+                      :
+                        <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft:90, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
+                              <IconResponsive name="hands-helping" size={24}/>
+                              <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
+                        </TouchableOpacity>
+                      }
+                      {usuarioEstado == null ?
+                        null
+                      :
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Chat', {idLoggedUser: usuarioEstado.uid, idDonoDoAnuncio: item.idUser, idNotification: item.idAnuncio, valuePayment: item.value, type: 'normalNotif'})} style={{paddingHorizontal: 13, marginRight:90, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
                             <IconResponsive name="comment" size={24}/>
-                      </TouchableOpacity>
+                        </TouchableOpacity>
+                      }
                     </View>
 
 
