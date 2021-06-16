@@ -14,11 +14,13 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  TextInput,
   Button,
   Platform,
   Text,
   TouchableWithoutFeedback,
   View,
+  KeyboardAvoidingView
 } from 'react-native';
 
 // import components
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   instructionContainer: {
-    marginTop: windowHeight/3,
+    marginTop: Platform.OS === "ios" ? windowHeight/10 : windowHeight/3,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -141,6 +143,14 @@ const styles = StyleSheet.create({
     color:'#DAA520',
     alignItems: 'center',
   },
+  inputLogin: {
+    padding: 20,
+    marginBottom: 30,
+    borderRadius: 30,
+    borderWidth: 1, 
+    borderColor: "#DAA520",
+    minWidth: windowWidth/2.5
+  }
 });
 
 export default class TelaLogin extends Component {
@@ -149,7 +159,10 @@ export default class TelaLogin extends Component {
 
     this.state = {
       userInfo: [],
-      loggedIn: false
+      loggedIn: false,
+      emailUser: '',
+      senhaUser: '',
+      viewPass: true
     };
   }
 
@@ -297,300 +310,379 @@ export default class TelaLogin extends Component {
       this.AlertPro4.open();
   }
 
+
+  emailChange = text => {
+    this.setState({
+      emailUser: text,
+    });
+
+    console.log('email user: ' + this.state.emailUser)
+  };
+
+  senhaChange = text => {
+    this.setState({
+      senhaUser: text,
+    });
+
+    console.log('email user: ' + this.state.senhaUser)
+  };
+
+
+  async loginWithEmailAndPassApple(email, password) {
+    let e = this
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
+        e.props.navigation.navigate("Home")
+      })
+    } catch (e) {
+      alert("Ops! Houve um erro ao logar, confira se você já se cadastrou, caso sim, confira as informações e tente novamente")
+    }
+  }
+
   render() {
     const e = this;
 
     return (
-      <View style={{flex:1, backgroundColor:'white'}}>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{flex: 1}}
+      >
+        <View style={{flex:1, backgroundColor:'white'}}>
+          <AlertPro
+            ref={ref => {
+              this.AlertPro = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro.close()}
+            title="Aviso!!!"
+            message="Caso você não tenha se cadastrado ainda no aplicativo vá para tela de login, caso sim, continue o login"
+            textConfirm="Entendi"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
 
-
-        <AlertPro
-          ref={ref => {
-            this.AlertPro = ref;
-          }}
-          showCancel={false}
-          onConfirm={() => this.AlertPro.close()}
-          title="Aviso!!!"
-          message="Caso você não tenha se cadastrado ainda no aplicativo vá para tela de login, caso sim, continue o login"
-          textConfirm="Entendi"
-          customStyles={{
-            mask: {
-              backgroundColor: "black",
-              opacity: 0.9
-            },
-            container: {
-              borderWidth: 1,
-              borderColor: "#d98b0d",
-              shadowColor: "#000000",
-              shadowOpacity: 0.1,
-              shadowRadius: 10,
-              borderRadius:30
-            },
-            buttonCancel: {
-              backgroundColor: "#3f3f3f"
-            },
-            buttonConfirm: {
-              backgroundColor: "#ffa31a"
-            }
-          }}
-        />
-
-        <AlertPro
-          ref={ref => {
-            this.AlertPro2 = ref;
-          }}
-          showCancel={false}
-          onConfirm={() => this.AlertPro2.close()}
-          title="Erro"
-          message="Usuário cancelou o login"
-          textConfirm="Fechar"
-          customStyles={{
-            mask: {
-              backgroundColor: "black",
-              opacity: 0.9
-            },
-            container: {
-              borderWidth: 1,
-              borderColor: "#d98b0d",
-              shadowColor: "#000000",
-              shadowOpacity: 0.1,
-              shadowRadius: 10,
-              borderRadius:30
-            },
-            buttonCancel: {
-              backgroundColor: "#3f3f3f"
-            },
-            buttonConfirm: {
-              backgroundColor: "#ffa31a"
-            }
-          }}
-        />
-
-      <AlertPro
-          ref={ref => {
-            this.AlertPro3 = ref;
-          }}
-          showCancel={false}
-          onConfirm={() => this.AlertPro3.close()}
-          title="Erro"
-          message="Google Play Serviços não disponível"
-          textConfirm="Fechar"
-          customStyles={{
-            mask: {
-              backgroundColor: "black",
-              opacity: 0.9
-            },
-            container: {
-              borderWidth: 1,
-              borderColor: "#d98b0d",
-              shadowColor: "#000000",
-              shadowOpacity: 0.1,
-              shadowRadius: 10,
-              borderRadius:30
-            },
-            buttonCancel: {
-              backgroundColor: "#3f3f3f"
-            },
-            buttonConfirm: {
-              backgroundColor: "#ffa31a"
-            }
-          }}
-        />
-
+          <AlertPro
+            ref={ref => {
+              this.AlertPro2 = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro2.close()}
+            title="Erro"
+            message="Usuário cancelou o login"
+            textConfirm="Fechar"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
 
         <AlertPro
-          ref={ref => {
-            this.AlertPro4 = ref;
-          }}
-          showCancel={false}
-          onConfirm={() => this.AlertPro4.close()}
-          title="Sucesso"
-          message="Logado com sucesso"
-          textConfirm="OK"
-          customStyles={{
-            mask: {
-              backgroundColor: "black",
-              opacity: 0.9
-            },
-            container: {
-              borderWidth: 1,
-              borderColor: "#d98b0d",
-              shadowColor: "#000000",
-              shadowOpacity: 0.1,
-              shadowRadius: 10,
-              borderRadius:30
-            },
-            buttonCancel: {
-              backgroundColor: "#3f3f3f"
-            },
-            buttonConfirm: {
-              backgroundColor: "#ffa31a"
+            ref={ref => {
+              this.AlertPro3 = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro3.close()}
+            title="Erro"
+            message="Google Play Serviços não disponível"
+            textConfirm="Fechar"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro4 = ref;
+            }}
+            showCancel={false}
+            onConfirm={() => this.AlertPro4.close()}
+            title="Sucesso"
+            message="Logado com sucesso"
+            textConfirm="OK"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+          <AlertPro
+            ref={ref => {
+              this.AlertPro5 = ref;
+            }}
+            onCancel={() => this.nav(false)}
+            onConfirm={() => this.nav(true)}
+            title="Aviso!!!"
+            message="Você se cadastrou? Senão o fez, o processo de login dará errado!"
+            textConfirm="Sim, já me cadastrei"
+            textCancel="Vou me cadastrar"
+            customStyles={{
+              mask: {
+                backgroundColor: "black",
+                opacity: 0.9
+              },
+              container: {
+                borderWidth: 1,
+                borderColor: "#d98b0d",
+                shadowColor: "#000000",
+                shadowOpacity: 0.1,
+                shadowRadius: 10,
+                borderRadius:30
+              },
+              buttonCancel: {
+                backgroundColor: "#3f3f3f"
+              },
+              buttonConfirm: {
+                backgroundColor: "#ffa31a"
+              }
+            }}
+          />
+
+
+          <StatusBar
+            backgroundColor="white"
+            barStyle="dark-content"
+          />
+
+
+          <View style={styles.container}>
+          <View style={styles.instructionContainer}>
+              <Heading5 style={styles.heading}>Login</Heading5>
+              
+              {Platform.OS === "ios" ?
+                null
+                :
+                <Paragraph style={styles.instruction}>
+                  Escolha como irá logar na sua conta
+                </Paragraph>
+              }
+
+          </View>
+
+
+          <View style={{flexDirection:'row', marginBottom: windowHeight/3.3}}>
+
+            {Platform.OS === "ios" ?
+                null
+              :
+              <TouchableOpacity onPress={() => this.signInWithGoogle()}>
+                  <FontAwesome5 name="google" size={35} style={{marginRight:25}} color="#DAA520"/>
+              </TouchableOpacity>
             }
-          }}
-        />
 
-        <AlertPro
-          ref={ref => {
-            this.AlertPro5 = ref;
-          }}
-          onCancel={() => this.nav(false)}
-          onConfirm={() => this.nav(true)}
-          title="Aviso!!!"
-          message="Você se cadastrou? Senão o fez, o processo de login dará errado!"
-          textConfirm="Sim, já me cadastrei"
-          textCancel="Vou me cadastrar"
-          customStyles={{
-            mask: {
-              backgroundColor: "black",
-              opacity: 0.9
-            },
-            container: {
-              borderWidth: 1,
-              borderColor: "#d98b0d",
-              shadowColor: "#000000",
-              shadowOpacity: 0.1,
-              shadowRadius: 10,
-              borderRadius:30
-            },
-            buttonCancel: {
-              backgroundColor: "#3f3f3f"
-            },
-            buttonConfirm: {
-              backgroundColor: "#ffa31a"
-            }
-          }}
-        />
+            {Platform.OS === 'ios' ? 
+              <View style={{maxWidth: windowWidth/2}}>
+                <TextInput
+                  style={styles.inputLogin}
+                  onChangeText={this.emailChange}
+                  value={this.state.emailUser}
+                  placeholder="Digite seu email"
+                  keyboardType="default"
+                />
+
+              <View style={{flexDirection: "row"}}>
+                <TextInput
+                  style={styles.inputLogin}
+                  onChangeText={this.senhaChange}
+                  value={this.state.senhaUser}
+                  placeholder="Digite sua senha"
+                  secureTextEntry={this.state.viewPass}
+                  keyboardType="default"
+                />
+
+                {this.state.viewPass == false ?
+                  <TouchableOpacity onPress={() => this.setState({viewPass: true})}>
+                    <FontAwesome5 name="eye" size={25} style={{marginLeft:15, marginTop: 20}} color="#DAA250"/>
+                  </TouchableOpacity>
+                :
+                  <TouchableOpacity onPress={() => this.setState({viewPass: false})}>
+                    <FontAwesome5 name="eye-slash" size={25} style={{marginLeft:15, marginTop: 20}} color="#DAA250"/>
+                  </TouchableOpacity>
+                }
+              </View>
 
 
-        <StatusBar
-          backgroundColor="white"
-          barStyle="dark-content"
-        />
-
-
-        <View style={styles.container}>
-        <View style={styles.instructionContainer}>
-            <Heading5 style={styles.heading}>Login</Heading5>
-            <Paragraph style={styles.instruction}>
-              Escolha como irá logar na sua conta
-            </Paragraph>
-        </View>
-
-
-        <View style={{flexDirection:'row', marginBottom: windowHeight/3.3}}>
-
-          {Platform.OS === "ios" ?
-              null
-            :
-            <TouchableOpacity onPress={() => this.signInWithGoogle()}>
-                <FontAwesome5 name="google" size={35} style={{marginRight:25}} color="#DAA520"/>
-            </TouchableOpacity>
-          }
-
-          {Platform.OS === 'ios' ? 
-            <AppleAuthentication.AppleAuthenticationButton
-              buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-              buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-              cornerRadius={10}
-              style={{ width: 44, height: 44 }}
-              onPress={async () => {
-                try {
-                  const credential = await AppleAuthentication.signInAsync({
-                    requestedScopes: [
-                      AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                      AppleAuthentication.AppleAuthenticationScope.EMAIL,
-                    ],
-                  });
-
-                  const authCredential = new firebase.auth.OAuthProvider(
-                    "apple.com"
-                  ).credential({
-                    idToken: credential.identityToken
-                  })
-
-                  await firebase.firestore().collection('usuarios').where('idAppleOnlyIOS', '==', credential.user).get().then(function(querySnapshot) {
-                    let idsAvailable = []
-                    querySnapshot.forEach(function(doc) {
-                      idsAvailable.push({
-                        idAppleOnlyIOS: doc.data().idAppleOnlyIOS
+                  <TouchableOpacity
+                    onPress={() => this.loginWithEmailAndPassApple(this.state.emailUser, this.state.senhaUser)}
+                    style={{backgroundColor:'#d98b0d', width:200, borderRadius:30, height:50, flexDirection:'row', alignItems:'center'}}
+                  >
+                    <FontAwesome5 name="plus-circle" size={25} style={{marginLeft:15}} color="#fff"/>
+                    <Text style={{fontWeight:'bold', marginLeft:15, textAlign:'center', fontSize:20, color:'white'}}>Logar</Text>
+                  </TouchableOpacity>
+              </View>
+              /*
+                <AppleAuthentication.AppleAuthenticationButton
+                buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+                buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+                cornerRadius={10}
+                style={{ width: 44, height: 44 }}
+                onPress={async () => {
+                  try {
+                    const credential = await AppleAuthentication.signInAsync({
+                      requestedScopes: [
+                        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                        AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                      ],
+                    });
+                    
+                    const authCredential = new firebase.auth.OAuthProvider(
+                      "apple.com"
+                      ).credential({
+                        idToken: credential.identityToken
                       })
-                    })
-
-                    if(idsAvailable.length == 1) {
-                      //garante que o usuario apple ja se registrou, se sim, ele faz login sucesso
-                      try {
-                        e.loginWithCredentialsApple(authCredential)
-                      } catch (e) {
-                        console.log('ERRO: ' + e)
+                      
+                      await firebase.firestore().collection('usuarios').where('idAppleOnlyIOS', '==', credential.user).get().then(function(querySnapshot) {
+                        let idsAvailable = []
+                        querySnapshot.forEach(function(doc) {
+                          idsAvailable.push({
+                            idAppleOnlyIOS: doc.data().idAppleOnlyIOS
+                          })
+                        })
+                        
+                        if(idsAvailable.length == 1) {
+                          //garante que o usuario apple ja se registrou, se sim, ele faz login sucesso
+                          try {
+                            e.loginWithCredentialsApple(authCredential)
+                          } catch (e) {
+                            console.log('ERRO: ' + e)
+                          }
+                        }
+                        
+                        if(idsAvailable == 0) {
+                          //nesse caso o usuario nao foi encontrado no banco de dados e sera obrigado a se cadastrar
+                          alert('Parece que você ainda não se cadastrou, se cadastre e em seguida faça login')
+                        }
+                      })
+                      // signed in
+                    } catch (e) {
+                      if (e.code === 'ERR_CANCELED') {
+                        alert('Cancelado pelo usuario')
+                        // handle that the user canceled the sign-in flow
+                      } if (e.code === 'ERR_APPLE_AUTHENTICATION_INVALID_SCOPE') {
+                        alert('Escopo incorreto')
+                      } if (e.code === 'ERR_APPLE_AUTHENTICATION_UNAVAILABLE') {
+                        alert('Apple Login Indisponivel')
+                      } if (e.code === 'ERR_APPLE_AUTHENTICATION_REQUEST_FAILED') {
+                        alert('Falha de pesquisa')
                       }
                     }
-
-                    if(idsAvailable == 0) {
-                      //nesse caso o usuario nao foi encontrado no banco de dados e sera obrigado a se cadastrar
-                      alert('Parece que você ainda não se cadastrou, se cadastre e em seguida faça login')
-                    }
-                  })
-                  // signed in
-                } catch (e) {
-                  if (e.code === 'ERR_CANCELED') {
-                    alert('Cancelado pelo usuario')
-                    // handle that the user canceled the sign-in flow
-                  } if (e.code === 'ERR_APPLE_AUTHENTICATION_INVALID_SCOPE') {
-                    alert('Escopo incorreto')
-                  } if (e.code === 'ERR_APPLE_AUTHENTICATION_UNAVAILABLE') {
-                    alert('Apple Login Indisponivel')
-                  } if (e.code === 'ERR_APPLE_AUTHENTICATION_REQUEST_FAILED') {
-                    alert('Falha de pesquisa')
-                  }
-                }
-              }}
-            />
-          :
-            <TouchableOpacity onPress={() => this.signInWithFacebook()}>
-              <FontAwesome5 name="facebook" size={35} style={{marginRight:15}} color="#DAA520"/>
-            </TouchableOpacity>
-          }
+                  }}
+                  />
+                */
+                  :
+                  <TouchableOpacity onPress={() => this.signInWithFacebook()}>
+                  <FontAwesome5 name="facebook" size={35} style={{marginRight:15}} color="#DAA520"/>
+              </TouchableOpacity>
+            }
 
 
-          {Platform.OS === "ios" ?
-              null
-            :
-              <View style={{marginBottom: 44, marginLeft: 10}}>
-                <Button
-                  onPress={() => this.confirmIfUserHasBeenSignUp()}
-                  disabled={false}
-                  borderRadius={10}
-                  color="#DAA520"
-                  small
-                  title={'SMS'.toUpperCase()}
-                  titleColor="#fff"
-                />
-              </View>
-          }
-        </View>
-
-            <View style={{position:"absolute", bottom: windowHeight/29}}>
-              <TouchableWithoutFeedback
-                onPress={this.navigateTo('TermsConditions')}>
-                <View style={styles.footer}>
-                  <Text style={styles.footerText}>
-                    Se registrando, você aceita nossos
-                  </Text>
-                  <View style={styles.termsContainer}>
-                    <Text style={[styles.footerText, styles.footerLink]}>
-                      Termos & Condições
-                    </Text>
-                    <Text style={styles.footerText}> and </Text>
-                    <Text style={[styles.footerText, styles.footerLink]}>
-                      Política de Privacidade
-                    </Text>
-                    <Text style={styles.footerText}>.</Text>
-                  </View>
+            {Platform.OS === "ios" ?
+                null
+              :
+                <View style={{marginBottom: 44, marginLeft: 10}}>
+                  <Button
+                    onPress={() => this.confirmIfUserHasBeenSignUp()}
+                    disabled={false}
+                    borderRadius={10}
+                    color="#DAA520"
+                    small
+                    title={'SMS'.toUpperCase()}
+                    titleColor="#fff"
+                  />
                 </View>
-              </TouchableWithoutFeedback>
-            </View>
+            }
           </View>
-      </View >
+
+              <View style={{position:"absolute", bottom: windowHeight/29}}>
+                <TouchableWithoutFeedback
+                  onPress={this.navigateTo('TermsConditions')}>
+                  <View style={styles.footer}>
+                    <Text style={styles.footerText}>
+                      Se registrando, você aceita nossos
+                    </Text>
+                    <View style={styles.termsContainer}>
+                      <Text style={[styles.footerText, styles.footerLink]}>
+                        Termos & Condições
+                      </Text>
+                      <Text style={styles.footerText}> and </Text>
+                      <Text style={[styles.footerText, styles.footerLink]}>
+                        Política de Privacidade
+                      </Text>
+                      <Text style={styles.footerText}>.</Text>
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+            </View>
+        </View>
+      </KeyboardAvoidingView>
     );
   }
 }

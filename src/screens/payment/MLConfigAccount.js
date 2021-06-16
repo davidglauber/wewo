@@ -89,7 +89,6 @@ export default class MLConfigAccount extends Component {
       mesCriacaoToken: new Date(),
       mesCriacaoTokenFirebase: null,
       mesAtual: new Date(),
-      idAppleOnlyIOS: ''
     };
   }
 
@@ -119,12 +118,6 @@ export default class MLConfigAccount extends Component {
 
       if(documentSnapshot.data().mesCriacaoToken) {
         this.setState({mesCriacaoTokenFirebase: documentSnapshot.data().mesCriacaoToken})
-      }
-
-      if(documentSnapshot.data().idAppleOnlyIOS) {
-        e.setState({idAppleOnlyIOS: documentSnapshot.data().idAppleOnlyIOS})
-      } else {
-        return null
       }
 
       if(documentSnapshot.data().idMP) {
@@ -195,8 +188,7 @@ export default class MLConfigAccount extends Component {
       idMP: json.user_id,
       accessTK: json.access_token,
       mesCriacaoToken: e.state.mesCriacaoToken,
-      tipoDeConta: e.state.tipoDeConta,
-      idAppleOnlyIOS: e.state.idAppleOnlyIOS
+      tipoDeConta: e.state.tipoDeConta
     }).then(() => {
       if(webPage.includes('https://www.mercadopago.com/mp.php?code=')){
         this.setState({webviewBoolean: false})

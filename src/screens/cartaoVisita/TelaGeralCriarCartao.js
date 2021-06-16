@@ -135,7 +135,6 @@ export default class TelaGeralCriarCartao extends Component {
       mesAtual: new Date(),
       userLocation: '',
       expoPushToken: '',
-      idAppleOnlyIOS: ''
     };
   }
 
@@ -220,11 +219,6 @@ export default class TelaGeralCriarCartao extends Component {
         return null
       }
 
-      if(documentSnapshot.data().idAppleOnlyIOS) {
-        e.setState({idAppleOnlyIOS: documentSnapshot.data().idAppleOnlyIOS})
-      } else {
-        return null
-      }
 
       if(documentSnapshot.data().accessTK) {
         e.setState({accTK: documentSnapshot.data().accessTK})
@@ -341,8 +335,7 @@ export default class TelaGeralCriarCartao extends Component {
       accessTK: e.state.accTK,
       mesCriacaoToken: e.state.mesCriacaoTokenFirebase,
       userLocation: e.state.userLocation,
-      tokenMessage: e.state.expoPushToken,
-      idAppleOnlyIOS: e.state.idAppleOnlyIOS
+      tokenMessage: e.state.expoPushToken
     })
     
     const modalizeRef = this.state.modalizeRef;

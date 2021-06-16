@@ -16,6 +16,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Platform
 } from 'react-native';
 
 // import components
@@ -28,8 +29,13 @@ import { SafeBackground, CaptionTerms, TextBlock, HeadTerm, ContainerButton, Tit
 
 import { ThemeContext } from '../../../ThemeContext';
 
+import firebase from '../../config/firebase';
+
 // import colors
 import Colors from '../../theme/colors';
+
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
 
 // TermsConditionsA Config
 const APP_NAME = 'App Name';
@@ -85,7 +91,8 @@ export default class TermsConditionsB extends Component {
       telefone: '',
       data: '',
       tipoDeConta: '', 
-      boolean: false
+      boolean: false,
+      expoPushToken: ''
     };
   }
 
@@ -114,19 +121,82 @@ export default class TermsConditionsB extends Component {
     console.log('Telefone navigation: ' + getTelefone)
     console.log('Data born navigation: ' + getDataNascimento)
     console.log('TIPO DE CONTA navigation: ' + getTipoDeConta)
+
+    //configuração de notificações
+    this.registerForPushNotificationsAsync().then(token => this.setState({expoPushToken: token}));
+  }
+
+  //Função que, ao usuário permitir as notificações, ele registra o celular dele com um token que será usado para enviar as notificações
+  async registerForPushNotificationsAsync() {
+    let token;
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Falha ao obter token de notificação!');
+        return;
+      }
+      let experienceId = '@zubito/wewo';
+      token = (await Notifications.getExpoPushTokenAsync({experienceId})).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+
+    return token;
   }
 
 
-  navigateTo = screen => () => {
-    const {navigation} = this.props;
-    navigation.navigate(screen, {
-      nome: this.state.nome,
-      email: this.state.email,
-      senha: this.state.senha,
-      telefone: this.state.telefone,
-      dataNascimento: this.state.data,
-      tipoDeConta: this.state.tipoDeConta
-    });
+
+  
+
+  navigateTo = screen => async () => {
+    let e = this;
+
+    if(Platform.OS === "ios") {
+      try {
+        await firebase.auth().createUserWithEmailAndPassword(e.state.email, e.state.senha).then(() => {
+          let user = firebase.auth().currentUser;
+          firebase.firestore().collection('usuarios').doc(user.uid).set({
+            email: e.state.email,
+            nome: e.state.nome,
+            premium: false,
+            dataNascimento: e.state.data,
+            telefone: e.state.telefone,
+            tipoDeConta: e.state.tipoDeConta,
+            userLocation: '',
+            tokenMessage: e.state.expoPushToken
+          })
+        })
+        e.props.navigation.navigate('HomeNavigator')
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      const {navigation} = this.props;
+      navigation.navigate(screen, {
+        nome: this.state.nome,
+        email: this.state.email,
+        senha: this.state.senha,
+        telefone: this.state.telefone,
+        dataNascimento: this.state.data,
+        tipoDeConta: this.state.tipoDeConta
+      });
+    }
+
   };
 
 
@@ -221,9 +291,9 @@ Não temos controle e não assumimos responsabilidade pelo conteúdo, políticas
 
             <HeadTerm>7. Privacidade Infantil</HeadTerm>
             <TextBlock>
-              {`Estes Serviços não se dirigem a ninguém com idade inferior a 13 anos. 
+              {`Estes Serviços não se dirigem a ninguém com idade inferior a 14 anos. 
               
-Não recolhemos intencionalmente informações de identificação pessoal de crianças com menos de 13 anos. No caso de descobrirmos que uma criança com menos de 13 anos nos forneceu informações pessoais, as eliminamos imediatamente dos nossos servidores. Se você é um pai ou responsável e está ciente de que seu filho nos forneceu informações pessoais, entre em contato para que possamos tomar as medidas necessárias.`}
+Não recolhemos intencionalmente informações de identificação pessoal de crianças com menos de 14 anos. No caso de descobrirmos que uma criança com menos de 14 anos nos forneceu informações pessoais, as eliminamos imediatamente dos nossos servidores. Se você é um pai ou responsável e está ciente de que seu filho nos forneceu informações pessoais, entre em contato para que possamos tomar as medidas necessárias.`}
             </TextBlock>
 
             <HeadTerm>8. Mudanças nesta Política de Privacidade</HeadTerm>

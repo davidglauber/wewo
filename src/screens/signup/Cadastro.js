@@ -142,7 +142,7 @@ export default class Cadastro extends Component {
       actualDate: new Date(),
       showDate: false,
       mode:'date',
-      phone: '',
+      phone: 'nao informado',
       phoneFocused:false,
       dateFocused: false,
       password: '',
@@ -185,11 +185,6 @@ export default class Cadastro extends Component {
   };
 
  
-  onChangePhone(text) {
-    this.setState({phone: text})
-    console.log('phone: '  + this.state.phone)
-  }
-
   nomeChange = text => {
     this.setState({
       nome: text,
@@ -284,28 +279,28 @@ export default class Cadastro extends Component {
       this.AlertPro2.open();
     } 
     
-    if(checkValidDate < 13 && this.state.typeAccount == 'Autonomo') {
+    if(checkValidDate < 14 && this.state.typeAccount == 'Autonomo') {
       if(Platform.OS === "ios") {
-        alert('Cadastro de menores de 13 anos nao permitido!')
+        alert(`Cadastro de menores de 14 anos não permitido! O usuário pessoa física menor de idade está proibido de criar conta${'\n\n'}(Lei 4455/20)${'\n\n'}Fonte: Agência Câmara de Notícias`)
       } else {
         this.AlertPro4.open();
       }
     } 
     
     if(this.state.typeAccount == 'Autonomo') {
-      if (this.state.nome == '' || this.state.email == '' || this.state.password == '' || this.state.confirmPassword == '' || this.state.phone == '') {
+      if (this.state.nome == '' || this.state.email == '' || this.state.password == '' || this.state.confirmPassword == '') {
         this.AlertPro3.open();
       } 
     } else {
-      if (this.state.nomeEstab == '' || this.state.email == '' || this.state.password == '' || this.state.confirmPassword == '' || this.state.phone == '') {
+      if (this.state.nomeEstab == '' || this.state.email == '' || this.state.password == '' || this.state.confirmPassword == '') {
         this.AlertPro3.open();
       } 
     }
 
 
     
-    //Aplica várias restrições, PRINCIPALMENTE DE IDADE, SE FOR PF MENOR DE 13 NAO PODE CADASTRAR
-    if(this.state.password == this.state.confirmPassword && this.state.password.length >= 6 && this.state.date !== '' && this.state.typeAccount == 'Autonomo' && checkValidDate >= 13){  
+    //Aplica várias restrições, PRINCIPALMENTE DE IDADE, SE FOR PF MENOR DE 14 NAO PODE CADASTRAR
+    if(this.state.password == this.state.confirmPassword && this.state.password.length >= 6 && this.state.date !== '' && this.state.typeAccount == 'Autonomo' && checkValidDate >= 14){  
         if(this.state.nome !== '' && this.state.nomeEstab == '') {
           //quer dizer que o nome de autonomo é o escolhido
           navigation.navigate(screen, {
@@ -514,7 +509,7 @@ export default class Cadastro extends Component {
           showCancel={false}
           onConfirm={() => this.AlertPro4.close()}
           title="Erro!"
-          message="Você precisa ter ao menos 13 anos para se cadastrar no WeWo"
+          message="Você precisa ter ao menos 14 anos para se cadastrar no WeWo (Lei 4455/20 => Fonte: Agência Câmara de Notícias)"
           textConfirm="OK"
           customStyles={{
             mask: {
@@ -675,29 +670,6 @@ export default class Cadastro extends Component {
                   inputContainerStyle={styles.inputContainer}
                 />
 
-              {Platform.OS == "ios" ? 
-                <TextInputMask
-                  type={'cel-phone'}
-                  placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
-                  borderColor={INPUT_BORDER_COLOR}
-                  style={{marginTop:20, paddingBottom: 17, borderBottomWidth:1, color:'black'}}
-                  value={this.state.phone}
-                  onChangeText={text => this.onChangePhone(text)}
-                  keyboardType={"phone-pad"}
-                  placeholder="Número de Telefone"
-                />
-              :
-                <TextInputMask
-                  type={'cel-phone'}
-                  placeholderTextColor={PLACEHOLDER_TEXT_COLOR}
-                  borderColor={INPUT_BORDER_COLOR}
-                  style={{marginTop:10, paddingBottom: 17, borderBottomWidth:1, color:'black'}}
-                  value={this.state.phone}
-                  onChangeText={text => this.onChangePhone(text)}
-                  keyboardType={"phone-pad"}
-                  placeholder="Número de Telefone"
-                />
-              }
 
               {Platform.OS == "android" && this.state.typeAccount == 'Autonomo' &&
                 <TextInputMask
@@ -762,7 +734,9 @@ export default class Cadastro extends Component {
                   placeholder="Data de Criação da Empresa"
                 />
               }
-                <TextDescription2 style={{fontSize: normalize(10), fontWeight: "bold"}}>*Proibido cadastro para menores de 13 anos</TextDescription2>
+                {this.state.typeAccount == 'Autonomo' && 
+                  <TextDescription2 style={{fontSize: normalize(10), fontWeight: "bold"}}>*Proibido cadastro para menores de 14 anos</TextDescription2>
+                }
 
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity

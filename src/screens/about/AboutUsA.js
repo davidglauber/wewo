@@ -324,11 +324,8 @@ export default class AboutUsA extends Component {
 
 
               <View style={{justifyContent: 'flex-start',alignItems: 'center', alignContent:'center', width: '100%'}}>
-                <HeadingAbout style={{fontSize: normalize(13)}}>
-                Desenvolvedor do WeWo
-                </HeadingAbout>
                 <TouchableOpacity onPress={() => this.openLinkedIn()}>
-                  <SubtitleAbout style={{marginLeft: 0}}>David Glauber (Clique para ir ao LinkedIn)</SubtitleAbout>
+                  <SubtitleAbout style={{marginLeft: 0}}>...</SubtitleAbout>
                 </TouchableOpacity>
               </View>
 

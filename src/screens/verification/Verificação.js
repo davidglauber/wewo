@@ -425,9 +425,14 @@ export default class Verificação extends Component {
         <View style={styles.container}>
           <View style={styles.instructionContainer}>
             <Heading5 style={styles.heading}>Confirmação de Cadastro</Heading5>
-            <Paragraph style={styles.instruction}>
-              Escolha como irá confirmar seu cadastro
-            </Paragraph>
+
+            {Platform.OS === "ios" ?
+              null
+            :
+              <Paragraph style={styles.instruction}>
+                Escolha como irá confirmar seu cadastro
+              </Paragraph>
+            }
           </View>
 
 
@@ -443,7 +448,7 @@ export default class Verificação extends Component {
 
 
           {Platform.OS === 'ios' ? 
-            <AppleAuthentication.AppleAuthenticationButton
+            {/*  APPLE LOGIN ONLY USE IF NECCESSARY!!! <AppleAuthentication.AppleAuthenticationButton
               buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
               buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
               cornerRadius={10}
@@ -497,6 +502,7 @@ export default class Verificação extends Component {
                 }
               }}
             />
+            */}
           :
             <TouchableOpacity onPress={() => this.signInWithFacebook()}>
               <FontAwesome5 name="facebook" size={35} style={{marginRight:15}} color="#DAA520"/>

@@ -173,9 +173,9 @@ Não temos controle e não assumimos responsabilidade pelo conteúdo, políticas
 
             <HeadTerm style={{fontSize: normalize(16)}}>7. Privacidade Infantil</HeadTerm>
             <TextBlock style={{fontSize: normalize(14)}}>
-              {`Estes Serviços não se dirigem a ninguém com idade inferior a 13 anos. 
+              {`Estes Serviços não se dirigem a ninguém com idade inferior a 14 anos. 
               
-Não recolhemos intencionalmente informações de identificação pessoal de crianças com menos de 13 anos. No caso de descobrirmos que uma criança com menos de 13 anos nos forneceu informações pessoais, as eliminamos imediatamente dos nossos servidores. Se você é um pai ou responsável e está ciente de que seu filho nos forneceu informações pessoais, entre em contato para que possamos tomar as medidas necessárias.`}
+Não recolhemos intencionalmente informações de identificação pessoal de crianças com menos de 14 anos. No caso de descobrirmos que uma criança com menos de 14 anos nos forneceu informações pessoais, as eliminamos imediatamente dos nossos servidores. Se você é um pai ou responsável e está ciente de que seu filho nos forneceu informações pessoais, entre em contato para que possamos tomar as medidas necessárias.`}
             </TextBlock>
 
             <HeadTerm style={{fontSize: normalize(16)}}>8. Mudanças nesta Política de Privacidade</HeadTerm>
