@@ -176,6 +176,12 @@ export default class OnboardingA extends Component {
 
 
 
+  componentDidMount() {
+    this.props.navigation.addListener("beforeRemove", (e) => {
+      e.preventDefault();
+    });
+  }
+
   onIndexChanged = (index) => {
     let activeIndex;
     if (isRTL) {

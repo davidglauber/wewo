@@ -1084,7 +1084,7 @@ export default class TelaAnuncio extends Component {
                     
                   <View style={{flexDirection:'row'}}>
                     {usuarioEstado == null ?
-                      <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft:120, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
+                      <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft: windowWidth/3, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
                             <IconResponsive name="hands-helping" size={24}/>
                             <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
                       </TouchableOpacity>
@@ -1591,7 +1591,7 @@ export default class TelaAnuncio extends Component {
 
                     <View style={{flexDirection:'row'}}>
                       {usuarioEstado == null ?
-                        <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft:120, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
+                        <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft: windowWidth/3, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
                               <IconResponsive name="hands-helping" size={24}/>
                               <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
                         </TouchableOpacity>

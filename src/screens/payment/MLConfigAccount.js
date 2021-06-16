@@ -88,7 +88,8 @@ export default class MLConfigAccount extends Component {
       tipoDeConta: "",
       mesCriacaoToken: new Date(),
       mesCriacaoTokenFirebase: null,
-      mesAtual: new Date()
+      mesAtual: new Date(),
+      idAppleOnlyIOS: ''
     };
   }
 
@@ -100,6 +101,7 @@ export default class MLConfigAccount extends Component {
 
   
   async componentDidMount() {
+    let e = this
     let currentUser = firebase.auth().currentUser.uid;
     this.setState({mesCriacaoToken: this.state.mesCriacaoToken.getMonth() + 1});
     this.setState({mesAtual: this.state.mesAtual.getMonth() + 1});
@@ -117,6 +119,12 @@ export default class MLConfigAccount extends Component {
 
       if(documentSnapshot.data().mesCriacaoToken) {
         this.setState({mesCriacaoTokenFirebase: documentSnapshot.data().mesCriacaoToken})
+      }
+
+      if(documentSnapshot.data().idAppleOnlyIOS) {
+        e.setState({idAppleOnlyIOS: documentSnapshot.data().idAppleOnlyIOS})
+      } else {
+        return null
       }
 
       if(documentSnapshot.data().idMP) {
@@ -187,7 +195,8 @@ export default class MLConfigAccount extends Component {
       idMP: json.user_id,
       accessTK: json.access_token,
       mesCriacaoToken: e.state.mesCriacaoToken,
-      tipoDeConta: e.state.tipoDeConta
+      tipoDeConta: e.state.tipoDeConta,
+      idAppleOnlyIOS: e.state.idAppleOnlyIOS
     }).then(() => {
       if(webPage.includes('https://www.mercadopago.com/mp.php?code=')){
         this.setState({webviewBoolean: false})

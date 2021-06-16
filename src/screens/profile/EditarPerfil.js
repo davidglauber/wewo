@@ -236,7 +236,11 @@ export default class EditarPerfil extends Component {
       this.AlertPro2.open();
     }
 
+    this.setModalVisible(true)
 
+    this.sleep(5000).then(() => { 
+      this.setModalVisible(false)
+    })
 
     this.sleep(6000).then(() => { 
       this.props.navigation.navigate('Settings')

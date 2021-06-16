@@ -9,6 +9,7 @@ import {
   Modal,
   Text,
   Platform,
+  BackHandler,
   View,
   Linking,
   TouchableOpacity, 
@@ -22,6 +23,7 @@ import {
 //import firebase 
 import firebase from '../../config/firebase';
 
+import { CommonActions } from '@react-navigation/native';
 
 //CSS responsivo
 import { SafeBackground, IconResponsive, IconResponsive2, TouchCategory, AnuncioContainer, Description, IconResponsiveNOBACK, TextSearch, Heading, Title, ValueField, TouchableDetails, TextDetails, SignUpBottom, TextBold, TextBoldGolden } from './styles';
@@ -173,6 +175,9 @@ async registerForPushNotificationsAsync() {
 async componentDidMount() {
   let e = this;
 
+  this.props.navigation.addListener("beforeRemove", (e) => {
+    e.preventDefault();
+  });
   //configuração de notificações
   await this.registerForPushNotificationsAsync().then(token => this.setState({expoPushToken: token}));
 
