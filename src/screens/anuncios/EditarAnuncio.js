@@ -1688,27 +1688,48 @@ export default class EditarAnuncio extends Component {
 
 
   onChange = (event, selectedHour) => {
-    this.setState({showHour: false})
 
-    let hourComplete = selectedHour.getHours();
-    let minutesComplete = selectedHour.getMinutes();
-    let completeTime = hourComplete + ':' + minutesComplete;
-    
-    this.setState({horarioAbre: completeTime})
-    console.log('hora selecionada: ' + completeTime)
+    if(Platform.OS === "ios") {
+      let hourComplete = selectedHour.getHours();
+      let minutesComplete = selectedHour.getMinutes();
+      let completeTime = hourComplete + ':' + minutesComplete;
+      
+      this.setState({horarioAbre: completeTime})
+      console.log('hora selecionada: ' + completeTime)
+    } else {
+      this.setState({showHour: false})
+  
+      let hourComplete = selectedHour.getHours();
+      let minutesComplete = selectedHour.getMinutes();
+      let completeTime = hourComplete + ':' + minutesComplete;
+      
+      this.setState({horarioAbre: completeTime})
+      console.log('hora selecionada: ' + completeTime)
+    }
     
   };
 
 
   onChangeClose = (event, selectedHour) => {
-    this.setState({showHourClose: false})
 
-    let hourComplete = selectedHour.getHours();
-    let minutesComplete = selectedHour.getMinutes();
-    let completeTime = hourComplete + ':' + minutesComplete;
+    if(Platform.OS === "ios") {
+      let hourComplete = selectedHour.getHours();
+      let minutesComplete = selectedHour.getMinutes();
+      let completeTime = hourComplete + ':' + minutesComplete;
+      
+      this.setState({horarioFecha: completeTime})
+      console.log('hora selecionada: ' + completeTime)
+    } else {
+      this.setState({showHourClose: false})
+  
+      let hourComplete = selectedHour.getHours();
+      let minutesComplete = selectedHour.getMinutes();
+      let completeTime = hourComplete + ':' + minutesComplete;
+      
+      this.setState({horarioFecha: completeTime})
+      console.log('hora selecionada: ' + completeTime)
+    }
     
-    this.setState({horarioFecha: completeTime})
-    console.log('hora selecionada: ' + completeTime)
     
   };
 

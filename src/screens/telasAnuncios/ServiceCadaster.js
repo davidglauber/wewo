@@ -188,24 +188,45 @@ export default class ServiceCadaster extends Component {
   }
   
   onChange = (event, selectedDate) => {
-    this.setState({showDate: false})
-    const currentDate = selectedDate || this.state.date;
-    this.setState({date: currentDate});
-    this.setState({showHour: true})
-    this.setState({boolean: true})
-    console.log('data selecionada: ' + currentDate)
+    if(Platform.OS === "ios") {
+      const currentDate = selectedDate || this.state.date;
+      this.setState({date: currentDate});
+      this.setState({showHour: true})
+      this.setState({boolean: true})
+      console.log('data selecionada: ' + currentDate)
+    } else {
+      this.setState({showDate: false})
+      const currentDate = selectedDate || this.state.date;
+      this.setState({date: currentDate});
+      this.setState({showHour: true})
+      this.setState({boolean: true})
+      console.log('data selecionada: ' + currentDate)
+    }
   };
 
   onChangeHour = (event, selectedHour) => {
-    this.setState({showHour: false})
-    this.setState({boolean: true})
 
-    let hourComplete = selectedHour.getHours();
-    let minutesComplete = selectedHour.getMinutes();
-    let completeTime = hourComplete + ':' + minutesComplete;
-    
-    this.setState({horario: completeTime})
-    console.log('hora selecionada: ' + completeTime)
+    if(Platform.OS === "ios") {
+      this.setState({boolean: true})
+  
+      let hourComplete = selectedHour.getHours();
+      let minutesComplete = selectedHour.getMinutes();
+      let completeTime = hourComplete + ':' + minutesComplete;
+      
+      this.setState({horario: completeTime})
+      console.log('hora selecionada: ' + completeTime)
+    } else {
+      this.setState({showHour: false})
+      this.setState({boolean: true})
+  
+      let hourComplete = selectedHour.getHours();
+      let minutesComplete = selectedHour.getMinutes();
+      let completeTime = hourComplete + ':' + minutesComplete;
+      
+      this.setState({horario: completeTime})
+      console.log('hora selecionada: ' + completeTime)
+
+    }
     
   };
 
