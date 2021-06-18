@@ -64,8 +64,6 @@ import loading from '../../../assets/loading.json';
 
 import AlertPro from "react-native-alert-pro";
 
-//import IAP API 
-import {purchased} from '../../config/purchase';
 
 import { Video } from 'expo-av';
 
@@ -213,7 +211,6 @@ export default class TelaAnuncio extends Component {
       cartoesAuto: [],
       cartoesEstab: [],
       modalVisible: true,
-      purchased: false,
       usersThatVotedFirebase: [],
       mediaAvaliacao: [],
       modalizeRef: React.createRef(null),
@@ -250,25 +247,6 @@ export default class TelaAnuncio extends Component {
   async componentDidMount() {
     let e = this;
     
-    if(Platform.OS === "android") {
-      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
-      if(comprou == true) {
-        this.setState({purchased: true})
-      } else {
-        this.setState({purchased: false})
-      }
-    } else {
-      /*
-      let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
-      if(comprou == true) {
-        this.setState({purchased: true})
-      } else {
-        this.setState({purchased: false})
-      }
-      */
-      //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
-    }
-
     let idDoAnuncio = this.props.route.params.idDoAnuncio;
     let currentUserUID = this.props.route.params.idUserCartao;
     let currentUser = firebase.auth().currentUser;
@@ -1084,7 +1062,7 @@ export default class TelaAnuncio extends Component {
                     
                   <View style={{flexDirection:'row'}}>
                     {usuarioEstado == null ?
-                      <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft: windowWidth/3, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
+                      <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft: windowWidth/3.2, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
                             <IconResponsive name="hands-helping" size={24}/>
                             <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
                       </TouchableOpacity>
@@ -1591,7 +1569,7 @@ export default class TelaAnuncio extends Component {
 
                     <View style={{flexDirection:'row'}}>
                       {usuarioEstado == null ?
-                        <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft: windowWidth/3, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
+                        <TouchableOpacity onPress={() => this.sendService(item.idUser, item.categoria, item.value, item.fotoUsuarioLogado, item.title, item.idAnuncio, 'Autonomo')} style={{paddingHorizontal: 13, marginLeft: windowWidth/3.2, marginRight:15, marginTop:50, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', justifyContent:"center", backgroundColor:'#d98b0d'}}>
                               <IconResponsive name="hands-helping" size={24}/>
                               <TextTheme style={{fontSize:15, marginLeft: 15, fontWeight:'bold', color: 'white'}}>Contratar</TextTheme>
                         </TouchableOpacity>

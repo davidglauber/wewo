@@ -79,6 +79,8 @@ import Colors from '../../theme/colors';
 
 import { Video } from 'expo-av';
 
+import RNIap from 'react-native-iap';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -209,20 +211,6 @@ export default class EditarCartao extends Component {
     this.convertDate();
     let e = this;
     let usuarioAtual = firebase.auth().currentUser.uid;
-
-    //verifica se o usuario comprou a assinatura mensal
-    if(Platform.OS === "android") {
-      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
-      this.setState({usuarioComprou: comprou});
-      console.log('usuario comprou? ' + JSON.stringify(comprou))
-    } else {
-      //let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
-      //this.setState({usuarioComprou: comprou});
-      //console.log('usuario comprou? ' + JSON.stringify(comprou))
-      //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
-    }
-
-
     let userUID = firebase.auth().currentUser.uid;
     let routeType = this.props.route.params.type;
     let routeIdCartao = this.props.route.params.idCartao;
@@ -386,6 +374,49 @@ export default class EditarCartao extends Component {
     await firebase.firestore().collection('usuarios').doc(usuarioAtual).onSnapshot(documentSnapshot => {
       e.setState({fotoPerfil: documentSnapshot.data().photoProfile})
     })
+
+
+
+
+    //verifica se o usuario comprou a assinatura mensal
+    if(Platform.OS === "android") {
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
+      this.setState({usuarioComprou: comprou});
+      console.log('usuario comprou? ' + JSON.stringify(comprou))
+    } else {
+      RNIap.initConnection()
+
+      let isPurchased = false;
+        try {
+            const purchases = await RNIap.getAvailablePurchases();
+  
+            purchases.forEach((purchase) =>{
+                if(purchase.productId === 'gold.mensal.auto.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.anual.auto.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.mensal.estab.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.anual.estab.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+            })
+        } catch (error) {
+          false;
+        }
+        console.log('IS PURCHASED => ' + isPurchased)
+      this.setState({usuarioComprou: isPurchased});
+    }
   }
 
 

@@ -72,6 +72,8 @@ import Colors from '../../theme/colors';
 
 import AlertPro from "react-native-alert-pro";
 
+import RNIap from 'react-native-iap';
+
 //locationSERVICES
 import * as Location from 'expo-location';
 
@@ -273,20 +275,10 @@ export default class CriarAnuncio extends Component {
     let e = this;
     let usuarioAtual = firebase.auth().currentUser.uid;
 
-    if(Platform.OS === "android") {
-      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
-      this.setState({usuarioComprou: comprou});
-      console.log('usuario comprou? ' + JSON.stringify(comprou))
-    } else {
-      //let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
-      //this.setState({usuarioComprou: comprou});
-      //console.log('usuario comprou? ' + JSON.stringify(comprou))
-      //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
-    }
-
+    
     //pede ao usuario para habilitar os serviços de localização
     this.CheckIfLocationEnabled();
-
+    
     //getting categories
     await firebase.firestore().collection('categorias').get().then(function(querySnapshot) {
       let categoriaDidMount = []
@@ -298,17 +290,55 @@ export default class CriarAnuncio extends Component {
       })
       e.setState({categorias: categoriaDidMount})
     })
-
+    
     console.log('state de categorias: ' + this.state.categorias)
     
-
+    
     //pegar a foto do usuario
     await firebase.firestore().collection('usuarios').doc(usuarioAtual).onSnapshot(documentSnapshot => {
       e.setState({fotoPerfil: documentSnapshot.data().photoProfile})
       e.setState({tipoDeConta: documentSnapshot.data().tipoDeConta})
       e.setState({type: documentSnapshot.data().tipoDeConta})
     })
+    
+    if(Platform.OS === "android") {
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
+      this.setState({usuarioComprou: comprou});
+      console.log('usuario comprou? ' + JSON.stringify(comprou))
+    } else {
+      RNIap.initConnection()
 
+      let isPurchased = false;
+        try {
+            const purchases = await RNIap.getAvailablePurchases();
+  
+            purchases.forEach((purchase) =>{
+                if(purchase.productId === 'gold.mensal.auto.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.anual.auto.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.mensal.estab.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.anual.estab.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+            })
+        } catch (error) {
+          false;
+        }
+        console.log('IS PURCHASED => ' + isPurchased)
+      this.setState({usuarioComprou: isPurchased});
+    }
   }
   
   

@@ -71,6 +71,8 @@ import AlertPro from "react-native-alert-pro";
 //import IAP API 
 import {purchased} from '../../config/purchase';
 
+import RNIap from 'react-native-iap';
+
 //locationSERVICES
 import * as Location from 'expo-location';
 
@@ -269,30 +271,20 @@ export default class EditarAnuncio extends Component {
     let e = this;
     let usuarioAtual = firebase.auth().currentUser.uid;
 
-    if(Platform.OS === "android") {
-      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
-      this.setState({usuarioComprou: comprou});
-      console.log('usuario comprou? ' + JSON.stringify(comprou))
-    } else {
-      //let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
-      //this.setState({usuarioComprou: comprou});
-      //console.log('usuario comprou? ' + JSON.stringify(comprou))
-      //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
-    }
     //pede ao usuario para habilitar os serviços de localização
     this.CheckIfLocationEnabled();
-
+    
     let routeType = this.props.route.params.type;
     let routeIdAnuncio = this.props.route.params.idAnuncio;
     let userUID = firebase.auth().currentUser.uid;
-
-
+    
+    
     this.setModalLoadVisible(true)
-
+    
     this.sleep(2000).then(() => { 
-        this.setModalLoadVisible(false)
+      this.setModalLoadVisible(false)
     })
-
+    
     //getting categories
     await firebase.firestore().collection('categorias').get().then(function(querySnapshot) {
       let categoriaDidMount = []
@@ -304,145 +296,145 @@ export default class EditarAnuncio extends Component {
       })
       e.setState({categorias: categoriaDidMount})
     })
-
-
+    
+    
     if(routeType == 'Autonomo') { 
-        this.setState({type: 'Autonomo'})
-        await firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').where("idAnuncio", "==", routeIdAnuncio).get().then(function(querySnapshot) {
-            let idAnuncio = ''
-            let categoria = ''
-            let subcategoria = ''
-            let descricao = ''
-            let idUser = ''
-            let nome = ''
-            let valor = ''
-            let imagem = ''
-            let imagem2 = ''
-            let imagem3 = ''
-            let video = ''
-            let titulo = ''
-            let type = ''
-            let abertura = ''
-            let fechamento = ''
-            let verificado = false
-            let location = ''
-            let ufauto = ''
-            let arrayAuto = []
-
-            querySnapshot.forEach(function(doc) {
-                idAnuncio = doc.data().id,
-                titulo = doc.data().titleAuto,
-                arrayAuto = doc.data().titleAutoArray,
-                categoria = doc.data().categoryAuto,
-                subcategoria = doc.data().subcategoryAuto,
-                descricao = doc.data().descriptionAuto,
-                idUser = doc.data().idUser,
-                location = doc.data().localAuto,
-                nome = doc.data().nome
-                valor = doc.data().valueServiceAuto,
-                type = doc.data().type,
-                ufauto = doc.data().UFAuto,
-                imagem = doc.data().photoPublish,
-                imagem2 = doc.data().photoPublish2,
-                imagem3 = doc.data().photoPublish3,
-                video = doc.data().videoPublish,
-                abertura = doc.data().timeOpen,
-                fechamento = doc.data().timeClose,
-                verificado = false
-            })
-
-            e.setState({idAnuncio: idAnuncio})
-            e.setState({tituloAuto: titulo})
-            e.setState({arrayWordsAuto: arrayAuto})
-            e.setState({enderecoAuto: location})
-            e.setState({descricaoAuto: descricao})
-            e.setState({categoria: categoria})
-            e.setState({subcategoria: subcategoria})
-            e.setState({precoAuto: valor})
-            e.setState({nomeAuto: nome})
-            e.setState({type: type})
-            e.setState({UFAuto: ufauto})
-            e.setState({video: video})
-            e.setState({image: imagem})
-            e.setState({image2: imagem2})
-            e.setState({image3: imagem3})
-            e.setState({horarioAbre: abertura})
-            e.setState({horarioFecha: fechamento})
-
-            console.log("ARRAY DE NOME PESQUISA: " + arrayAuto)
+      this.setState({type: 'Autonomo'})
+      await firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').where("idAnuncio", "==", routeIdAnuncio).get().then(function(querySnapshot) {
+        let idAnuncio = ''
+        let categoria = ''
+        let subcategoria = ''
+        let descricao = ''
+        let idUser = ''
+        let nome = ''
+        let valor = ''
+        let imagem = ''
+        let imagem2 = ''
+        let imagem3 = ''
+        let video = ''
+        let titulo = ''
+        let type = ''
+        let abertura = ''
+        let fechamento = ''
+        let verificado = false
+        let location = ''
+        let ufauto = ''
+        let arrayAuto = []
+        
+        querySnapshot.forEach(function(doc) {
+          idAnuncio = doc.data().id,
+          titulo = doc.data().titleAuto,
+          arrayAuto = doc.data().titleAutoArray,
+          categoria = doc.data().categoryAuto,
+          subcategoria = doc.data().subcategoryAuto,
+          descricao = doc.data().descriptionAuto,
+          idUser = doc.data().idUser,
+          location = doc.data().localAuto,
+          nome = doc.data().nome
+          valor = doc.data().valueServiceAuto,
+          type = doc.data().type,
+          ufauto = doc.data().UFAuto,
+          imagem = doc.data().photoPublish,
+          imagem2 = doc.data().photoPublish2,
+          imagem3 = doc.data().photoPublish3,
+          video = doc.data().videoPublish,
+          abertura = doc.data().timeOpen,
+          fechamento = doc.data().timeClose,
+          verificado = false
         })
-
+        
+        e.setState({idAnuncio: idAnuncio})
+        e.setState({tituloAuto: titulo})
+        e.setState({arrayWordsAuto: arrayAuto})
+        e.setState({enderecoAuto: location})
+        e.setState({descricaoAuto: descricao})
+        e.setState({categoria: categoria})
+        e.setState({subcategoria: subcategoria})
+        e.setState({precoAuto: valor})
+        e.setState({nomeAuto: nome})
+        e.setState({type: type})
+        e.setState({UFAuto: ufauto})
+        e.setState({video: video})
+        e.setState({image: imagem})
+        e.setState({image2: imagem2})
+        e.setState({image3: imagem3})
+        e.setState({horarioAbre: abertura})
+        e.setState({horarioFecha: fechamento})
+        
+        console.log("ARRAY DE NOME PESQUISA: " + arrayAuto)
+      })
+      
     }
-
-
+    
+    
     if(routeType == 'Estabelecimento') { 
-        this.setState({type: 'Estabelecimento'})
-        await firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').where("idAnuncio", "==", routeIdAnuncio).get().then(function(querySnapshot) {
-            let idAnuncio = ''
-            let categoria = ''
-            let subcategoria = ''
-            let descricao = ''
-            let idUser = ''
-            let valor = ''
-            let imagem = ''
-            let imagem2 = ''
-            let imagem3 = ''
-            let video = ''
-            let titulo = ''
-            let verificado = false
-            let local = ''
-            let abertura = ''
-            let fechamento = ''
-            let workDays = ''
-            let type = ''
-            let ufestab = ''
-            let arrayEstab = []
-
-            querySnapshot.forEach(function(doc) {
-                idAnuncio = doc.data().id,
-                titulo = doc.data().titleEstab,
-                arrayEstab = doc.data().titleEstabArray,
-                categoria = doc.data().categoryEstab,
-                subcategoria = doc.data().subcategoryEstab,
-                descricao = doc.data().descriptionEstab,
-                idUser = doc.data().idUser,
-                valor = doc.data().valueServiceEstab,
-                imagem = doc.data().photoPublish,
-                imagem2 = doc.data().photoPublish2,
-                imagem3 = doc.data().photoPublish3,
-                video = doc.data().videoPublish,
-                verificado = false,
-                ufestab = doc.data().UFEstab,
-                type = doc.data().type,
-                local = doc.data().localEstab,
-                abertura = doc.data().timeOpen,
-                fechamento = doc.data().timeClose,
-                workDays = doc.data().workDays
-            })
-
-            e.setState({idAnuncio: idAnuncio})
-            e.setState({tituloEstab: titulo})
-            e.setState({arrayWordsEstab: arrayEstab})
-            e.setState({descricaoEstab: descricao})
-            e.setState({categoria: categoria})
-            e.setState({subcategoria: subcategoria})
-            e.setState({precoEstab: valor})
-            e.setState({video: video})
-            e.setState({image: imagem})
-            e.setState({image2: imagem2})
-            e.setState({image3: imagem3})
-            e.setState({type: type})
-            e.setState({UFEstab: ufestab})
-            e.setState({enderecoEstab: local})
-            e.setState({horarioAbre: abertura})
-            e.setState({horarioFecha: fechamento})
-            e.setState({workDays: workDays})
-
-            console.log("ARRAY DE NOME PESQUISA: " + arrayEstab)
+      this.setState({type: 'Estabelecimento'})
+      await firebase.firestore().collection('usuarios').doc(userUID).collection('anuncios').where("idAnuncio", "==", routeIdAnuncio).get().then(function(querySnapshot) {
+        let idAnuncio = ''
+        let categoria = ''
+        let subcategoria = ''
+        let descricao = ''
+        let idUser = ''
+        let valor = ''
+        let imagem = ''
+        let imagem2 = ''
+        let imagem3 = ''
+        let video = ''
+        let titulo = ''
+        let verificado = false
+        let local = ''
+        let abertura = ''
+        let fechamento = ''
+        let workDays = ''
+        let type = ''
+        let ufestab = ''
+        let arrayEstab = []
+        
+        querySnapshot.forEach(function(doc) {
+          idAnuncio = doc.data().id,
+          titulo = doc.data().titleEstab,
+          arrayEstab = doc.data().titleEstabArray,
+          categoria = doc.data().categoryEstab,
+          subcategoria = doc.data().subcategoryEstab,
+          descricao = doc.data().descriptionEstab,
+          idUser = doc.data().idUser,
+          valor = doc.data().valueServiceEstab,
+          imagem = doc.data().photoPublish,
+          imagem2 = doc.data().photoPublish2,
+          imagem3 = doc.data().photoPublish3,
+          video = doc.data().videoPublish,
+          verificado = false,
+          ufestab = doc.data().UFEstab,
+          type = doc.data().type,
+          local = doc.data().localEstab,
+          abertura = doc.data().timeOpen,
+          fechamento = doc.data().timeClose,
+          workDays = doc.data().workDays
         })
-
+        
+        e.setState({idAnuncio: idAnuncio})
+        e.setState({tituloEstab: titulo})
+        e.setState({arrayWordsEstab: arrayEstab})
+        e.setState({descricaoEstab: descricao})
+        e.setState({categoria: categoria})
+        e.setState({subcategoria: subcategoria})
+        e.setState({precoEstab: valor})
+        e.setState({video: video})
+        e.setState({image: imagem})
+        e.setState({image2: imagem2})
+        e.setState({image3: imagem3})
+        e.setState({type: type})
+        e.setState({UFEstab: ufestab})
+        e.setState({enderecoEstab: local})
+        e.setState({horarioAbre: abertura})
+        e.setState({horarioFecha: fechamento})
+        e.setState({workDays: workDays})
+        
+        console.log("ARRAY DE NOME PESQUISA: " + arrayEstab)
+      })
+      
     }
-
+    
     console.log('state de categorias: ' + this.state.categorias)
     console.log('id do  anuncio: ' + this.props.route.params.idAnuncio)
     console.log('type do  anuncio: ' + this.props.route.params.type)
@@ -452,10 +444,10 @@ export default class EditarAnuncio extends Component {
     await firebase.firestore().collection('usuarios').doc(usuarioAtual).onSnapshot(documentSnapshot => {
       e.setState({fotoPerfil: documentSnapshot.data().photoProfile})
     })
-
+    
   }
-
-
+  
+  
   async getSubCategoryFromFirebase(id, title) {
     let e = this;
     
@@ -473,7 +465,45 @@ export default class EditarAnuncio extends Component {
     })
     console.log('state de SUBcategorias: ' + this.state.subcategorias)
     console.log('SUBcategoria obtida: ' + title)
-
+    
+    if(Platform.OS === "android") {
+      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
+      this.setState({usuarioComprou: comprou});
+      console.log('usuario comprou? ' + JSON.stringify(comprou))
+    } else {
+      RNIap.initConnection()
+  
+      let isPurchased = false;
+        try {
+            const purchases = await RNIap.getAvailablePurchases();
+  
+            purchases.forEach((purchase) =>{
+                if(purchase.productId === 'gold.mensal.auto.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.anual.auto.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.mensal.estab.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.anual.estab.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+            })
+        } catch (error) {
+          false;
+        }
+        console.log('IS PURCHASED => ' + isPurchased)
+      this.setState({usuarioComprou: isPurchased});
+    }
   }
 
 

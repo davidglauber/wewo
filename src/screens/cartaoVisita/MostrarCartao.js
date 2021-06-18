@@ -73,9 +73,6 @@ import { ThemeContext } from '../../../ThemeContext';
 
 import {Heading6} from '../../components/text/CustomText';
 
-//import IAP API 
-import {purchased} from '../../config/purchase';
-
 import LottieView from 'lottie-react-native';
 
 import AlertPro from "react-native-alert-pro";
@@ -224,7 +221,6 @@ export default class MostrarCartao extends Component {
       horario: '',
       cartaoAuto:[],
       cartaoEstab:[],
-      purchased: false,
       modalizeRef: React.createRef(null),
       modalizeRefDisponibilidade: React.createRef(null),
       modalizeRefFrete: React.createRef(null),
@@ -327,25 +323,6 @@ export default class MostrarCartao extends Component {
   async componentDidMount() {
     let e = this;
     
-    if(Platform.OS === "android") {
-      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
-      if(comprou == true) {
-        this.setState({purchased: true})
-      } else {
-        this.setState({purchased: false})
-      }
-    } else {
-      /*
-      let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
-      if(comprou == true) {
-        this.setState({purchased: true})
-      } else {
-        this.setState({purchased: false})
-      }
-      */
-      //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
-    }
-
     let idCartao = this.props.route.params.idDoCartao;
     let currentUserUID = this.props.route.params.idUserCartao;
     let currentUser = firebase.auth().currentUser;
@@ -1365,10 +1342,6 @@ export default class MostrarCartao extends Component {
                       </View>
                   }
 
-
-                { this.state.purchased == true &&
-                  null
-                }
                 </View>
             }
           />
@@ -1745,9 +1718,6 @@ export default class MostrarCartao extends Component {
                       </View>
                   }
 
-                { this.state.purchased == true &&
-                  null
-                }
             </View>
             }
           />

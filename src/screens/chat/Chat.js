@@ -13,10 +13,12 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  Platform,
   Text,
   Modal,
   TextInput,
   StyleSheet,
+  KeyboardAvoidingView,
   View,
 } from 'react-native';
 
@@ -171,6 +173,10 @@ export default class Chat extends Component {
     const { valueUser } = this.state;
     const currentUserId = firebase.auth().currentUser.uid; 
     return (
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{flex: 1}}
+      >
       <SafeAnuncioView>
         <Modal
             animationType="slide"
@@ -279,6 +285,7 @@ export default class Chat extends Component {
             </TouchableOpacity>
         </View>
       </SafeAnuncioView>
+      </KeyboardAvoidingView>
     );
   }
 }

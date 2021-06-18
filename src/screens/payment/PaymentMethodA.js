@@ -13,7 +13,9 @@ import {
   StyleSheet,
   Dimensions,
   Image,
+  Modal,
   ScrollView,
+  Alert,
   View,
   Linking,
   Text,
@@ -29,7 +31,7 @@ import Colors from '../../theme/colors';
 
 
 //import IAP API 
-import {purchased, fetchAvailableProducts,purchaseUpdateSubscription,requestPurchase} from '../../config/purchase';
+import {purchased, purchasedIOS, fetchAvailableProducts,purchaseUpdateSubscription,requestPurchase} from '../../config/purchase';
 
 import { useRoute, useNavigation } from "@react-navigation/native";
 
@@ -43,6 +45,10 @@ import AlertPro from "react-native-alert-pro";
 import { Subtitle2Publish, ChooseOption } from '../home/styles';
 
 import normalize from '../../config/resizeFont';
+
+import RNIap, { purchaseUpdatedListener } from 'react-native-iap';
+
+import loading from '../../../assets/loading.json';
 
 //consts
 const windowWidth = Dimensions.get('window').width;
@@ -139,6 +145,8 @@ export default function PaymentMethodA() {
   const [plan, setPlan] = useState('mensal');
   const [verifySub, setVerifySub] = useState(false);
   const [tipoDeConta, setTipoDeConta] = useState("");
+  const [purchase, setPurchase] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const alertPro = React.useRef();
   const alertPro2 = React.useRef();
   
@@ -150,10 +158,10 @@ export default function PaymentMethodA() {
       'wewo_gold_auto'
     ], 
     ios: [
-      'gold.auto.mensal',
-      'gold.auto.anual',
-      'gold.estab.mensal',
-      'gold.estab.anual'
+      'gold.mensal.auto.tt',
+      'gold.anual.auto.tt',
+      'gold.mensal.estab.tt',
+      'gold.anual.estab.tt',
     ]
   })
 
@@ -169,13 +177,40 @@ export default function PaymentMethodA() {
  
 
   useEffect(() => {
-    fetchAvailableProducts(itemSubs);
+    if(Platform.OS === "android") {
+      fetchAvailableProducts(itemSubs);
+    } else {
+      RNIap.initConnection().catch(() => {
+        console.log('Erro ao conectar na Apple Store')
+      }).then(() => {
+        console.log("Conectado na Apple Store")
+        RNIap.getSubscriptions(itemSubs).catch(() => {
+          console.log("Erro ao buscar planos")
+        }).then((res) => {
+          console.log(res)
+        })
+      })
+    }
   }, [])
+
+
 
 
   useEffect(() => {
-    purchaseUpdateSubscription(itemSubs);
+    if(Platform.OS === "android") {
+      purchaseUpdateSubscription(itemSubs);
+    } else {
+      purchaseUpdatedListener(async (purchase) =>{
+        const receipt = purchase.transactionReceipt;
+
+        if(receipt) {
+            const ackResult = await RNIap.finishTransaction(purchase);
+        }
+      });
+    }
   }, [])
+
+
 
   useEffect(() => {
     async function user() {
@@ -193,7 +228,6 @@ export default function PaymentMethodA() {
 
   useEffect(() => {
     async function isBought() {
-
       if(Platform.OS === "android") {
         let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto')
         if(comprou == true) {
@@ -204,8 +238,42 @@ export default function PaymentMethodA() {
           alertPro2.current.open()
         }
       } else {
-        let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual')
-        if(comprou == true) {
+        //verifica se usuario apple ja fez uma compra
+        let isPurchased = false;
+
+        setModalVisible(true)
+
+        try {
+            const purchases = await RNIap.getAvailablePurchases();
+
+            purchases.forEach((purchase) =>{
+                if(purchase.productId === itemSubs[0]){
+                    isPurchased = true;
+                    return;
+                } 
+
+                if(purchase.productId === itemSubs[1]){
+                    isPurchased = true;
+                    return;
+                } 
+
+                if(purchase.productId === itemSubs[2]){
+                    isPurchased = true;
+                    return;
+                } 
+
+                if(purchase.productId === itemSubs[3]){
+                    isPurchased = true;
+                    return;
+                } 
+            })
+        } catch (error) {
+          false;
+        }
+
+        setModalVisible(false)
+
+        if(isPurchased == true) {
           setVerifySub(true)
           alertPro.current.open()
         } else {
@@ -218,8 +286,14 @@ export default function PaymentMethodA() {
     isBought();
   }, [])
 
-  function signPremium(idProp) {
-    requestPurchase(idProp)
+  async function signPremium(idProp) {
+    if(Platform.OS === "android") {
+      requestPurchase(idProp)
+    } else {
+      await RNIap.requestSubscription(idProp).then(() => {
+        alert('Seja Bem-Vindo(a) ao Plano Gold, aproveite!!!')
+      })
+    }
   }
 
 
@@ -288,6 +362,18 @@ export default function PaymentMethodA() {
         }}
       />
 
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+            }}
+          >
+          <View style={{flex:1, alignItems:'center', paddingLeft: windowWidth / 2, paddingTop: windowHeight / 2, width: 100}}>
+              <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
+          </View>
+        </Modal>
 
         {plan == 'mensal' && tipoDeConta == 'Autonomo' &&
           <View style={{alignItems:'center', marginBottom: windowHeight/8}}>
@@ -402,7 +488,7 @@ export default function PaymentMethodA() {
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20} 
-              onPress={() => signPremium('gold.estab.mensal')}
+              onPress={() => signPremium('gold.mensal.estab.tt')}
               title="Assinar Premium"
             />
           </View>
@@ -425,7 +511,7 @@ export default function PaymentMethodA() {
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
-              onPress={() => signPremium('gold.estab.anual')}
+              onPress={() => signPremium('gold.anual.estab.tt')}
               title="Assinar Premium"
             />
           </View>
@@ -449,7 +535,7 @@ export default function PaymentMethodA() {
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
-              onPress={() => signPremium('gold.auto.mensal')}
+              onPress={() => signPremium('gold.mensal.auto.tt')}
               title="Assinar Premium"
             />
           </View>
@@ -473,7 +559,7 @@ export default function PaymentMethodA() {
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
-              onPress={() => signPremium('gold.auto.anual')}
+              onPress={() => signPremium('gold.anual.auto.tt')}
               title="Assinar Premium"
             />
           </View>
@@ -497,7 +583,7 @@ export default function PaymentMethodA() {
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
-              onPress={() => Linking.openURL('https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions')}
+              onPress={() => Linking.openURL('https://apps.apple.com/account/subscriptions')}
               title="Cancelar Plano Mensal"
             />
           </View>
@@ -523,7 +609,7 @@ export default function PaymentMethodA() {
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
-              onPress={() => Linking.openURL('https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions')}
+              onPress={() => Linking.openURL('https://apps.apple.com/account/subscriptions')}
               title="Cancelar Plano Mensal"
             />
           </View>
@@ -549,7 +635,7 @@ export default function PaymentMethodA() {
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
-              onPress={() => Linking.openURL('https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions')}
+              onPress={() => Linking.openURL('https://apps.apple.com/account/subscriptions')}
               title="Cancelar Plano Anual"
             />
           </View>
@@ -575,7 +661,7 @@ export default function PaymentMethodA() {
           <View style={styles.buttonContainer}>
             <Button
               borderRadius={20}
-              onPress={() => Linking.openURL('https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions')}
+              onPress={() => Linking.openURL('https://apps.apple.com/account/subscriptions')}
               title="Cancelar Plano Anual"
             />
           </View>

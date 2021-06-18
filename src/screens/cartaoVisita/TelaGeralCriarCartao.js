@@ -46,6 +46,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 //MODULE IAP
 import {purchased} from '../../config/purchase';
 
+import RNIap from 'react-native-iap';
+
 import { Video } from 'expo-av';
 
 //consts
@@ -399,7 +401,38 @@ export default class TelaGeralCriarCartao extends Component {
       })
 
     } else {
-      let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+      RNIap.initConnection()
+  
+      let isPurchased = false;
+        try {
+            const purchases = await RNIap.getAvailablePurchases();
+  
+            purchases.forEach((purchase) =>{
+                if(purchase.productId === 'gold.mensal.auto.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.anual.auto.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.mensal.estab.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.anual.estab.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+            })
+        } catch (error) {
+          false;
+        }
+      console.log('IS PURCHASED => ' + isPurchased)
+
       firebase.firestore().collection(`usuarios/${currentUserUID}/cartoes`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
         let cartoesDidMount = []
         documentSnapshot.forEach(function(doc) {
@@ -426,13 +459,13 @@ export default class TelaGeralCriarCartao extends Component {
         }
   
   
-        if(comprou == true) {
+        if(isPurchased == true) {
           if(cartoesDidMount.length <= 100 && this.state.idMPState !== '') {
             this.props.navigation.navigate('TelaCriarCartaoVisita')
           }
         } 
   
-        if(comprou == false) {
+        if(isPurchased == false) {
           if(cartoesDidMount.length >= 7 && this.state.idMPState !== '') {
             this.AlertPro2.open();
           }

@@ -43,8 +43,6 @@ import LottieView from 'lottie-react-native';
 
 import loading from '../../../assets/loading.json';
 
-//import IAP API 
-import {purchased} from '../../config/purchase';
 
 //import ADS
 import {AdMobInterstitial} from 'expo-ads-admob';
@@ -115,7 +113,6 @@ export default class HomeA extends Component {
       isFetchedButton: false,
       modalVisible: true,
       products: [],
-      purchased: false,
       type:'Autonomo',
       textSearch: '',
       notificationListener: React.createRef(null),
@@ -181,25 +178,6 @@ async componentDidMount() {
   //configuração de notificações
   await this.registerForPushNotificationsAsync().then(token => this.setState({expoPushToken: token}));
 
-  
-  if(Platform.OS === "android") {
-    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
-    if(comprou == true) {
-      this.setState({purchased: true})
-    } else {
-      this.setState({purchased: false})
-    }
-  } else {
-    /*
-    let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
-    if(comprou == true) {
-      this.setState({purchased: true})
-    } else {
-      this.setState({purchased: false})
-    }
-    */
-    //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
-  }
   
   await firebase.auth().onAuthStateChanged((user) => {
     if (user) {

@@ -47,9 +47,6 @@ import LottieView from 'lottie-react-native';
 
 import loading from '../../../assets/loading.json';
 
-//import IAP API 
-import {purchased} from '../../config/purchase';
-
 
 import { Video } from 'expo-av';
 
@@ -125,7 +122,6 @@ export default class HomeFiltro extends Component {
       activesPublishesAuto: [],
       activesPublishesEstab: [],
       modalVisible: true,
-      purchased: false
     };
   }
 
@@ -148,24 +144,6 @@ export default class HomeFiltro extends Component {
 async componentDidMount() {
   console.reportErrorsAsExceptions = false;
 
-  if(Platform.OS === "android") {
-    let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
-    if(comprou == true) {
-      this.setState({purchased: true})
-    } else {
-      this.setState({purchased: false})
-    }
-  } else {
-    /*
-    let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
-    if(comprou == true) {
-      this.setState({purchased: true})
-    } else {
-      this.setState({purchased: false})
-    }
-    */
-    //LEMBRAR DE ATIVAR APOS A APPLE APROVAR O IAP
-  }
   
     let arrayOfSelectedCategories = this.props.route.params.categoriasFiltradas;
     let arrayOfSelectedStates = this.props.route.params.estadosFiltrados;

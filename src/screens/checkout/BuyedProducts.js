@@ -45,9 +45,6 @@ import AlertPro from "react-native-alert-pro";
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
-//MODULE IAP
-import {purchased} from '../../config/purchase';
-
 import { Video } from 'expo-av';
 
 //consts

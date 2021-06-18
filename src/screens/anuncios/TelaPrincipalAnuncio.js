@@ -45,6 +45,8 @@ import {purchased} from '../../config/purchase';
 
 import { Video } from 'expo-av';
 
+import RNIap from 'react-native-iap';
+
 //consts
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -302,7 +304,38 @@ export default class TelaPrincipalAnuncio extends Component {
       })
 
     } else {
-      let comprou = purchased('gold.auto.mensal', 'gold.auto.estab', 'gold.estab.mensal', 'gold.estab.anual');
+      RNIap.initConnection()
+  
+      let isPurchased = false;
+        try {
+            const purchases = await RNIap.getAvailablePurchases();
+  
+            purchases.forEach((purchase) =>{
+                if(purchase.productId === 'gold.mensal.auto.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.anual.auto.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.mensal.estab.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+  
+                if(purchase.productId === 'gold.anual.estab.tt'){
+                    isPurchased = true;
+                    return;
+                } 
+            })
+        } catch (error) {
+          false;
+        }
+      console.log('IS PURCHASED => ' + isPurchased)
+
       this.props.navigation.navigate('Orders')
 
       firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
@@ -333,13 +366,13 @@ export default class TelaPrincipalAnuncio extends Component {
         }
 
 
-        if(comprou == true) {
+        if(isPurchased == true) {
           if(anunciosDidMount.length <= 15 && this.state.idMPState !== '') {
             this.props.navigation.navigate('Orders')
           }
         } 
 
-        if(comprou == false) {
+        if(isPurchased == false) {
           if(anunciosDidMount.length >= 3 && this.state.idMPState !== '') {
             this.AlertPro2.open();
             
@@ -353,7 +386,6 @@ export default class TelaPrincipalAnuncio extends Component {
           }
         }
         console.log('TAMANHO DA LISTA DE ANUNCIOS:> ' + anunciosDidMount)
-        alert('Purchased ' + comprou)
       })
     }
 
