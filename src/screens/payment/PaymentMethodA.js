@@ -246,8 +246,7 @@ export default function PaymentMethodA() {
         try {
             const purchases = await RNIap.getAvailablePurchases();
 
-            if(tipoDeConta == "Autonomo") {
-              purchases.forEach((purchase) =>{
+            purchases.forEach((purchase) =>{
                   if(purchase.productId === itemSubs[0]){
                       isPurchased = true;
                       return;
@@ -257,9 +256,6 @@ export default function PaymentMethodA() {
                       isPurchased = true;
                       return;
                   } 
-              })
-            } else {
-              purchases.forEach((purchase) =>{
                 if(purchase.productId === itemSubs[2]){
                   isPurchased = true;
                   return;
@@ -269,8 +265,7 @@ export default function PaymentMethodA() {
                   isPurchased = true;
                   return;
                 } 
-              })
-            }
+          })
         } catch (error) {
           false;
         }

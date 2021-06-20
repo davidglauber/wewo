@@ -312,8 +312,7 @@ export default class CriarAnuncio extends Component {
         try {
           const purchases = await RNIap.getAvailablePurchases();
 
-          if(tipoDeConta === "Autonomo") {
-            purchases.forEach((purchase) =>{
+          purchases.forEach((purchase) =>{
                 if(purchase.productId === itemSubs[0]){
                     isPurchased = true;
                     return;
@@ -323,20 +322,16 @@ export default class CriarAnuncio extends Component {
                     isPurchased = true;
                     return;
                 } 
-            })
-          } else {
-            purchases.forEach((purchase) =>{
-              if(purchase.productId === itemSubs[2]){
-                isPurchased = true;
-                return;
-              } 
-              
-              if(purchase.productId === itemSubs[3]){
-                isPurchased = true;
-                return;
-              } 
-            })
-          }
+                  if(purchase.productId === itemSubs[2]){
+                    isPurchased = true;
+                    return;
+                  } 
+                  
+                  if(purchase.productId === itemSubs[3]){
+                    isPurchased = true;
+                    return;
+                  } 
+          })
         } catch (error) {
           false;
         }
