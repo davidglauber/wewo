@@ -50,6 +50,9 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 
+
+import defaultPicture from '../../../assets/defaultUser.png'
+
 // VerificationB Config
 const isRTL = I18nManager.isRTL;
 
@@ -241,6 +244,7 @@ export default class Verificação extends Component {
                 dataNascimento: e.state.data,
                 telefone: e.state.telefone,
                 tipoDeConta: e.state.tipoDeConta,
+                photoProfile: defaultPicture,
                 userLocation: '',
                 tokenMessage: e.state.expoPushToken
               })
@@ -301,6 +305,7 @@ export default class Verificação extends Component {
                       premium: false,
                       dataNascimento: e.state.data,
                       telefone: e.state.telefone,
+                      photoProfile: defaultPicture,
                       tipoDeConta: e.state.tipoDeConta,
                       userLocation: '',
                       tokenMessage: e.state.expoPushToken

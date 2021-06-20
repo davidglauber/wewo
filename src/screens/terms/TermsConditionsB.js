@@ -37,6 +37,8 @@ import Colors from '../../theme/colors';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 
+import defaultPicture from '../../../assets/defaultUser.png'
+
 // TermsConditionsA Config
 const APP_NAME = 'App Name';
 
@@ -176,6 +178,7 @@ export default class TermsConditionsB extends Component {
             premium: false,
             dataNascimento: e.state.data,
             telefone: e.state.telefone,
+            photoProfile: defaultPicture,
             tipoDeConta: e.state.tipoDeConta,
             userLocation: '',
             tokenMessage: e.state.expoPushToken

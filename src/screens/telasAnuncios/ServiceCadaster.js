@@ -306,7 +306,7 @@ export default class ServiceCadaster extends Component {
         
         e.sendPushNotification(e.state.tokenMSG);
         e.setModalVisible(false)
-        alert('Parabens! O anunciante foi notificado e em breve irá contactá-lo em breve pelo app. Fique atento a aba de serviços enviados')
+        alert('Parabéns! O anunciante foi notificado e em breve irá contactá-lo pelo app. Fique atento a aba de serviços enviados')
         e.props.navigation.navigate('Home')
       })
     } else {

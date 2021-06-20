@@ -32,6 +32,7 @@ import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaVerifier } from 'expo-
 
 import AlertPro from "react-native-alert-pro";
 
+import defaultPicture from '../../../assets/defaultUser.png'
 
 // import colors
 import Colors from '../../theme/colors';
@@ -250,6 +251,7 @@ export default function SMSVerificacao () {
                       premium: false,
                       dataNascimento: getDataNascimento,
                       telefone: getTelefone,
+                      photoProfile: defaultPicture,
                       tipoDeConta: getTipoDeConta,
                       userLocation: '',
                       tokenMessage: getTokenMessage
