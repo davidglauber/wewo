@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  heading: {color: "#DAA520"},
+  heading: {color: "#DAA520", marginBottom: Platform.OS === "ios" ? windowHeight/30 : 0},
   instruction: {
     marginTop: 16,
     paddingHorizontal: 40,
@@ -335,7 +335,7 @@ export default class TelaLogin extends Component {
         e.props.navigation.navigate("Home")
       })
     } catch (e) {
-      alert("Ops! Houve um erro ao logar, confira se você já se cadastrou, caso sim, confira as informações e tente novamente")
+      alert("Ops! Houve um erro ao logar, confira se você já se cadastrou, caso sim, confira as informações e tente novamente. " + "\n\n" + e)
     }
   }
 
@@ -355,7 +355,7 @@ export default class TelaLogin extends Component {
             showCancel={false}
             onConfirm={() => this.AlertPro.close()}
             title="Aviso!!!"
-            message="Caso você não tenha se cadastrado ainda no aplicativo vá para tela de login, caso sim, continue o login"
+            message="Caso você não tenha se cadastrado ainda no aplicativo vá para tela de cadastro, caso sim, continue o login"
             textConfirm="Entendi"
             customStyles={{
               mask: {

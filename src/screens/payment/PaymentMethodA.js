@@ -246,27 +246,31 @@ export default function PaymentMethodA() {
         try {
             const purchases = await RNIap.getAvailablePurchases();
 
-            purchases.forEach((purchase) =>{
-                if(purchase.productId === itemSubs[0]){
-                    isPurchased = true;
-                    return;
-                } 
-
-                if(purchase.productId === itemSubs[1]){
-                    isPurchased = true;
-                    return;
-                } 
-
+            if(tipoDeConta == "Autonomo") {
+              purchases.forEach((purchase) =>{
+                  if(purchase.productId === itemSubs[0]){
+                      isPurchased = true;
+                      return;
+                  } 
+  
+                  if(purchase.productId === itemSubs[1]){
+                      isPurchased = true;
+                      return;
+                  } 
+              })
+            } else {
+              purchases.forEach((purchase) =>{
                 if(purchase.productId === itemSubs[2]){
-                    isPurchased = true;
-                    return;
+                  isPurchased = true;
+                  return;
                 } 
-
+                
                 if(purchase.productId === itemSubs[3]){
-                    isPurchased = true;
-                    return;
+                  isPurchased = true;
+                  return;
                 } 
-            })
+              })
+            }
         } catch (error) {
           false;
         }

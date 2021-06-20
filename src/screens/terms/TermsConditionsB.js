@@ -183,7 +183,20 @@ export default class TermsConditionsB extends Component {
         })
         e.props.navigation.navigate('HomeNavigator')
       } catch (e) {
-        console.log(e);
+        if(e.code === "auth/email-already-in-use") {
+          alert("Houve um erro ao cadastrar, o email já está em uso!");
+          this.props.navigation.goBack()
+        }
+
+        if(e.code === "auth/invalid-email") {
+          alert("O email inserido não é válido, volte para o cadastro e cadastre um email válido")
+          this.props.navigation.goBack()
+        }
+
+        if(e.code === "auth/weak-password") {
+          alert("A senha inserida é muito fraca")
+          this.props.navigation.goBack()
+        }
       }
     } else {
       const {navigation} = this.props;

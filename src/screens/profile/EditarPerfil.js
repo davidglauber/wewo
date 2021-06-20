@@ -243,7 +243,7 @@ export default class EditarPerfil extends Component {
     })
 
     this.sleep(6000).then(() => { 
-      this.props.navigation.navigate('Settings')
+      this.props.navigation.goBack()
     })
   }
 

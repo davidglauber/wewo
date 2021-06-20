@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    height: 36,
+    height: 36
   },
 
   inputStyle: {
@@ -310,29 +310,33 @@ export default class CriarAnuncio extends Component {
 
       let isPurchased = false;
         try {
-            const purchases = await RNIap.getAvailablePurchases();
-  
+          const purchases = await RNIap.getAvailablePurchases();
+
+          if(tipoDeConta === "Autonomo") {
             purchases.forEach((purchase) =>{
-                if(purchase.productId === 'gold.mensal.auto.tt'){
+                if(purchase.productId === itemSubs[0]){
                     isPurchased = true;
                     return;
                 } 
-  
-                if(purchase.productId === 'gold.anual.auto.tt'){
-                    isPurchased = true;
-                    return;
-                } 
-  
-                if(purchase.productId === 'gold.mensal.estab.tt'){
-                    isPurchased = true;
-                    return;
-                } 
-  
-                if(purchase.productId === 'gold.anual.estab.tt'){
+
+                if(purchase.productId === itemSubs[1]){
                     isPurchased = true;
                     return;
                 } 
             })
+          } else {
+            purchases.forEach((purchase) =>{
+              if(purchase.productId === itemSubs[2]){
+                isPurchased = true;
+                return;
+              } 
+              
+              if(purchase.productId === itemSubs[3]){
+                isPurchased = true;
+                return;
+              } 
+            })
+          }
         } catch (error) {
           false;
         }
@@ -1517,7 +1521,6 @@ export default class CriarAnuncio extends Component {
   }
 
   searchCEPAuto(cepuser) {
-    fetch(`https://viacep.com.br/ws/${cepuser}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({UFAuto: obj.uf})).catch(err => alert('Ocorreu um erro ao consultar o estado!'))
   }
 
 
@@ -2045,10 +2048,29 @@ export default class CriarAnuncio extends Component {
                                 value={this.state.tituloAuto}
                                 onChangeText={text => this.onChangeTituloAuto(text)}
                                 maxLength={20}
+                                style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                                 placeholder="Título Breve do Anúncio                                                        "
                               />
                           </View>
 
+                        {Platform.OS === "ios" ?
+                          <TouchableOpacity onPress={() => this.openModalizeDescricao()} style={{flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            paddingHorizontal: 4,
+                            height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                              {this.state.descricaoAuto == '' ?
+                                <Text style={{color: '#c4bcbc', padding: 10}}>
+                                  Descrição do Anúncio
+                                </Text>
+                              :
+                                <Text style={{color: '#000', padding: 10}}>
+                                  {this.state.descricaoAuto}
+                                </Text>
+                              }
+                                
+                          </TouchableOpacity>
+                        :
                           <TouchableOpacity onPress={() => this.openModalizeDescricao()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
                               <InputForm
                                 value={this.state.descricaoAuto}
@@ -2057,14 +2079,32 @@ export default class CriarAnuncio extends Component {
                                 editable={false}
                               />
                           </TouchableOpacity>
+                        }
 
-                          <TouchableOpacity onPress={() => this.openModalizeValueAuto()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+
+
+                        {Platform.OS === "ios" ?
+                          <TouchableOpacity onPress={() => this.openModalizeValueAuto()} style={{flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            paddingHorizontal: 4,
+                            height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                <Text style={{color: '#c4bcbc', padding: 10}}>
+                                  Valor do Serviço
+                                </Text>
+                                <Text style={{color: '#000', padding: 10}}>
+                                  {this.state.precoAuto}
+                                </Text>
+                          </TouchableOpacity>
+                        :
+                          <TouchableOpacity onPress={() => this.openModalizeValueAuto()} style={{flexDirection: 'row', justifyContent: 'space-between', padding: Platform.OS === "ios" ? 10 : 0, alignItems: 'center',paddingHorizontal: 16, height: 36}}>
                               {this.state.precoAuto == 'Valor a combinar' ?
                                 <InputForm
                                   editable={false}
                                   value='Valor a Combinar'
                                   onChangeText={text => this.onChangePrecoAuto(text)}
                                   keyboardType={"number-pad"}
+                                  style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                                   placeholder="Valor do Serviço                                                          "
                                 />
                                 :
@@ -2074,20 +2114,42 @@ export default class CriarAnuncio extends Component {
                                   value={this.state.precoAuto}
                                   onChangeText={text => this.onChangePrecoAuto(text)}
                                   keyboardType={"number-pad"}
+                                  style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                                   placeholder="Valor do Serviço                                                          "
                                 />
                               }
                             </TouchableOpacity>
+                        }
 
-                          <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+
+                          <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 18, height: 36}}>
                               <InputForm
                                 value={this.state.nomeAuto}
                                 onChangeText={text => this.onChangeNomeAuto(text)}
                                 autoCapitalize={'words'}
+                                style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                                 placeholder="Seu nome                                                                       "
                               />
                           </View>
 
+                          {Platform.OS === "ios" ?
+                            <TouchableOpacity onPress={() => this.openModalizeLocationAuto()} style={{flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              paddingHorizontal: 4,
+                              height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                {this.state.enderecoAuto == null ?
+                                  <Text style={{color: '#c4bcbc', padding: 10}}>
+                                    Endereço do Autônomo
+                                  </Text>
+                                :
+                                  <Text style={{color: '#000', padding: 10}}>
+                                    {this.state.enderecoAuto}
+                                  </Text>
+                                }
+                                  
+                            </TouchableOpacity>
+                          :
                             <TouchableOpacity onPress={() => this.openModalizeLocationAuto()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
                                 <InputForm
                                   value={this.state.enderecoAuto}
@@ -2096,6 +2158,7 @@ export default class CriarAnuncio extends Component {
                                   placeholder="Endereço do Autônomo                                                   "
                                 />
                             </TouchableOpacity>
+                          } 
 
 
                           <View style={{flexDirection:'row'}}>
@@ -2284,48 +2347,104 @@ export default class CriarAnuncio extends Component {
                                 value={this.state.tituloEstab}
                                 onChangeText={text => this.onChangeTituloEstab(text)}
                                 maxLength={20}
+                                style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                                 placeholder="Título Breve do Anúncio                                                        "
                               />
                             </View>
 
-                            <TouchableOpacity onPress={() => this.openModalizeDescricaoEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputForm
-                                value={this.state.descricaoEstab}
-                                editable={false}
-                                onChangeText={text => this.onChangeDescricaoEstab(text)}
-                                placeholder="Descrição do Anúncio                                                    "
-                              />
-                            </TouchableOpacity>
+                            {Platform.OS === "ios" ?
+                              <TouchableOpacity onPress={() => this.openModalizeDescricaoEstab()} style={{flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                paddingHorizontal: 4,
+                                height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                  {this.state.descricaoEstab == '' ?
+                                    <Text style={{color: '#c4bcbc', padding: 10}}>
+                                      Descrição do Anúncio
+                                    </Text>
+                                  :
+                                    <Text style={{color: '#000', padding: 10}}>
+                                      {this.state.descricaoEstab}
+                                    </Text>
+                                  }
+                                    
+                              </TouchableOpacity>
+                            :
+                              <TouchableOpacity onPress={() => this.openModalizeDescricaoEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                                  <InputForm
+                                    value={this.state.descricaoEstab}
+                                    onChangeText={text => this.onChangeDescricaoEstab(text)}
+                                    placeholder="Descrição do Anúncio                                                    "
+                                    editable={false}
+                                  />
+                              </TouchableOpacity>
+                            }
 
-                            <TouchableOpacity onPress={() => this.openModalizeValueEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              {this.state.precoEstab == 'Valor a combinar' ?
-                                <InputForm
-                                  editable={false}
-                                  value='Valor a Combinar'
-                                  onChangeText={text => this.onChangePrecoEstab(text)}
-                                  keyboardType={"number-pad"}
-                                  placeholder="Valor do Serviço                                                          "
-                                />
-                                :
-                                <InputFormMask
-                                  type={'money'}
-                                  editable={false}
-                                  value={this.state.precoEstab}
-                                  onChangeText={text => this.onChangePrecoEstab(text)}
-                                  keyboardType={"number-pad"}
-                                  placeholder="Valor do Serviço                                                          "
-                                />
+                            {Platform.OS === "ios" ?
+                                <TouchableOpacity onPress={() => this.openModalizeValueEstab()} style={{flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  alignItems: 'center',
+                                  paddingHorizontal: 4,
+                                  height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                      <Text style={{color: '#c4bcbc', padding: 10}}>
+                                        Valor do Serviço
+                                      </Text>
+                                      <Text style={{color: '#000', padding: 10}}>
+                                        {this.state.precoEstab}
+                                      </Text>
+                                </TouchableOpacity>
+                              :
+                                <TouchableOpacity onPress={() => this.openModalizeValueEstab()} style={{flexDirection: 'row', justifyContent: 'space-between', padding: Platform.OS === "ios" ? 10 : 0, alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                                    {this.state.precoEstab == 'Valor a combinar' ?
+                                      <InputForm
+                                        editable={false}
+                                        value='Valor a Combinar'
+                                        onChangeText={text => this.onChangePrecoEstab(text)}
+                                        keyboardType={"number-pad"}
+                                        style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                                        placeholder="Valor do Serviço                                                          "
+                                      />
+                                      :
+                                      <InputFormMask
+                                        type={'money'}
+                                        editable={false}
+                                        value={this.state.precoEstab}
+                                        onChangeText={text => this.onChangePrecoEstab(text)}
+                                        keyboardType={"number-pad"}
+                                        style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                                        placeholder="Valor do Serviço                                                          "
+                                      />
+                                    }
+                                  </TouchableOpacity>
                               }
-                            </TouchableOpacity>
                           
-                            <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                                <InputForm
-                                  value={this.state.enderecoEstab}
-                                  keyboardType={"default"}
-                                  editable={false}
-                                  placeholder="Endereço do Estabelecimento                                                   "
-                                />
-                            </TouchableOpacity>
+                            {Platform.OS === "ios" ?
+                              <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                paddingHorizontal: 4,
+                                height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                  {this.state.enderecoEstab == null ?
+                                    <Text style={{color: '#c4bcbc', padding: 10}}>
+                                      Endereço do Estabelecimento
+                                    </Text>
+                                  :
+                                    <Text style={{color: '#000', padding: 10}}>
+                                      {this.state.enderecoEstab}
+                                    </Text>
+                                  }
+                                    
+                              </TouchableOpacity>
+                            :
+                              <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                                  <InputForm
+                                    value={this.state.enderecoEstab}
+                                    keyboardType={"default"}
+                                    editable={false}
+                                    placeholder="Endereço do Estabelecimento                                                   "
+                                  />
+                              </TouchableOpacity>
+                            } 
 
                             <View>
 
@@ -2581,13 +2700,24 @@ export default class CriarAnuncio extends Component {
 
                 {this.state.precoAuto == 'definir valor' &&
                   <View style={{flexDirection: 'column'}}>
-                    <InputFormMask
-                      type={'money'}
-                      value={this.state.precoAuto}
-                      onChangeText={text => this.onChangePrecoAuto(text)}
-                      keyboardType={"number-pad"}
-                      placeholder="Valor do Serviço"
+                    {Platform.OS === "ios" ?
+                      <InputFormMask
+                        type={'money'}
+                        value={this.state.precoAuto}
+                        onChangeText={text => this.onChangePrecoAuto(text)}
+                        keyboardType={"number-pad"}
+                        style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                        placeholder="Valor do Serviço                                            "
                       />
+                      :
+                      <InputFormMask
+                        type={'money'}
+                        value={this.state.precoAuto}
+                        onChangeText={text => this.onChangePrecoAuto(text)}
+                        keyboardType={"number-pad"}
+                        placeholder="Valor do Serviço                                            "
+                      />
+                    }
                   </View>
                 }
 
@@ -2599,6 +2729,7 @@ export default class CriarAnuncio extends Component {
                       value={this.state.precoAuto}
                       onChangeText={text => this.onChangePrecoAuto(text)}
                       keyboardType={"number-pad"}
+                      style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                       placeholder="Valor do Serviço"
                     />
                   </View>
@@ -2610,7 +2741,7 @@ export default class CriarAnuncio extends Component {
                       <TouchableOpacity onPress={() => this.setState({precoAuto: 'definir valor'})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                       <TextDays>Definir valor</TextDays>
                     </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 106}}>
                       <CategoryAndSub>Definido como: {this.state.precoAuto}</CategoryAndSub>
                     </View>
                   </View>
@@ -2644,13 +2775,24 @@ export default class CriarAnuncio extends Component {
 
                 {this.state.precoEstab == 'definir valor' &&
                   <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                    <InputFormMask
-                      type={'money'}
-                      value={this.state.precoEstab}
-                      onChangeText={text => this.onChangePrecoEstab(text)}
-                      keyboardType={"number-pad"}
-                      placeholder="Valor do Serviço"
-                    />
+                    {Platform.OS === "ios" ?
+                      <InputFormMask
+                        type={'money'}
+                        value={this.state.precoEstab}
+                        onChangeText={text => this.onChangePrecoEstab(text)}
+                        keyboardType={"number-pad"}
+                        style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                        placeholder="Valor do Serviço                                            "
+                      />
+                      :
+                      <InputFormMask
+                        type={'money'}
+                        value={this.state.precoEstab}
+                        onChangeText={text => this.onChangePrecoEstab(text)}
+                        keyboardType={"number-pad"}
+                        placeholder="Valor do Serviço                                            "
+                      />
+                    }
                   </View>
                 }
 
@@ -2662,6 +2804,7 @@ export default class CriarAnuncio extends Component {
                       value={this.state.precoEstab}
                       onChangeText={text => this.onChangePrecoEstab(text)}
                       keyboardType={"number-pad"}
+                      style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                       placeholder="Valor do Serviço"
                     />
                   </View>
@@ -2673,7 +2816,7 @@ export default class CriarAnuncio extends Component {
                       <TouchableOpacity onPress={() => this.setState({precoEstab: 'definir valor'})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                       <TextDays>Definir valor</TextDays>
                     </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 106}}>
                       <CategoryAndSub>Definido como: {this.state.precoEstab}</CategoryAndSub>
                     </View>
                   </View>
