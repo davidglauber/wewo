@@ -2030,19 +2030,38 @@ export default class EditarCartao extends Component {
                                 maxLength={20}
                                 onChangeText={text => this.onChangeNomeAuto(text)}
                                 autoCapitalize={'words'}
+                                style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                                 placeholder="Digite seu Nome                                                                       "
                               />
                           </View>
 
-                          <TouchableOpacity onPress={() => this.openModalizeDescricao()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputForm
-                                editable={false}
-                                value={this.state.descricaoAuto}
-                                onChangeText={text => this.onChangeDescricaoAuto(text)}
-                                placeholder="Dê a melhor descrição das suas habilidades, detalhe-as                                                    "
-                              />
-                          </TouchableOpacity>
-
+                          {Platform.OS === "ios" ?
+                            <TouchableOpacity onPress={() => this.openModalizeDescricao()} style={{flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              paddingHorizontal: 4,
+                              height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                {this.state.descricaoAuto == '' ?
+                                  <Text style={{color: '#c4bcbc', padding: 10}}>
+                                    Dê a melhor descrição das suas habilidades, detalhe-as
+                                  </Text>
+                                :
+                                  <Text style={{color: '#000', padding: 10}}>
+                                    {this.state.descricaoAuto}
+                                  </Text>
+                                }
+                                  
+                            </TouchableOpacity>
+                          :
+                            <TouchableOpacity onPress={() => this.openModalizeDescricao()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                                <InputForm
+                                  value={this.state.descricaoAuto}
+                                  onChangeText={text => this.onChangeDescricaoAuto(text)}
+                                  placeholder="Dê a melhor descrição das suas habilidades, detalhe-as                                                    "
+                                  editable={false}
+                                />
+                            </TouchableOpacity>
+                          }
 
                           <View style={{flexDirection:'row', paddingTop:50, paddingBottom:10, alignItems:'center', justifyContent:'center'}}>                          
                             <View style={{marginRight:70}}>
