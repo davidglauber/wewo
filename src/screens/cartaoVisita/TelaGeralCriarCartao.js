@@ -725,10 +725,10 @@ export default class TelaGeralCriarCartao extends Component {
           {/*Modalize do resumo de portfólio*/}
           <Modalize
             ref={this.state.modalizeRef}
-            snapPoint={700}
+            snapPoint={Platform.OS === "ios" ? 200 : 700}
             onClose={() => this.closeDescription()}
           >
-            <View>
+            <View style={{height: 500}}>
                   <ScrollView>
                       <TextInput
                         autoFocus={true}

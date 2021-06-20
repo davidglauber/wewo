@@ -86,7 +86,7 @@ export default class TelaLogout extends Component {
 
     e.timeout = setTimeout(async () => {
         await firebase.auth().signOut()
-        e.props.navigation.navigate('HomeNavigator')
+        e.props.navigation.navigate('Home')
     }, 2000);
 
   };

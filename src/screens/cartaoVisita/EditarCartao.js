@@ -181,7 +181,6 @@ export default class EditarCartao extends Component {
       arrayWordsAuto: [],
       arrayWordsEstab: [],
       subcategoria:'',
-      usuarioComprou: false,
       locationServiceEnabled: false,
       fotoPerfil: null,
       freteValue: '',
@@ -376,47 +375,6 @@ export default class EditarCartao extends Component {
     })
 
 
-
-
-    //verifica se o usuario comprou a assinatura mensal
-    if(Platform.OS === "android") {
-      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
-      this.setState({usuarioComprou: comprou});
-      console.log('usuario comprou? ' + JSON.stringify(comprou))
-    } else {
-      RNIap.initConnection()
-
-      let isPurchased = false;
-        try {
-            const purchases = await RNIap.getAvailablePurchases();
-  
-            purchases.forEach((purchase) =>{
-                if(purchase.productId === 'gold.mensal.auto.tt'){
-                    isPurchased = true;
-                    return;
-                } 
-  
-                if(purchase.productId === 'gold.anual.auto.tt'){
-                    isPurchased = true;
-                    return;
-                } 
-  
-                if(purchase.productId === 'gold.mensal.estab.tt'){
-                    isPurchased = true;
-                    return;
-                } 
-  
-                if(purchase.productId === 'gold.anual.estab.tt'){
-                    isPurchased = true;
-                    return;
-                } 
-            })
-        } catch (error) {
-          false;
-        }
-        console.log('IS PURCHASED => ' + isPurchased)
-      this.setState({usuarioComprou: isPurchased});
-    }
   }
 
 
@@ -981,7 +939,6 @@ export default class EditarCartao extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1012,7 +969,6 @@ export default class EditarCartao extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1061,7 +1017,6 @@ export default class EditarCartao extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1081,7 +1036,6 @@ export default class EditarCartao extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1157,7 +1111,6 @@ export default class EditarCartao extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1188,7 +1141,6 @@ export default class EditarCartao extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1237,7 +1189,6 @@ export default class EditarCartao extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1257,7 +1208,6 @@ export default class EditarCartao extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1345,7 +1295,6 @@ export default class EditarCartao extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1375,7 +1324,6 @@ export default class EditarCartao extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1425,7 +1373,6 @@ export default class EditarCartao extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1445,7 +1392,6 @@ export default class EditarCartao extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1521,7 +1467,6 @@ export default class EditarCartao extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1551,7 +1496,6 @@ export default class EditarCartao extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1601,7 +1545,6 @@ export default class EditarCartao extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1621,7 +1564,6 @@ export default class EditarCartao extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -2142,57 +2084,131 @@ export default class EditarCartao extends Component {
                                 value={this.state.tituloEstab}
                                 onChangeText={text => this.onChangeTituloEstab(text)}
                                 maxLength={20}
+                                style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                                 placeholder="Nome do Produto (até 20 caracteres)                                                        "
                               />
                             </View>
 
-                            <TouchableOpacity onPress={() => this.openModalizeDescricaoEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputForm
-                                editable={false}
-                                value={this.state.descricaoEstab}
-                                onChangeText={text => this.onChangeDescricaoEstab(text)}
-                                placeholder="Descrição do seu produto... capriche ;)                                                    "
-                              />
-                            </TouchableOpacity>
-
-                            <TouchableOpacity onPress={() => this.openModalizeValueEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              {this.state.precoEstab == 'Valor a combinar' ?
-                                <InputForm
-                                  editable={false}
-                                  value='Valor a Combinar'
-                                  onChangeText={text => this.onChangePrecoEstab(text)}
-                                  keyboardType={"number-pad"}
-                                  placeholder="Valor do Serviço                                                          "
-                                />
-                                :
-                                <InputFormMask
-                                  type={'money'}
-                                  editable={false}
-                                  value={this.state.precoEstab}
-                                  onChangeText={text => this.onChangePrecoEstab(text)}
-                                  keyboardType={"number-pad"}
-                                  placeholder="Valor do Serviço                                                          "
-                                />
+                              {Platform.OS === "ios" ?
+                                <TouchableOpacity onPress={() => this.openModalizeDescricaoEstab()} style={{flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  alignItems: 'center',
+                                  paddingHorizontal: 4,
+                                  height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                    {this.state.descricaoEstab == '' ?
+                                      <Text style={{color: '#c4bcbc', padding: 10}}>
+                                        Descrição do seu produto... capriche ;)
+                                      </Text>
+                                    :
+                                      <Text style={{color: '#000', padding: 10}}>
+                                        {this.state.descricaoEstab}
+                                      </Text>
+                                    }
+                                      
+                                </TouchableOpacity>
+                              :
+                                <TouchableOpacity onPress={() => this.openModalizeDescricaoEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                                    <InputForm
+                                      value={this.state.descricaoEstab}
+                                      onChangeText={text => this.onChangeDescricaoEstab(text)}
+                                      placeholder="Descrição do Anúncio                                                    "
+                                      editable={false}
+                                    />
+                                </TouchableOpacity>
                               }
-                            </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => this.AlertPro8.open()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputForm
-                                editable={false}
-                                value={this.state.freteValue}
-                                placeholder="Defina seu frete aqui                                                          "
-                              />
-                            </TouchableOpacity>
+                              {Platform.OS === "ios" ?
+                                <TouchableOpacity onPress={() => this.openModalizeValueEstab()} style={{flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  alignItems: 'center',
+                                  paddingHorizontal: 4,
+                                  height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                      <Text style={{color: '#c4bcbc', padding: 10}}>
+                                        Valor do Produto
+                                      </Text>
+                                      <Text style={{color: '#000', padding: 10}}>
+                                        {this.state.precoEstab}
+                                      </Text>
+                                </TouchableOpacity>
+                              :
+                                <TouchableOpacity onPress={() => this.openModalizeValueEstab()} style={{flexDirection: 'row', justifyContent: 'space-between', padding: Platform.OS === "ios" ? 10 : 0, alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                                    {this.state.precoEstab == 'Valor a combinar' ?
+                                      <InputForm
+                                        editable={false}
+                                        value='Valor a Combinar'
+                                        onChangeText={text => this.onChangePrecoEstab(text)}
+                                        keyboardType={"number-pad"}
+                                        style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                                        placeholder="Valor do Produto                                                          "
+                                      />
+                                      :
+                                      <InputFormMask
+                                        type={'money'}
+                                        editable={false}
+                                        value={this.state.precoEstab}
+                                        onChangeText={text => this.onChangePrecoEstab(text)}
+                                        keyboardType={"number-pad"}
+                                        style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                                        placeholder="Valor do Produto                                                          "
+                                      />
+                                    }
+                                  </TouchableOpacity>
+                              }
 
-                            <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                                <InputForm
-                                  value={this.state.enderecoEstab}
-                                  onChangeText={text => this.onChangeEnderecoEstab(text)}
-                                  keyboardType={"default"}
-                                  editable={false}
-                                  placeholder="Endereço do Estabelecimento                                                   "
-                                />
-                            </TouchableOpacity>
+                            {Platform.OS === "ios" ?
+                              <TouchableOpacity onPress={() => this.AlertPro8.open()} style={{flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                paddingHorizontal: 4,
+                                height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                  {this.state.freteValue == '' ?
+                                    <Text style={{color: '#c4bcbc', padding: 10}}>
+                                      Defina seu frete aqui
+                                    </Text>
+                                  :
+                                    <Text style={{color: '#000', padding: 10}}>
+                                      {this.state.freteValue}
+                                    </Text>
+                                  }
+                                    
+                              </TouchableOpacity>
+                            :
+                              <TouchableOpacity onPress={() => this.AlertPro8.open()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                                  <InputForm
+                                    editable={false}
+                                    value={this.state.freteValue}
+                                    placeholder="Defina seu frete aqui                                                    "
+                                  />
+                              </TouchableOpacity>
+                            }
+
+                            {Platform.OS === "ios" ?
+                              <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                paddingHorizontal: 4,
+                                height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                  {this.state.enderecoEstab == null ?
+                                    <Text style={{color: '#c4bcbc', padding: 10}}>
+                                      Endereço do Estabelecimento
+                                    </Text>
+                                  :
+                                    <Text style={{color: '#000', padding: 10}}>
+                                      {this.state.enderecoEstab}
+                                    </Text>
+                                  }
+                                    
+                              </TouchableOpacity>
+                            :
+                              <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                                  <InputForm
+                                    value={this.state.enderecoEstab}
+                                    keyboardType={"default"}
+                                    editable={false}
+                                    placeholder="Endereço do Estabelecimento                                                   "
+                                  />
+                              </TouchableOpacity>
+                            } 
 
 
                             <View style={{flexDirection:'row', paddingTop:50, paddingBottom:10, alignItems:'center', justifyContent:'center'}}>                          
@@ -2252,6 +2268,7 @@ export default class EditarCartao extends Component {
                     value={this.state.cep}
                     onChangeText={text => this.onChangeCEP(text)}
                     keyboardType={"number-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Digite o CEP de onde o produto sairá"
                   />
 
@@ -2260,6 +2277,7 @@ export default class EditarCartao extends Component {
                     onChangeText={text => this.onChangePesoEnc(text)}
                     keyboardType={"number-pad"}
                     maxLength={3}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Digite o peso da encomenda em KG"
                   />
                   
@@ -2268,6 +2286,7 @@ export default class EditarCartao extends Component {
                     value={this.state.alturaEnc}
                     onChangeText={text => this.onChangeAlturaEnc(text)}
                     keyboardType={"decimal-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Altura da encomenda, em centímetros"
                   />
 
@@ -2275,6 +2294,7 @@ export default class EditarCartao extends Component {
                     value={this.state.larguraEnc}
                     onChangeText={text => this.onChangeLarguraEnc(text)}
                     keyboardType={"decimal-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Largura da encomenda, em centímetros"
                   />
 
@@ -2282,6 +2302,7 @@ export default class EditarCartao extends Component {
                     value={this.state.diametroEnc}
                     onChangeText={text => this.onChangeDiametroEnc(text)}
                     keyboardType={"decimal-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Diâmetro da encomenda, em centímetros"
                   />
 
@@ -2289,6 +2310,7 @@ export default class EditarCartao extends Component {
                     value={this.state.comprimentoEnc}
                     onChangeText={text => this.onChangeComprimentoEnc(text)}
                     keyboardType={"decimal-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Comprimento da encomenda, em centímetros."
                   />
 
@@ -2391,7 +2413,7 @@ export default class EditarCartao extends Component {
           >
             <View style={{flex:1,alignItems:'center'}}>
                 <TextDays style={{fontWeight: 'bold', padding:15, textAlign:'center'}}>Deseja selecionar um preço? {'\n'}(caso não, o valor será "a combinar" )</TextDays>  
-                {this.state.precoEstab !== 'Retirada no Local' &&
+                {this.state.precoEstab == '' &&
                   <View>
                     <View style={{flexDirection:'row'}}>
                         <TouchableOpacity onPress={() => this.setState({precoEstab: 'Valor a combinar'})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
@@ -2411,6 +2433,7 @@ export default class EditarCartao extends Component {
                       value={this.state.precoEstab}
                       onChangeText={text => this.onChangePrecoEstab(text)}
                       keyboardType={"number-pad"}
+                      style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                       placeholder="Valor do Serviço"
                     />
                   </View>
@@ -2424,6 +2447,7 @@ export default class EditarCartao extends Component {
                       value={this.state.precoEstab}
                       onChangeText={text => this.onChangePrecoEstab(text)}
                       keyboardType={"number-pad"}
+                      style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                       placeholder="Valor do Serviço"
                     />
                   </View>
@@ -2435,7 +2459,7 @@ export default class EditarCartao extends Component {
                       <TouchableOpacity onPress={() => this.setState({precoEstab: 'definir valor'})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                       <TextDays>Definir valor</TextDays>
                     </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 106}}>
                       <CategoryAndSub>Definido como: {this.state.precoEstab}</CategoryAndSub>
                     </View>
                   </View>

@@ -440,16 +440,6 @@ export default class EditarPerfil extends Component {
               placeholder="Digite seu Nome                                                                       "
             />
 
-            <Subtitle2EditProfile>Número de Telefone</Subtitle2EditProfile>
-            <InputFormMask
-              type={'cel-phone'}
-              style={{marginTop:10}}
-              value={phone}
-              onFocus={this.phoneFocus}
-              onChangeText={text => this.phoneChange(text)}
-              keyboardType={"phone-pad"}
-            />
-
               <View style={styles.buttonContainer}>
                 <ButtonCustomized
                   onPress={() => this.updateToFirebase()}

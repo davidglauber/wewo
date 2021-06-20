@@ -140,8 +140,6 @@ export default class TelaCriarCartaoVisita extends Component {
       type: 'Estabelecimento',
       categorias: [],
       categoria:'',
-      horarioOpen:'',
-      horarioClose:'',
       nomeAuto:'',
       tituloEstab:'',
       descricaoAuto:'',
@@ -182,7 +180,6 @@ export default class TelaCriarCartaoVisita extends Component {
       date: '',
       subcategorias:[],
       subcategoria:'',
-      usuarioComprou: false,
       arrayWordsAuto: [],
       arrayWordsEstab: [],
       locationServiceEnabled: false,
@@ -239,45 +236,6 @@ export default class TelaCriarCartaoVisita extends Component {
       e.setState({tipoDeConta: documentSnapshot.data().tipoDeConta})
       e.setState({type: documentSnapshot.data().tipoDeConta})
     })
-    
-    if(Platform.OS === "android") {
-      let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
-      this.setState({usuarioComprou: comprou});
-      console.log('usuario comprou? ' + JSON.stringify(comprou))
-    } else {
-      RNIap.initConnection()
-  
-      let isPurchased = false;
-        try {
-            const purchases = await RNIap.getAvailablePurchases();
-  
-            purchases.forEach((purchase) =>{
-                if(purchase.productId === 'gold.mensal.auto.tt'){
-                    isPurchased = true;
-                    return;
-                } 
-  
-                if(purchase.productId === 'gold.anual.auto.tt'){
-                    isPurchased = true;
-                    return;
-                } 
-  
-                if(purchase.productId === 'gold.mensal.estab.tt'){
-                    isPurchased = true;
-                    return;
-                } 
-  
-                if(purchase.productId === 'gold.anual.estab.tt'){
-                    isPurchased = true;
-                    return;
-                } 
-            })
-        } catch (error) {
-          false;
-        }
-        console.log('IS PURCHASED => ' + isPurchased)
-      this.setState({usuarioComprou: isPurchased});
-    }
     
     
   }
@@ -536,66 +494,6 @@ export default class TelaCriarCartaoVisita extends Component {
     console.log('SUBCATEGORIA Selecionada: '  + param)
   }
 
-  getHorarioOpen(param) {
-    const modalizeRefAbertura = this.state.modalizeRefAbertura;
-    this.setState({horarioOpen: param})
-    modalizeRefAbertura.current?.close()
-
-    console.log('Horario open Selecionado: '  + param)
-
-  }
-
-  getHorarioClose(param) {
-    const modalizeRefFechamento = this.state.modalizeRefFechamento;
-    this.setState({horarioClose: param})
-    modalizeRefFechamento.current?.close()
-
-    console.log('Horario close Selecionado: '  + param)
-  }
-
-
-  onChange = (event, selectedHour) => {
-    if(Platform.OS === "ios") {
-      let hourComplete = selectedHour.getHours();
-      let minutesComplete = selectedHour.getMinutes();
-      let completeTime = hourComplete + ':' + minutesComplete;
-      
-      this.setState({horarioOpen: completeTime})
-      console.log('hora selecionada: ' + completeTime)
-    } else {
-      this.setState({showHour: false})
-
-      let hourComplete = selectedHour.getHours();
-      let minutesComplete = selectedHour.getMinutes();
-      let completeTime = hourComplete + ':' + minutesComplete;
-      
-      this.setState({horarioOpen: completeTime})
-      console.log('hora selecionada: ' + completeTime)
-    }
-  };
-
-  onChangeClose = (event, selectedHour) => {
-    if(Platform.OS === "ios") {
-      let hourComplete = selectedHour.getHours();
-      let minutesComplete = selectedHour.getMinutes();
-      let completeTime = hourComplete + ':' + minutesComplete;
-      
-      this.setState({horarioClose: completeTime})
-      console.log('hora selecionada: ' + completeTime)
-    } else {
-      this.setState({showHourClose: false})
-  
-      let hourComplete = selectedHour.getHours();
-      let minutesComplete = selectedHour.getMinutes();
-      let completeTime = hourComplete + ':' + minutesComplete;
-      
-      this.setState({horarioClose: completeTime})
-      console.log('hora selecionada: ' + completeTime)
-    }
-    
-    
-  };
-
   
   async CheckIfLocationEnabled() {
     let enabled = await Location.hasServicesEnabledAsync();
@@ -836,7 +734,7 @@ export default class TelaCriarCartaoVisita extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.categoria !== '' && this.state.video !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -852,7 +750,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -882,7 +779,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -933,7 +829,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -953,7 +848,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1014,7 +908,7 @@ export default class TelaCriarCartaoVisita extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.categoria !== '' && this.state.image !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1030,7 +924,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1060,7 +953,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1111,7 +1003,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1131,7 +1022,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1205,7 +1095,7 @@ export default class TelaCriarCartaoVisita extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.video !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.categoria !== '' && this.state.video !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1221,7 +1111,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1252,7 +1141,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1302,7 +1190,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1322,7 +1209,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Autonomo',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         videoPublish: urlImage,
@@ -1383,7 +1269,7 @@ export default class TelaCriarCartaoVisita extends Component {
             
             
                           if(type == 'Estabelecimento'){
-                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.horarioOpen !== '' && this.state.horarioClose !== '' && this.state.categoria !== '' && this.state.image !== null) {
+                            if(this.state.tituloEstab !== '' && this.state.descricaoEstab !== '' && this.state.enderecoEstab !== '' && this.state.precoEstab !== '' && this.state.categoria !== '' && this.state.image !== null) {
                                 firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState}`).getDownloadURL().then(function(urlImage) {
                                   firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState2}`).getDownloadURL().then(function(urlImage2) {
                                     firebase.storage().ref(`${storageUrl}/images/${imageIdStorageState3}`).getDownloadURL().then(function(urlImage3) {
@@ -1399,7 +1285,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1430,7 +1315,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         UFEstab: e.state.UFEstab,
                                         verifiedPublish: true,
-                                        premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1481,7 +1365,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         freteValue: e.state.freteValue,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1502,7 +1385,6 @@ export default class TelaCriarCartaoVisita extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
                                         freteValue: e.state.freteValue,
-                                        premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
                                         photoPublish: urlImage,
@@ -1807,7 +1689,7 @@ export default class TelaCriarCartaoVisita extends Component {
                       showCancel={false}
                       onConfirm={() => this.AlertPro6.close()}
                       title="Aviso"
-                      message="Todos os campos devem ser preenchidos!"
+                      message="Todos os campos devem ser preenchidos! (Incluindo endereço, nome, categoria, descrição)"
                       textConfirm="OK"
                       customStyles={{
                         mask: {
@@ -1987,19 +1869,38 @@ export default class TelaCriarCartaoVisita extends Component {
                                 onChangeText={text => this.onChangeNomeAuto(text)}
                                 autoCapitalize={'words'}
                                 maxLength={20}
+                                style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                                 placeholder="Digite seu Nome                                                                       "
                               />
                           </View>
 
-
-                          <TouchableOpacity onPress={() => this.openModalizeDescricao()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputForm
-                                editable={false}
-                                value={this.state.descricaoAuto}
-                                onChangeText={text => this.onChangeDescricaoAuto(text)}
-                                placeholder="Descreva os serviços que você já realizou                                                    "
-                              />
-                          </TouchableOpacity>
+                          {Platform.OS === "ios" ?
+                            <TouchableOpacity onPress={() => this.openModalizeDescricao()} style={{flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              paddingHorizontal: 4,
+                              height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                {this.state.descricaoAuto == '' ?
+                                  <Text style={{color: '#c4bcbc', padding: 10}}>
+                                    Descreva os serviços que você já realizou
+                                  </Text>
+                                :
+                                  <Text style={{color: '#000', padding: 10}}>
+                                    {this.state.descricaoAuto}
+                                  </Text>
+                                }
+                                  
+                            </TouchableOpacity>
+                          :
+                            <TouchableOpacity onPress={() => this.openModalizeDescricao()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                                <InputForm
+                                  value={this.state.descricaoAuto}
+                                  onChangeText={text => this.onChangeDescricaoAuto(text)}
+                                  placeholder="Descreva os serviços que você já realizou                                                    "
+                                  editable={false}
+                                />
+                            </TouchableOpacity>
+                          }
 
                           <View style={{flexDirection:'row', paddingTop:50, paddingBottom:10, alignItems:'center', justifyContent:'center'}}>                          
                             <View style={{marginRight:70}}>
@@ -2041,81 +1942,132 @@ export default class TelaCriarCartaoVisita extends Component {
                                 value={this.state.tituloEstab}
                                 onChangeText={text => this.onChangeTituloEstab(text)}
                                 maxLength={20}
+                                style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                                 placeholder="Nome do Produto (até 20 caracteres)                                                        "
                               />
                             </View>
 
-                            <TouchableOpacity onPress={() => this.openModalizeDescricaoEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputForm
-                                editable={false}
-                                value={this.state.descricaoEstab}
-                                onChangeText={text => this.onChangeDescricaoEstab(text)}
-                                placeholder="Descrição do seu produto... capriche ;)                                                   "
-                              />
-                            </TouchableOpacity>
+                            {Platform.OS === "ios" ?
+                              <TouchableOpacity onPress={() => this.openModalizeDescricaoEstab()} style={{flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                paddingHorizontal: 4,
+                                height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                  {this.state.descricaoEstab == '' ?
+                                    <Text style={{color: '#c4bcbc', padding: 10}}>
+                                      Descrição do seu produto... capriche ;)
+                                    </Text>
+                                  :
+                                    <Text style={{color: '#000', padding: 10}}>
+                                      {this.state.descricaoEstab}
+                                    </Text>
+                                  }
+                                    
+                              </TouchableOpacity>
+                            :
+                              <TouchableOpacity onPress={() => this.openModalizeDescricaoEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                                  <InputForm
+                                    value={this.state.descricaoEstab}
+                                    onChangeText={text => this.onChangeDescricaoEstab(text)}
+                                    placeholder="Descrição do Anúncio                                                    "
+                                    editable={false}
+                                  />
+                              </TouchableOpacity>
+                            }
 
-                            <TouchableOpacity onPress={() => this.openModalizeValueEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              {this.state.precoEstab == 'Valor a combinar' ?
-                                <InputForm
-                                  editable={false}
-                                  value='Valor a Combinar'
-                                  onChangeText={text => this.onChangePrecoEstab(text)}
-                                  keyboardType={"number-pad"}
-                                  placeholder="Valor do Produto                                                          "
-                                />
-                                :
-                                <InputFormMask
-                                  type={'money'}
-                                  editable={false}
-                                  value={this.state.precoEstab}
-                                  onChangeText={text => this.onChangePrecoEstab(text)}
-                                  keyboardType={"number-pad"}
-                                  placeholder="Valor do Produto                                                          "
-                                />
+                              {Platform.OS === "ios" ?
+                                <TouchableOpacity onPress={() => this.openModalizeValueEstab()} style={{flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  alignItems: 'center',
+                                  paddingHorizontal: 4,
+                                  height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                      <Text style={{color: '#c4bcbc', padding: 10}}>
+                                        Valor do Produto
+                                      </Text>
+                                      <Text style={{color: '#000', padding: 10}}>
+                                        {this.state.precoEstab}
+                                      </Text>
+                                </TouchableOpacity>
+                              :
+                                <TouchableOpacity onPress={() => this.openModalizeValueEstab()} style={{flexDirection: 'row', justifyContent: 'space-between', padding: Platform.OS === "ios" ? 10 : 0, alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                                    {this.state.precoEstab == 'Valor a combinar' ?
+                                      <InputForm
+                                        editable={false}
+                                        value='Valor a Combinar'
+                                        onChangeText={text => this.onChangePrecoEstab(text)}
+                                        keyboardType={"number-pad"}
+                                        style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                                        placeholder="Valor do Produto                                                          "
+                                      />
+                                      :
+                                      <InputFormMask
+                                        type={'money'}
+                                        editable={false}
+                                        value={this.state.precoEstab}
+                                        onChangeText={text => this.onChangePrecoEstab(text)}
+                                        keyboardType={"number-pad"}
+                                        style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                                        placeholder="Valor do Produto                                                          "
+                                      />
+                                    }
+                                  </TouchableOpacity>
                               }
-                            </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => this.AlertPro8.open()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                              <InputForm
-                                editable={false}
-                                value={this.state.freteValue}
-                                placeholder="Defina seu frete aqui                                                          "
-                              />
-                            </TouchableOpacity>
-
-                            <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
-                                <InputForm
-                                  value={this.state.enderecoEstab}
-                                  onChangeText={text => this.onChangeEnderecoEstab(text)}
-                                  keyboardType={"default"}
-                                  editable={false}
-                                  placeholder="Endereço do Estabelecimento                                                   "
-                                />
-                            </TouchableOpacity>
-
-                            {this.state.showHour == true &&
-                                <DateTimePicker
-                                    testID="dateTimePicker"
-                                    value={this.state.hour}
-                                    mode='time'
-                                    is24Hour={true}
-                                    display="default"
-                                    onChange={this.onChange}
-                                    style={{width: 320, backgroundColor: "white"}}
-                                />
+                            {Platform.OS === "ios" ?
+                              <TouchableOpacity onPress={() => this.AlertPro8.open()} style={{flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                paddingHorizontal: 4,
+                                height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                  {this.state.freteValue == '' ?
+                                    <Text style={{color: '#c4bcbc', padding: 10}}>
+                                      Defina seu frete aqui
+                                    </Text>
+                                  :
+                                    <Text style={{color: '#000', padding: 10}}>
+                                      {this.state.freteValue}
+                                    </Text>
+                                  }
+                                    
+                              </TouchableOpacity>
+                            :
+                              <TouchableOpacity onPress={() => this.AlertPro8.open()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                                  <InputForm
+                                    editable={false}
+                                    value={this.state.freteValue}
+                                    placeholder="Defina seu frete aqui                                                    "
+                                  />
+                              </TouchableOpacity>
                             }
 
-                            {this.state.showHourClose == true &&
-                                <DateTimePicker
-                                    testID="dateTimePicker"
-                                    value={this.state.hourClose}
-                                    mode='time'
-                                    is24Hour={true}
-                                    display="default"
-                                    onChange={this.onChangeClose}
-                                    style={{width: 320, backgroundColor: "white"}}
-                                />
-                            }
+                            {Platform.OS === "ios" ?
+                              <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                paddingHorizontal: 4,
+                                height: 36, borderBottomWidth:0.5, maxWidth: windowWidth/1.15, marginLeft: 15, borderBottomColor: "#DAA250"}}>
+                                  {this.state.enderecoEstab == null ?
+                                    <Text style={{color: '#c4bcbc', padding: 10}}>
+                                      Endereço do Estabelecimento
+                                    </Text>
+                                  :
+                                    <Text style={{color: '#000', padding: 10}}>
+                                      {this.state.enderecoEstab}
+                                    </Text>
+                                  }
+                                    
+                              </TouchableOpacity>
+                            :
+                              <TouchableOpacity onPress={() => this.openModalizeLocationEstab()} style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                                  <InputForm
+                                    value={this.state.enderecoEstab}
+                                    keyboardType={"default"}
+                                    editable={false}
+                                    placeholder="Endereço do Estabelecimento                                                   "
+                                  />
+                              </TouchableOpacity>
+                            } 
+
 
                             <View style={{flexDirection:'row', paddingTop:50, paddingBottom:10, alignItems:'center', justifyContent:'center'}}>                          
                             <View style={{marginRight:70}}>
@@ -2173,6 +2125,7 @@ export default class TelaCriarCartaoVisita extends Component {
                     value={this.state.cep}
                     onChangeText={text => this.onChangeCEP(text)}
                     keyboardType={"number-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Digite o CEP de onde o produto sairá"
                   />
 
@@ -2180,6 +2133,7 @@ export default class TelaCriarCartaoVisita extends Component {
                     value={this.state.pesoEnc}
                     onChangeText={text => this.onChangePesoEnc(text)}
                     keyboardType={"number-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     maxLength={3}
                     placeholder="Digite o peso da encomenda em KG"
                   />
@@ -2189,6 +2143,7 @@ export default class TelaCriarCartaoVisita extends Component {
                     value={this.state.alturaEnc}
                     onChangeText={text => this.onChangeAlturaEnc(text)}
                     keyboardType={"decimal-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Altura da encomenda, em centímetros"
                   />
 
@@ -2196,6 +2151,7 @@ export default class TelaCriarCartaoVisita extends Component {
                     value={this.state.larguraEnc}
                     onChangeText={text => this.onChangeLarguraEnc(text)}
                     keyboardType={"decimal-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Largura da encomenda, em centímetros"
                   />
 
@@ -2203,6 +2159,7 @@ export default class TelaCriarCartaoVisita extends Component {
                     value={this.state.diametroEnc}
                     onChangeText={text => this.onChangeDiametroEnc(text)}
                     keyboardType={"decimal-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Diâmetro da encomenda, em centímetros"
                   />
 
@@ -2210,6 +2167,7 @@ export default class TelaCriarCartaoVisita extends Component {
                     value={this.state.comprimentoEnc}
                     onChangeText={text => this.onChangeComprimentoEnc(text)}
                     keyboardType={"decimal-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Comprimento da encomenda, em centímetros."
                   />
 
@@ -2333,6 +2291,7 @@ export default class TelaCriarCartaoVisita extends Component {
                       value={this.state.precoEstab}
                       onChangeText={text => this.onChangePrecoEstab(text)}
                       keyboardType={"number-pad"}
+                      style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                       placeholder="Valor do Serviço"
                     />
                   </View>
@@ -2346,6 +2305,7 @@ export default class TelaCriarCartaoVisita extends Component {
                       value={this.state.precoEstab}
                       onChangeText={text => this.onChangePrecoEstab(text)}
                       keyboardType={"number-pad"}
+                      style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                       placeholder="Valor do Serviço"
                     />
                   </View>
@@ -2357,7 +2317,7 @@ export default class TelaCriarCartaoVisita extends Component {
                       <TouchableOpacity onPress={() => this.setState({precoEstab: 'definir valor'})} style={{backgroundColor:'#E3E3E3', width:22, height:22, borderRadius:30, marginLeft:15, marginTop:20}}/>
                       <TextDays>Definir valor</TextDays>
                     </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 36}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between',  alignItems: 'center',paddingHorizontal: 16, height: 106}}>
                       <CategoryAndSub>Definido como: {this.state.precoEstab}</CategoryAndSub>
                     </View>
                   </View>
