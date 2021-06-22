@@ -201,15 +201,38 @@ export default class TermsConditionsB extends Component {
         }
       }
     } else {
-      const {navigation} = this.props;
-      navigation.navigate(screen, {
-        nome: this.state.nome,
-        email: this.state.email,
-        senha: this.state.senha,
-        telefone: this.state.telefone,
-        dataNascimento: this.state.data,
-        tipoDeConta: this.state.tipoDeConta
-      });
+      try {
+        await firebase.auth().createUserWithEmailAndPassword(e.state.email, e.state.senha).then(() => {
+          let user = firebase.auth().currentUser;
+          firebase.firestore().collection('usuarios').doc(user.uid).set({
+            email: e.state.email,
+            nome: e.state.nome,
+            premium: false,
+            dataNascimento: e.state.data,
+            telefone: e.state.telefone,
+            photoProfile: 'https://i1.wp.com/terracoeconomico.com.br/wp-content/uploads/2019/01/default-user-image.png?ssl=1',
+            tipoDeConta: e.state.tipoDeConta,
+            userLocation: '',
+            tokenMessage: e.state.expoPushToken
+          })
+        })
+        e.props.navigation.navigate('HomeNavigator')
+      } catch (e) {
+        if(e.code === "auth/email-already-in-use") {
+          alert("Houve um erro ao cadastrar, o email já está em uso!");
+          this.props.navigation.goBack()
+        }
+
+        if(e.code === "auth/invalid-email") {
+          alert("O email inserido não é válido, volte para o cadastro e cadastre um email válido")
+          this.props.navigation.goBack()
+        }
+
+        if(e.code === "auth/weak-password") {
+          alert("A senha inserida é muito fraca")
+          this.props.navigation.goBack()
+        }
+      }
     }
 
   };

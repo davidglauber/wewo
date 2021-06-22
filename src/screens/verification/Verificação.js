@@ -515,17 +515,7 @@ export default class Verificação extends Component {
           {Platform.OS === "ios" ?
               null
             :
-              <View style={{marginBottom: 44, marginLeft: 10}}>
-                <Button
-                  onPress={() => this.navigateTo('SMSVerificacao')}
-                  disabled={false}
-                  borderRadius={4}
-                  color="#DAA520"
-                  small
-                  title={'SMS'.toUpperCase()}
-                  titleColor="#fff"
-                />
-              </View>
+              null
           }
         </View>
 

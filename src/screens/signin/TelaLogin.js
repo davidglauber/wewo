@@ -169,8 +169,6 @@ export default class TelaLogin extends Component {
 
 
   async componentDidMount() {
-    this.AlertPro.open();
-
     GoogleSignin.configure({
       scopes: ['email', 'profile'],
       webClientId: '419527216736-39o1vcm2lh5c1nkf6qdvb74dnlshvemu.apps.googleusercontent.com',
@@ -335,7 +333,21 @@ export default class TelaLogin extends Component {
         e.props.navigation.navigate("Home")
       })
     } catch (e) {
-      alert("Ops! Houve um erro ao logar, confira se você já se cadastrou, caso sim, confira as informações e tente novamente. " + "\n\n" + e)
+      if(e.code === "auth/invalid-email") {
+        alert("Parece que o endereço de email não é válido!")
+      }
+
+      if(e.code === "auth/user-disabled") {
+        alert("Parece que esse usuário foi desativado!")
+      }
+
+      if(e.code === "auth/user-not-found") {
+        alert("O usuário em questão não foi encontrado no banco de dados!")
+      }
+
+      if(e.code === "auth/wrong-password") {
+        alert("A senha não é a mesma cadastrada!")
+      }
     }
   }
 
@@ -532,9 +544,7 @@ export default class TelaLogin extends Component {
             {Platform.OS === "ios" ?
                 null
               :
-              <TouchableOpacity onPress={() => this.signInWithGoogle()}>
-                  <FontAwesome5 name="google" size={35} style={{marginRight:25}} color="#DAA520"/>
-              </TouchableOpacity>
+                null
             }
 
             {Platform.OS === 'ios' ? 
@@ -637,26 +647,52 @@ export default class TelaLogin extends Component {
                   />
                 */
                   :
-                  <TouchableOpacity onPress={() => this.signInWithFacebook()}>
-                  <FontAwesome5 name="facebook" size={35} style={{marginRight:15}} color="#DAA520"/>
-              </TouchableOpacity>
+                <View style={{maxWidth: windowWidth/2}}>
+                  <TextInput
+                    style={styles.inputLogin}
+                    onChangeText={this.emailChange}
+                    value={this.state.emailUser}
+                    placeholder="Digite seu email"
+                    keyboardType="default"
+                  />
+
+                <View style={{flexDirection: "row"}}>
+                  <TextInput
+                    style={styles.inputLogin}
+                    onChangeText={this.senhaChange}
+                    value={this.state.senhaUser}
+                    placeholder="Digite sua senha"
+                    secureTextEntry={this.state.viewPass}
+                    keyboardType="default"
+                  />
+
+                  {this.state.viewPass == false ?
+                    <TouchableOpacity onPress={() => this.setState({viewPass: true})}>
+                      <FontAwesome5 name="eye" size={25} style={{marginLeft:15, marginTop: 20}} color="#DAA250"/>
+                    </TouchableOpacity>
+                  :
+                    <TouchableOpacity onPress={() => this.setState({viewPass: false})}>
+                      <FontAwesome5 name="eye-slash" size={25} style={{marginLeft:15, marginTop: 20}} color="#DAA250"/>
+                    </TouchableOpacity>
+                  }
+                </View>
+
+
+                  <TouchableOpacity
+                    onPress={() => this.loginWithEmailAndPassApple(this.state.emailUser, this.state.senhaUser)}
+                    style={{backgroundColor:'#d98b0d', width:200, borderRadius:30, height:50, flexDirection:'row', alignItems:'center'}}
+                  >
+                    <FontAwesome5 name="plus-circle" size={25} style={{marginLeft:15}} color="#fff"/>
+                    <Text style={{fontWeight:'bold', marginLeft:15, textAlign:'center', fontSize:20, color:'white'}}>Logar</Text>
+                  </TouchableOpacity>
+                </View>
             }
 
 
             {Platform.OS === "ios" ?
                 null
               :
-                <View style={{marginBottom: 44, marginLeft: 10}}>
-                  <Button
-                    onPress={() => this.confirmIfUserHasBeenSignUp()}
-                    disabled={false}
-                    borderRadius={10}
-                    color="#DAA520"
-                    small
-                    title={'SMS'.toUpperCase()}
-                    titleColor="#fff"
-                  />
-                </View>
+                null
             }
           </View>
 

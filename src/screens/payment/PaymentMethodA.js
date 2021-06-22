@@ -297,6 +297,9 @@ export default function PaymentMethodA() {
 
 
 
+  async function openPolicy() {
+    await Linking.openURL('https://wewo.flycricket.io/privacy.html')
+  }
 
 
     return (
@@ -449,6 +452,10 @@ export default function PaymentMethodA() {
                 <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
                 <Text style={{marginLeft:10, fontSize: normalize(13)}}>Sem Anúncios no App WeWo</Text>
               </View>
+
+              <TouchableOpacity  onPress={() => openPolicy()}style={{flexDirection:'row', alignItems:'center', padding:12}}>
+                <Text style={{marginLeft: 5, color: "#0da6d9", fontWeight: "bold", textDecorationLine: 'underline', fontSize: normalize(13)}}>Termos de Uso e Política de Privacidade</Text>
+              </TouchableOpacity>
             </View>
           }
 
@@ -468,6 +475,10 @@ export default function PaymentMethodA() {
                 <Image style={{width:30, height:30}} source={require('../../assets/img/correct.png')}/>
                 <Text style={{marginLeft:10, fontSize: normalize(13)}}>Sem Anúncios no App WeWo</Text>
               </View>
+
+              <TouchableOpacity  onPress={() => openPolicy()}style={{flexDirection:'row', alignItems:'center', padding:12}}>
+                <Text style={{marginLeft: 5, color: "#0da6d9", fontWeight: "bold", textDecorationLine: 'underline', fontSize: normalize(13)}}>Termos de Uso e Política de Privacidade</Text>
+              </TouchableOpacity>
             </View>
           }
         </ScrollView>

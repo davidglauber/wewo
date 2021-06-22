@@ -1390,6 +1390,7 @@ export default class MostrarCartao extends Component {
                     autoCapitalize={"words"}
                     onChangeText={text => this.onChangeNomeEnd(text)}
                     maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Nome para o endereço"
                   />
 
@@ -1398,6 +1399,7 @@ export default class MostrarCartao extends Component {
                     value={this.state.cepEnd}
                     onChangeText={text => this.onChangeCEPEnd(text)}
                     keyboardType={"number-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Digite o CEP"
                   />
 
@@ -1406,6 +1408,7 @@ export default class MostrarCartao extends Component {
                     autoCapitalize={"words"}
                     onChangeText={text => this.onChangeEnderecoEnd(text)}
                     maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Endereço. ex: Rua das Flores"
                   />
 
@@ -1414,6 +1417,7 @@ export default class MostrarCartao extends Component {
                     keyboardType={"number-pad"}
                     onChangeText={text => this.onChangeNumeroEnd(text)}
                     maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Número do Endereço"
                   />
 
@@ -1422,6 +1426,7 @@ export default class MostrarCartao extends Component {
                     autoCapitalize={"words"}
                     onChangeText={text => this.onChangeComplementoEnd(text)}
                     maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Complemento"
                   />
 
@@ -1430,6 +1435,7 @@ export default class MostrarCartao extends Component {
                     autoCapitalize={"words"}
                     onChangeText={text => this.onChangeBairroEnd(text)}
                     maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Bairro"
                   />
 
@@ -1438,6 +1444,7 @@ export default class MostrarCartao extends Component {
                     autoCapitalize={"words"}
                     onChangeText={text => this.onChangeCidadeEnd(text)}
                     maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Cidade"
                   />
 
@@ -1446,6 +1453,7 @@ export default class MostrarCartao extends Component {
                     autoCapitalize={"words"}
                     onChangeText={text => this.onChangeEstadoEnd(text)}
                     maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
                     placeholder="Estado"
                   />
 

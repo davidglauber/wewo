@@ -196,7 +196,12 @@ export default class Chat extends Component {
 
         <ScrollView ref={( ref ) => this.scrollView = ref} onContentSizeChange={() => {this.scrollView.scrollToEnd()}} style={{marginBottom:50}}>
           <View style={{alignItems:'center', marginTop:15}}>
-            <Heading>Chat</Heading>
+            <View style={{flexDirection: "row"}}>
+              <TouchableOpacity style={{position: "absolute", right: windowWidth/2.2}} onPress={() => this.props.navigation.goBack()}>
+                  <IconResponsiveNOBACK name="arrow-left" size={24}/>
+              </TouchableOpacity>
+              <Heading>Chat</Heading>
+            </View>
             
             {this.state.type == 'confirmedNotif' &&
               <TouchableOpacity style={styles.moneyCard} onPress={() => this.openModalize()}>

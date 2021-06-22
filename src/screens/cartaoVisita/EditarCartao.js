@@ -695,19 +695,22 @@ export default class EditarCartao extends Component {
 
 
     try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
+      this.sleep(500).then(async () => { 
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
 
-      });
-      if (!result.cancelled) {
-        this.setState({ image: result.uri })
-        this.setState({imageName: result.uri})
-      }
+        });
+        if (!result.cancelled) {
+          this.setState({ image: result.uri })
+          this.setState({imageName: result.uri})
+        }
 
-      console.log(result);
+        console.log(result);
+
+      })
     } catch (E) {
       console.log(E);
     }
@@ -725,19 +728,21 @@ export default class EditarCartao extends Component {
 
 
     try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
+      this.sleep(500).then(async () => { 
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
 
-      });
-      if (!result.cancelled) {
-        this.setState({ image2: result.uri })
-        this.setState({imageName: result.uri})
-      }
+        });
+        if (!result.cancelled) {
+          this.setState({ image2: result.uri })
+          this.setState({imageName: result.uri})
+        }
 
-      console.log(result);
+          console.log(result);
+        })
     } catch (E) {
       console.log(E);
     }
@@ -756,19 +761,21 @@ export default class EditarCartao extends Component {
 
 
     try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
+      this.sleep(500).then(async () => { 
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
 
-      });
-      if (!result.cancelled) {
-        this.setState({ image3: result.uri })
-        this.setState({imageName: result.uri})
-      }
+        });
+        if (!result.cancelled) {
+          this.setState({ image3: result.uri })
+          this.setState({imageName: result.uri})
+        }
 
-      console.log(result);
+        console.log(result);
+      })
     } catch (E) {
       console.log(E);
     }
