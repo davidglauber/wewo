@@ -208,7 +208,12 @@ export default class CriarAnuncio extends Component {
       endereco: '',
       bairroEnd: '',
       cidadeEnd: '',
-      estadoEnd: ''
+      estadoEnd: '',
+      cepEndAuto: '',
+      enderecoInputAuto: '',
+      bairroEndAuto: '',
+      cidadeEndAuto: '',
+      estadoEndAuto: ''
     };
   }
 
@@ -1185,6 +1190,7 @@ export default class CriarAnuncio extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
+                                        UFEstab: e.state.UFEstab,
                                         premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1210,6 +1216,7 @@ export default class CriarAnuncio extends Component {
                                         type: 'Estabelecimento',
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         verifiedPublish: true,
+                                        UFEstab: e.state.UFEstab,
                                         premiumUser: e.state.usuarioComprou,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
@@ -1261,6 +1268,8 @@ export default class CriarAnuncio extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
+                                        localAuto: e.state.enderecoAuto,
+                                        UFAuto: e.state.UFAuto,
                                         premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -1286,6 +1295,8 @@ export default class CriarAnuncio extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
+                                        localAuto: e.state.enderecoAuto,
+                                        UFAuto: e.state.UFAuto,
                                         premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -1373,6 +1384,7 @@ export default class CriarAnuncio extends Component {
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
+                                        UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1398,6 +1410,7 @@ export default class CriarAnuncio extends Component {
                                         type: 'Estabelecimento',
                                         verifiedPublish: true,
                                         premiumUser: e.state.usuarioComprou,
+                                        UFEstab: e.state.UFEstab,
                                         localEstab: e.state.enderecoEstab,
                                         categoryEstab: e.state.categoria,
                                         subcategoryEstab: e.state.subcategoria,
@@ -1448,6 +1461,8 @@ export default class CriarAnuncio extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
+                                        localAuto: e.state.enderecoAuto,
+                                        UFAuto: e.state.UFAuto,
                                         premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -1473,6 +1488,8 @@ export default class CriarAnuncio extends Component {
                                         fotoUsuarioLogado: e.state.fotoPerfil,
                                         type: 'Autonomo',
                                         verifiedPublish: true,
+                                        localAuto: e.state.enderecoAuto,
+                                        UFAuto: e.state.UFAuto,
                                         premiumUser: e.state.usuarioComprou,
                                         categoryAuto: e.state.categoria,
                                         subcategoryAuto: e.state.subcategoria,
@@ -1731,6 +1748,30 @@ export default class CriarAnuncio extends Component {
   }
 
 
+
+  
+
+  onChangeCEPEndAuto(text) {
+    this.setState({cepEndAuto: text})
+  }
+
+  onChangeEnderecoEndAuto(text) {
+    this.setState({enderecoInputAuto: text})
+  }
+
+  onChangeBairroEndAuto(text) {
+    this.setState({bairroEndAuto: text})
+  }
+
+  onChangeCidadeEndAuto(text) {
+    this.setState({cidadeEndAuto: text})
+  }
+
+  onChangeEstadoEndAuto(text) {
+    this.setState({estadoEndAuto: text})
+  }
+
+
   async saveAddressEstab() {
     let replaceCEP = this.state.cepEnd.replace('-', '')
     var e = this
@@ -1738,6 +1779,16 @@ export default class CriarAnuncio extends Component {
       e.setState({UFEstab: obj.uf})
       let address = `${obj.uf}, ${this.state.endereco}, ${this.state.bairroEnd}, ${this.state.cidadeEnd} (${this.state.cepEnd})`
       e.setState({enderecoEstab: address})
+    })
+  }
+
+  async saveAddressAuto() {
+    let replaceCEP = this.state.cepEndAuto.replace('-', '')
+    var e = this
+    await fetch(`https://viacep.com.br/ws/${replaceCEP}/json`).then(resposta => resposta.json()).then(obj =>  {
+      e.setState({UFAuto: obj.uf})
+      let address = `${obj.uf}, ${this.state.enderecoInputAuto}, ${this.state.bairroEndAuto}, ${this.state.cidadeEndAuto} (${this.state.cepEndAuto})`
+      e.setState({enderecoAuto: address})
     })
   }
 
@@ -3147,7 +3198,69 @@ export default class CriarAnuncio extends Component {
                   <TouchableOpacity onPress={() => this.setState({enderecoAuto: null})} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
                     <FontAwesome5 name="times-circle" size={24} color={'#9A9A9A'}/>
                   </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => this.setState({enderecoAuto: 'Digite seu Endereço'})} style={{marginLeft: 15, alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                    <FontAwesome5 name="pencil-alt" size={24} color={'#9A9A9A'}/>
+                  </TouchableOpacity>
                 </View>
+
+
+                {this.state.enderecoAuto == 'Digite seu Endereço' && 
+                <View style={{flexDirection:"column", marginTop:10}}>
+                  <InputFormMask
+                    type={'zip-code'}
+                    value={this.state.cepEndAuto}
+                    onChangeText={text => this.onChangeCEPEndAuto(text)}
+                    keyboardType={"number-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                    placeholder="Digite o CEP"
+                  />
+
+                  <InputForm
+                    value={this.state.enderecoInputAuto}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeEnderecoEndAuto(text)}
+                    maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                    placeholder="Endereço. ex: Rua das Flores"
+                  />
+
+                  <InputForm
+                    value={this.state.bairroEndAuto}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeBairroEndAuto(text)}
+                    maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                    placeholder="Bairro"
+                  />
+
+                  <InputForm
+                    value={this.state.cidadeEndAuto}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeCidadeEndAuto(text)}
+                    maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                    placeholder="Cidade"
+                  />
+
+                  <InputForm
+                    value={this.state.estadoEndAuto}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeEstadoEndAuto(text)}
+                    maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                    placeholder="Estado"
+                  />
+
+
+                  <TouchableOpacity onPress={() => this.saveAddressAuto()} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d', marginTop:30}}>
+                    <IconResponsive name="check" size={30}/>
+                    <Text style={{color: this.context.dark ? 'white' : '#121212', fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Confirmar</Text>
+                  </TouchableOpacity>
+                </View>
+                
+              }
+
             </View>
                  
 
