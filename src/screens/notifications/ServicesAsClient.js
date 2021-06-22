@@ -79,7 +79,6 @@ export default class ServicesAsClient extends Component {
       cepUser:'',
       serviceUser:'',
       valueUser:'',
-      telefoneUser:'',
       dataUser:'',
       horarioUser:'',
       idNotification: '',
@@ -108,7 +107,6 @@ export default class ServicesAsClient extends Component {
             title: doc.data().titlePublish,
             idNot: doc.data().idNot,
             nome: doc.data().nome,
-            telefone: doc.data().telefone,
             service: doc.data().service,
             valor: doc.data().valor,
             cep: doc.data().cep,
@@ -142,7 +140,6 @@ export default class ServicesAsClient extends Component {
     this.setState({valueUser: userData.valor})
     this.setState({idContratado: userData.idContratado})
     this.setState({idAnuncio: userData.idAnuncio})
-    this.setState({telefoneUser: userData.telefone})
     this.setState({dataUser: userData.dataServico})
     this.setState({horarioUser: userData.horario})
     this.setState({idNotification: userData.idNot})
@@ -164,7 +161,7 @@ export default class ServicesAsClient extends Component {
   }
 
   render() {
-    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser, horarioUser, idContratado} = this.state;
+    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,dataUser, horarioUser, idContratado} = this.state;
     const user = firebase.auth().currentUser;
     return (
       <SafeBackground>
@@ -241,7 +238,7 @@ export default class ServicesAsClient extends Component {
             data={this.state.notificationsActivies}
             renderItem={({item}) => 
             <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:60, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
-              <Image source={{uri: item.photoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+              <Image source={{uri: `${item.photoUser}`}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
               <Text  style={styles.titleMain}>{item.title}</Text>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatReceive', {idLoggedUser: user.uid, idDonoDoAnuncio: item.idContratante, idNotification: item.idNot, valuePayment: item.valor, type: 'normalNotif', idDoAnuncio: item.idAnuncio})} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/5, justifyContent:'center', alignItems:'center'}}>
                   <IconResponsive name="comment-alt" size={24}/>
@@ -266,7 +263,7 @@ export default class ServicesAsClient extends Component {
 
          
             <View style={{width: windowWidth/1.06, height:100, backgroundColor: '#d98b0d', flexDirection:'row', borderRadius:60, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
-              <Image source={{uri: fotoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+              <Image source={{uri: `${fotoUser}`}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
               <Text  style={styles.title}>{nameUser}</Text>
               {this.state.type == "Autonomo" &&
                 <View style={{width:40, height:40, borderRadius: 20, position:'absolute', right: windowWidth/10, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
@@ -329,17 +326,6 @@ export default class ServicesAsClient extends Component {
                     <Title style={{marginLeft: 10, fontSize: 15, marginTop:5, color: this.context.dark ? 'white' : 'white'}}>{horarioUser}</Title>
                   </View>
                 </View>
-
-
-
-
-                <View style={{marginTop:10, flexDirection:'column', paddingHorizontal:30, justifyContent:"space-between"}}>
-                  <View style={{backgroundColor:'#3f3f3f', maxWidth: windowWidth/1.06, flexDirection:'row', padding:15, borderRadius:20}}>
-                    <IconResponsive style={{marginLeft:10}} name="mobile" size={20}/>
-                    <Title style={{marginLeft: 24, fontSize: 15, color: this.context.dark ? 'white' : 'white'}}>{telefoneUser}</Title>
-                  </View>
-                </View>
-
 
 
 

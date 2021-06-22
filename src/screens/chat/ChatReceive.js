@@ -14,6 +14,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Text,
+  KeyboardAvoidingView,
   Modal,
   TextInput,
   StyleSheet,
@@ -171,114 +172,119 @@ export default class ChatReceive extends Component {
     const { valueUser } = this.state;
     const currentUserId = firebase.auth().currentUser.uid; 
     return (
-      <SafeAnuncioView>
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={this.state.modalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-            }}
-        >
-          <View style={{flex:1, alignItems:'center', paddingLeft: windowWidth / 2, paddingTop: windowHeight / 2, width: 100}}>
-              <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
-          </View>
-        </Modal>
-
-
-        <ScrollView style={{marginBottom:50}}>
-          <View style={{alignItems:'center', marginTop:15}}>
-            <Heading>Chat</Heading>
-            
-            {this.state.type == 'confirmedNotif' &&
-              <TouchableOpacity style={styles.moneyCard} onPress={() => this.openModalize()}>
-                <IconResponsive name="money-bill-alt" size={24}/>
-              </TouchableOpacity>
-            }
-
-            <FlatList
-              keyExtractor={() => this.makeid(17)}
-              data={this.state.chatFromFirebase}
-              renderItem={({item}) => 
-              <View>
-                {/*USUARIO QUE ENVIOU A MENSAGEM*/}
-                {currentUserId == item.idContratado && item.valorCombinado !== null && item.boolean == true  &&
-                  <View style={{marginTop:30, marginLeft:50, backgroundColor:'#d98b0d', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
-                    <Text style={{color:'white'}}>{item.texto}</Text>
-                  </View>
-                }
-
-
-
-                {currentUserId == item.idContratado && item.valorCombinado == null && item.boolean == false &&
-                  <View style={{marginTop:20, marginLeft:50, backgroundColor:'#d98b0d', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
-                    <Text style={{color:'white'}}>{item.texto}</Text>
-                  </View>
-                }
-
-
-                {currentUserId !== item.idContratado && item.valorCombinado == null && item.boolean == false &&
-                  <View onPress={() => alert('oi')} style={{marginTop:15, marginRight:50, backgroundColor:'#d4cccb', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
-                    <Text style={{color:'black'}}>{item.texto}</Text>
-                  </View>
-                }
-
-
-                {currentUserId !== item.idContratado && item.valorCombinado !== null && item.boolean == true &&
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: item.valorCombinado, idNotification: this.props.route.params.idNotification, idContratado: item.idContratado, idDoAnuncio: this.state.idAnuncioUser})} style={{marginTop:15, marginRight:50, backgroundColor:'#d4cccb', borderWidth:2, borderColor:"#d98b0d", padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
-                    <Text style={{color:'black', fontSize:17}}>{item.texto}</Text>
-                  </TouchableOpacity>
-                }
-                
-              </View>
-              }
-            ></FlatList>
-
-          </View>
-        </ScrollView>
-
-        {/*Modalize para definir o valor*/}
-          <Modalize
-            ref={this.state.modalizeRef}
-            snapPoint={500}
-            modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{flex: 1}}
+      >
+        <SafeAnuncioView>
+          <Modal
+              animationType="slide"
+              transparent={true}
+              visible={this.state.modalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+              }}
           >
-            <View style={{alignItems:'center', marginTop:40, paddingHorizontal:40}}>
-              <Heading style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, marginBottom:10, color:'#fff'} : {fontWeight:'bold', marginBottom:10, marginLeft: 10, color:'#d98b0d'}}>Definir Valor</Heading>
-              <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>(Digite o valor negociado)</TextDescription2>
-                <InputFormMask
-                  type={'money'}
-                  value={this.state.valueUser}
-                  placeholderTextColor={this.context.dark ? "#fff" : "#000"}
-                  style={{borderWidth:3, borderColor: '#DAA520', borderRadius:20, padding:10}}
-                  onChangeText={(text) => this.setState({valueUser: text})}
-                  keyboardType={"number-pad"}
-                  placeholder="Digite o valor definitivo do serviço...                                                          "
-                />
-
-            <TouchableOpacity onPress={() => this.uploadChatToFirebase(true)} style={{marginTop:30, paddingHorizontal:20}}>
-                <IconResponsiveNOBACK name="telegram-plane" size={35}/>
-            </TouchableOpacity>
+            <View style={{flex:1, alignItems:'center', paddingLeft: windowWidth / 2, paddingTop: windowHeight / 2, width: 100}}>
+                <LottieView source={loading} style={{width:100, height:100}} autoPlay loop />
             </View>
-          </Modalize>
-        
-        <View style={{paddingHorizontal:20}}>
-            <InputChat
-                value={this.state.textChat}
-                style={{marginBottom: 10, position:'absolute', bottom: windowHeight/44, left:20}}
-                editable={true}
-                onChangeText={text => this.onChangeText(text) }
-                maxLength={255}
-                multiline={true}
-                minLength={1}
-                placeholderTextColor={this.context.dark ? "#fff" : "#000"}
-                placeholder="Digite sua mensagem...                                                                       "
-            />
-            <TouchableOpacity onPress={() => this.uploadChatToFirebase(false)} style={{paddingHorizontal:20, marginLeft: windowWidth/1.45, marginBottom: windowHeight/20}}>
-                <IconResponsiveNOBACK name="telegram-plane" size={27}/>
-            </TouchableOpacity>
-        </View>
-      </SafeAnuncioView>
+          </Modal>
+
+
+          <ScrollView ref={( ref ) => this.scrollView = ref} onContentSizeChange={() => {this.scrollView.scrollToEnd()}} style={{marginBottom:50}}>
+            <View style={{alignItems:'center', marginTop:15}}>
+              <Heading>Chat</Heading>
+              
+              {this.state.type == 'confirmedNotif' &&
+                <TouchableOpacity style={styles.moneyCard} onPress={() => this.openModalize()}>
+                  <IconResponsive name="money-bill-alt" size={24}/>
+                </TouchableOpacity>
+              }
+
+              <FlatList
+                keyExtractor={() => this.makeid(17)}
+                data={this.state.chatFromFirebase}
+                renderItem={({item}) => 
+                <View>
+                  {/*USUARIO QUE ENVIOU A MENSAGEM*/}
+                  {currentUserId == item.idContratado && item.valorCombinado !== null && item.boolean == true  &&
+                    <View style={{marginTop:30, marginLeft:50, backgroundColor:'#d98b0d', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
+                      <Text style={{color:'white'}}>{item.texto}</Text>
+                    </View>
+                  }
+
+
+
+                  {currentUserId == item.idContratado && item.valorCombinado == null && item.boolean == false &&
+                    <View style={{marginTop:20, marginLeft:50, backgroundColor:'#d98b0d', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
+                      <Text style={{color:'white'}}>{item.texto}</Text>
+                    </View>
+                  }
+
+
+                  {currentUserId !== item.idContratado && item.valorCombinado == null && item.boolean == false &&
+                    <View onPress={() => alert('oi')} style={{marginTop:15, marginRight:50, backgroundColor:'#d4cccb', padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
+                      <Text style={{color:'black'}}>{item.texto}</Text>
+                    </View>
+                  }
+
+
+                  {currentUserId !== item.idContratado && item.valorCombinado !== null && item.boolean == true &&
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('PaymentServices', {valuePayment: item.valorCombinado, idNotification: this.props.route.params.idNotification, idContratado: item.idContratado, idDoAnuncio: this.state.idAnuncioUser})} style={{marginTop:15, marginRight:50, backgroundColor:'#d4cccb', borderWidth:2, borderColor:"#d98b0d", padding:10, minWidth: windowWidth/1.4, maxWidth: windowWidth/1.4, borderRadius:20}}>
+                      <Text style={{color:'black', fontSize:17}}>{item.texto}</Text>
+                    </TouchableOpacity>
+                  }
+                  
+                </View>
+                }
+              ></FlatList>
+
+            </View>
+          </ScrollView>
+
+          {/*Modalize para definir o valor*/}
+            <Modalize
+              ref={this.state.modalizeRef}
+              snapPoint={500}
+              modalStyle={this.context.dark ? {backgroundColor:'#3E3C3F'} : {backgroundColor:'#fff'}}
+            >
+              <View style={{alignItems:'center', marginTop:40, paddingHorizontal:40}}>
+                <Heading style={this.context.dark ? {fontWeight:'bold', marginLeft: 10, marginBottom:10, color:'#fff'} : {fontWeight:'bold', marginBottom:10, marginLeft: 10, color:'#d98b0d'}}>Definir Valor</Heading>
+                <TextDescription2 style={{paddingHorizontal:40, textAlign:'center'}}>(Digite o valor negociado)</TextDescription2>
+                  <InputFormMask
+                    type={'money'}
+                    value={this.state.valueUser}
+                    placeholderTextColor={this.context.dark ? "#fff" : "#000"}
+                    style={{borderWidth:3, borderColor: '#DAA520', borderRadius:20, padding:10}}
+                    onChangeText={(text) => this.setState({valueUser: text})}
+                    keyboardType={"number-pad"}
+                    placeholder="Digite o valor definitivo do serviço...                                                          "
+                  />
+
+              <TouchableOpacity onPress={() => this.uploadChatToFirebase(true)} style={{marginTop:30, paddingHorizontal:20}}>
+                  <IconResponsiveNOBACK name="telegram-plane" size={35}/>
+              </TouchableOpacity>
+              </View>
+            </Modalize>
+          
+          <View style={{paddingHorizontal:20}}>
+              <InputChat
+                  value={this.state.textChat}
+                  style={{marginBottom: 10, position:'absolute', bottom: windowHeight/44, left:20, minWidth: Platform.OS === "ios" ? windowWidth/1.12 : 0}}
+                  editable={true}
+                  onChangeText={text => this.onChangeText(text) }
+                  maxLength={255}
+                  multiline={true}
+                  minLength={1}
+                  placeholderTextColor={this.context.dark ? "#fff" : "#000"}
+                  placeholder="Digite sua mensagem...                                                                       "
+              />
+              <TouchableOpacity onPress={() => this.uploadChatToFirebase(false)} style={{paddingHorizontal:20, marginLeft: windowWidth/1.45, marginBottom: windowHeight/20}}>
+                  <IconResponsiveNOBACK name="telegram-plane" size={27}/>
+              </TouchableOpacity>
+          </View>
+        </SafeAnuncioView>
+      </KeyboardAvoidingView>
     );
   }
 }

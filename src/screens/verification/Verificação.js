@@ -51,8 +51,6 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 
 
-import defaultPicture from '../../../assets/defaultUser.png'
-
 // VerificationB Config
 const isRTL = I18nManager.isRTL;
 
@@ -244,7 +242,7 @@ export default class Verificação extends Component {
                 dataNascimento: e.state.data,
                 telefone: e.state.telefone,
                 tipoDeConta: e.state.tipoDeConta,
-                photoProfile: defaultPicture,
+                photoProfile: 'https://i1.wp.com/terracoeconomico.com.br/wp-content/uploads/2019/01/default-user-image.png?ssl=1',
                 userLocation: '',
                 tokenMessage: e.state.expoPushToken
               })
@@ -305,7 +303,7 @@ export default class Verificação extends Component {
                       premium: false,
                       dataNascimento: e.state.data,
                       telefone: e.state.telefone,
-                      photoProfile: defaultPicture,
+                      photoProfile: 'https://i1.wp.com/terracoeconomico.com.br/wp-content/uploads/2019/01/default-user-image.png?ssl=1',
                       tipoDeConta: e.state.tipoDeConta,
                       userLocation: '',
                       tokenMessage: e.state.expoPushToken

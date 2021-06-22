@@ -32,7 +32,6 @@ import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaVerifier } from 'expo-
 
 import AlertPro from "react-native-alert-pro";
 
-import defaultPicture from '../../../assets/defaultUser.png'
 
 // import colors
 import Colors from '../../theme/colors';
@@ -251,7 +250,7 @@ export default function SMSVerificacao () {
                       premium: false,
                       dataNascimento: getDataNascimento,
                       telefone: getTelefone,
-                      photoProfile: defaultPicture,
+                      photoProfile: 'https://i1.wp.com/terracoeconomico.com.br/wp-content/uploads/2019/01/default-user-image.png?ssl=1',
                       tipoDeConta: getTipoDeConta,
                       userLocation: '',
                       tokenMessage: getTokenMessage

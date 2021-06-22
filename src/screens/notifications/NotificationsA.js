@@ -80,7 +80,6 @@ export default class NotificationsA extends Component {
       cepUser:'',
       serviceUser:'',
       valueUser:'',
-      telefoneUser:'',
       dataUser:'',
       idNotification:'',
       horarioUser:'',
@@ -104,7 +103,6 @@ export default class NotificationsA extends Component {
             idContratado: doc.data().idContratado,
             photoProfile: doc.data().photoProfile,
             nome: doc.data().nome,
-            telefone: doc.data().telefone,
             service: doc.data().service,
             valor: doc.data().valor,
             cep: doc.data().cep,
@@ -135,7 +133,6 @@ export default class NotificationsA extends Component {
     this.setState({cepUser: userData.cep})
     this.setState({serviceUser: userData.service})
     this.setState({valueUser: userData.valor})
-    this.setState({telefoneUser: userData.telefone})
     this.setState({dataUser: userData.dataServico})
     this.setState({idNotification: userData.idNot})
     this.setState({horarioUser: userData.horario})
@@ -222,7 +219,7 @@ export default class NotificationsA extends Component {
 
 
   render() {
-    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser, horarioUser, itemData} = this.state;
+    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,dataUser, horarioUser, itemData} = this.state;
     const user = firebase.auth().currentUser;
 
     return (
@@ -384,7 +381,7 @@ export default class NotificationsA extends Component {
               data={this.state.notificationsActivies}
               renderItem={({item}) => 
               <View style={{width: windowWidth/1.06, height:100, backgroundColor: this.context.dark ? '#3F3F3F' : '#d98b0d', flexDirection:'row', borderRadius:60, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
-                <Image source={{uri: item.photoProfile}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+                <Image source={{uri: `${item.photoProfile}`}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
                 <Text  style={styles.titleMain}>{item.nome}</Text>
                   <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatReceive', {idLoggedUser: user.uid, idDonoDoAnuncio: item.idContratante, idNotification: item.idNot, valuePayment: item.valor, type: 'normalNotif'})} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/5, justifyContent:'center', alignItems:'center'}}>
                     <IconResponsive name="comment-alt" size={24}/>
@@ -410,7 +407,7 @@ export default class NotificationsA extends Component {
 
          
             <View style={{width: windowWidth/1.06, height:100, backgroundColor: '#d98b0d', flexDirection:'row', borderRadius:60, marginTop:20, marginLeft:10, marginRight:10, alignItems:'center'}}>
-              <Image source={{uri: fotoUser}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
+              <Image source={{uri: `${fotoUser}`}} style={{height:54, width:54, marginLeft:20, borderRadius:20}}/>
                 <Text  style={styles.title}>{nameUser}</Text>
                 <TouchableOpacity onPress={() => this.deleteService(itemData)} style={{width:30, height:30, borderRadius: 20, position:'absolute', right: windowWidth/11, backgroundColor: this.context.dark ? '#3F3F3F': 'white', justifyContent:'center', alignItems:'center'}}>
                   <IconResponsiveNOBACK name="times-circle" size={24}/>
@@ -461,16 +458,6 @@ export default class NotificationsA extends Component {
                   </View>
                 </View>
 
-
-
-
-                <View style={{marginTop:10, flexDirection:'column', paddingHorizontal:30, justifyContent:"space-between"}}>
-                  <View style={{backgroundColor:'#3f3f3f', maxWidth: windowWidth/1.06, flexDirection:'row', padding:15, borderRadius:20}}>
-                    <IconResponsive style={{marginLeft:10}} name="mobile" size={20}/>
-                    <Title style={{marginLeft: 24, fontSize: 15, color: this.context.dark ? 'white' : 'white'}}>{telefoneUser}</Title>
-                  </View>
-                </View>
-                
 
                 <View style={{flexDirection:'row', marginLeft:15}}>
                   <TouchableOpacity onPress={() => this.confirmButton(this.state.idNotification)} style={{marginLeft: 30, marginTop:30, flexDirection:'row', padding:10, backgroundColor: 'white', marginRight:20, borderRadius:50}}>

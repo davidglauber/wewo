@@ -100,6 +100,8 @@ export default class Chat extends Component {
 
       e.setState({chatFromFirebase: chatContent2})
     })
+
+
   }
 
   openModalize() {
@@ -192,7 +194,7 @@ export default class Chat extends Component {
         </Modal>
 
 
-        <ScrollView style={{marginBottom:50}}>
+        <ScrollView ref={( ref ) => this.scrollView = ref} onContentSizeChange={() => {this.scrollView.scrollToEnd()}} style={{marginBottom:50}}>
           <View style={{alignItems:'center', marginTop:15}}>
             <Heading>Chat</Heading>
             
@@ -271,7 +273,7 @@ export default class Chat extends Component {
         <View style={{paddingHorizontal:20}}>
             <InputChat
                 value={this.state.textChat}
-                style={{marginBottom: 10, position:'absolute', bottom: windowHeight/44, left:20}}
+                style={{marginBottom: 10, position:'absolute', bottom: windowHeight/44, left:20, minWidth: Platform.OS === "ios" ? windowWidth/1.12 : 0}}
                 editable={true}
                 onChangeText={text => this.onChangeText(text) }
                 maxLength={255}

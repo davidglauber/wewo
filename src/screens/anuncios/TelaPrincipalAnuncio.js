@@ -247,6 +247,8 @@ export default class TelaPrincipalAnuncio extends Component {
 
 
   async verifyNumberOfPublises() {
+    this.setModalVisible(true)
+
     let currentUserUID = firebase.auth().currentUser.uid;
     if(Platform.OS === "android") {
       let comprou = await purchased('wewo.gold.mensal', 'wewo_gold_anual', 'wewo_gold_auto', 'wewo_gold_anual_auto');
@@ -270,32 +272,38 @@ export default class TelaPrincipalAnuncio extends Component {
       
   
         if(this.state.idMPState == '') {
+          this.setModalVisible(false)
           this.AlertPro.open();
           this.props.navigation.navigate('MLConfigAccount')
         }
   
   
         if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
+          this.setModalVisible(false)
           this.props.navigation.navigate('Orders')
         }
   
   
         if(comprou == true) {
           if(anunciosDidMount.length <= 15 && this.state.idMPState !== '') {
+            this.setModalVisible(false)
             this.props.navigation.navigate('Orders')
           }
         } 
   
         if(comprou == false) {
           if(anunciosDidMount.length >= 3 && this.state.idMPState !== '') {
+            this.setModalVisible(false)
             this.AlertPro2.open();
             
             if(Platform.OS === 'ios') {
+              this.setModalVisible(false)
               alert('A conta free permite ate 3 anuncios, consulte a tela planos para mais informaçoes')
             }
           }
   
           if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
+            this.setModalVisible(false)
             this.props.navigation.navigate('Orders')
           }
         }
@@ -336,7 +344,6 @@ export default class TelaPrincipalAnuncio extends Component {
         }
       console.log('IS PURCHASED => ' + isPurchased)
 
-      this.props.navigation.navigate('Orders')
 
       firebase.firestore().collection(`usuarios/${currentUserUID}/anuncios`).where("verifiedPublish", "==", true).get().then(documentSnapshot => {
         let anunciosDidMount = []
@@ -356,32 +363,38 @@ export default class TelaPrincipalAnuncio extends Component {
       
 
         if(this.state.idMPState == '') {
+          this.setModalVisible(false)
           this.AlertPro.open();
           this.props.navigation.navigate('MLConfigAccount')
         }
 
 
         if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
+          this.setModalVisible(false)
           this.props.navigation.navigate('Orders')
         }
 
 
         if(isPurchased == true) {
           if(anunciosDidMount.length <= 15 && this.state.idMPState !== '') {
+            this.setModalVisible(false)
             this.props.navigation.navigate('Orders')
           }
         } 
 
         if(isPurchased == false) {
           if(anunciosDidMount.length >= 3 && this.state.idMPState !== '') {
+            this.setModalVisible(false)
             this.AlertPro2.open();
             
             if(Platform.OS === 'ios') {
+              this.setModalVisible(false)
               alert('A conta free permite ate 3 anuncios, consulte a tela planos para mais informaçoes')
             }
           }
 
           if(anunciosDidMount.length  < 3 && this.state.idMPState !== '') {
+            this.setModalVisible(false)
             this.props.navigation.navigate('Orders')
           }
         }

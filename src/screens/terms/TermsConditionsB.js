@@ -37,7 +37,6 @@ import Colors from '../../theme/colors';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 
-import defaultPicture from '../../../assets/defaultUser.png'
 
 // TermsConditionsA Config
 const APP_NAME = 'App Name';
@@ -178,7 +177,7 @@ export default class TermsConditionsB extends Component {
             premium: false,
             dataNascimento: e.state.data,
             telefone: e.state.telefone,
-            photoProfile: defaultPicture,
+            photoProfile: 'https://i1.wp.com/terracoeconomico.com.br/wp-content/uploads/2019/01/default-user-image.png?ssl=1',
             tipoDeConta: e.state.tipoDeConta,
             userLocation: '',
             tokenMessage: e.state.expoPushToken

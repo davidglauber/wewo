@@ -351,6 +351,8 @@ export default class TelaGeralCriarCartao extends Component {
   };
 
   async verifyNumberOfPublises() {
+    this.setModalVisible(true)
+
     let currentUserUID = firebase.auth().currentUser.uid;
 
     if(Platform.OS === "android") {
@@ -372,27 +374,32 @@ export default class TelaGeralCriarCartao extends Component {
   
   
         if(this.state.idMPState == '') {
+          this.setModalVisible(false)
           this.AlertPro.open();
           this.props.navigation.navigate('MLConfigAccount')
         }
   
         if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {
+          this.setModalVisible(false)
           this.props.navigation.navigate('TelaCriarCartaoVisita')
         }
   
   
         if(comprou == true) {
           if(cartoesDidMount.length <= 100 && this.state.idMPState !== '') {
+            this.setModalVisible(false)
             this.props.navigation.navigate('TelaCriarCartaoVisita')
           }
         } 
   
         if(comprou == false) {
           if(cartoesDidMount.length >= 7 && this.state.idMPState !== '') {
+            this.setModalVisible(false)
             this.AlertPro2.open();
           }
   
           if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {
+            this.setModalVisible(false)
             this.props.navigation.navigate('TelaCriarCartaoVisita')
           }
         }
@@ -450,27 +457,32 @@ export default class TelaGeralCriarCartao extends Component {
   
   
         if(this.state.idMPState == '') {
+          this.setModalVisible(false)
           this.AlertPro.open();
           this.props.navigation.navigate('MLConfigAccount')
         }
   
         if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {
+          this.setModalVisible(false)
           this.props.navigation.navigate('TelaCriarCartaoVisita')
         }
   
   
         if(isPurchased == true) {
           if(cartoesDidMount.length <= 100 && this.state.idMPState !== '') {
+            this.setModalVisible(false)
             this.props.navigation.navigate('TelaCriarCartaoVisita')
           }
         } 
   
         if(isPurchased == false) {
           if(cartoesDidMount.length >= 7 && this.state.idMPState !== '') {
+            this.setModalVisible(false)
             this.AlertPro2.open();
           }
   
           if(cartoesDidMount.length  < 7 && this.state.idMPState !== '') {
+            this.setModalVisible(false)
             this.props.navigation.navigate('TelaCriarCartaoVisita')
           }
         }

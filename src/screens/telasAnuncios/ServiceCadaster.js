@@ -74,7 +74,6 @@ export default class ServiceCadaster extends Component {
       nome: '',
       foto:'',
       servico:'',
-      telefone:'',
       valor:'',
       photoUser: '',
       title: '',
@@ -147,7 +146,6 @@ export default class ServiceCadaster extends Component {
     this.setState({nome: this.props.route.params.nome})
     this.setState({foto: this.props.route.params.foto})
     this.setState({servico: this.props.route.params.servico})
-    this.setState({telefone: this.props.route.params.telefone})
     this.setState({valor: this.props.route.params.valor})
     this.setState({photoUser: this.props.route.params.photoUser})
     this.setState({title: this.props.route.params.titlePublish})
@@ -293,7 +291,6 @@ export default class ServiceCadaster extends Component {
           type: e.state.type,
           photoProfile: e.state.foto,
           nome: e.state.nome,
-          telefone: e.state.telefone,
           service: e.state.servico,
           valor: e.state.valor,
           cep: e.state.cep,
@@ -306,7 +303,7 @@ export default class ServiceCadaster extends Component {
         
         e.sendPushNotification(e.state.tokenMSG);
         e.setModalVisible(false)
-        alert('Parabéns! O anunciante foi notificado e em breve irá contactá-lo pelo app. Fique atento a aba de serviços enviados')
+        alert('Parabéns! O anunciante foi notificado e em breve irá contacta-lo pelo app. Fique atento a aba de serviços enviados')
         e.props.navigation.navigate('Home')
       })
     } else {
@@ -513,19 +510,6 @@ export default class ServiceCadaster extends Component {
                       autoCapitalize={'words'}
                       maxLength={32}
                       placeholder="Serviço a ser Contratado                                                                       "
-                  />
-              </View>
-
-              <View style={{marginTop:30, paddingHorizontal:20}}>
-                  <Subtitle2EditProfile>Seu Telefone</Subtitle2EditProfile>
-                  <InputForm
-                      value={`${this.state.telefone}                                                                                            `}
-                      style={{marginBottom: 10}}
-                      editable={false}
-                      onChangeText={() => {}}
-                      autoCapitalize={'words'}
-                      maxLength={32}
-                      placeholder="Seu número de telefone                                                                       "
                   />
               </View>
 

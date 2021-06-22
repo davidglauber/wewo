@@ -146,7 +146,7 @@ export default class FavoritesA extends Component {
           nome: doc.data().nome,
           idAnuncio: doc.data().idAnuncio,
           video: doc.data().videoPublish,
-          photo: doc.data().photo,
+          photo: doc.data().photo2,
           description: doc.data().description,
           type: doc.data().type,
           categoria: doc.data().categoria,
@@ -167,7 +167,7 @@ export default class FavoritesA extends Component {
           idUser: doc.data().idUser,
           idAnuncio: doc.data().idAnuncio,
           video: doc.data().videoPublish,
-          photo: doc.data().photo,
+          photo: doc.data().photo2,
           local: doc.data().localEstab,
           title: doc.data().title,
           description: doc.data().description,
@@ -293,7 +293,7 @@ export default class FavoritesA extends Component {
                     onSwipeableLeftOpen={() => this.RemoveFav(item.idAnuncio)}
                   > 
 
-                    <AnuncioContainer onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                    <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                           <View style={{flexDirection:'row'}}>
                               {item.video == null ?
                                     <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}></Image>
@@ -341,7 +341,7 @@ export default class FavoritesA extends Component {
                     onSwipeableLeftOpen={() => this.RemoveFav(item.idAnuncio)}
                   > 
 
-                        <AnuncioContainer onPress={() => this.props.navigation.navigate('MostrarCartao', {idDoCartao: item.idCartao, phoneNumberNavigator: item.phone, idUserCartao: item.idUser})}>
+                        <AnuncioContainer onPress={() => this.props.navigation.navigate('TelaAnuncio', {idDoAnuncio: item.idAnuncio, phoneNumberNavigator: item.phone, idUserCartao: item.idUser, nomeToZap: item.nome})}>
                           <View style={{flexDirection:'row'}}>
                               {item.video == null ?
                                     <Image source={{uri: item.photo}} style={{width:128, height:100, borderRadius: 20, marginLeft: windowWidth/24, marginTop: 20}}></Image>

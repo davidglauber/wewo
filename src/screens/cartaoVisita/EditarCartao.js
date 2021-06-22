@@ -813,7 +813,11 @@ export default class EditarCartao extends Component {
 
 
   setVideoAndPhotoOrJustPhoto() {
-    this.AlertPro5.open();
+    if(this.state.video === null) {
+      this.openModalizePhotos()
+    } else {
+      this.openModalizePhotosAndVideos()
+    }
   }
 
 
