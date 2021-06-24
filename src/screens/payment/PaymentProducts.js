@@ -309,8 +309,7 @@ export default class PaymentProducts extends Component {
             textConfirm="Continuar"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,
@@ -342,8 +341,7 @@ export default class PaymentProducts extends Component {
             textConfirm="Voltar para tela inicial"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,
@@ -374,8 +372,7 @@ export default class PaymentProducts extends Component {
             textConfirm="Ok, pagar o restante"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,

@@ -156,8 +156,7 @@ export default function TelaLoginSMS () {
         textConfirm="OK"
         customStyles={{
           mask: {
-            backgroundColor: "black",
-            opacity: 0.9
+            backgroundColor: "black"
           },
           container: {
             borderWidth: 1,
@@ -186,8 +185,7 @@ export default function TelaLoginSMS () {
         textConfirm="OK"
         customStyles={{
           mask: {
-            backgroundColor: "black",
-            opacity: 0.9
+            backgroundColor: "black"
           },
           container: {
             borderWidth: 1,

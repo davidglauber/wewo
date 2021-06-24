@@ -2009,8 +2009,7 @@ export default class EditarAnuncio extends Component {
                       textConfirm="OK"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -2041,8 +2040,7 @@ export default class EditarAnuncio extends Component {
                       textConfirm="OK"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -2072,8 +2070,7 @@ export default class EditarAnuncio extends Component {
                       textConfirm="OK"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -2103,8 +2100,7 @@ export default class EditarAnuncio extends Component {
                       textConfirm="OK"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -2135,8 +2131,7 @@ export default class EditarAnuncio extends Component {
                       textConfirm="Sim"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -2166,8 +2161,7 @@ export default class EditarAnuncio extends Component {
                       textConfirm="OK"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -2197,8 +2191,7 @@ export default class EditarAnuncio extends Component {
                       textConfirm="OK"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,

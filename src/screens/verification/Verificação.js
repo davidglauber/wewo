@@ -336,8 +336,7 @@ export default class Verificação extends Component {
           textConfirm="Fechar"
           customStyles={{
             mask: {
-              backgroundColor: "black",
-              opacity: 0.9
+              backgroundColor: "black"
             },
             container: {
               borderWidth: 1,
@@ -367,8 +366,7 @@ export default class Verificação extends Component {
           textConfirm="Fechar"
           customStyles={{
             mask: {
-              backgroundColor: "black",
-              opacity: 0.9
+              backgroundColor: "black"
             },
             container: {
               borderWidth: 1,
@@ -399,8 +397,7 @@ export default class Verificação extends Component {
           textConfirm="OK"
           customStyles={{
             mask: {
-              backgroundColor: "black",
-              opacity: 0.9
+              backgroundColor: "black"
             },
             container: {
               borderWidth: 1,

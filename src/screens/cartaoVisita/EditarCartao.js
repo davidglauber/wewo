@@ -191,7 +191,12 @@ export default class EditarCartao extends Component {
       alturaEnc: 0.0,
       larguraEnc: 0.0,
       diametroEnc: 0.0,
-      modalidadeCorreio: '04014'
+      modalidadeCorreio: '04014',
+      cepEnd: '',
+      endereco: '',
+      bairroEnd: '',
+      cidadeEnd: '',
+      estadoEnd: ''
     };
   }
 
@@ -1613,7 +1618,7 @@ export default class EditarCartao extends Component {
 
 
   searchCEPEstab(cepuser) {
-    fetch(`https://viacep.com.br/ws/${cepuser}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({UFEstab: obj.uf})).catch(err => alert('Ocorreu um erro ao consultar o estado!'))
+    fetch(`https://viacep.com.br/ws/${cepuser}/json`).then(resposta => resposta.json()).then(obj =>  this.setState({UFEstab: obj.uf})).catch(err => alert('Ops! Algo deu errado' + '\n\n' + 'Tente inserir o endereço manualmente clicando no ícone do lápis'))
   }
 
   responsibleFont() {
@@ -1677,6 +1682,37 @@ export default class EditarCartao extends Component {
     this.AlertPro8.close();
   }
   
+  onChangeCEPEnd(text) {
+    this.setState({cepEnd: text})
+  }
+
+  onChangeEnderecoEnd(text) {
+    this.setState({endereco: text})
+  }
+
+  onChangeBairroEnd(text) {
+    this.setState({bairroEnd: text})
+  }
+
+  onChangeCidadeEnd(text) {
+    this.setState({cidadeEnd: text})
+  }
+
+  onChangeEstadoEnd(text) {
+    this.setState({estadoEnd: text})
+  }
+
+  async saveAddressEstab() {
+    let replaceCEP = this.state.cepEnd.replace('-', '')
+    var e = this
+    await fetch(`https://viacep.com.br/ws/${replaceCEP}/json`).then(resposta => resposta.json()).then(obj =>  {
+      e.setState({UFEstab: obj.uf})
+      let address = `${obj.uf}, ${this.state.endereco}, ${this.state.bairroEnd}, ${this.state.cidadeEnd} (${this.state.cepEnd})`
+      e.setState({enderecoEstab: address})
+    })
+  }
+
+
   render() {
     const { categorias, categoria } = this.state
     return (
@@ -1718,8 +1754,7 @@ export default class EditarCartao extends Component {
                       textConfirm="OK"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -1750,8 +1785,7 @@ export default class EditarCartao extends Component {
                       textConfirm="OK"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -1782,8 +1816,7 @@ export default class EditarCartao extends Component {
                       textConfirm="OK"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -1813,8 +1846,7 @@ export default class EditarCartao extends Component {
                       textConfirm="OK"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -1845,8 +1877,7 @@ export default class EditarCartao extends Component {
                       textConfirm="Sim"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -1876,8 +1907,7 @@ export default class EditarCartao extends Component {
                       textConfirm="OK"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -1907,8 +1937,7 @@ export default class EditarCartao extends Component {
                       textConfirm="OK"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -1939,8 +1968,7 @@ export default class EditarCartao extends Component {
                       textCancel="Cobrar Frete"
                       customStyles={{
                         mask: {
-                          backgroundColor: "black",
-                          opacity: 0.9
+                          backgroundColor: "black"
                         },
                         container: {
                           borderWidth: 1,
@@ -2691,7 +2719,67 @@ export default class EditarCartao extends Component {
                   <TouchableOpacity onPress={() => this.setState({enderecoEstab: null})} style={{alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
                     <FontAwesome5 name="times-circle" size={24} color={'#9A9A9A'}/>
                   </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => this.setState({enderecoEstab: 'Digite seu Endereço'})} style={{marginLeft: 15, alignItems:'center', justifyContent:'center', marginTop:10, backgroundColor:'#E3E3E3', width:40, height:40, borderRadius:30}}>
+                    <FontAwesome5 name="pencil-alt" size={24} color={'#9A9A9A'}/>
+                  </TouchableOpacity>
                 </View>
+
+                {this.state.enderecoEstab == 'Digite seu Endereço' && 
+                <View style={{flexDirection:"column", marginTop:10}}>
+                  <InputFormMask
+                    type={'zip-code'}
+                    value={this.state.cepEnd}
+                    onChangeText={text => this.onChangeCEPEnd(text)}
+                    keyboardType={"number-pad"}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                    placeholder="Digite o CEP"
+                  />
+
+                  <InputForm
+                    value={this.state.endereco}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeEnderecoEnd(text)}
+                    maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                    placeholder="Endereço. ex: Rua das Flores"
+                  />
+
+                  <InputForm
+                    value={this.state.bairroEnd}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeBairroEnd(text)}
+                    maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                    placeholder="Bairro"
+                  />
+
+                  <InputForm
+                    value={this.state.cidadeEnd}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeCidadeEnd(text)}
+                    maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                    placeholder="Cidade"
+                  />
+
+                  <InputForm
+                    value={this.state.estadoEnd}
+                    autoCapitalize={"words"}
+                    onChangeText={text => this.onChangeEstadoEnd(text)}
+                    maxLength={20}
+                    style={{minWidth: Platform.OS === "ios" ? windowWidth/1.15 : 0, padding: Platform.OS === "ios" ? 10 : 0}}
+                    placeholder="Estado"
+                  />
+
+
+                  <TouchableOpacity onPress={() => this.saveAddressEstab()} style={{paddingHorizontal: 23, height:50, borderRadius:20,  flexDirection:'row', alignItems: 'center', backgroundColor:'#d98b0d', marginTop:30}}>
+                    <IconResponsive name="check" size={30}/>
+                    <Text style={{color: this.context.dark ? 'white' : '#121212', fontSize:15, marginLeft: 15, fontWeight:'bold'}}>Confirmar</Text>
+                  </TouchableOpacity>
+                </View>
+                
+              }
             </View>
                  
 

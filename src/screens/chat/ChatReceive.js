@@ -14,6 +14,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Text,
+  Platform,
   KeyboardAvoidingView,
   Modal,
   TextInput,
@@ -275,7 +276,7 @@ export default class ChatReceive extends Component {
           <View style={{paddingHorizontal:20}}>
               <InputChat
                   value={this.state.textChat}
-                  style={{marginBottom: 10, position:'absolute', bottom: windowHeight/44, left:20, minWidth: Platform.OS === "ios" ? windowWidth/1.12 : 0}}
+                  style={{marginBottom: 10, position:'absolute', bottom: windowHeight/44, left:20, minWidth: Platform.OS === "ios" ? windowWidth/1.4 : windowWidth/1.4, maxWidth: Platform.OS === "ios" ? windowWidth/1.4 : windowWidth/1.4}}
                   editable={true}
                   onChangeText={text => this.onChangeText(text) }
                   maxLength={255}
@@ -284,7 +285,7 @@ export default class ChatReceive extends Component {
                   placeholderTextColor={this.context.dark ? "#fff" : "#000"}
                   placeholder="Digite sua mensagem...                                                                       "
               />
-              <TouchableOpacity onPress={() => this.uploadChatToFirebase(false)} style={{paddingHorizontal:20, marginLeft: windowWidth/1.45, marginBottom: windowHeight/20}}>
+              <TouchableOpacity onPress={() => this.uploadChatToFirebase(false)} style={{marginLeft: windowWidth/1.25, marginBottom: windowHeight/20}}>
                   <IconResponsiveNOBACK name="telegram-plane" size={27}/>
               </TouchableOpacity>
           </View>

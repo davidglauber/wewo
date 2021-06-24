@@ -371,8 +371,7 @@ export default class TelaLogin extends Component {
             textConfirm="Entendi"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,
@@ -402,8 +401,7 @@ export default class TelaLogin extends Component {
             textConfirm="Fechar"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,
@@ -433,8 +431,7 @@ export default class TelaLogin extends Component {
             textConfirm="Fechar"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,
@@ -465,8 +462,7 @@ export default class TelaLogin extends Component {
             textConfirm="OK"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,
@@ -497,8 +493,7 @@ export default class TelaLogin extends Component {
             textCancel="Vou me cadastrar"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,

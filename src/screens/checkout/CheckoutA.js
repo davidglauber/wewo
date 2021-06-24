@@ -362,8 +362,7 @@ export default class CheckoutA extends Component {
             textConfirm="Entendi"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,

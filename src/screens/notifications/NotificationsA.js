@@ -237,8 +237,7 @@ export default class NotificationsA extends Component {
             textConfirm="OK"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,
@@ -269,8 +268,7 @@ export default class NotificationsA extends Component {
             textConfirm="OK"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,
@@ -302,8 +300,7 @@ export default class NotificationsA extends Component {
             textConfirm="OK"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,

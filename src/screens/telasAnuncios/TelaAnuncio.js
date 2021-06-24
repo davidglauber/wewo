@@ -679,8 +679,7 @@ export default class TelaAnuncio extends Component {
           textConfirm="Entendi"
           customStyles={{
             mask: {
-              backgroundColor: "black",
-              opacity: 0.9
+              backgroundColor: "black"
             },
             container: {
               borderWidth: 1,
@@ -711,8 +710,7 @@ export default class TelaAnuncio extends Component {
           textConfirm="OK"
           customStyles={{
             mask: {
-              backgroundColor: "black",
-              opacity: 0.9
+              backgroundColor: "black"
             },
             container: {
               borderWidth: 1,
@@ -742,8 +740,7 @@ export default class TelaAnuncio extends Component {
           textConfirm="OK"
           customStyles={{
             mask: {
-              backgroundColor: "black",
-              opacity: 0.9
+              backgroundColor: "black"
             },
             container: {
               borderWidth: 1,
@@ -773,8 +770,7 @@ export default class TelaAnuncio extends Component {
           textConfirm="OK"
           customStyles={{
             mask: {
-              backgroundColor: "black",
-              opacity: 0.9
+              backgroundColor: "black"
             },
             container: {
               borderWidth: 1,
@@ -804,8 +800,7 @@ export default class TelaAnuncio extends Component {
           textConfirm="OK"
           customStyles={{
             mask: {
-              backgroundColor: "black",
-              opacity: 0.9
+              backgroundColor: "black"
             },
             container: {
               borderWidth: 1,
@@ -835,8 +830,7 @@ export default class TelaAnuncio extends Component {
           textConfirm="OK"
           customStyles={{
             mask: {
-              backgroundColor: "black",
-              opacity: 0.9
+              backgroundColor: "black"
             },
             container: {
               borderWidth: 1,
@@ -866,8 +860,7 @@ export default class TelaAnuncio extends Component {
           textConfirm="OK"
           customStyles={{
             mask: {
-              backgroundColor: "black",
-              opacity: 0.9
+              backgroundColor: "black"
             },
             container: {
               borderWidth: 1,
@@ -897,8 +890,7 @@ export default class TelaAnuncio extends Component {
           textConfirm="OK"
           customStyles={{
             mask: {
-              backgroundColor: "black",
-              opacity: 0.9
+              backgroundColor: "black"
             },
             container: {
               borderWidth: 1,
@@ -965,7 +957,7 @@ export default class TelaAnuncio extends Component {
                   </Swiper>
 
                   <ButtonIconContainer style={{borderRadius:10}}>
-                    <TouchableItem onPress={this.goBack} borderless>
+                    <TouchableItem onPress={() => this.props.navigation.navigate("HomeNavigator")} borderless>
                       <View style={styles.buttonIconContainer}>
                         <IconMain
                           name={CLOSE_ICON}
@@ -1479,7 +1471,7 @@ export default class TelaAnuncio extends Component {
                   </Swiper>
 
                   <ButtonIconContainer style={{borderRadius:10}}>
-                    <TouchableItem onPress={this.goBack} borderless>
+                    <TouchableItem onPress={() => this.props.navigation.navigate("HomeNavigator")} borderless>
                       <View style={styles.buttonIconContainer}>
                         <IconMain
                           name={CLOSE_ICON}

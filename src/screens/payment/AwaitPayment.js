@@ -116,8 +116,7 @@ function deleteNotification() {
           textConfirm="Confirmar"
           customStyles={{
             mask: {
-              backgroundColor: "black",
-              opacity: 0.9
+              backgroundColor: "black"
             },
             container: {
               borderWidth: 1,

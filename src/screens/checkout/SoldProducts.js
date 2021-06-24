@@ -268,8 +268,7 @@ export default class SoldProducts extends Component {
             textConfirm="Entendi"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,
@@ -301,8 +300,7 @@ export default class SoldProducts extends Component {
             textCancel="Cancelar"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,

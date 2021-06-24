@@ -84,7 +84,6 @@ export default class ConfirmedServices extends Component {
       cepUser:'',
       serviceUser:'',
       valueUser:'',
-      telefoneUser:'',
       dataUser:'',
       horarioUser:'', 
       idNotUser:''
@@ -107,7 +106,6 @@ export default class ConfirmedServices extends Component {
             idNot: doc.data().idNot,
             photoProfile: doc.data().photoProfile,
             nome: doc.data().nome,
-            telefone: doc.data().telefone,
             service: doc.data().service,
             valor: doc.data().valor,
             cep: doc.data().cep,
@@ -139,7 +137,6 @@ export default class ConfirmedServices extends Component {
     this.setState({cepUser: userData.cep})
     this.setState({serviceUser: userData.service})
     this.setState({valueUser: userData.valor})
-    this.setState({telefoneUser: userData.telefone})
     this.setState({dataUser: userData.dataServico})
     this.setState({horarioUser: userData.horario})
     this.setState({idNotUser: userData.idNot})
@@ -164,7 +161,7 @@ export default class ConfirmedServices extends Component {
   }
 
   render() {
-    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,telefoneUser,dataUser, horarioUser, idNotUser} = this.state;
+    const {nameUser,fotoUser,cepUser,serviceUser,valueUser,dataUser, horarioUser, idNotUser} = this.state;
     const user = firebase.auth().currentUser;
     return (
       <SafeBackground>
@@ -182,8 +179,7 @@ export default class ConfirmedServices extends Component {
             textConfirm="OK"
             customStyles={{
               mask: {
-                backgroundColor: "black",
-                opacity: 0.9
+                backgroundColor: "black"
               },
               container: {
                 borderWidth: 1,
@@ -344,16 +340,6 @@ export default class ConfirmedServices extends Component {
                   </View>
                 </View>
 
-
-
-
-                <View style={{marginTop:10, flexDirection:'column', paddingHorizontal:30, justifyContent:"space-between"}}>
-                  <View style={{backgroundColor:'#3f3f3f', maxWidth: windowWidth/1.06, flexDirection:'row', padding:15, borderRadius:20}}>
-                    <IconResponsive style={{marginLeft:10}} name="mobile" size={20}/>
-                    <Title style={{marginLeft: 24, fontSize: 15, color: this.context.dark ? 'white' : 'white'}}>{telefoneUser}</Title>
-                  </View>
-                </View>
-                
 
 
                 <View style={{marginLeft: 30, marginTop:10, flexDirection:'row'}}>
